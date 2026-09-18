@@ -36,7 +36,7 @@ Result CmdReqQueueTx::TryEnqueue(const detail::CmdReq* pCmdReq)
         control.packed32 = __ldrex(&m_pBody->control);
         
         s32 lastIndex = (control.qc.head + control.qc.usedCount) % QUEUE_LENGTH;
-        mpBody->data[lastIndex] = *pCmdReq;
+        m_pBody->data[lastIndex] = *pCmdReq;
         
         nn::os::ARM::DataSynchronizationBarrier();
         

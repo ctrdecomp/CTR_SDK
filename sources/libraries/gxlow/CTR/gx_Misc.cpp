@@ -25,7 +25,8 @@ uptr nngxGetVramStartAddr(s32 area)
     }
 }
 
-uptr nngxGetVramEndAddr(s32 area){
+uptr nngxGetVramEndAddr(s32 area)
+{
     switch(area){
     case NN_GX_MEM_VRAMA:
         return (nn::gxlow::CTR::detail::IsAppletMode()) ? NN_GX_VRAMA_SYS_END : NN_GX_VRAMA_USER_END;
@@ -36,15 +37,18 @@ uptr nngxGetVramEndAddr(s32 area){
     }
 }
 
-void nngxStartLcdDisplay(){
+void nngxStartLcdDisplay()
+{
     nn::gxlow::CTR::StartLcdDisplay();
 }
 
-uptr nngxGetPhysicalAddr(uptr virtualAddr){
+uptr nngxGetPhysicalAddr(uptr virtualAddr)
+{
     return nn::gxlow::CTR::GetPhysicalAddr(virtualAddr);
 }
 
-void nngxUpdateBuffer(const void* pBuffer, size_t size){
+void nngxUpdateBuffer(const void* pBuffer, size_t size)
+{
     nn::gxlow::CTR::FlushDataCache(pBuffer, size);
 }
 

@@ -79,6 +79,12 @@ public:
         ++this->m_LockCount;
     }
 
+    Result TryInitialize()
+    {
+        Initialize();
+        return ResultSuccess();
+    }
+
     void Leave()
     {
         NN_ASSERT_(IsInitialized());

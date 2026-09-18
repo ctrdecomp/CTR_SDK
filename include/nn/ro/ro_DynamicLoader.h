@@ -8,11 +8,12 @@ namespace nn {
 namespace ro {
 namespace detail {
 
-class DynamicLoader{
+class DynamicLoader
+{
 public:
     DynamicLoader() {}
 
-    static Handle sSession;
+    static Handle s_Session;
 
     static Result Startup(Handle process, uptr staticInfo, size_t staticInfoSize, uptr locateAddr);
     static Result RegisterList(Handle process, uptr rr, size_t rrSize);

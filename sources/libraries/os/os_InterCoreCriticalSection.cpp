@@ -11,6 +11,8 @@
 namespace nn{ 
 namespace os{
 
+#if NN_VERSION_MAJOR <= 2
+
 void InterCoreCriticalSection::EnterImpl()
 {
     for(;;)
@@ -26,6 +28,8 @@ void InterCoreCriticalSection::EnterImpl()
         this->m_Counter.DecrementAndWaitIfLessThan(0);
     }
 }
+
+#endif
 
 }
 }

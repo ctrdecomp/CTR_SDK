@@ -17,23 +17,24 @@ namespace ro {
         FIX_LEVEL_MAX_BITS = (1u << 31)
     };
 
-    struct SizeInfo{
-        uptr    mFix0End;
-        uptr    mFix1End;
-        uptr    mFix2End;
-        uptr    mFix3End;
-        size_t  mBufferSize;
+    struct SizeInfo
+    {
+        uptr    m_Fix0End;
+        uptr    m_Fix1End;
+        uptr    m_Fix2End;
+        uptr    m_Fix3End;
+        size_t  m_BufferSize;
     };
 
     struct RegionInfo{
-        uptr    mMapBegin;
-        size_t  mMapSize;
-        uptr    mCroBegin;
-        size_t  mCroSize; 
-        uptr    mDataBssBegin;
-        size_t  mDataBssSize;
-        uptr    mCodeBegin;
-        size_t  mCodeSize;
+        uptr    m_MapBegin;
+        size_t  m_MapSize;
+        uptr    m_CroBegin;
+        size_t  m_CroSize;
+        uptr    m_DataBssBegin;
+        size_t  m_DataBssSize;
+        uptr    m_CodeBegin;
+        size_t  m_CodeSize;
     };
 
 } // end of namespace ro

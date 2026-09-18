@@ -30,7 +30,7 @@ void GetBirthday(Birthday* pBirthday)
 {
     nn::Result result;
     Birthday birthdayCfgData = detail::BIRTHDAY_CFG_DEFAULT;
-    result = detail::GetConfig(&birthdayCfgData, sizeof(Birthday), 0xa0001);
+    result = detail::GetConfig(&birthdayCfgData, sizeof(Birthday), CFG_KEY_USER_BIRTHDAY);
     NN_ERR_THROW_FATAL_ALL(result);
     pBirthday->month = birthdayCfgData.month;
     pBirthday->day = birthdayCfgData.day;
@@ -43,9 +43,10 @@ CfgRegionCode GetRegion()
 
 CfgLanguageCode GetLanguage()
 {
-    LanguageCfgData languageCode; Result res;
+    LanguageCfgData languageCode;
+    Result res;
     languageCode.code = detail::LANGUAGE_CFG_DEFAULT.code;
-    res = detail::IpcUser::GetConfig(&languageCode,sizeof(CfgLanguageCode),0xa0002);
+    res = detail::GetConfig(&languageCode,sizeof(CfgLanguageCode), CFG_KEY_USER_REGION);
     NN_ERR_THROW_FATAL_ALL(res);
     return (CfgLanguageCode)languageCode.code;
 }

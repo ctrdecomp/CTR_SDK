@@ -9,7 +9,8 @@
 namespace nn{
 namespace ro{
 
-Result RegistrationList::Unregister(){
+Result RegistrationList::Unregister()
+{
     Result res;
     ModuleRegistrationListHeader* p = reinterpret_cast<ModuleRegistrationListHeader*>(this);
     
@@ -17,7 +18,8 @@ Result RegistrationList::Unregister(){
 
     res = detail::DynamicLoader::UnregisterList(PSEUDO_HANDLE_CURRENT_PROCESS, GetHead());
 
-    if(res.IsSuccess()){
+    if(res.IsSuccess())
+    {
         detail::UpdateRegistrationListNode(reinterpret_cast<RegistrationList*>(pOther));
     }
 

@@ -6,8 +6,9 @@
 namespace nn{
 namespace ro{
 
-class RegistrationList{
-    uptr mDummy;
+class RegistrationList
+{
+    uptr m_Dummy;
 public:
     RegistrationList();
     ~RegistrationList(){ this->Unregister(); }

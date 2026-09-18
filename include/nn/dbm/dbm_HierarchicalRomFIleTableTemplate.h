@@ -105,8 +105,8 @@ private:
     typedef EntryMapTable<DirectoryBucketStorage, DirectoryEntryStorage, RomEntryKey, EntryKey, DirectoryEntry> DirectoryEntryMapTable;
     typedef EntryMapTable<FileBucketStorage, FileEntryStorage, RomEntryKey, EntryKey, FileEntry> FileEntryMapTable;
 
-    DirectoryEntryMapTable mTableDirectory;
-    FileEntryMapTable mTableFile;
+    DirectoryEntryMapTable m_TableDirectory;
+    FileEntryMapTable m_TableFile;
 public:
     static inline RomFileId PositionToFileId(StoragePosition pos)
     {

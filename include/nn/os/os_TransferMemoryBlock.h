@@ -7,6 +7,8 @@
 namespace nn{
 namespace os{
 
+class HandleManager;
+
 class TransferMemoryBlock : public MemoryBlockBase, public HandleObject
 {
 public:
@@ -25,12 +27,15 @@ public:
         this->Finalize(); 
     }
     
-    void Initialize(void* p, size_t size, bit32 myPermission, bit32 otherPermission);
-    Result TryInitialize(void* p,size_t size,bit32 myPermission,bit32 otherPermission);
+    void Initialize(void* p, size_t size, bit32 myPermission = os::MEMORY_PERMISSION_NONE, bit32 otherPermission = os::MEMORY_PERMISSION_READ_WRITE);
+    Result TryInitialize(void* p, size_t size, bit32 myPermission = os::MEMORY_PERMISSION_NONE, bit32 otherPermission = os::MEMORY_PERMISSION_READ_WRITE);
     void Finalize();
         
 private:
-    void Unmap(void);
+    friend class HandleManager;
+    Result Map(size_t size, bit32 otherPermission, bit32 myPermission);
+    Result AttachAndMap(Handle handle, size_t size, bit32 otherPermission, bit32 myPermission);
+    void Unmap();
 };
 
 }

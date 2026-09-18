@@ -128,14 +128,14 @@ NN_NOINLINE void AccelerometerReader::ResetAxisRotationMatrix()
 
 void AccelerometerReader::Transform(AccelerometerStatus* pAcclStatus)
 {
-    if(mEnableOffset != false)
+    if(m_EnableOffset != false)
     {
-        pAcclStatus->x = pAcclStatus->x - mOffsetAccStatus.x;
-        pAcclStatus->y = pAcclStatus->y - mOffsetAccStatus.y;
-        pAcclStatus->z = pAcclStatus->z - mOffsetAccStatus.z;
+        pAcclStatus->x = pAcclStatus->x - m_OffsetAccStatus.x;
+        pAcclStatus->y = pAcclStatus->y - m_OffsetAccStatus.y;
+        pAcclStatus->z = pAcclStatus->z - m_OffsetAccStatus.z;
     }
     
-    if ((mEnableRotate != false && !this->m_RotateMtx.IsIdentity())) 
+    if ((m_EnableRotate != false && !this->m_RotateMtx.IsIdentity())) 
     {
         nn::math::VEC3 vec(pAcclStatus->x,pAcclStatus->y,pAcclStatus->z);
 

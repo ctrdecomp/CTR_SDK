@@ -2,14 +2,15 @@
 //
 // Project: Horizon
 
+#include <nn/err.h>
+#include <nn/os.h>
+
 #include <nn/applet/CTR/applet_ClientThread.h>
 #include <nn/applet/CTR/applet_Connect.h>
 #include <nn/applet/CTR/applet_Ipc.h>
 #include <nn/applet/CTR/applet_API.h>
 #include <nn/applet/CTR/applet_Info.h>
-#include <nn/err.h>
-#include <nn/os/os_LightEvent.h>
-#include <nn/os/os_Thread.h>
+#include <nn/os/os_HandleManager.h>
 
 namespace nn { 
 namespace applet {
@@ -27,14 +28,15 @@ namespace{
 
 void ThreadFunc(int param);
 
-void InitializeClientThread(s32 threadPriority, Handle hControl, Handle hMessage){
+void InitializeClientThread(s32 threadPriority, Handle hControl, Handle hMessage)
+{
     s_Event[1].Initialize(false);
     s_Event[1].Finalize();
-    s_Event[1].SetHandle(hMessage);
+    nn::os::HandleManager::AttachHandle(&s_Event[1], hControl);
 
     s_Event[0].Initialize(false);
     s_Event[0].Finalize();
-    s_Event[0].SetHandle(hMessage);
+    nn::os::HandleManager::AttachHandle(&s_Event[0], hControl);
 
     s_Event[2].Initialize(false);
 
@@ -166,7 +168,8 @@ void ThreadFunc(int param)
             case NOTIFICATION_SLEEP_QUERY:
             case NOTIFICATION_SLEEP_CANCELED_BY_OPEN:
             case NOTIFICATION_SLEEP_ACCEPTED:
-            case NOTIFICATION_AWAKE:{
+            case NOTIFICATION_AWAKE:
+            {
                     switch(notification)
                     {
                     case NOTIFICATION_SLEEP_QUERY:
@@ -232,7 +235,7 @@ void ThreadFunc(int param)
                 break;
 
             case NOTIFICATION_ORDER_TO_CLOSE:{
-                    SetOrderToCloseState( ORDER_TO_CLOSE_STATE_RECEIVED );
+                    SetOrderToCloseState(ORDER_TO_CLOSE_STATE_RECEIVED);
                 }
                 break;
 

@@ -3,20 +3,22 @@
 // Project: Horizon
 
 #include <nn/applet.h>
+#include <nn/err.h>
 #include <nn/fs.h>
+#include <nn/srv.h>
 #include <nn/applet/CTR/applet_Connect.h>
 #include <nn/applet/CTR/applet_Info.h>
 #include <nn/applet/CTR/applet_TimeoutChecker.h>
 #include <nn/applet/CTR/applet_ClientThread.h>
 #include <nn/applet/CTR/applet_InitialParamaters.h>
 #include <nn/applet/CTR/applet_Ipc.h>
+#include <nn/applet/CTR/applet_Result.h>
 #include <nn/camera/CTR/camera_API.h>
-#include <nn/srv.h>
-#include <nn/os/os_Thread.h>
-#include <nn/err/CTR/err_Api.h>
 #include <nn/gxlow/CTR/gxlow_SystemUse.h>
 #include <nn/gxlow/CTR/gxlow_Management.h>
+#include <nn/gxlow/CTR/gxlow_Result.h>
 #include <nn/dsp/CTR/MPCore/dsp_Api.h>
+#include <nn/os/os_HandleManager.h>
 
 #include <nn/dbg/dbg_DebugString.h>
 
@@ -104,9 +106,11 @@ void AssignGpuRight(bool flag)
         }
         isGpuRightGiven = false;
         res = gxlow::CTR::ReleaseGpuRight();
-        if(res == Result(0xd8a02a05))
+        if(res == nn::gxlow::CTR::ResultNotRegistered())
+        {
             return;
-        else if(res == Result(0xd9001bf7))
+        }
+        else if(res == nn::os::ResultInvalidHandle())
         {
             NN_TLOG_("applet_API: Warning: Release GPU right despite no gx init.\n");
         }
@@ -124,44 +128,54 @@ void AssignDspRight(bool flag)
         if(isDspSleeping)
         {
             dsp::CTR::WakeUp();
-            s_IsDspSleeping = false;
+            isDspSleeping = false;
         }
     }
     else{
-        if(dsp::CTR::IsComponentLoaded()){
+        if(dsp::CTR::IsComponentLoaded())
+        {
             dsp::CTR::Sleep();
             isDspSleeping = true;
         }
     }
 }
 
-void AssignCameraRight(bool flag){
-    if(flag){
+void AssignCameraRight(bool flag)
+{
+    if(flag)
+    {
         camera::CTR::detail::LeaveApplication();
     }
-    else{
+    else
+    {
         camera::CTR::detail::ArriveApplication();
     }
 }
 
 /* Initialization */
 
-Result $Sub$$Initialize(AppletAttr appletAttr) {
-    if (!detail::IsAppletMode()) {
+Result $Sub$$Initialize(AppletAttr appletAttr)
+{
+    if (!detail::IsAppletMode())
+    {
         isGpuRightGiven = true;
         appletAttr = AppletAttr(appletAttr & ~7);
         nn::srv::RegisterNotificationHandler(&exitHandler, 0x100);
         Result result = detail::InitializeConnect(0x300, appletAttr, 0xF);
         if (result.IsFailure())
+        {
             return result;
+        }
     }
     return ResultSuccess();
 }
 
-Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPriority){
+Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPriority)
+{
     if (isInitialized)
-        return Result(0xE0A0CFF9);
-
+    {
+        return nn::applet::CTR::ResultAlreadyInitialized();
+    }
     isInitialized = true;
 
     Connect();
@@ -171,7 +185,8 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
         bit32 miscState;
         Result res = APPLET::GetLockHandle(&handle,appletAttr,&attrDecided,&miscState);
     
-        if (!res.IsSuccess()){
+        if (!res.IsSuccess())
+        {
             Disconnect();
             return res;
         }
@@ -210,7 +225,8 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
 
 /* Reply Sleep */
 
-void ReplySleepQueryToManager(QueryReply reply){
+void ReplySleepQueryToManager(QueryReply reply)
+{
     Result res;
     LockAndConnect();
     res = APPLET::ReplySleepQuery(GetId(),reply);
@@ -218,7 +234,8 @@ void ReplySleepQueryToManager(QueryReply reply){
     DisconnectAndUnlock();
 }
 
-void ReplySleepNotificationCompleteToManager(){
+void ReplySleepNotificationCompleteToManager()
+{
     Result res;
     LockAndConnect();
     res = APPLET::ReplySleepNotificationComplete(GetId());
@@ -226,11 +243,13 @@ void ReplySleepNotificationCompleteToManager(){
     DisconnectAndUnlock();
 }
 
-void Enable(bool isSleepEnable){
+void Enable(bool isSleepEnable)
+{
     NN_TASSERTMSG_(!nn::gxlow::CTR::IsInitialized(), "%s must be called before initializing graphics library\n", NN_FUNCTION );
     NN_TASSERTMSG_(!nn::camera::CTR::detail::IsInitialized(), "%s must be called before initializing camera\n", NN_FUNCTION );
     NN_TASSERTMSG_(!nn::dsp::CTR::IsComponentLoaded(), "%s must be called before loading dspcomponent\n", NN_FUNCTION );
-    if(isSleepEnable){
+    if(isSleepEnable)
+    {
         EnableSleep(false);
     }
 
@@ -238,7 +257,8 @@ void Enable(bool isSleepEnable){
     Result result = APPLET::Enable(GetAttribute());
     NN_ERR_THROW_FATAL(result);
     DisconnectAndUnlock();
-    if(nn::applet::CTR::IsApplication() && !(GetAttribute(), & *(AppletAttr*)0x20)){
+    if(nn::applet::CTR::IsApplication() && !(GetAttribute(), & *(AppletAttr*)0x20))
+    {
         AppletId id;
         s32 size;
         SetTransitionType(TRANSITION_ENABLE_APPLET);
@@ -252,7 +272,8 @@ void Enable(bool isSleepEnable){
 
 /* Get Applet Things */
 
-AppletId GetHomeMenuAppletId(){
+AppletId GetHomeMenuAppletId()
+{
     AppletPos pos;
     AppletId id1; 
     AppletId id2; 
@@ -264,7 +285,8 @@ AppletId GetHomeMenuAppletId(){
     return id2;
 }
 
-void GetAppletManInfo(AppletPos requestPos,AppletPos *pCurrentPos,AppletId *pRequestedId,AppletId *pHomeMenuId,AppletId *pCurrentId){
+void GetAppletManInfo(AppletPos requestPos,AppletPos *pCurrentPos,AppletId *pRequestedId,AppletId *pHomeMenuId,AppletId *pCurrentId)
+{
     AppletPos currentPos; AppletId requestedId; AppletId homeMenuId; AppletId currentId; Result result;
     LockAndConnect();
     result = APPLET::GetAppletManInfo(requestPos, &currentPos, &requestedId, &homeMenuId, &currentId);
@@ -276,7 +298,8 @@ void GetAppletManInfo(AppletPos requestPos,AppletPos *pCurrentPos,AppletId *pReq
     if (pCurrentId)   *pCurrentId   = currentId;
 }
 
-bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* pMediaType, bool* pIsUsed, bool* pIsPreloaded, AppletAttr* pAttr){
+bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* pMediaType, bool* pIsUsed, bool* pIsPreloaded, AppletAttr* pAttr)
+{
     Result res;
     ProgramId programId;
     nn::fs::MediaType mediaType;
@@ -288,7 +311,8 @@ bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* 
     res = detail::APPLET::GetAppletInfo(appletId, &programId, &mediaType, &isUsed, &isPreloaded, &appletAttr);
     detail::DisconnectAndUnlock();
 
-    if (res.IsSuccess()){
+    if (res.IsSuccess())
+    {
         if (pProgramId)
             *pProgramId = programId;
         if (pMediaType)
@@ -306,7 +330,8 @@ bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* 
 
 /* APT Registers */
 
-bool IsRegistered(AppletId id){
+bool IsRegistered(AppletId id)
+{
     bool isRegistered;
 
     LockAndConnect();
@@ -316,11 +341,14 @@ bool IsRegistered(AppletId id){
     return isRegistered;
 }
 
-bool WaitForRegister(AppletId appletId, nn::fnd::TimeSpan span){
+bool WaitForRegister(AppletId appletId, nn::fnd::TimeSpan span)
+{
     TimeoutChecker checker(span);
 
-    while(!detail::IsRegistered(appletId)){
-        if (checker.Check()){
+    while(!detail::IsRegistered(appletId))
+    {
+        if (checker.Check())
+        {
             return false;
         }
         WaitBySleep(10);
@@ -330,7 +358,8 @@ bool WaitForRegister(AppletId appletId, nn::fnd::TimeSpan span){
 
 /* Sending Applet Parameters */
 
-Result TrySend(AppletId receiverId, u32 command, const u8* pParam, size_t paramSize, Handle handle){
+Result TrySend(AppletId receiverId, u32 command, const u8* pParam, size_t paramSize, Handle handle)
+{
     bool isFinalize = (command & 0x10000) ? true: false;
     if(paramSize > 0x1000)
         NN_TPANIC_("Too long parameter buffer size");
@@ -341,8 +370,10 @@ Result TrySend(AppletId receiverId, u32 command, const u8* pParam, size_t paramS
     Result res;
     LockAndConnect();
     res = APPLET::SendParameter(GetId(), receiverId, command, pParam, paramSize, handle);
-    if (res.IsSuccess()){
-        if (isFinalize){
+    if (res.IsSuccess())
+    {
+        if (isFinalize)
+        {
             FinalizeClientThread();
         }
     }
@@ -350,20 +381,26 @@ Result TrySend(AppletId receiverId, u32 command, const u8* pParam, size_t paramS
     return res;
 }
 
-Result Send(AppletId receiverId, u32 command, const u8* pParam, size_t paramSize, nn::Handle handle, nn::fnd::TimeSpan timeout){
+Result Send(AppletId receiverId, u32 command, const u8* pParam, size_t paramSize, nn::Handle handle, nn::fnd::TimeSpan timeout)
+{
     TimeoutChecker checker(timeout);
     Result res;
-    while(1){
+    for(;;)
+    {
         res = TrySend( receiverId, command, pParam, paramSize, handle );
-        if (res.IsSuccess()){
+        if (res.IsSuccess())
+        {
             break;
         }
-        else if (res == ResultNotEmpty()){
-            if (checker.Check()){
+        else if (res == ResultNotEmpty())
+        {
+            if (checker.Check())
+            {
                 break;
             }
         }
-        else{
+        else
+        {
              break;
         }
 
@@ -375,16 +412,22 @@ Result Send(AppletId receiverId, u32 command, const u8* pParam, size_t paramSize
 
 /* Receiving APT Parameters */
 
-Result TryReceive(AppletId *pSenderId,u32 *pCommand,u8 *pParam,size_t paramSize,s32 *pReadLen, Handle *pHandle,bool isTry){
+Result TryReceive(AppletId *pSenderId,u32 *pCommand,u8 *pParam,size_t paramSize,s32 *pReadLen, Handle *pHandle,bool isTry)
+{
     Result res;
     if(!isTry)
+    {
         WaitForControlEvent();
-    else{
-        if(!TryWaitForControlEvent()){
-            return Result(0xc8a0cfef); // something
+    }
+    else
+    {
+        if(!TryWaitForControlEvent())
+        {
+            return ResultNoData();
         }
     }
-    if(!GetMessageCommand()){
+    if(!GetMessageCommand())
+    {
         AppletId dummyId;
         pSenderId = (!pSenderId)? &dummyId: pSenderId;
 
@@ -405,7 +448,8 @@ Result TryReceive(AppletId *pSenderId,u32 *pCommand,u8 *pParam,size_t paramSize,
         DisconnectAndUnlock();
         if(dummyHandle.IsValid()) svc::CloseHandle(dummyHandle);
     }
-    else{
+    else
+    {
         *pCommand = GetMessageCommand();
         SetMessageCommand(0);
         ClearControlEvent();
@@ -418,7 +462,8 @@ Result TryReceive(AppletId *pSenderId,u32 *pCommand,u8 *pParam,size_t paramSize,
     return res;
 }
 
-Result Receive( AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, s32* pReadLen, nn::Handle *pHandle, nn::fnd::TimeSpan timeout ){
+Result Receive(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, s32* pReadLen, nn::Handle *pHandle, nn::fnd::TimeSpan timeout)
+{
     Result res;
     if (timeout == WAIT_INFINITE){
         res = TryReceive(pSenderId, pCommand, pParam, paramSize, pReadLen, pHandle, false);
@@ -426,13 +471,17 @@ Result Receive( AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize
     }
 
     TimeoutChecker checker(timeout);
-    while(true){
+    for(;;)
+    {
         res = TryReceive(pSenderId, pCommand, pParam, paramSize, pReadLen, pHandle, true);
-        if (res.IsSuccess()){
+        if (res.IsSuccess())
+        {
             break;
         }
-        else if (res == ResultNoData()){
-            if (checker.Check()){
+        else if (res == ResultNoData())
+        {
+            if (checker.Check())
+            {
                     break;
             }
         }
@@ -442,7 +491,8 @@ Result Receive( AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize
     return res;
 }
 
-Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, s32* pReadLen, Handle* pHandle){
+Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, s32* pReadLen, Handle* pHandle)
+{
     Result res;
 
     LockAndConnect();
@@ -455,7 +505,8 @@ Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, 
 
         u8 tmpBuf[1];
         u8* pParam0 = pParam;
-        if (pParam == NULL || paramSize == 0 ){
+        if (pParam == NULL || paramSize == 0)
+        {
             pParam0 = &tmpBuf[0];
             paramSize = 0;
         }
@@ -466,7 +517,8 @@ Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, 
         nn::Handle* pHandle0 = (pHandle)? pHandle: &tmpHandle;
 
         res = detail::APPLET::GlanceParameter( pSenderId0, GetId(), pCommand0, pParam0, paramSize, pReadLen0, pHandle0 );
-        if (tmpHandle.IsValid()){
+        if (tmpHandle.IsValid())
+        {
             svc::CloseHandle(tmpHandle);
         }
     }
@@ -476,7 +528,8 @@ Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, 
 
 /* Cancelling APT Parameters */
 
-bool CancelParameter(bool isSenderCheck, nn::applet::CTR::AppletId senderId, bool isReceiverCheck, nn::applet::CTR::AppletId receiverId){
+bool CancelParameter(bool isSenderCheck, nn::applet::CTR::AppletId senderId, bool isReceiverCheck, nn::applet::CTR::AppletId receiverId)
+{
     bool isCanceled;
     LockAndConnect();
     Result res = APPLET::CancelParameter(isSenderCheck, senderId, isReceiverCheck, receiverId, &isCanceled);
@@ -485,26 +538,31 @@ bool CancelParameter(bool isSenderCheck, nn::applet::CTR::AppletId senderId, boo
     return isCanceled;
 }
 
-Result SendMessage(AppletId receiverId, const u8* pParam, size_t paramSize, nn::Handle handle, nn::fnd::TimeSpan timeout){
+Result SendMessage(AppletId receiverId, const u8* pParam, size_t paramSize, nn::Handle handle, nn::fnd::TimeSpan timeout)
+{
     return detail::Send( receiverId, COMMAND_MESSAGE, pParam, paramSize, handle, timeout );
 }
 
 /* APT Utilitys */
 
-inline Result CallUtility(u32 utilityId){
+inline Result CallUtility(u32 utilityId)
+{
     return CallUtility(utilityId,0,0,0,0,0);
 }
 
-inline Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize){
+inline Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize)
+{
     return CallUtility(utilityId, pInParam, inParamSize, 0,0,0);
 }
 
-void UnlockTransition(u32 action){
+void UnlockTransition(u32 action)
+{
     Result res = CallUtility(7,reinterpret_cast<u8*>(&action), sizeof(action) );
     NN_UNUSED_VAR(res);
 }
 
-void LockTransition(u32 action,bool isForced){
+void LockTransition(u32 action,bool isForced)
+{
     LockTransitionParam param = {action, isForced};
     Result res = CallUtility(5,reinterpret_cast<u8*>(&param), sizeof(LockTransitionParam));
     NN_UNUSED_VAR(res);
@@ -515,23 +573,26 @@ void SleepIfShellClosed() {
     NN_UNUSED_VAR( result );
 }
 
-bool IsRetryRequired(Result result){
-    bool ret = true;
-    if(result == nn::applet::CTR::ResultBusy())
-        return ret;
-    if(result == nn::applet::CTR::ResultTransitionBusy())
-        return ret;
-    if(result == nn::applet::CTR::ResultNotEmpty())
-        return ret;
-    return false;
+bool IsRetryRequired(Result result)
+{
+    if (result == ResultBusy() || result == ResultTransitionBusy() || result == ResultNotEmpty())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 /* Library Applet */
 
-Result CancelLibraryApplet(bool isApplicationEnd){
+Result CancelLibraryApplet(bool isApplicationEnd)
+{
     Result res;
     SetTransitionType(TRANSITION_CANCEL_APPLIB);
-    while(true){
+    while(true)
+    {
         LockAndConnect();
         res = APPLET::CancelLibraryApplet(isApplicationEnd);
         DisconnectAndUnlock();
@@ -541,17 +602,20 @@ Result CancelLibraryApplet(bool isApplicationEnd){
     return res;
 }
 
-Result CancelLibraryAppletIfRegistered(bool isApplicationEnd, AppletWakeupState* pWakeupState){
+Result CancelLibraryAppletIfRegistered(bool isApplicationEnd, AppletWakeupState* pWakeupState)
+{
     Result res = ResultSuccess();
-    if(pWakeupState){
+    if(pWakeupState)
+    {
         *pWakeupState = WAKEUP_SKIP;
     }
-    if((!IsApplication() || IsRegistered(0x400)) &&
-       (!IsSystemApplet() || IsRegistered(0x200))){
+    if((!IsApplication() || IsRegistered(0x400)) && (!IsSystemApplet() || IsRegistered(0x200)))
+    {
         res = CancelLibraryApplet(isApplicationEnd);
-        if(res == ResultSuccess()){
+        if(res == ResultSuccess())
+        {
             AppletWakeupState wakeup;
-            wakeup = WaitForStarting(NULL,NULL,0,NULL,NULL,CTR::WAIT_INFINITE);
+            wakeup = WaitForStarting();
             if(pWakeupState)
                 *pWakeupState = wakeup;
             
@@ -562,13 +626,15 @@ Result CancelLibraryAppletIfRegistered(bool isApplicationEnd, AppletWakeupState*
 
 /* SystemApplet */
 
-Result PrepareToStartSystemApplet(AppletId id){
+Result PrepareToStartSystemApplet(AppletId id)
+{
     Result res;
-    nngxGetIsRunning();
+    NN_TASSERTMSG_(!nngxGetIsRunning(), "Running command requests must be stopped before transition to menu.\n");
     CancelLibraryAppletIfRegistered(false);
     SetTransitionType(TRANSITION_START_SYS);
     bool sleep = DisableSleepForTransition();
-    while(true){
+    while(true)
+    {
         LockAndConnect();
         res = APPLET::PrepareToStartSystemApplet(id);
         DisconnectAndUnlock();
@@ -576,10 +642,9 @@ Result PrepareToStartSystemApplet(AppletId id){
         WaitBySleep(10);
     }
     RestoreSleepForTransition(sleep);
-    if(IsApplication()){
-        if(res == Result(0xc8a0cffc)){
-            res = ResultSuccess();
-        }
+    if(IsApplication() && res == ResultAlreadyExist())
+    {
+        res = ResultSuccess();
     }
     return res;
 }
@@ -590,12 +655,16 @@ Result StartSystemApplet(AppletId id,u8* pParam,size_t paramSize,Handle h){
     Result res;
 
     if (!IsApplication() && !IsSystemApplet())
-        return Result(0xC8A0CC04);
+    {
+        return ResultNotAllowed();
+    }
 
-    if (IsSystemApplet()){
+    if (IsSystemApplet())
+    {
         AssignGpuRight(false);
     }
-    else if (IsApplication()){
+    else if (IsApplication())
+    {
         SaveVramSysArea();
 
         AssignDspRight(false);
@@ -603,27 +672,17 @@ Result StartSystemApplet(AppletId id,u8* pParam,size_t paramSize,Handle h){
         AssignCameraRight(false);
     }
 
-    bool sleepEnabled = IsEnableSleep();
+    bool sleepEnabled = DisableSleepForTransition();
 
-    if (sleepEnabled)
-        DisableSleep(true);
-
-    while (true){
+    while (true)
+    {
         LockAndConnect();
         res = APPLET::StartSystemApplet(id,pParam,paramSize,h);
         DisconnectAndUnlock();
         if (!IsRetryRequired(res)) break;
         WaitBySleep(10);
     }
-
-    if (sleepEnabled){
-        if (!IsEnableSleep())
-            EnableSleep(true);
-    }
-    else{
-        if (IsEnableSleep())
-            DisableSleep(true);
-    }
+    RestoreSleepForTransition(sleepEnabled);
 
     NN_ERR_THROW_FATAL_ALL(res);
     SetInactive();
@@ -638,11 +697,13 @@ Result StartSystemApplet(AppletId id,u8* pParam,size_t paramSize,Handle h){
 
 /* Close Applet */
 
-Result PrepareToCloseApplication(bool isCancelPreload){
+Result PrepareToCloseApplication(bool isCancelPreload)
+{
     CancelLibraryAppletIfRegistered(false);
     SetTransitionType(TRANSITION_CLOSE_APP);
     Result res;
-    while(true){
+    while(true)
+    {
         LockAndConnect();
         res = APPLET::PrepareToCloseApplication(!isCancelPreload);
         DisconnectAndUnlock();
@@ -653,14 +714,17 @@ Result PrepareToCloseApplication(bool isCancelPreload){
     return res;
 }
 
-Result CloseApplication(u8* pParam, size_t paramSize, Handle handle){
-    if(GetTransitionType() != TRANSITION_CLOSE_APP){
+Result CloseApplication(u8* pParam, size_t paramSize, Handle handle)
+{
+    if(GetTransitionType() != TRANSITION_CLOSE_APP)
+    {
         PrepareToCloseApplication(false);
     }
     CloseAppletHook();
     AssignGpuRight(false);
     Result res;
-    while(true){
+    while(true)
+    {
         LockAndConnect();
         res = APPLET::CloseApplication(pParam, paramSize, handle);
         DisconnectAndUnlock();
@@ -673,23 +737,34 @@ Result CloseApplication(u8* pParam, size_t paramSize, Handle handle){
     return res;
 }
 
+void AttachTransferMemoryHandle(os::TransferMemoryBlock* transferMemory, nn::Handle handle, size_t size, bit32 otherPermission)
+{
+    nn::os::HandleManager::AttachTransferMemoryBlockHandle(transferMemory, handle, size, otherPermission);
+}
+
 /* Starting a Library APT, WIP */
 
-Result StartLibraryApplet(AppletId id, const u8* pParam,size_t paramSize, Handle handle){
-    /*Result res;
+Result StartLibraryApplet(AppletId id, const u8* pParam,size_t paramSize, Handle handle)
+{
+    Result res;
 
     if((!IsApplication()) && (!IsSystemApplet()))
-        return Result(0xc8a0cc04);
+    {
+        return ResultNotAllowed();
+    }
     
     if(IsApplication())
+    {
         SaveVramSysArea();
+    }
     
-    CaptureScreen(id);
+    res = CaptureScreen(id);
     AssignGpuRight(false);
     bool sleep = DisableSleepForTransition();
-    while(true){
+    while(true)
+    {
         LockAndConnect();
-        res = APPLET::StartLibrary(id,pParam,paramSize, handle);
+        res = APPLET::StartLibraryApplet(id,pParam,paramSize, handle);
         DisconnectAndUnlock();
         if(!IsRetryRequired(res)) break;
         WaitBySleep(10);
@@ -698,32 +773,37 @@ Result StartLibraryApplet(AppletId id, const u8* pParam,size_t paramSize, Handle
     NN_ERR_THROW_FATAL(res);
     SetInactive();
 
-    return res;*/
+    return res;
 }
 
 /* Jumping to HomeMenu */
 
-Result PrepareToJumpToHomeMenu(){
+Result PrepareToJumpToHomeMenu()
+{
     SetTransitionType(TRANSITION_JUMP_HOME);
         
     Result res;
-    while(true){
+    while(true)
+    {
         LockAndConnect();
         res = APPLET::PrepareToJumpToHomeMenu();
         DisconnectAndUnlock();
         if (!IsRetryRequired(res)) break;
-            WaitBySleep(10);
+        WaitBySleep(10);
     }
     return res;
 }
 
-Result JumpToHomeMenu(u8* pParam, size_t paramSize, Handle handle){
+Result JumpToHomeMenu(u8* pParam, size_t paramSize, Handle handle)
+{
     AppletId appletId; AppletId homemenuId; 
     Result res; 
     Handle hand_local;
     appletId = CTR::detail::GetHomeMenuAppletId();
-    if(IsApplication()){
-        while(!IsRegistered(appletId)){
+    if(IsApplication())
+    {
+        while(!IsRegistered(appletId))
+        {
             WaitBySleep(10);
         }
         SaveVramSysArea();
@@ -740,7 +820,8 @@ Result JumpToHomeMenu(u8* pParam, size_t paramSize, Handle handle){
     return res;
 }
 
-void NotifyToWait(){
+void NotifyToWait()
+{
     Result res;
     LockAndConnect();
     res = APPLET::NotifyToWait(GetId());
@@ -748,7 +829,8 @@ void NotifyToWait(){
     DisconnectAndUnlock();
 }
 
-Result SendCaptureBufferInfo(u8* pParam, size_t paramSize){
+Result SendCaptureBufferInfo(u8* pParam, size_t paramSize)
+{
     Result res;
     LockAndConnect();
     res = APPLET::SendCaptureBufferInfo(pParam,paramSize);
@@ -756,7 +838,8 @@ Result SendCaptureBufferInfo(u8* pParam, size_t paramSize){
     return res;
 }
 
-Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize, u8* pOutParam, size_t outParamSize, s32* pReadSize){
+Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize, u8* pOutParam, size_t outParamSize, s32* pReadSize)
+{
     Result res;
     u8 dummyInParam[1];
     u8 dummyOutParam[1];

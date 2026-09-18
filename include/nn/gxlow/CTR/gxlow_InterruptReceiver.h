@@ -3,32 +3,43 @@
 #include <nn/drivers/gxlow/CTR/gxlow_InterruptTable.h>
 #include <nn/gxlow/CTR/detail/gxlow_DisplaySwapInfoPad.h>
 #include <nn/gxlow/CTR/detail/gxlow_InterruptRelayQueue.h>
+#include <nn/os/os_HandleManager.h>
 
 namespace nn{
 namespace gxlow{
 namespace CTR{
 namespace detail{
 
-class SharedWorkMem : public SharedMemoryBlock
+class SharedWorkMem
 {
 public:
     void Initialize(Handle hSharedMemory)
     {
-        this->AttachAndMap(hSharedMemory,0x1000,false);
+        nn::os::HandleManager::AttachSharedMemoryHandle(&this->m_SharedMemory, hSharedMemory, 0x1000, false);
     }
     uptr GetBufferForRelayQueue(s32 index)
     {
-        return this->GetAddress() + index * 0x40;
+        uptr addr = m_SharedMemory.GetAddress() + OFFSET_RELAY_QUEUE + index * InterruptRelayQueueBase::QUEUE_BODY_SIZE;
+        return addr;
     }
     uptr GetBufferForCmdReqQueue(s32 index)
     {
-        return this->GetAddress() + 0x800 + index * 0x200;
+        uptr addr = m_SharedMemory.GetAddress() + OFFSET_CMDREQ_QUEUE + index * CmdReqQueueBase::QUEUE_BODY_SIZE;
+        return addr;
     }
     uptr GetBufferForDisplaySwapInfoPad(s32 index)
     {
-        return this->GetAddress() + 0x200 + index * 0x80;
+        uptr addr = m_SharedMemory.GetAddress() + OFFSET_SWAP_INFO_PAD + index * DisplaySwapInfoPadBase::PAD_BODY_SIZE;
+        return addr;
     }
-    };
+private:
+    static const size_t WORK_MEMORY_SIZE     = 0x1000;
+    static const u32    OFFSET_RELAY_QUEUE   = 0x0000;
+    static const u32    OFFSET_SWAP_INFO_PAD = 0x0200;
+    static const u32    OFFSET_CMDREQ_QUEUE  = 0x0800;
+
+    nn::os::SharedMemoryBlock m_SharedMemory;
+};
 }
 
 class InterruptRelayQueueRx : public detail::InterruptRelayQueueBase
@@ -61,7 +72,9 @@ private:
     bool m_FinalizeRequest;
     os::StackBuffer<0x1000> m_ThreadStack;
 public:
-    InterruptReceiver(){ }    
+    InterruptReceiver()
+    {
+    }
 
     void CallHandlerFunc(s32 index);
     void Initialize();

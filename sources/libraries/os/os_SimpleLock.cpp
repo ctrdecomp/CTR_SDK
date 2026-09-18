@@ -21,18 +21,23 @@ namespace{
             }
         };
 
-        struct ReverseUpdater{
+        struct ReverseUpdater
+        {
             s32 afterUpdate;
-            bool operator()(s32& x){
+            bool operator()(s32& x)
+            {
                 x = -x;
                 afterUpdate = x;
                 return true;
             }
         };
 
-        struct DecrementIfNegativeUpdater{
-            bool operator()(s32& x){
-            if(x < 0){
+        struct DecrementIfNegativeUpdater
+        {
+            bool operator()(s32& x)
+            {
+            if(x < 0)
+            {
                 --x;
                 return true;
             }
@@ -42,63 +47,78 @@ namespace{
         }
     };
 
-        struct ReverseAndIncrementIfPositiveUpdater{
-            bool operator()(s32& x){
-            if(x > 0){
-                x = -x + 1;
-                return true;
+        struct ReverseAndIncrementIfPositiveUpdater
+        {
+            bool operator()(s32& x)
+            {
+                if(x > 0)
+                {
+                    x = -x + 1;
+                    return true;
                 }
-            else{
-                return false;
-            }
+                else
+                {
+                    return false;
+                }
         }
     };
 }
 
-void SimpleLock::Initialize(void) {
+void SimpleLock::Initialize() 
+{
     *this->m_Counter = 1; // ultimate ASM this creates lmao
 }
 
 void SimpleLock::LockImpl(){
-    for(;;){
+    for(;;)
+    {
         DecrementIfNegativeUpdater incrementNumWaiterIfLocked;
 
-        if(this->m_Counter->AtomicUpdateConditional(incrementNumWaiterIfLocked)){
+        if(this->m_Counter->AtomicUpdateConditional(incrementNumWaiterIfLocked))
+        {
             break;
         }
 
-        if(TryLock()){
+        if(TryLock())
+        {
             return;
         }
     }
 
-    for(;;){
+    for(;;)
+    {
         this->m_Counter.WaitIfLessThan(0);
 
         ReverseAndIncrementIfPositiveUpdater decrementNumWaiterAndLockIfUnlocked;
 
-        if(this->m_Counter->AtomicUpdateConditional(decrementNumWaiterAndLockIfUnlocked)){
+        if(this->m_Counter->AtomicUpdateConditional(decrementNumWaiterAndLockIfUnlocked))
+        {
             break;
         }
     }
 }
 
-void SimpleLock::Lock(){
-    if(!TryLock()){
+void SimpleLock::Lock()
+{
+    if(!TryLock())
+    {
         LockImpl();
     }
 }
 
-bool SimpleLock::TryLock(){
+bool SimpleLock::TryLock()
+{
     ReverseIfPositiveUpdater updater;
     return this->m_Counter->AtomicUpdateConditional(updater);
 }
 
-void SimpleLock::Unlock(){
+void SimpleLock::Unlock()
+{
     ReverseUpdater updater;
     this->m_Counter->AtomicUpdateConditional(updater);
 
-    if(updater.afterUpdate > 1){
+    if(updater.afterUpdate > 1)
+    {
         this->m_Counter.Signal(1);
     }
 }

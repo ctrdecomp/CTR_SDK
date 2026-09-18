@@ -20,15 +20,18 @@ namespace{
     int s_InitializeInitCount = 0;
 }
 
-Result InitializeInit(){
+Result InitializeInit()
+{
     if(s_InitializeInitCount == 0){
         Result res = detail::InitializeBase(&IpcInit::s_Session,CTR::PORT_NAME_INIT);
-        if(res.IsSuccess()){
+        if(res.IsSuccess())
+        {
             IpcSys::s_Session = IpcInit::s_Session;
             IpcUser::s_Session = IpcInit::s_Session;
         } 
 
-        else if(res == ResultCancelRequested()){
+        else if(res == ResultCancelRequested())
+        {
             return res;
         }
     }

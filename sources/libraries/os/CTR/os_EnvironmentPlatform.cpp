@@ -12,7 +12,8 @@ namespace os {
 namespace CTR {
 namespace 
 {
-    NN_MAKE_MODULE(s_UseIsRunOnSnake, "NINTENDO", "IsRunOnSnake");
+    
+NN_MAKE_MODULE(s_UseIsRunOnSnake, "NINTENDO", "IsRunOnSnake");
 
 bool IsRunOnSnakeImpl()
 {

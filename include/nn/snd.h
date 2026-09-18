@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nn/snd/CTR/Common/snd_Types.h>
+#include <nn/snd/CTR/snd_Result.h>
 #include <nn/snd/CTR/Common/snd_Adpcm.h>
 #include <nn/snd/CTR/Common/snd_Const.h>
 #include <nn/snd/CTR/Common/snd_Bcwav.h>

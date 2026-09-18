@@ -29,49 +29,58 @@ extern "C"{
 namespace nn{
 namespace ro{
 namespace{
-    NN_MAKE_MODULE(sModuleSign, "NINTENDO", "RO"); // found in plainrgn.bin
+    NN_MAKE_MODULE(s_ModuleSign, "NINTENDO", "RO"); // found in plainrgn.bin
 
-    ModuleHeader* spStatic;
-    ModuleRegistrationListHeader* spListNode;
+    ModuleHeader* s_pStatic;
+    ModuleRegistrationListHeader* s_pListNode;
 
-    Result Connect(){
-        return srv::GetServiceHandle(&detail::DynamicLoader::sSession, "ldr:ro");
+    Result Connect()
+    {
+        return srv::GetServiceHandle(&detail::DynamicLoader::s_Session, "ldr:ro");
     }
 
-    void Disconnect(){
-        Result result = svc::CloseHandle(detail::DynamicLoader::sSession);
+    void Disconnect()
+    {
+        Result result = svc::CloseHandle(detail::DynamicLoader::s_Session);
         NN_ERR_THROW_FATAL_ALL(result);
 
-        detail::DynamicLoader::sSession = INVALID_HANDLE_VALUE;
+        detail::DynamicLoader::s_Session = INVALID_HANDLE_VALUE;
     }
 
-    bool IsConnected(){
-        return detail::DynamicLoader::sSession != INVALID_HANDLE_VALUE;
+    bool IsConnected()
+    {
+        return detail::DynamicLoader::s_Session != INVALID_HANDLE_VALUE;
     }
 
-    uptr GetLocateAddress(void* p){
+    uptr GetLocateAddress(void* p)
+    {
         const uptr orgAddr = reinterpret_cast<uptr>(p);
         const uptr heapBase = os::detail::GetHeapAddressWithoutCheck();
 
-        if(orgAddr >= heapBase){
+        if(orgAddr >= heapBase)
+        {
             return orgAddr - (heapBase - reinterpret_cast<uptr>(Image$$STATIC_END$$Base));
         }
-        else{
+        else
+        {
             return orgAddr;
         }
     }
 
-    Result InitializeImpl(void* pRs, size_t rsSize){
+    Result InitializeImpl(void* pRs, size_t rsSize)
+    {
         Result res;
 
-        NN_REFER_MODULE(sModuleSign);
+        NN_REFER_MODULE(s_ModuleSign);
 
-        if(IsConnected()){
+        if(IsConnected())
+        {
             return ro::ResultAlreadyInitialized();
         }
 
         res = Connect();
-        if(res.IsFailure()){
+        if(res.IsFailure())
+        {
             return res;
         }
 
@@ -79,18 +88,21 @@ namespace{
 
         res = detail::DynamicLoader::Startup(PSEUDO_HANDLE_CURRENT_PROCESS,reinterpret_cast<uptr>(pRs),rsSize,locateAddr);
 
-        if(res.IsSuccess()){
-            spStatic = reinterpret_cast<ModuleHeader*>(locateAddr);
+        if(res.IsSuccess())
+        {
+            s_pStatic = reinterpret_cast<ModuleHeader*>(locateAddr);
             detail::EnableDebugNotification(false);
         }
-        else{
+        else
+        {
             Disconnect();
         }
 
         return res;
     }
 
-    s32 FindHash(const ModuleRegistrationListHeader& rrHeader, const Hash& hash){
+    s32 FindHash(const ModuleRegistrationListHeader& rrHeader, const Hash& hash)
+    {
         Hash* pHashList = rrHeader.hashOffset.GetPointer(&rrHeader);
         Hash* pHashListEnd = pHashList + rrHeader.numHash;
         Hash* pFound = std::lower_bound(pHashList, pHashListEnd, hash);
@@ -98,19 +110,24 @@ namespace{
         return (pFound != pHashListEnd) ? pFound - pHashList: detail::ENTRY_NOT_FOUND;
     }
 
-    bool HasDebugInfo(const ModuleRegistrationListHeader& rrHeader){
+    bool HasDebugInfo(const ModuleRegistrationListHeader& rrHeader)
+    {
         return rrHeader.debugInfoSize != 0;
     }
 
-    Result UnloadActiveModules(ModuleHeader* pHead){
-        if(pHead != NULL){
+    Result UnloadActiveModules(ModuleHeader* pHead)
+    {
+        if(pHead != NULL)
+        {
             ModuleHeader* pTail;
 
-            do{
+            do
+            {
                 pTail = pHead->node.pPrev;
                 Result res = reinterpret_cast<Module*>(pTail)->Unload();
 
-                if(res.IsFailure()){
+                if(res.IsFailure())
+                {
                     return res;
                 }
 
@@ -120,37 +137,44 @@ namespace{
         return ResultSuccess();
     }
 
-    Result UnloadModule(ModuleHeader* pRoot){
+    Result UnloadModule(ModuleHeader* pRoot)
+    {
         Result res;
 
         res = UnloadActiveModules(pRoot->node.pNext);
-        if(res.IsFailure()){
+        if(res.IsFailure())
+        {
             return res;
         }
 
         res = UnloadActiveModules(pRoot->node.pPrev);
-        if(res.IsFailure()){
+        if(res.IsFailure())
+        {
             return res;
         }
 
         return res;
     }
 
-    Result UnregisterAllRegistrationList(ModuleRegistrationListHeader* pAny){
+    Result UnregisterAllRegistrationList(ModuleRegistrationListHeader* pAny)
+    {
         Result res;
 
         ModuleRegistrationListHeader* p = pAny;
 
-        while(p->node.pPrev != NULL){
+        while(p->node.pPrev != NULL)
+        {
             p = p->node.pPrev;
         }
 
-        while(p != NULL){
+        while(p != NULL)
+        {
             ModuleRegistrationListHeader* pNext = p->node.pNext;
 
             res = reinterpret_cast<RegistrationList*>(p)->Unregister();
 
-            if(res.IsFailure()){
+            if(res.IsFailure())
+            {
                 return res;
             }
 
@@ -163,28 +187,35 @@ namespace{
 
 namespace detail{
 
-uptr GetOriginalAddress(const void* p){
+uptr GetOriginalAddress(const void* p)
+{
     const uptr locateAddr = reinterpret_cast<uptr>(p);
-    if(locateAddr >= reinterpret_cast<uptr>(Image$$STATIC_END$$Base)){
+    if(locateAddr >= reinterpret_cast<uptr>(Image$$STATIC_END$$Base))
+    {
         const uptr heapBase = os::detail::GetHeapAddressWithoutCheck();
         return locateAddr + (heapBase - reinterpret_cast<uptr>(Image$$STATIC_END$$Base));
     }
-    else{
+    else
+    {
         return locateAddr;
     }
 }
 
-void UpdateRegistrationListNode(RegistrationList* p){
-    spListNode = reinterpret_cast<ModuleRegistrationListHeader*>(p);
+void UpdateRegistrationListNode(RegistrationList* p)
+{
+    s_pListNode = reinterpret_cast<ModuleRegistrationListHeader*>(p);
 }
 
-s32 FindRegistrationListEntry(const RegistrationList** pp, const void* p){
+s32 FindRegistrationListEntry(const RegistrationList** pp, const void* p)
+{
     const Hash& hash = *reinterpret_cast<const Hash*>(p);
 
-    for(ModuleRegistrationListHeader* prlh = spListNode; prlh != NULL; prlh = prlh->node.pNext){
+    for(ModuleRegistrationListHeader* prlh = s_pListNode; prlh != NULL; prlh = prlh->node.pNext)
+    {
         const s32 found = FindHash(*prlh, hash);
 
-        if(found != -1){
+        if(found != -1)
+        {
             *pp = reinterpret_cast<RegistrationList*>(prlh);
             return found;
         }
@@ -193,46 +224,55 @@ s32 FindRegistrationListEntry(const RegistrationList** pp, const void* p){
     return -1;
 }
 
-void* GetRoot(){
-    return spStatic;
+void* GetRoot()
+{
+    return s_pStatic;
 }
 
-bool IsCodeAddress(uptr addr){
-    class CodeChecker : public ro::Module::EnumerateCallback{
+bool IsCodeAddress(uptr addr)
+{
+    class CodeChecker : public ro::Module::EnumerateCallback
+    {
     private:
-        uptr mAddress;
-        bool mResult;
-        bool mEnabled;
+        uptr m_Address;
+        bool m_Result;
+        bool m_Enabled;
         short rev;
     public:
         CodeChecker(uptr addr): 
-            mAddress(addr), 
-            mResult(false), 
-            mEnabled(false)
-        {}
-        virtual bool operator()(ro::Module* p){
-            mEnabled = true;
+            m_Address(addr),
+            m_Result(false),
+            m_Enabled(false)
+        {
+        }
+        virtual bool operator()(ro::Module* p)
+        {
+            m_Enabled = true;
 
             ro::RegionInfo ri;
             p->GetRegionInfo(&ri);
-            uptr codeEnd = ri.mCodeBegin + ri.mCodeSize;
+            uptr codeEnd = ri.m_CodeBegin + ri.m_CodeSize;
 
-            if((ri.mCodeBegin <= mAddress)&& (mAddress < codeEnd) ){
-                mResult = true;
+            if((ri.m_CodeBegin <= m_Address)&& (m_Address < codeEnd))
+            {
+                m_Result = true;
                 return false;
             }
-            else{
+            else
+            {
                 return true;
             }
         }
-        bool GetResult() const { return mResult; }
-        bool IsEnabled() const { return mEnabled; }
+        bool GetResult() const { return m_Result; }
+        bool IsEnabled() const { return m_Enabled; }
     } checker(addr);
 
-    if(checker.IsEnabled()){
+    if(checker.IsEnabled())
+    {
         return checker.GetResult();
     }
-    else{
+    else
+    {
         const uptr begin = os::GetCodeRegionAddress();
         const uptr end = begin + os::GetCodeRegionSize();
         return (begin <= addr) && (addr < end);
@@ -241,72 +281,87 @@ bool IsCodeAddress(uptr addr){
 
 } // detail
 
-Result Initialize(void* pRs, size_t rsSize){
+Result Initialize(void* pRs, size_t rsSize)
+{
     NN_UTIL_REFER_SYMBOL(ro::detail::IsCodeAddress);
     return nnRoDetailInitializeLinkException(pRs, rsSize);
 }
 
-Result Finalize(){
+Result Finalize()
+{
     Result res = ResultSuccess();
 
-    if(!IsConnected()){
+    if(!IsConnected())
+    {
         return ResultNotInitialized();
     }
 
-    if(spStatic != NULL){
-        res = UnloadModule(spStatic);
+    if(s_pStatic != NULL)
+    {
+        res = UnloadModule(s_pStatic);
     }
 
-    if(res.IsSuccess()){
-        if(spListNode != NULL){
-            res = UnregisterAllRegistrationList(spListNode);
+    if(res.IsSuccess())
+    {
+        if(s_pListNode != NULL)
+        {
+            res = UnregisterAllRegistrationList(s_pListNode);
         }
     }
 
-    if(res.IsSuccess()){
-        res = detail::DynamicLoader::Cleanup(PSEUDO_HANDLE_CURRENT_PROCESS,detail::GetOriginalAddress(spStatic));
+    if(res.IsSuccess())
+    {
+        res = detail::DynamicLoader::Cleanup(PSEUDO_HANDLE_CURRENT_PROCESS,detail::GetOriginalAddress(s_pStatic));
     }
-    if(res.IsSuccess()){
-        spStatic = NULL;
+    if(res.IsSuccess())
+    {
+        s_pStatic = NULL;
         Disconnect();
     }
 
     return res;
 }
 
-RegistrationList* RegisterList(void* pRr, size_t rrSize){
+RegistrationList* RegisterList(void* pRr, size_t rrSize)
+{
     Result res;
 
     res = detail::DynamicLoader::RegisterList(PSEUDO_HANDLE_CURRENT_PROCESS,reinterpret_cast<uptr>(pRr),rrSize);
 
-    if(res.IsSuccess()){
+    if(res.IsSuccess())
+    {
         RegistrationList* p = reinterpret_cast<RegistrationList*>(pRr);
         detail::UpdateRegistrationListNode(p);
 
-        if(HasDebugInfo(*reinterpret_cast<ModuleRegistrationListHeader*>(pRr))){
+        if(HasDebugInfo(*reinterpret_cast<ModuleRegistrationListHeader*>(pRr)))
+        {
             detail::EnableDebugNotification(true);
         }
 
         return p;
     }
-    else{
+    else
+    {
         return NULL;
     }
 }
 
-Result GetSizeInfo(SizeInfo* pInfo, const void* pRo){
+Result GetSizeInfo(SizeInfo* pInfo, const void* pRo)
+{
     return detail::GetSizeInfo(pInfo, pRo);
 }
 
-size_t CalculateRequiredBufferSize(const void* pRo, size_t roSize){
+size_t CalculateRequiredBufferSize(const void* pRo, size_t roSize)
+{
     size_t size;
     bool ok = detail::GetBssSize(&size, pRo);
     return ok ? size: 0;
 }
 
-Module* FindModule(const char* pName){
+Module* FindModule(const char* pName)
+{
     void* p;
-    bool ok = detail::FindModule(&p, spStatic, pName);
+    bool ok = detail::FindModule(&p, s_pStatic, pName);
     return ok ? reinterpret_cast<Module*>(p): NULL;
 }
 
@@ -314,17 +369,21 @@ Module* FindModule(const char* pName){
 //
 // I like SHB :D
 
-Module* LoadModule(void* pRo,size_t roSize,void* pBuffer,size_t  bufferSize,bool doRegister,FixLevel fixLevel,const RegistrationList* pRr){    
+Module* LoadModule(void* pRo,size_t roSize,void* pBuffer,size_t  bufferSize,bool doRegister,FixLevel fixLevel,const RegistrationList* pRr)
+{
     Result res;
 
     const ModuleHeader& header = *reinterpret_cast<const ModuleHeader*>(pRo);
 
-    if(header.signature != detail::SIGNATURE_RO){
-        if(header.signature == detail::SIGNATURE_RO_FIXED){
+    if(header.signature != detail::SIGNATURE_RO)
+    {
+        if(header.signature == detail::SIGNATURE_RO_FIXED)
+        {
             NN_TWARNING_(false, "Cannot load FIXed CRO0.\n");
         }
 
-        else{
+        else
+        {
             NN_TWARNING_(false, "Invalid signature.\n");
         }
 
@@ -349,7 +408,8 @@ Module* LoadModule(void* pRo,size_t roSize,void* pBuffer,size_t  bufferSize,bool
 
     ModuleHeader* pHeader = reinterpret_cast<ModuleHeader*>(locateCodeAddr);
 
-    if(pHeader->heapBinarySize > 0){
+    if(pHeader->heapBinarySize > 0)
+    {
         const uptr codeDataBegin = pHeader->heapBinary.operator uptr();
 
         const uptr orgCodeBegin = reinterpret_cast<uptr>(pRo);
@@ -360,15 +420,18 @@ Module* LoadModule(void* pRo,size_t roSize,void* pBuffer,size_t  bufferSize,bool
 
         size_t dataSizeInCode = 0;
 
-        if(orgDataBegin < orgCodeEnd){
+        if(orgDataBegin < orgCodeEnd)
+        {
             dataSizeInCode = math::Min(orgCodeEnd - orgDataBegin, orgDataSize);
         }
 
-        if(orgDataSize > dataSizeInCode){
+        if(orgDataSize > dataSizeInCode)
+        {
             std::memmove(reinterpret_cast<void*>(dataBufferAddr + dataSizeInCode),reinterpret_cast<void*>(orgDataBegin + dataSizeInCode), orgDataSize - dataSizeInCode);
         }
 
-        if(dataSizeInCode > 0){
+        if(dataSizeInCode > 0)
+        {
             std::memcpy(reinterpret_cast<void*>(dataBufferAddr),reinterpret_cast<void*>(codeDataBegin),dataSizeInCode);
         }
     }
@@ -388,8 +451,10 @@ Module* LoadModule(void* pRo,size_t roSize,void* pBuffer,size_t  bufferSize,bool
 }
 }
 
-extern "C"{
-    nnResult nnRoDetailInitializeImpl(void* pRs, size_t rsSize){
+extern "C"
+{
+    nnResult nnRoDetailInitializeImpl(void* pRs, size_t rsSize)
+    {
         return nn::ro::InitializeImpl(pRs, rsSize);
     }
 }

@@ -45,6 +45,49 @@ void TransferMemoryBlock::Finalize()
     }
 }
 
+Result TransferMemoryBlock::AttachAndMap(Handle handle, size_t size, bit32 otherPermission, bit32 myPermission )
+{
+    if ((size % NN_OS_MEMORY_PAGE_SIZE) != 0)
+    {
+        return ResultMisalignedSize();
+    }
+
+    this->SetHandle(handle);
+    return Map(size, otherPermission, myPermission);
+}
+
+Result TransferMemoryBlock::Map(size_t size, bit32 otherPermission, bit32 myPermission )
+{
+    NN_TASSERT_(GetAddress() == NULL);
+    if (GetAddress())
+    {
+        return ResultAlreadyInitialized();
+    }
+
+    if ((size % NN_OS_MEMORY_PAGE_SIZE) != 0)
+    {
+        return ResultMisalignedSize();
+    }
+
+    uptr addr = os::detail::AllocateFromSharedMemorySpace(this, size);
+    if (addr == NULL)
+    {
+        return ResultNoAddressSpace();
+    }
+
+    this->MemoryBlockBase::SetReadOnly((myPermission & os::MEMORY_PERMISSION_WRITE) == 0);
+
+    Result result = nn::svc::MapMemoryBlock(GetHandle(), addr, myPermission, otherPermission);
+    if(result.IsFailure())
+    {
+        os::detail::FreeToSharedMemorySpace(this);
+        return result;
+    }
+
+    m_SpaceAllocated = true;
+    return result;
+}
+
 void TransferMemoryBlock::Unmap()
 {
     if (GetAddress() != NULL)

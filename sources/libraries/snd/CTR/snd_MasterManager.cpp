@@ -4,6 +4,7 @@
 
 #include "snd_MasterManager.h"
 #include <nn/snd/CTR/MPCore/snd_Api.h>
+#include <nn/cfg.h>
 #include <nn/cfg/CTR/cfg_Api.h>
 #include <nn/cfg/CTR/cfg_DetailApi.h>
 #include <nn/cfg/CTR/cfg_Sound.h>
@@ -41,7 +42,7 @@ void MasterManager::Initialize()
 
     nn::cfg::CTR::detail::SoundSettingCfgData soundSettingCfgData;
     cfg::CTR::Initialize();
-    Result res = cfg::CTR::detail::GetConfig(&soundSettingCfgData,1,0x70001);
+    Result res = cfg::CTR::detail::GetConfig(&soundSettingCfgData,1,CFG_KEY_USER_SYSTEM_VOLUME);
     cfg::CTR::Finalize();
 
     OutputMode mode = OUTPUT_MODE_STEREO;

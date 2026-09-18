@@ -17,15 +17,19 @@
 namespace nn {
 namespace ro {
 namespace{
-    ModuleHeader* GetRootHeader(){
+    ModuleHeader* GetRootHeader()
+    {
         return reinterpret_cast<ModuleHeader*>(detail::GetRoot());
     }
     
-    bool EnumerateModules(ModuleHeader* pHead, Module::EnumerateCallback* p){
-        while(pHead != NULL){
+    bool EnumerateModules(ModuleHeader* pHead, Module::EnumerateCallback* p)
+    {
+        while(pHead != NULL)
+        {
             bool bContinue = p->operator ()(reinterpret_cast<Module*>(pHead));
 
-            if(!bContinue){
+            if(!bContinue)
+            {
                 return false;
             }
 
@@ -37,7 +41,8 @@ namespace{
 
 }
 
-Result Module::Unload(){
+Result Module::Unload()
+{
     Result result;
 
     detail::NotifyDllUnloadingToDebugger(this);
@@ -52,27 +57,31 @@ Result Module::Unload(){
     {
         const ModuleHeader& header = *reinterpret_cast<ModuleHeader*>(this);
 
-        if(header.signature == detail::SIGNATURE_RO){
-
+        if(header.signature == detail::SIGNATURE_RO)
+        {
             {
                 const SectionInfo* pSectionTable = header.sectionInfo;
 
-                for(int i = 0; i < header.numSections; ++i){
+                for(int i = 0; i < header.numSections; ++i)
+                {
                     const SectionInfo& si = pSectionTable[i];
-                    if(si.section == SECTION_RW){
+                    if(si.section == SECTION_RW)
+                    {
                         pCurDataBegin = reinterpret_cast<void*>(si.offset.operator uptr());
                         break;
                     }
                 }
             }
 
-            if(pCurDataBegin != NULL){
+            if(pCurDataBegin != NULL)
+            {
                 const uptr orgBegin = detail::GetOriginalAddress(this);
                 const uptr codeDataBegin = header.heapBinary.operator uptr();
                 const uptr locateCodeAddr = reinterpret_cast<uptr>(this);
                 pOrgDataBegin = reinterpret_cast<bit8*>(orgBegin + (codeDataBegin - locateCodeAddr));
 
-                if(pOrgDataBegin != pCurDataBegin){
+                if(pOrgDataBegin != pCurDataBegin)
+                {
                     orgDataSize  = header.heapBinarySize;
                 }
             }
@@ -83,17 +92,21 @@ Result Module::Unload(){
 
     result = detail::DynamicLoader::Unload(PSEUDO_HANDLE_CURRENT_PROCESS,this->GetHead(),roSize,detail::GetOriginalAddress(this));
 
-    if(result.IsSuccess()){
-        if(orgDataSize > 0){
+    if(result.IsSuccess())
+    {
+        if(orgDataSize > 0)
+        {
             std::memcpy(pOrgDataBegin, pCurDataBegin, orgDataSize);
         }
 
         uptr base = detail::GetOriginalAddress(this);
         ModuleHeader& header = *reinterpret_cast<ModuleHeader*>(base);
 
-        for(int i = 0; i < header.numSections; ++i){
+        for(int i = 0; i < header.numSections; ++i)
+        {
             SectionInfo& si = header.sectionInfo.GetPointer(base)[i];
-            switch(si.section){
+            switch(si.section)
+            {
             case SECTION_RW:   
                 si.offset.SetPointer(&*header.heapBinary);  
                 break;
@@ -107,18 +120,22 @@ Result Module::Unload(){
     return result;
 }
 
-void Module::GetRegionInfo(RegionInfo* pri){
+void Module::GetRegionInfo(RegionInfo* pri)
+{
     detail::GetRegionInfo(pri, this);
 }
 
 
-void Module::Enumerate(EnumerateCallback* p){
+void Module::Enumerate(EnumerateCallback* p)
+{
     ModuleHeader* pRoot = GetRootHeader();
 
-    if(pRoot != NULL){
+    if(pRoot != NULL)
+    {
         bool bContinue = EnumerateModules(pRoot->node.pNext, p);
 
-        if(bContinue){
+        if(bContinue)
+        {
             EnumerateModules(pRoot->node.pPrev, p);
         }
     }

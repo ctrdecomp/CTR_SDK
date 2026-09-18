@@ -43,14 +43,14 @@ private:
     template<typename CharType>
     CharType GetChar(int offset = 0) const
     {
-        const CharType* charStrm = reinterpret_cast<const CharType*>(m_CharStrm);
+        const CharType* charStrm = reinterpret_cast<const CharType*>(mCharStrm);
         return *(charStrm + offset);
     }
 
     template<typename CharType>
     void StepStrm(int step = 1)
     {
-        const CharType*& charStrm = reinterpret_cast<const CharType*&>(m_CharStrm);
+        const CharType*& charStrm = reinterpret_cast<const CharType*&>(mCharStrm);
         charStrm += step;
     }
 

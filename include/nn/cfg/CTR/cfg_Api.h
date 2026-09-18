@@ -40,6 +40,17 @@ struct DebugParamCfgData
     u8 rsv;
 };
 
+enum ConfigKeyData
+{
+    CFG_KEY_STEREO_CAMERA = 0x50005,
+    CFG_KEY_USER_SYSTEM_VOLUME = 0x70001,
+    CFG_KEY_USER_BIRTHDAY = 0xa0001,
+    CFG_KEY_USER_REGION = 0xa0002,
+    CFG_KEY_USER_P2P_CEC  = 0xc0000,
+    CFG_KEY_USER_EULA = 0xd0000,
+    CFG_KEY_USER_DEBUG_DATA = 0x130000
+};
+
 }
 }
 }

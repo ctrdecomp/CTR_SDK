@@ -14,7 +14,8 @@ class Semaphore;
 namespace srv {
 class NotificationHandler;
 
-struct NotificationHandler : public fnd::IntrusiveLinkedList<NotificationHandler>::Item{
+struct NotificationHandler : public fnd::IntrusiveLinkedList<NotificationHandler>::Item
+{
     bit32 m_AttachedMessage;
 
     NotificationHandler(): 
@@ -25,7 +26,8 @@ struct NotificationHandler : public fnd::IntrusiveLinkedList<NotificationHandler
 };
 
 template <typename T>
-class EventNotificationHandlerBase : public NotificationHandler{
+class EventNotificationHandlerBase : public NotificationHandler
+{
 public:
     EventNotificationHandlerBase(): 
         m_pEvent(NULL) 
@@ -34,13 +36,15 @@ public:
         m_pEvent(p) 
     { }
 
-    void Initialize(T* p){
+    void Initialize(T* p)
+    {
         NN_POINTER_TASSERT_(p);
-        mpEvent = p;
+        m_pEvent = p;
     }
     T* m_pEvent;
 
-    virtual void HandleNotification(bit32 mMessage){
+    virtual void HandleNotification(bit32 mMessage)
+    {
         NN_POINTER_TASSERT_(this->m_pEvent);
         this->m_pEvent->Signal();
     }

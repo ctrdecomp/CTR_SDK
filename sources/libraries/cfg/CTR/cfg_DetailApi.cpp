@@ -24,16 +24,18 @@ Result InitializeBase(Handle* pSession, const char* name)
 {
     Result res = srv::Initialize();
     NN_UTIL_PANIC_IF_FAILED(res);
-    if(pSession->IsValid())
+
+    if(!pSession->IsValid())
     {
-        return (Result)0xd8a103f9;
-    }
-    else{
         res = srv::GetServiceHandle(pSession, name);
         if(res.IsSuccess() == 0)
         {
             return ResultCancelRequested();
         }
+    }
+    else
+    {
+        return ResultAlreadyInitialized();
     }
     return res;
 }
@@ -47,8 +49,8 @@ Result Initialize()
         {
             s_IsInitialized = true;
         }
-
-        else if(res == ResultCancelRequested()){
+        else if(res == ResultCancelRequested())
+        {
             return res;
         }
     }
@@ -80,7 +82,7 @@ Result InitializeProperPort(IPCPortType* pPortType)
         return ResultSuccess();
     }
 
-    return Result(static_cast<bit32>(0xD90103EA));
+    return ResultNotAuthorized();
 }
 
 Result FinalizeBase(Handle* pSession)
@@ -94,7 +96,7 @@ Result FinalizeBase(Handle* pSession)
     } 
     else
     {
-        res = (Result)0xd8a103f7;
+        res = ResultInvalidHandle();
     }
     return res;
 }

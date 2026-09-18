@@ -6,9 +6,10 @@
 namespace nn{
 namespace ro{
 
-class Module{
+class Module
+{
 public:
-    uptr mDummy;
+    uptr m_Dummy;
 
     class EnumerateCallback{
     public:

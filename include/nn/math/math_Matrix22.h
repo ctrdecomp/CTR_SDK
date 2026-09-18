@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstring>
+#include <nn/Assert.h>
 #include <nn/math/math_Vec2.h>
 
 #pragma push

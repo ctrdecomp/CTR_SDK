@@ -107,7 +107,7 @@ void StereoCamera::Initialize()
     if(!s_IsInitialized)
     {
         cfg::CTR::Initialize();
-        Result res = cfg::CTR::detail::GetConfig(&s_CfgData,0x20,0x50005);
+        Result res = cfg::CTR::detail::GetConfig(&s_CfgData, 0x20, CFG_KEY_STEREO_CAMERA);
         NN_UTIL_PANIC_IF_FAILED(res);
         cfg::CTR::Finalize();
         s_IsInitialized = true;

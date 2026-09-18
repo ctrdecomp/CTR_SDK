@@ -93,6 +93,9 @@ namespace detail{
     Result Wrap(void* pWrappedBuffer, const void* pData, size_t dataSize, s32 idOffset, size_t idSize);
     Result Unwrap(void* pData, const void* pWrapped, size_t wrappedSize, s32 idOffset, size_t idSize);
 
+    //--- Handle Transfering
+    void AttachTransferMemoryHandle(os::TransferMemoryBlock* transferMemory, nn::Handle handle, size_t size, bit32 otherPermission);
+
     struct LockTransitionParam
     {
         u32 action;

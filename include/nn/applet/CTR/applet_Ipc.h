@@ -1,7 +1,10 @@
 #pragma once
 
+#include <nn/types.h>
+#include <nn/CTR.h>
 #include <nn/applet/CTR/applet_Paramaters.h>
 #include <nn/ptm/CTR/ptm_Api.h>
+#include <nn/fs/fs_Parameters.h>
 
 namespace nn{
 namespace applet{ 
@@ -12,6 +15,7 @@ class APPLET
 {
 public:
     static Result AppletUtility(u32 id,u8 *pInParam,size_t inParamSize,u8 *pOutParam,size_t outParamSize,s32 *pReadLen);
+    static Result StartLibraryApplet(AppletId id, const u8 pParam[], size_t paramSize, Handle handle);
     static Result CancelLibraryApplet(bool isCallerEnd);    
     static Result CancelParameter(bool isSenderCheck, AppletId senderId, bool isReceiverCheck, AppletId receiverId, bool* pIdCanceled);
     static Result CloseApplication(u8 *pParam,size_t paramSize,Handle handle);
@@ -37,6 +41,7 @@ public:
     static Result Wrap(bit8 pWrappedBuffer[], const bit8 pData[], size_t bufferSize, size_t dataSize, s32 idOffset, size_t idSize);
     static Result Unwrap(bit8 pData[], const bit8 pWrapped[], size_t dataSize, size_t bufferSize, s32 idOffset, size_t idSize);
     static Result GetTargetPlatform(nn::ptm::CTR::TargetPlatform* pPlatform);
+    static Result GetAppletInfo(nn::applet::CTR::AppletId appletId, nn::ProgramId* pProgramId, nn::fs::MediaType* pMediaType, bool* pIsUsed, bool* pIsPreLoaded, nn::applet::CTR::AppletAttr* pAttr);
 
     static nn::Handle s_Session;
 };

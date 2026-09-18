@@ -3,6 +3,7 @@
 #include <nn/gxlow/CTR/gxlow_CTR.h>
 #include <nn/os.h>
 #include <nn/util.h>
+#include <nn/os/os_HandleManager.h>
 
 namespace nn {
 namespace gxlow {
@@ -73,7 +74,7 @@ inline void InterruptRelayQueueBase::Initialize(nn::Handle  eventHandle,void* pQ
 
 inline void InterruptRelayQueueBase::Finalize()
 {
-    this->m_RxEvent.DetachHandle();
+    nn::os::HandleManager::DetachHandle(&this->m_RxEvent);
     m_pBody = NULL;
 }
 

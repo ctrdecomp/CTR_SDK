@@ -66,7 +66,8 @@ void BlockingQueueBase<Locker>::Finalize()
 template <class Locker>
 inline void BlockingQueueBase<Locker>::NotifyEnqueue() const
 {
-    if (m_WaitingEnqueueCount > 0){
+    if (m_WaitingEnqueueCount > 0)
+    {
         m_EnqueueSemaphore.Release();
     }
 }
@@ -74,7 +75,8 @@ inline void BlockingQueueBase<Locker>::NotifyEnqueue() const
 template <class Locker>
 inline void BlockingQueueBase<Locker>::NotifyDequeue() const
 {
-    if (m_WaitingDequeueCount > 0){
+    if (m_WaitingDequeueCount > 0)
+    {
         m_DequeueSemaphore.Release();
     }
 }
@@ -84,7 +86,8 @@ bool BlockingQueueBase<Locker>::TryEnqueue(uptr data)
 {
     ScopedLock locker(m_cs);
 
-    if (m_Size > m_UsedCount){
+    if (m_Size > m_UsedCount)
+    {
         s32 lastIndex = (m_FirstIndex + m_UsedCount) % m_Size;
         m_ppBuffer[lastIndex] = data;
         m_UsedCount++;
@@ -92,7 +95,8 @@ bool BlockingQueueBase<Locker>::TryEnqueue(uptr data)
         NotifyEnqueue();
         return true;
     }
-    else{
+    else
+    {
         return false;
     }
 }
@@ -103,12 +107,15 @@ bool BlockingQueueBase<Locker>::ForceEnqueue(uptr data, uptr* pOut)
     ScopedLock locker(m_cs);
     bool bReturn;
     s32 lastIndex = (m_FirstIndex + m_UsedCount) % m_Size;
-    if (m_Size > m_UsedCount){
+    if (m_Size > m_UsedCount)
+    {
         m_UsedCount++;
         bReturn = true;
     }
-    else{
-        if (pOut){
+    else
+    {
+        if (pOut)
+        {
             *pOut = m_ppBuffer[lastIndex];
         }
         m_FirstIndex = (m_FirstIndex + 1) % m_Size;
@@ -125,8 +132,10 @@ template <class Locker>
 void BlockingQueueBase<Locker>::Enqueue(uptr data)
 {
     ++m_WaitingDequeueCount;
-    for(;;){
-        if (TryEnqueue(data)){
+    for(;;)
+    {
+        if (TryEnqueue(data))
+        {
             break;
         }
 
@@ -140,7 +149,8 @@ bool BlockingQueueBase<Locker>::TryJam(uptr data)
 {
     ScopedLock locker(m_cs);
 
-    if (m_Size > m_UsedCount){
+    if (m_Size > m_UsedCount)
+    {
         m_FirstIndex = (m_FirstIndex + m_Size - 1) % m_Size;
         m_ppBuffer[m_FirstIndex] = data;
         m_UsedCount++;
@@ -148,7 +158,8 @@ bool BlockingQueueBase<Locker>::TryJam(uptr data)
         NotifyEnqueue();
         return true;
     }
-    else{
+    else
+    {
         return false;
     }
 }
@@ -157,8 +168,10 @@ template <class Locker>
 void BlockingQueueBase<Locker>::Jam(uptr data)
 {
     ++m_WaitingDequeueCount;
-    for(;;){
-        if (TryJam(data)){
+    for(;;)
+    {
+        if (TryJam(data))
+        {
             break;
         }
 
@@ -190,12 +203,14 @@ uptr BlockingQueueBase<Locker>::Dequeue()
 {
     ++m_WaitingEnqueueCount;
     uptr data;
-    for(;;){
-        if (TryDequeue(&data)){
+    for(;;)
+    {
+        if (TryDequeue(&data))
+        {
             break;
         }
 
-        mEnqueueSemaphore.Acquire();
+        m_EnqueueSemaphore.Acquire();
     }
     --m_WaitingEnqueueCount;
     return data;
@@ -206,12 +221,14 @@ bool BlockingQueueBase<Locker>::TryGetFront(uptr* pOut) const
 {
     ScopedLock locker(m_cs);
 
-    if (0 < m_UsedCount){
+    if (0 < m_UsedCount)
+    {
         *pOut = m_ppBuffer[m_FirstIndex];
 
         return true;
     }
-    else{
+    else
+    {
         return false;
     }
 }
@@ -221,8 +238,10 @@ uptr BlockingQueueBase<Locker>::GetFront() const
 {
     ++m_WaitingEnqueueCount;
     uptr data;
-    for(;;){
-        if (TryGetFront(&data)){
+    for(;;)
+    {
+        if (TryGetFront(&data))
+        {
             break;
         }
 

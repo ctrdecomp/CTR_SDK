@@ -22,6 +22,18 @@ enum PicaDataVertexAttrType
     PICA_DATA_SIZE_4_FLOAT         = 0xf
 };
 
+#define PICA_CMD_DATA_VERTEX_ATTR_ARRAYS_BASE_ADDR(addr) ( ((u32)(addr) >> 4) << 1 )
+
+#define PICA_CMD_DATA_DRAW_MODE1(func, mode) \
+    ( (func) | (mode) << 8 )
+
+#define PICA_CMD_SET_DRAW_MODE1(func, mode) \
+    PICA_CMD_DATA_DRAW_MODE1(func, mode), PICA_CMD_HEADER_SINGLE_BE(PICA_REG_DRAW_MODE1, 0x3)
+    
+#define PICA_CMD_SET_DRAW_MODE2(mode)                        \
+    ((mode) << 8),                                           \
+    PICA_CMD_HEADER_SINGLE_BE(PICA_REG_VS_OUT_REG_NUM3, 0x2)
+
 enum PicaDataVSOutAttr
 {
     PICA_DATA_VS_OUT_ATTR_X        = 0x00,
@@ -47,6 +59,35 @@ enum PicaDataVSOutAttr
     PICA_DATA_VS_OUT_ATTR_TEX2_U   = 0x16,
     PICA_DATA_VS_OUT_ATTR_TEX2_V   = 0x17,
     PICA_DATA_VS_OUT_ATTR_INVALID  = 0x1f
+};
+
+enum PicaDataGSMode
+{
+    PICA_DATA_GS_OTHER_MODE               = 0x0,
+    PICA_DATA_GS_SUBDIVISION_MODE         = 0x1,
+    PICA_DATA_GS_SUBDIVISION_CATMULL_MODE = 0x3,
+    PICA_DATA_GS_SUBDIVISION_LOOP_MODE    = 0x5,
+    PICA_DATA_GS_PARTICLE_MODE            = 0x2
+};
+
+enum PicaDataVertexAttr
+{
+    PICA_DATA_VERTEX_0_ATTR          = 0x0,
+    PICA_DATA_VERTEX_1_ATTR          = 0x1,
+    PICA_DATA_VERTEX_2_ATTR          = 0x2,
+    PICA_DATA_VERTEX_3_ATTR          = 0x3,
+    PICA_DATA_VERTEX_4_ATTR          = 0x4,
+    PICA_DATA_VERTEX_5_ATTR          = 0x5,
+    PICA_DATA_VERTEX_6_ATTR          = 0x6,
+    PICA_DATA_VERTEX_7_ATTR          = 0x7,
+    PICA_DATA_VERTEX_8_ATTR          = 0x8,
+    PICA_DATA_VERTEX_9_ATTR          = 0x9,
+    PICA_DATA_VERTEX_a_ATTR          = 0xa,
+    PICA_DATA_VERTEX_b_ATTR          = 0xb,
+    PICA_DATA_PADDING_4_BYTE         = 0xc,
+    PICA_DATA_PADDING_8_BYTE         = 0xd,
+    PICA_DATA_PADDING_12_BYTE        = 0xe,
+    PICA_DATA_PADDING_16_BYTE        = 0xf
 };
 
 enum PicaDataDrawMode

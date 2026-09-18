@@ -100,7 +100,8 @@ int ResFontBase::GetMaxCharWidth() const
     return m_pFontInfo->pGlyph->maxCharWidth;
 }
 
-Font::Type ResFontBase::GetType() const{
+Font::Type ResFontBase::GetType() const
+{
     return TYPE_RESOURCE;
 }
 
@@ -200,54 +201,63 @@ ResFontBase::GlyphIndex ResFontBase::FindGlyphIndex(CharCode c) const
     return this->m_LastGlyphIndex;
 }
 
-ResFontBase::GlyphIndex ResFontBase::FindGlyphIndex(const FontCodeMap* pMap,CharCode c) const{
+ResFontBase::GlyphIndex ResFontBase::FindGlyphIndex(const FontCodeMap* pMap,CharCode c) const
+{
     u16 index = GLYPH_INDEX_NOT_FOUND;
 
-    switch (pMap->mappingMethod){
-    case FONT_MAPMETHOD_DIRECT:{
-            u16 offset = pMap->GetMapInfo()[0];
-            index = static_cast<u16>(c - pMap->ccodeBegin + offset);
-        }
-        break;
-    case FONT_MAPMETHOD_TABLE:{
-            const int table_index = c - pMap->ccodeBegin;
+    switch (pMap->mappingMethod)
+    {
+    case FONT_MAPMETHOD_DIRECT:
+    {
+        u16 offset = pMap->GetMapInfo()[0];
+        index = static_cast<u16>(c - pMap->ccodeBegin + offset);
+    }
+    break;
+    case FONT_MAPMETHOD_TABLE:
+    {
+        const int table_index = c - pMap->ccodeBegin;
 
-            index = pMap->GetMapInfo()[table_index];
-        }
+        index = pMap->GetMapInfo()[table_index];
+    }
         break;
-    case FONT_MAPMETHOD_SCAN:{
-            const CMapInfoScan* const scanInfo= reinterpret_cast<const CMapInfoScan*>(pMap->GetMapInfo());
-            const CMapScanEntry* first = &(scanInfo->GetEntries()[0]);
-            const CMapScanEntry* last = &(scanInfo->GetEntries()[scanInfo->num - 1]);
+    case FONT_MAPMETHOD_SCAN:
+    {
+        const CMapInfoScan* const scanInfo= reinterpret_cast<const CMapInfoScan*>(pMap->GetMapInfo());
+        const CMapScanEntry* first = &(scanInfo->GetEntries()[0]);
+        const CMapScanEntry* last = &(scanInfo->GetEntries()[scanInfo->num - 1]);
 
-            while(first <= last)
+        while(first <= last)
+        {
+            const CMapScanEntry* mid = first + (last - first) / 2;
+
+            if(mid->ccode < c)
             {
-                const CMapScanEntry* mid = first + (last - first) / 2;
-
-                if(mid->ccode < c)
-                {
-                    first = mid + 1;
-                }
-                else if(c < mid->ccode)
-                {
-                    last = mid - 1;
-                }
-                else
-                {
-                    index = mid->index;
-                    break;
-                }
+                first = mid + 1;
+            }
+            else if(c < mid->ccode)
+            {
+                last = mid - 1;
+            }
+            else
+            {
+                index = mid->index;
+                break;
             }
         }
-        break;
+    }
+    break;
 
     default:
+    {
+    }
+
     }
 
     return index;
 }
 
-const CharWidths& ResFontBase::GetCharWidthsFromIndex(GlyphIndex index) const{
+const CharWidths& ResFontBase::GetCharWidthsFromIndex(GlyphIndex index) const
+{
     const FontWidth* pWidth;
 
     pWidth = m_pFontInfo->pWidth;
@@ -265,11 +275,13 @@ const CharWidths& ResFontBase::GetCharWidthsFromIndex(GlyphIndex index) const{
     return m_pFontInfo->defaultWidth;
 }
 
-const CharWidths& ResFontBase::GetCharWidthsFromIndex(const FontWidth* pWidth,GlyphIndex index) const{
+const CharWidths& ResFontBase::GetCharWidthsFromIndex(const FontWidth* pWidth,GlyphIndex index) const
+{
     return pWidth->GetWidthTable()[index - pWidth->indexBegin];
 }
 
-void ResFontBase::GetGlyphFromIndex(Glyph* glyph,GlyphIndex index) const{
+void ResFontBase::GetGlyphFromIndex(Glyph* glyph,GlyphIndex index) const
+{
     const FontTextureGlyph& tg = *m_pFontInfo->pGlyph;
 
     const u32 cellsInASheet = internal::GetCellsInASheet(tg);

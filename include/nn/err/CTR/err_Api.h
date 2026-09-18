@@ -45,6 +45,7 @@ namespace{
         FatalErr(Handle h){ m_Session = h; }
         Result Throw(err::CTR::FatalErrInfo& info);
     };
+
 #if NN_VERSION_MAJOR > 2
     void ThrowFatalErr(Result result, uptr pc);
     void ThrowFatalErr(Result result, nnerrFatalErrType type, uptr pc);

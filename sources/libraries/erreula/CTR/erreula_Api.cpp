@@ -10,7 +10,7 @@ namespace CTR{
 namespace{
     bool CheckAppletRetry(Result result)
     {
-        if(!result.IsSuccess() || (result == ResultAlreadyExist()))
+        if(!result.IsSuccess() || (result == nn::applet::CTR::ResultAlreadyExist()))
         {
             NN_UTIL_PANIC_IF_FAILED(result);
             return true;
@@ -43,8 +43,8 @@ void StartErrEulaApplet(applet::CTR::AppletWakeupState* pWakeupState, Parameter*
 
     Result res = applet::CTR::detail::PrepareToStartLibraryApplet(0x406);
     CheckAppletRetry(res);
-    applet::CTR::detail::StartLibraryApplet(0x406,reinterpret_cast<u8*>(pWakeupState),0xf80,applet::CTR::HANDLE_NONE);
-    *pWakeupState = applet::CTR::detail::WaitForStarting(&id, reinterpret_cast<u8*>(pParameter), 0xf80, &readLen, 0, applet::CTR::WAIT_INFINITE);
+    nn::applet::CTR::detail::StartLibraryApplet(0x406,reinterpret_cast<u8*>(pWakeupState),0xf80, applet::CTR::HANDLE_NONE);
+    *pWakeupState = applet::CTR::detail::WaitForStarting(&id, reinterpret_cast<u8*>(pParameter), 0xf80, &readLen);
 }
 }
 }

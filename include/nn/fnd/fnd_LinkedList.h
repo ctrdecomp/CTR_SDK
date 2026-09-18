@@ -24,11 +24,12 @@ public:
     T* GetFront() const;
     void Erase(T* p);
     static void ClearLinks(Item* p);
-    bool IsEmpty() const {
-        return !mHead; 
+    bool IsEmpty() const 
+    {
+        return !m_Head; 
     }
 protected:
-    Item* mHead;
+    Item* m_Head;
 };
 
 
@@ -106,7 +107,7 @@ inline void IntrusiveLinkedList<T, Tag>::PushBack(T* p)
     }
     else
     {
-        InsertBefore(mHead, pNode);
+        InsertBefore(m_Head, pNode);
     }
 }
 

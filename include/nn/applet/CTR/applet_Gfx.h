@@ -12,6 +12,7 @@ namespace detail{
     //--- Display Info
     void GetDisplayInfo(AppletDisplayInfo* pInfo);
     void CalcCaptureBufferInfo(CaptureBufferInfo *cInfo);
+    void CaptureDisplayBuffer(uptr buffer, const AppletDisplayInfo* pInfo, const CaptureBufferInfo* cInfo);
 }
 }
 }

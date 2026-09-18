@@ -13,6 +13,28 @@ namespace detail{
 
 nn::Handle APPLET::s_Session;
 
+Result APPLET::GetAppletInfo(nn::applet::CTR::AppletId appletId, nn::ProgramId* pProgramId, nn::fs::MediaType* pMediaType, bool* pIsUsed, bool* pIsPreLoaded, nn::applet::CTR::AppletAttr* pAttr)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x6, 1, 0, 0);
+    ipcMsg.SetRaw(1, appletId);
+
+
+    nn::Result ipcResult = SendSyncRequest(s_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    *pProgramId = ipcMsg.GetRaw<nn::ProgramId>(2);
+    *pMediaType = ipcMsg.GetRaw<nn::fs::MediaType>(4);
+    *pIsUsed = ipcMsg.GetRaw<bool>(5);
+    *pIsPreLoaded = ipcMsg.GetRaw<bool>(6);
+    *pAttr = ipcMsg.GetRaw<nn::applet::CTR::AppletAttr>(7);
+
+    return ipcMsg.GetRaw<Result>(1);
+}
+
 Result APPLET::AppletUtility(u32 id,u8 *pInParam,size_t inParamSize,u8 *pOutParam,size_t outParamSize,s32 *pReadLen)
 {
     MessageBuffer ipcMsg(GetMessageBuffer());
@@ -532,6 +554,27 @@ Result APPLET::GetTargetPlatform(nn::ptm::CTR::TargetPlatform* pPlatform)
     }
 
     *pPlatform = ipcMsg.GetRaw<nn::ptm::CTR::TargetPlatform>(2);
+
+    return ipcMsg.GetRaw<Result>(1);
+}
+
+Result APPLET::StartLibraryApplet(AppletId id, const u8 pParam[], size_t paramSize, Handle handle)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x18, 2, 4, 0);
+    ipcMsg.SetRaw(1, id);
+    ipcMsg.SetRaw(2, paramSize);
+    ipcMsg.SetCopyHandleHeader(3, 1);
+    ipcMsg.SetHandle(4, handle);
+    ipcMsg.SetPointerHeader(5, 0, sizeof(*pParam) * paramSize);
+    ipcMsg.SetPointer(6, pParam);
+
+
+    Result ipcResult = SendSyncRequest(s_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
 
     return ipcMsg.GetRaw<Result>(1);
 }

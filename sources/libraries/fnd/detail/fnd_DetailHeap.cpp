@@ -474,7 +474,8 @@ Heap CreateHeap(Heap heapHandle, void* startAddress, u32 size, ushort optFlag)
     }
 }
 
-NNSiFndHeapHead* FindContainHeap(NNSFndList* pList, void* memBlock){
+NNSiFndHeapHead* FindContainHeap(NNSFndList* pList, void* memBlock)
+{
     NNSiFndHeapHead* pHeapHd = NULL;
     while (NULL != (pHeapHd = reinterpret_cast<NNSiFndHeapHead*>(GetNextListObject(pList, pHeapHd))))
     {

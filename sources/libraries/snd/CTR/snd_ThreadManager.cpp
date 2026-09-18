@@ -130,7 +130,8 @@ void ThreadManager::UserSoundThreadFuncImpl(uptr)
 
 Result ThreadManager::StartSoundThread(void (*callback)(uptr), uptr arg, uptr stackBuffer, size_t stackSize, s32 prio, s32 coreNo)
 {
-    if (m_IsSoundThreadCreated){
+    if (m_IsSoundThreadCreated)
+    {
         return ResultAlreadyInitialized();
     }
 
@@ -140,7 +141,8 @@ Result ThreadManager::StartSoundThread(void (*callback)(uptr), uptr arg, uptr st
         prio = 0x5109d500;
     }
 #else
-    if (coreNo == 1){
+    if (coreNo == 1)
+    {
         prio += 0x5109d500;
     }
 #endif

@@ -6,6 +6,11 @@
 namespace nn{
 namespace applet{
 namespace CTR{
+    typedef u32 AppletCommand;
+    typedef bit32 AppletAttr;
+    typedef bit32 AppletId;
+    typedef bit32 AppletCommand;
+    
     enum AppJumpType
     {
         JUMP_OTHER = 0,
@@ -323,9 +328,6 @@ namespace CTR{
     typedef SleepSysState AppletSleepSysState;
     typedef HomeButtonState AppletHomeButtonState;
     typedef AppletQueryReply (*AppletSleepQueryCallback)(uptr);
-    typedef bit32 AppletAttr;
-    typedef bit32 AppletId;
-    typedef bit32 AppletCommand;
 
     extern Handle HANDLE_NONE;
 

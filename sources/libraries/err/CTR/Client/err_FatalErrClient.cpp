@@ -18,7 +18,8 @@ Result FatalErr::Throw(FatalErrInfo& info)
 
 
     Result ipcResult = SendSyncRequest(this->m_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 

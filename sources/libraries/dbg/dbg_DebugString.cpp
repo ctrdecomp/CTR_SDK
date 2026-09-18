@@ -23,7 +23,7 @@ namespace dbg{
 namespace detail{
     void PutString(const char* text, s32 length)
     {
-        NN_REFER_MODULE(sUsePutDebugString);
+        NN_REFER_MODULE(s_UsePutDebugString);
         nn::svc::OutputDebugString(text, length);
     }
 
@@ -162,7 +162,7 @@ extern "C"{
             NN_UNUSED_VAR(fmt);
         }
 
-        nn::dbg::Break(nn::dbg::BREAK_REASON_ASSERT);
+        nn::dbg::Break();
 
         return 0;
     }

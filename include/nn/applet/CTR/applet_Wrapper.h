@@ -1,10 +1,8 @@
 #pragma once
 
-#include "nn/Result.h"
-#include "nn/err/CTR/err_Api.h"
-#include "nn/applet/CTR/applet_Paramaters.h"
-#include "nn/os/os_CriticalSection.h"
-#include "nn/fnd/fnd_TimeSpan.h"
+#include <nn/Result.h>
+#include <nn/applet/CTR/applet_Paramaters.h>
+#include <nn/fnd/fnd_TimeSpan.h>
 
 namespace nn { 
 namespace applet {
@@ -39,14 +37,25 @@ namespace CTR {
 
     void SetCommandCallback(s32 callback, uptr arg);
 
+    Result CaptureScreen(AppletId id);
+
 
 class SysSleepAcceptedCallbackInfo
 {
 public:
-    SysSleepAcceptedCallbackInfo(AppletSysSleepAcceptedCallback callback, uptr parameter, int priority=DEFAULT_PRIORITY):
-    m_pPrev(NULL), m_pNext(NULL),m_Callback(callback),m_Parameter(parameter),m_Priority(priority)
+    SysSleepAcceptedCallbackInfo()
     {
     }
+
+    SysSleepAcceptedCallbackInfo(AppletSysSleepAcceptedCallback callback, uptr parameter, int priority=DEFAULT_PRIORITY):
+        m_pPrev(NULL), 
+        m_pNext(NULL),
+        m_Callback(callback),
+        m_Parameter(parameter),
+        m_Priority(priority)
+    {
+    }
+    
     ~SysSleepAcceptedCallbackInfo()
     {
     }
@@ -85,7 +94,7 @@ public:
     SysSleepAcceptedCallbackInfo* GetPrev(){ return m_pPrev; }
 
     static SysSleepAcceptedCallbackInfo* GetHead() { return s_pHead; }
-    static SysSleepAcceptedCallbackInfo* GetHead() { return s_pTail; }
+    static SysSleepAcceptedCallbackInfo* GetTail() { return s_pTail; }
 };
 
 namespace detail{
@@ -94,7 +103,7 @@ namespace detail{
     Result WaitToCaptureScreen(AppletId id, Handle* pHandle);
     bool ReceiveCallbackForCommands(uptr ptr);
     void WaitForAppletPreloaded(AppletId id);
-    AppletWakeupState WaitForStarting(AppletId* pSenderId,  u8* pParam, size_t paramSize, s32* pReadLen, Handle* pHandle, fnd::TimeSpan timeout);
+    AppletWakeupState WaitForStarting(AppletId* pSenderId = NULL, u8* pParam = NULL, size_t paramSize = 0, s32* pReadLen =NULL, Handle* pHandle = NULL, fnd::TimeSpan timeout = WAIT_INFINITE);
 
 }
 }

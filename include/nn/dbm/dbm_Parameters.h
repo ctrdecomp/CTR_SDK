@@ -12,22 +12,26 @@ typedef s32 RomFileId;
 
 namespace detail{
 
-struct S64{
+struct S64
+{
 private:
     u32 mvalue[2];
 
 public:
-    inline s64 Get(void) const{
+    inline s64 Get(void) const
+    {
         return *reinterpret_cast<const s64*>(&mvalue);
     }
 };
 
-struct RomFileInfo{
+struct RomFileInfo
+{
     S64 offset;
     S64 size;
 };
 
-struct RomFileSystemInformation{
+struct RomFileSystemInformation
+{
     u32 size;
     u32 offsetBucketDirectory;
     u32 sizeBucketDirectory;

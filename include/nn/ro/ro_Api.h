@@ -7,6 +7,7 @@
 
 namespace nn{
 namespace ro{
+
     Result Initialize(void* pRs,uint rsSize);
     Result Finalize();
     RegistrationList* RegisterList(void* pRr, size_t rrSize);

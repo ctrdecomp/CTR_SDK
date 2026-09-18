@@ -10,12 +10,12 @@ namespace fnd{
 
 size_t ExpHeapBase::GetTotalSize() const
 { 
-    return (int)this->mExpHeapImpl.heapEnd - (int)this->m_ExpHeapImpl.heapStart; 
+    return (int)this->m_ExpHeapImpl.heapEnd - (int)this->m_ExpHeapImpl.heapStart; 
 }
 
 void* ExpHeapBase::GetStartAddress() const
 { 
-    return mExpHeapImpl.heapStart; 
+    return m_ExpHeapImpl.heapStart; 
 }
 
 bool ExpHeapBase::HasAddress(const void* addr) const

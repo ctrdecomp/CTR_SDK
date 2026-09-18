@@ -218,7 +218,7 @@ uptr BlockingQueueBase<Locker>::Dequeue()
             break;
         }
 
-        mEnqueueSemaphore.Acquire();
+        m_EnqueueSemaphore.Acquire();
     }
     --m_WaitingEnqueueCount;
     ARM::DataSynchronizationBarrier();

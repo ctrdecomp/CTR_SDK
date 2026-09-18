@@ -17,18 +17,22 @@ namespace CTR{
 namespace MPCore{
 namespace detail{
 
-class RomFsArchive : public IArchive{
+class RomFsArchive : public IArchive
+{
 public:
     typedef nn::fs::CTR::MPCore::Path Path;
 private:
-    class RomFsStorage{
+    class RomFsStorage
+    {
     private:
         bit8* m_Buffer;
         size_t m_Size;
         RomFsArchive* m_pParent;
         u32 m_Offset;
     public:
-        RomFsStorage() {}
+        RomFsStorage()
+        {
+        }
 
         RomFsStorage(void* buffer, size_t size): 
             m_Buffer(static_cast<bit8*>(buffer)), 
@@ -77,7 +81,8 @@ private:
     fnd::UnitHeapTemplate<nn::os::LockPolicy::NoLock> m_FileHeap;
     fnd::UnitHeapTemplate<nn::os::LockPolicy::NoLock> m_DirectoryHeap;
 public:
-    class File : public IFile{
+    class File : public IFile
+    {
     private:
         RomFsArchive* m_Parent;
         s64 m_Head;
@@ -171,7 +176,7 @@ public:
                 }
                 
                 RomFileTable::FileInfo fi;
-                NN_UTIL_RETURN_IF_FAILED(this->mParent->mRomFileTable.OpenFile(&fi, this->m_Parent->m_RomFileTable.PositionToFileId(filePosition)));
+                NN_UTIL_RETURN_IF_FAILED(this->m_Parent->m_RomFileTable.OpenFile(&fi, this->m_Parent->m_RomFileTable.PositionToFileId(filePosition)));
                 pEntries[i].entrySize = fi.size.Get();
                 pEntries[i].attributes.isDirectory = false;
                 pEntries[i].shortName.valid = false;

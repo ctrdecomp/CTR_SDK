@@ -52,11 +52,6 @@ public:
         return n + (static_cast<u64>(m_NanoSeconds) >> 63);
     }
 
-    s64 GetMilliSeconds() const
-    {
-        return DivideNanoSeconds(0x431bde82d7b634dbLL, 18); 
-    }
-
     /* Macros Needed elsewhere, and makes it easier for DateTime. */
 
     static TimeSpan FromNanoSeconds(s64 nanoSeconds) { TimeSpan ret; ret.m_NanoSeconds = nanoSeconds; return ret; }

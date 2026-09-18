@@ -53,7 +53,12 @@ typedef unsigned long long int  bit64;
 typedef s32 sptr;
 typedef u32 uptr;
 
+namespace nn
+{
+
 typedef bit64 ProgramId;
+
+}
 
 #ifndef nullptr
 #define nullptr NULL

@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cwchar>
+#include <wchar.h>
 
 namespace nn {
 namespace fslow {

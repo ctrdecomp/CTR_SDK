@@ -7,6 +7,7 @@
 #include <nn/Result.h>
 #include <nn/Handle.h>
 #include <nn/os.h>
+#include <nn/os/os_HandleManager.h>
 
 #include <nn/util/util_Result.h>
 
@@ -102,7 +103,7 @@ namespace detail{
         Result res;
         while (true) 
         {
-            res = svc::ConnectToPort(&Service::sSession, name);
+            res = svc::ConnectToPort(&Service::s_Session, name);
             if (res.GetLevel()       != Result::LEVEL_PERMANENT   ||
                 res.GetSummary()     != Result::SUMMARY_NOT_FOUND ||
                 res.GetDescription() != 1018) 
@@ -149,7 +150,7 @@ Result EnableNotification(os::Semaphore* pOut)
     res = detail::Service::EnableNotication(&h);
     if (res.IsSuccess())
     {
-        pOut->SetHandle(h);
+        nn::os::HandleManager::AttachHandle(pOut, h);
     }
     return res;
 }

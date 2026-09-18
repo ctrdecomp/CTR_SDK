@@ -7,6 +7,7 @@
 #include <nn/hid/CTR/hid_Api.h>
 #include <nn/hid/CTR/hid_Pad.h>
 #include <nn/hid/CTR/hid_DeviceStatus.h>
+#include <nn/hidlow/hidlow_Utils.h>
 #include <nn/util/util_NonCopyable.h>
 
 namespace nn{
@@ -93,7 +94,7 @@ protected:
         short m_MaxOfStickClampCross;
         short m_MaxOfStickClampMinimum;
         SizedEnum1<StickClampMode> m_StickClampMode;
-        s8 rev;
+        s8 rev4;
         short m_Threshold;
         f32 m_Scale;
         f32 m_Stroke;

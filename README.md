@@ -15,15 +15,15 @@ Also note, macros, and other are user generated. All macros are custom and **mus
 
 * **/LIBRARY_ROOT/CTR_SDK/**
 
-    |____ **include/GLES2** - GL Headers used in the *CtrSDK*.
+*        |____ **include/GLES2** - GL Headers used in the *CtrSDK*.
 
-    |____ **include/nn** - nn Headers used for the *CtrSDK*.
+*        |____ **include/nn** - nn Headers used for the *CtrSDK*.
 
-    |____ **library** - Libraries used by the *CtrSDK*.
+*        |____ **library** - Libraries used by the *CtrSDK*.
 
-    |____ **profiler/sources** - 3DS CPU Profiler used in debug builds.
+*        |____ **profiler/sources** - 3DS CPU Profiler used in debug builds.
 
-    |____ **sources/libraries** - Module source code.
+*        |____ **sources/libraries** - Module source code.
 
 ## Libraries
 
@@ -32,7 +32,7 @@ Also note, macros, and other are user generated. All macros are custom and **mus
 
 ## nn Libraries
 
-For progress, refer to [the GitHub project page](https://github.com/LoigiFan72/sead). Several modules currently fail to build for Switch.
+For progress, refer to [the GitHub project page](https://github.com/ctrdecomp/CTR_SDK). Several modules currently fail to build for Switch.
 
 * **applet** - Application (Initialization, sleep, finalization etc.)
 * **camera** - Camera

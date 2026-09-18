@@ -27,7 +27,8 @@ u32 ResFont::GetDrawBufferSize(const void* bfnt)
     }
     else
     {
-        if (!IsValidBinaryFile(fileHeader, 0x544e4643, 0x3000000, 2)){
+        if (!IsValidBinaryFile(fileHeader, 0x544e4643, 0x3000000, 2))
+        {
             return 0;
         }
     }

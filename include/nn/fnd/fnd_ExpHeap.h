@@ -207,7 +207,9 @@ template <class LockPolicy>
 class ExpHeapTemplate<LockPolicy>::Allocator : public IAllocator 
 {
 public:
-    Allocator(ExpHeapTemplate<LockPolicy>& heap, bit8 groupId = 0, AllocationMode mode = ExpHeapBase::ALLOCATION_MODE_FIRST_FIT, bool reuse = false) : mHeap(0) {
+    Allocator(ExpHeapTemplate<LockPolicy>& heap, bit8 groupId = 0, AllocationMode mode = ExpHeapBase::ALLOCATION_MODE_FIRST_FIT, bool reuse = false): 
+        m_Heap(0) 
+    {
         Initialize(heap, groupId, mode, reuse);
     }
 

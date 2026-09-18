@@ -10,10 +10,11 @@ namespace CTR{
 
 class DspFxManagerImpl;
 
-class DspFxManagerImpl{
+class DspFxManagerImpl
+{
 protected:
-    DspFxDelayParams mDspFxDelayParams[2];
-    DspFxReverbParams mDspFxReverbParams[2];
+    DspFxDelayParams m_DspFxDelayParams[AUX_BUS_NUM];
+    DspFxReverbParams m_DspFxReverbParams[AUX_BUS_NUM];
 
 public:
     void Initialize();
@@ -24,14 +25,16 @@ public:
     bool SetDspReverbEffect(AuxBusId id, DspFxReverbParams* param);
 };
 
-class DspFxManager{
+class DspFxManager
+{
 protected:
-    bool mIsAttached[2][2];
-    bool mIsEnabled[2][2];
-    s8 mChannelNum[2][2];
+    bool m_IsAttached[AUX_BUS_NUM][AUX_BUS_NUM];
+    bool m_IsEnabled[AUX_BUS_NUM][AUX_BUS_NUM];
+    s8 m_ChannelNum[AUX_BUS_NUM][AUX_BUS_NUM];
 
 public:
-    enum DspEffectType{
+    enum DspEffectType
+    {
         DSP_EFFECT_TYPE_DELAY = 0,
         DSP_EFFECT_TYPE_REVERB = 1,
         DSP_EFFECT_TYPE_NUM = 2

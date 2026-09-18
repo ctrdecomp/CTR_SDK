@@ -34,7 +34,7 @@ Result InterruptRelayQueueRx::TryDequeue(nngxlowInterrupt* pSrc)
         {
             control.packed32 = __ldrex(&m_pBody->control);
             
-            control.qc.head = ( control.qc.head + 1 ) % QUEUE_LENGTH;
+            control.qc.head = (control.qc.head + 1) % QUEUE_LENGTH;
             control.qc.usedCount--;
         } while (__strex(control.packed32, &m_pBody->control) != 0);
         
@@ -132,22 +132,21 @@ void InterruptReceiver::Finalize()
     Result result;
 
     m_FinalizeRequest = true;
-    this->m_RxEvent.Signal();
-
-    this->m_ReceiverThread.Join();
-    this->m_ReceiverThread.Finalize();
+    m_RxEvent.Signal();
+    m_ReceiverThread.Join();
+    m_ReceiverThread.Finalize();
     
     this->LockTable();
 
     result = detail::GetGpuIpc()->UnregisterInterruptRelayQueue();
     NN_GXLOW_RESULT_ASSERT(result, "[Finalize]");
     
-    this->m_CmdReqQ.Finalize();
-    this->m_RelayQ.Finalize();
-    this->m_SwapInfoPad.Finalize();
+    m_CmdReqQ.Finalize();
+    m_RelayQ.Finalize();
+    m_SwapInfoPad.Finalize();
+    m_SharedWorkMem.Finalize();
+    m_RxEvent.Finalize();
 
-    this->m_SharedWorkMem.Finalize();
-    this->m_RxEvent.Finalize();
     this->FinalizeTable();
     
     return;
@@ -202,7 +201,7 @@ void InterruptReceiver::ReceiverThreadFunc(uptr arg)
         
         pThis->m_RxEvent.ClearSignal();
         
-        if (pThis->m_FinalizeRequest )
+        if (pThis->m_FinalizeRequest)
             break;
         
         for(;;)

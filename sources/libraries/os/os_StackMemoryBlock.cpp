@@ -38,7 +38,7 @@ void StackMemoryBlock::Initialize(size_t size)
 {
     NN_TASSERTMSG_(os::detail::IsMemoryBlockEnabled(), "InitializeMemoryBlock is not called.\n");
     NN_TASSERTMSG_(GetAddress() == 0, "This StackMemoryBlock instance has been already initialized.\n");
-    if ( !os::detail::IsMemoryBlockEnabled() || GetAddress() != 0 )
+    if (!os::detail::IsMemoryBlockEnabled() || GetAddress() != 0)
     {
         return;
     }

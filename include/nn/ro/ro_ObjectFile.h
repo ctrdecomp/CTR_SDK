@@ -21,26 +21,30 @@ namespace nn{
 namespace ro{
 
 template <typename FirstType, int FirstSize, typename SecondType, int SecondSize>
-class PairInWord{
+
+class PairInWord
+{
 private:
-    uptr    mValue;
+    uptr    m_Value;
 public:
     FirstType GetFirst() const      { return static_cast<FirstType>(GetBits<0, FirstSize>()); }
     SecondType GetSecond() const    { return static_cast<SecondType>(GetBits<FirstSize, SecondSize>()); }
 private:
     template<int Offset, int Size>
-    uptr GetBits() const{ return (mValue << (sizeof(uptr) * 8 - (Offset + Size))) >> (sizeof(uptr) * 8 - Size); }
+    uptr GetBits() const{ return (m_Value << (sizeof(uptr) * 8 - (Offset + Size))) >> (sizeof(uptr) * 8 - Size); }
 };
 
 template <class T>
-struct LinkedListNode{
+struct LinkedListNode
+{
     T* pNext;
     T* pPrev;
 
     typedef LinkedListNode<T>   SelfT;
 
     template <class ParentT>
-    void EnlistTail(ParentT* pItem){
+    void EnlistTail(ParentT* pItem)
+    {
         NN_POINTER_TASSERT_(this);
         NN_POINTER_TASSERT_(pItem);
 
@@ -55,7 +59,8 @@ struct LinkedListNode{
     }
 
     template <class ParentT>
-    void DelistItem(ParentT* pItem){
+    void DelistItem(ParentT* pItem)
+    {
         NN_POINTER_TASSERT_(this);
         NN_POINTER_TASSERT_(pItem);
 
@@ -71,7 +76,8 @@ struct LinkedListNode{
     }
 };
 
-enum Section{
+enum Section
+{
     SECTION_CODE,
     SECTION_RO,
     SECTION_RW,
@@ -80,7 +86,8 @@ enum Section{
     SECTION_MAX_BITS = (1 << 7)
 };
 
-enum RelocationType{
+enum RelocationType
+{
     RELOCATION_TYPE_ARM_NONE        =  0,
     RELOCATION_TYPE_ARM_ABS32       =  2,
     RELOCATION_TYPE_ARM_REL32       =  3,
@@ -99,14 +106,16 @@ typedef void (*UnresolvedFunction)();
 
 typedef PairInWord<u8, 4, u32, 28> SectionAndOffset;
 
-struct SectionInfo{
+struct SectionInfo
+{
     OffsetPointer<bit8> offset;
     size_t size;
     util::SizedEnum1<Section> section;
     s8 rev[3];
 };
  
-struct InternalRelocationTableEntry{
+struct InternalRelocationTableEntry
+{
     SectionAndOffset sectionAndOffset;
     util::SizedEnum1<RelocationType> type;
     u8 refedSection;
@@ -114,7 +123,8 @@ struct InternalRelocationTableEntry{
     s32 param;
 };
 
-struct ExternalRelocationTableEntry{
+struct ExternalRelocationTableEntry
+{
     SectionAndOffset sectionAndOffset;
     util::SizedEnum1<RelocationType> type;
     bool isLast;
@@ -123,7 +133,8 @@ struct ExternalRelocationTableEntry{
     bit32 param;
 };
 
-struct StaticRelocationTableEntry{
+struct StaticRelocationTableEntry
+{
     SectionAndOffset sectionAndOffset;
     util::SizedEnum1<RelocationType> type;
     bool isLast;
@@ -132,36 +143,43 @@ struct StaticRelocationTableEntry{
     bit32 param;
 };
 
-struct SymbolImportTableEntry{
+struct SymbolImportTableEntry
+{
     OffsetPointer<char> symbol;
     OffsetPointer<ExternalRelocationTableEntry> relocationBegin;
 };
 
-struct IndexImportTableEntry{
+struct IndexImportTableEntry
+{
     s32 index;
     OffsetPointer<ExternalRelocationTableEntry> relocationBegin;
 };
 
-struct OffsetImportTableEntry{
+struct OffsetImportTableEntry
+{
     SectionAndOffset sectionAndOffset;
     OffsetPointer<ExternalRelocationTableEntry> relocationBegin;
 };
 
-struct SymbolExportTableEntry{
+struct SymbolExportTableEntry
+{
     OffsetPointer<char> symbol;
     SectionAndOffset sectionAndOffset;
 };
 
-struct IndexExportTableEntry{
+struct IndexExportTableEntry
+{
     SectionAndOffset sectionAndOffset;
 };
 
-struct OffsetExportTableEntry{
+struct OffsetExportTableEntry
+{
     SectionAndOffset sectionAndOffset;
     OffsetPointer<ExternalRelocationTableEntry> relocationBegin;
 };
 
-struct ObjectInfo{
+struct ObjectInfo
+{
     OffsetPointer<char> name;
     OffsetPointer<IndexImportTableEntry> indexImportTable;
     s32 numIndexImports;
@@ -169,21 +187,25 @@ struct ObjectInfo{
     s32 numOffsetImports;
 };
 
-struct PatriciaNode{
+struct PatriciaNode
+{
     u16 ref;
     bit16 idxLeft;
     bit16 idxRight;
     s16 value;
 };
 
-struct Hash{
-    bool operator <(const Hash& rhs) const{
+struct Hash
+{
+    bool operator <(const Hash& rhs) const
+    {
         return std::memcmp(this, &rhs, sizeof(rhs)) < 0;
     }
     bit32 hashsize[crypto::Sha256Context::HASH_SIZE / sizeof(bit32)]; // 1 SHA256 Block
 };
 
-struct HashSet{
+struct HashSet
+{
     Hash hash0;
     Hash hash1;
     Hash hash2;
@@ -194,7 +216,8 @@ class ModuleHeader;
 
 typedef LinkedListNode<ModuleHeader> ModuleHeaderListNode;
 
-class ModuleHeader{
+class ModuleHeader
+{
 public:
     HashSet ModuleHash;
     bit32 signature; // "CRO0" / "CRR0"
@@ -267,15 +290,18 @@ public:
 struct ModuleRegistrationListHeader;
 typedef LinkedListNode<ModuleRegistrationListHeader> ModuleRegistrationListHeaderListNode;
 
-struct Sign{
+struct Sign
+{
     bit32 data[256 / sizeof(bit32)];
 };
 
-struct SignKey{
+struct SignKey
+{
     bit32 data[256 / sizeof(bit32)];
 };
 
-struct ListCert{
+struct ListCert
+{
     bit32 uniqueIdMask;
     bit32 uniqueIdPattern;
     bit8 unkpad[0x18];
@@ -284,17 +310,20 @@ struct ListCert{
     Sign sign;
 };
 
-struct DebugInfoBody{
+struct DebugInfoBody
+{
     OffsetPointer<wchar_t> pathOffset;
     size_t pathLength;
 };
 
-struct DebugInfoMapEntry{
+struct DebugInfoMapEntry
+{
     OffsetPointer<DebugInfoBody> bodyOffset;
     size_t bodySize;
 };
 
-struct DebugInfoHeader{
+struct DebugInfoHeader
+{
     OffsetPointer<DebugInfoMapEntry> tableOffset;
     s32 numTableEntry;
     OffsetPointer<DebugInfoBody> bodyOffset;
@@ -302,7 +331,8 @@ struct DebugInfoHeader{
     bit8 unk[0x10];
 };
 
-struct ModuleRegistrationListHeader{
+struct ModuleRegistrationListHeader
+{
     bit32 signature;
     s32 unkpad;
     ModuleRegistrationListHeaderListNode node;

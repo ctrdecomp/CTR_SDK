@@ -138,34 +138,6 @@ void DateTime::DaysToDate(s32 *pYear, s32 *pMonth, s32 *pDay, s32 days)
     }
 }
 
-s32 DateTime::DateToDays(s32 year, s32 month, s32 day)
-{
-    NN_TASSERT_(DateTime::IsValidDate(year,month,day));
-
-    day -= 1;
-    year -= 2000;
-
-    if (month <= 2)
-    {
-        month += (12 - 3);
-        year -= 1;
-    }
-    else
-    {
-        month -= 3;
-    }
-
-    int offset = 1;
-
-    if (year < 0)
-    {
-        offset = IsLeapYear(year);
-    }
-
-    return ((((365 * 4 + 1) * 25 - 1) * 4 + 1) * (year / 100) / 4) + (( 365 * 4 + 1) * (year % 100) / 4)
-            + (153 * month + 2) / 5 + day + (31 + 28) + offset;
-}
-
 Week DateTime::DaysToWeekday(s32 days)
 {
     return static_cast<Week>(Modulo32((days + WEEK_SATURDAY), WEEK_MAX));

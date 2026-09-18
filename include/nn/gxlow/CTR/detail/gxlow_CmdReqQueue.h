@@ -144,6 +144,8 @@ protected:
     {
     }
 public:
+    static const size_t QUEUE_BODY_SIZE = 512;
+    
     void Initialize(void* pQueueBody);
     void Finalize();
 };

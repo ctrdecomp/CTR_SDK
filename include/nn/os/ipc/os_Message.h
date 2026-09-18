@@ -46,7 +46,7 @@ public:
     template <typename T>
     void SetRaw(s32 offset, const T& value)
     {
-        *reinterpret_cast<T*>(mP + offset) = value;
+        *reinterpret_cast<T*>(m_P + offset) = value;
     }
 
     void SetRawArray(s32 offset, const void* p, size_t size)
@@ -120,7 +120,7 @@ public:
     template <typename T>
     const T& GetRaw(s32 offset) const
     {
-        return *reinterpret_cast<const T*>(mP + offset);
+        return *reinterpret_cast<const T*>(m_P + offset);
     }
 
     static bit32 MakeHeader(bit16 tag, s32 rawlen, s32 fmtlen, bit8 flags)

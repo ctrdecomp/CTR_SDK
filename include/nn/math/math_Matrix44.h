@@ -17,9 +17,9 @@ namespace math{
     };
 class MTX44;
 
-MTX44* MTX44Copy(MTX44* pOut, const MTX44* m);
+inline MTX44* MTX44Copy(MTX44* pOut, const MTX44* m);
 inline MTX44* MTX44Copy(MTX44* pOut, const MTX44& m) { return MTX44Copy(pOut, &m); }
-MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2);
+inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2);
 inline MTX44* MTX44Mult(MTX44* pOut, const MTX44& m1, const MTX44& m2) { return MTX44Mult(pOut, &m1, &m2); }
 
 class MTX44_

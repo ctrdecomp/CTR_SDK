@@ -40,12 +40,13 @@ void DspFxManagerImpl::Finalize()
 
 void DspFxManagerImpl::ForceUpdateParams() 
 {
-    for(int i = 0; i < AUX_BUS_NUM; i++){
+    for(int i = 0; i < AUX_BUS_NUM; i++)
+    {
         AuxBusId busId = (AuxBusId)i;
         mDspFxDelayParams[busId].ctrl= 0xffff;
-        Dspsnd::GetInstance().SetDspDelayEffect(busId, &this->mDspFxDelayParams[busId]);
+        Dspsnd::GetInstance().SetDspDelayEffect(busId, &this->m_DspFxDelayParams[busId]);
         mDspFxReverbParams[busId].ctrl = 0xffff;
-        Dspsnd::GetInstance().SetDspReverbEffect(busId, &this->mDspFxReverbParams[busId]);
+        Dspsnd::GetInstance().SetDspReverbEffect(busId, &this->m_DspFxReverbParams[busId]);
     }
 }
 
@@ -63,19 +64,19 @@ bool DspFxManagerImpl::SetDspDelayEffect(AuxBusId id, DspFxDelayParams* param)
     }
     if((param->ctrl & CTRL_COEFS) != 0)
     {
-        mDspFxDelayParams[id].channels = param->channels;
-        mDspFxDelayParams[id].delayFrames = param->delayFrames;
-        mDspFxDelayParams[id].delayFeedbackGain = param->delayFeedbackGain;
+        m_DspFxDelayParams[id].channels = param->channels;
+        m_DspFxDelayParams[id].delayFrames = param->delayFrames;
+        m_DspFxDelayParams[id].delayFeedbackGain = param->delayFeedbackGain;
 
         for(int i = 0; i < AUX_BUS_NUM; i += 1)
         {
-            mDspFxDelayParams[id].aLpfCoefs[i] = param->aLpfCoefs[i];
+            m_DspFxDelayParams[id].aLpfCoefs[i] = param->aLpfCoefs[i];
         }
 
     }
     if((param->ctrl & CTRL_ADDRESSES) != 0)
     {
-        mDspFxDelayParams[id].delayBufferAddress = param->delayBufferAddress;
+        m_DspFxDelayParams[id].delayBufferAddress = param->delayBufferAddress;
     }
     return Dspsnd::GetInstance().SetDspDelayEffect(id,param);
 }
@@ -84,41 +85,41 @@ bool DspFxManagerImpl::SetDspReverbEffect(AuxBusId id, DspFxReverbParams* param)
 {
     if((param->ctrl & CTRL_ENABLE) != 0)
     {
-        this->mDspFxReverbParams[id].enable = param->enable;
+        this->m_DspFxReverbParams[id].enable = param->enable;
     }
     if((param->ctrl & CTRL_COEFS) != 0)
     {
-        mDspFxReverbParams[id].channels = param->channels;
-        mDspFxReverbParams[id].earlyDelayFrames = param->earlyDelayFrames;
-        mDspFxReverbParams[id].preDelayFrames = param->preDelayFrames;
+        m_DspFxReverbParams[id].channels = param->channels;
+        m_DspFxReverbParams[id].earlyDelayFrames = param->earlyDelayFrames;
+        m_DspFxReverbParams[id].preDelayFrames = param->preDelayFrames;
 
         for(int i = 0; i < AUX_BUS_NUM; i++)
         {
-            mDspFxReverbParams[id].combFrames[i] = param->combFrames[i];
+            m_DspFxReverbParams[id].combFrames[i] = param->combFrames[i];
         }
 
-        mDspFxReverbParams[id].allPassFrames = param->allPassFrames;
-        mDspFxReverbParams[id].earlyGain = param->earlyGain;
-        mDspFxReverbParams[id].fusedGain = param->fusedGain;
-        mDspFxReverbParams[id].allPassCoef = param->allPassCoef;
+        m_DspFxReverbParams[id].allPassFrames = param->allPassFrames;
+        m_DspFxReverbParams[id].earlyGain = param->earlyGain;
+        m_DspFxReverbParams[id].fusedGain = param->fusedGain;
+        m_DspFxReverbParams[id].allPassCoef = param->allPassCoef;
 
         for(int coefi = 0; coefi < AUX_BUS_NUM; coefi++)
         {
-            mDspFxReverbParams[id].aCombCoefs[coefi] = param->aCombCoefs[coefi];
+            m_DspFxReverbParams[id].aCombCoefs[coefi] = param->aCombCoefs[coefi];
         }
 
         for(int lpfco = 0; lpfco < AUX_BUS_NUM; lpfco++)
         {
-            mDspFxReverbParams[id].aLpfCoefs[lpfco] = param->aLpfCoefs[lpfco];
+            m_DspFxReverbParams[id].aLpfCoefs[lpfco] = param->aLpfCoefs[lpfco];
         }
     }
     if((param->ctrl & CTRL_ADDRESSES) != 0)
     {
-        mDspFxReverbParams[id].earlyDelayBufferAddress = param->earlyDelayBufferAddress;
-        mDspFxReverbParams[id].preDelayBufferAddress = param->preDelayBufferAddress;
-        mDspFxReverbParams[id].combBufferAddress[0] = param->combBufferAddress[0];
-        mDspFxReverbParams[id].combBufferAddress[1] = param->combBufferAddress[1];
-        mDspFxReverbParams[id].allPassBufferAddress = param->allPassBufferAddress;
+        m_DspFxReverbParams[id].earlyDelayBufferAddress = param->earlyDelayBufferAddress;
+        m_DspFxReverbParams[id].preDelayBufferAddress = param->preDelayBufferAddress;
+        m_DspFxReverbParams[id].combBufferAddress[0] = param->combBufferAddress[0];
+        m_DspFxReverbParams[id].combBufferAddress[1] = param->combBufferAddress[1];
+        m_DspFxReverbParams[id].allPassBufferAddress = param->allPassBufferAddress;
     }
     Dspsnd::GetInstance().SetDspReverbEffect(id,param);
 }

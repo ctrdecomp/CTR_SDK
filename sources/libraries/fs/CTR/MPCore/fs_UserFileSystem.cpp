@@ -189,7 +189,7 @@ public:
             return ResultPathTooLong();
         }
 
-        return GetIpcObject().RenameFile(fs::Transaction(),this->m_ArchiveHandle, currentPath.GetPathType(), reinterpret_cast<const bit8*>(currentPath.GetDataBuffer()), currentPath.GetDataSize(),this->mArchiveHandle, newPath.GetPathType(), reinterpret_cast<const bit8*>(newPath.GetDataBuffer()), newPath.GetDataSize());
+        return GetIpcObject().RenameFile(fs::Transaction(),this->m_ArchiveHandle, currentPath.GetPathType(), reinterpret_cast<const bit8*>(currentPath.GetDataBuffer()), currentPath.GetDataSize(),this->m_ArchiveHandle, newPath.GetPathType(), reinterpret_cast<const bit8*>(newPath.GetDataBuffer()), newPath.GetDataSize());
     }
 
     virtual Result DeleteDirectory(const Path& path)
@@ -239,7 +239,7 @@ public:
             return ResultPathTooLong();
         }
 
-        return GetIpcObject().RenameDirectory(fs::Transaction(),this->m_ArchiveHandle, currentPath.GetPathType(), reinterpret_cast<const bit8*>(currentPath.GetDataBuffer()), currentPath.GetDataSize(),this->mArchiveHandle, newPath.GetPathType(), reinterpret_cast<const bit8*>(newPath.GetDataBuffer()), newPath.GetDataSize());
+        return GetIpcObject().RenameDirectory(fs::Transaction(),this->m_ArchiveHandle, currentPath.GetPathType(), reinterpret_cast<const bit8*>(currentPath.GetDataBuffer()), currentPath.GetDataSize(),this->m_ArchiveHandle, newPath.GetPathType(), reinterpret_cast<const bit8*>(newPath.GetDataBuffer()), newPath.GetDataSize());
     }
 
     virtual Result SetArchivePriority(s32 priority)
@@ -462,7 +462,7 @@ typedef void (*File)(void*);
 
 inline void InitializeGlobal(Handle h)
 {
-    GetFileServer().mSession = h;
+    GetFileServer().m_Session = h;
     GetFileServer().InitializeWithSdkVersion(NN_CURRENT_VERSION_NUMBER);
 }
 
@@ -834,7 +834,7 @@ Result OpenSharedExtSaveData(IArchive** pOut, const nn::fs::ExtSaveDataArchivePa
     Path path = Path::Make(&extSaveDataArchivePath);
     bit64 lowHandle;
     NN_UTIL_RETURN_IF_FAILED_0(GetFileServer().OpenArchive(&lowHandle, 0x200000007LL, path.GetPathType(), path.GetDataBuffer(), path.GetDataSize()));
-    NN_UTIL_RETURN_IF_FAILED_1(FileServerArchive::Create(pOut, gFileServerHandle, lowHandle), GetFileServer().CloseArchive(lowHandle));
+    NN_UTIL_RETURN_IF_FAILED_1(FileServerArchive::Create(pOut, g_FileServerHandle, lowHandle), GetFileServer().CloseArchive(lowHandle));
     return ResultSuccess();
 }
 

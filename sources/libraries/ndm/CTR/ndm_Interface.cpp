@@ -45,7 +45,7 @@ Result Interface::SuspendDaemons(bit32 mask)
     return ipcMsg.GetRaw<Result>(1);
 }
 
-nn::Result Interface::ResumeDaemons(bit32 mask)
+Result Interface::ResumeDaemons(bit32 mask)
 {
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(7, 1, 0, 0);

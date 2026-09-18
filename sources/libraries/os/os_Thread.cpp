@@ -225,7 +225,7 @@ __asm void Thread::CallDestructorAndExit(void* pStackBottom)
 {    
     MOV             R2, #0 
     MOV             R1, R0 
-    LDR             R0, =__cpp(&spAutoStackManager) // load AutoStackManager
+    LDR             R0, =__cpp(&s_pAutoStackManager) // load AutoStackManager
     LDR             R0, [R0] 
     LDR             R3, [R0]
     LDR             R3, [R3,#0xC] // load AutoStackManager's 0xC vtable slot

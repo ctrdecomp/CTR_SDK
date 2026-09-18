@@ -107,8 +107,10 @@ static nn::Result WriteLocalBlackList(void);
 
 }
 
-Result Initialize(){
-    if(isInitialized){
+Result Initialize()
+{
+    if(isInitialized)
+    {
         return nn::Result(nn::Result::LEVEL_PERMANENT, nn::Result::SUMMARY_NOTHING_HAPPENED, nn::Result::MODULE_NN_NGC, nn::Result::DESCRIPTION_ALREADY_INITIALIZED);
     }
 
@@ -118,7 +120,6 @@ Result Initialize(){
 
     s64 fileSize;
     nn::fs::FileInputStream fr;
-    nn::Result result;
 
     bool isError = true;
     s32 retryCount = 0;

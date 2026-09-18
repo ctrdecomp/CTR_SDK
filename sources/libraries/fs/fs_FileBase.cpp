@@ -20,7 +20,7 @@ Result FileBase::TryRead(s32* pOut, void* buffer, size_t size) {
             NN_UTIL_RETURN_IF_FAILED(FileBaseImpl::TryRead(&bytesRead, this->m_Position, buffer, size));
 
             n += bytesRead;
-            mPosition += bytesRead;
+            m_Position += bytesRead;
 
             if (bytesRead == size || bytesRead == 0)
                 break;
@@ -91,7 +91,7 @@ Result FileBase::TrySetPosition(s64 position)
             return ResultInvalidPosition();
         }
     }
-    this->mPosition = position;
+    this->m_Position = position;
     return ResultSuccess();
 }
 

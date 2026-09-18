@@ -56,9 +56,8 @@ bool CriticalSection::TryEnter()
     return true;
 }
 
-#endif
+#else
 
-#if NN_VERSION_MAJOR < 2 || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR < 4) || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR == 4 && NN_VERSION_MICRO <= 1)
 void CriticalSection::EnterImpl()
 {
     for(;;)
@@ -74,6 +73,7 @@ void CriticalSection::EnterImpl()
         this->m_Counter.DecrementAndWaitIfLessThan(0);
     }
 }
+
 #endif
 
 }

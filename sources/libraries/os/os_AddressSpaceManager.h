@@ -2,7 +2,7 @@
 
 #include <nn/os/os_CriticalSection.h>
 #include <nn/os/os_MemoryBlockBase.h>
-#include <nn/fnd/fnd_Intrusive.h>
+#include <nn/fnd/fnd_LinkedList.h>
 
 namespace nn{
 namespace os{

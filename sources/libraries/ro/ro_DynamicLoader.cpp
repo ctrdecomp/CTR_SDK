@@ -10,7 +10,7 @@ namespace nn{
 namespace ro{
 namespace detail{
 
-Handle DynamicLoader::sSession;
+Handle DynamicLoader::s_Session;
 
 Result DynamicLoader::Startup(Handle process, uptr staticInfo, size_t staticInfoSize, uptr locateAddr){
     MessageBuffer ipcMsg(GetMessageBuffer());
@@ -22,7 +22,7 @@ Result DynamicLoader::Startup(Handle process, uptr staticInfo, size_t staticInfo
     ipcMsg.SetHandle(5, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -39,7 +39,7 @@ Result DynamicLoader::RegisterList(Handle process, uptr rr, size_t rrSize){
     ipcMsg.SetHandle(4, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -55,7 +55,7 @@ Result DynamicLoader::UnregisterList(Handle process, uptr rr){
     ipcMsg.SetHandle(3, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -81,7 +81,7 @@ Result DynamicLoader::Load(size_t* pFixedSize, Handle process, uptr ro, uptr roR
     ipcMsg.SetHandle(13, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -101,7 +101,7 @@ Result DynamicLoader::Unload(Handle process, uptr roModule, size_t roSize, uptr 
     ipcMsg.SetHandle(5, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -117,7 +117,7 @@ Result DynamicLoader::Link(Handle process, uptr roModule){
     ipcMsg.SetHandle(3, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -133,7 +133,7 @@ Result DynamicLoader::Unlink(Handle process, uptr roModule){
     ipcMsg.SetHandle(3, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }
@@ -149,7 +149,7 @@ Result DynamicLoader::Cleanup(Handle process, uptr originalAddr){
     ipcMsg.SetHandle(3, process);
 
 
-    Result ipcResult = SendSyncRequest(sSession);
+    Result ipcResult = SendSyncRequest(s_Session);
     if(ipcResult.IsFailure()){
         return ipcResult;
     }

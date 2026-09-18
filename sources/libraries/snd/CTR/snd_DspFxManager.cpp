@@ -18,9 +18,9 @@ void DspFxManager::Initialize()
             AuxBusId id = static_cast<AuxBusId>(i);
             DspEffectType type = static_cast<DspEffectType>(j);
 
-            mIsAttached[type][id] = false;
-            mIsEnabled[type][id] = false;
-            mChannelNum[type][id] = 0;
+            m_IsAttached[type][id] = false;
+            m_IsEnabled[type][id] = false;
+            m_ChannelNum[type][id] = 0;
         }
     }
 
@@ -29,9 +29,9 @@ void DspFxManager::Initialize()
 
 s32 DspFxManager::GetChannelNum(DspEffectType type, AuxBusId id)
 {
-    if(mIsEnabled[type][id])
+    if(m_IsEnabled[type][id])
     {
-        return mChannelNum[type][id];
+        return m_ChannelNum[type][id];
     } 
     else
     {
@@ -62,15 +62,15 @@ bool DspFxManagerImpl::SetDspDelayEffect(AuxBusId id, DspFxDelayParams* param)
 
 bool DspFxManager::Detach(DspEffectType type,AuxBusId id) 
 {
-    mIsAttached[type][id] = false;
+    m_IsAttached[type][id] = false;
     return true;
 }
 
 bool DspFxManager::Attach(DspEffectType type,AuxBusId id)
 {
-    if(mIsAttached[type][id])
+    if(m_IsAttached[type][id])
         return false;
-    mIsAttached[type][id] = true;
+    m_IsAttached[type][id] = true;
     return true;
 }
 

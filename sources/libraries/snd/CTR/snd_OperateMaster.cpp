@@ -7,7 +7,7 @@
 #include <nn/snd/CTR/Common/snd_Const.h>
 #include <nn/snd/CTR/MPCore/snd_Class.h>
 #include <nn/os.h>
-#include <nn/os/ARM/os_MemoryBarrier.h>
+#include <nn/os/os_HandleManager.h>
 #include <nn/Assert.h>
 
 #include <string.h>
@@ -80,9 +80,12 @@ bool Dspsnd::EnableAuxBus(AuxBusId busId, bool flag)
     }
 }
 
-Result Dspsnd::Initialize(bool isWakeUp){
+Result Dspsnd::Initialize(bool isWakeUp)
+{
     if (!dsp::CTR::IsComponentLoaded())
-        return Result(0xC8A0A801);
+    {
+        return ResultNoDspComponentLoaded();
+    }
 
 
     if (m_IsInitialized)
@@ -94,18 +97,21 @@ Result Dspsnd::Initialize(bool isWakeUp){
 
     Result result = dsp::CTR::RegisterInterruptEvents(this->m_EventInterrupt.GetHandle(),2,2);
     
-    if (result.IsFailure()){
+    if (result.IsFailure())
+    {
         this->m_EventInterrupt.Finalize();
         return result;
     }
     Handle h;
     result = dsp::CTR::GetSemaphoreEventHandle(&h);
 
-    if (result.IsFailure() || ! h.IsValid()){
+    if (result.IsFailure() || ! h.IsValid())
+    {
         return result;
     }
-    else{
-        this->m_EventSemaphore.SetHandle(h);
+    else
+    {
+        nn::os::HandleManager::AttachHandle(&this->m_EventSemaphore, h);
     }
 
     dsp::CTR::SetSemaphoreEventMask(0x2000);
@@ -118,8 +124,7 @@ Result Dspsnd::Initialize(bool isWakeUp){
     {
         VoiceManager::GetInstance().ForceUpdateParams();
         MasterManagerImpl::GetInstance().ForceUpdateParams();
-        DspFxManager::GetInstance();
-        DspFxManagerImpl::GetInstance().ForceUpdateParams();
+        DspFxManager::GetInstance().GetImpl()->ForceUpdateParams();
     }
     else
     {
@@ -150,7 +155,8 @@ void Dspsnd::Finalize(bool isSleep)
         u16 reply = 0;
         dsp::CTR::RecvDataIsReady(0,&isReady);
         
-        if (isReady){
+        if (isReady)
+        {
             dsp::CTR::RecvData(0,&reply);
         }
         
@@ -158,18 +164,20 @@ void Dspsnd::Finalize(bool isSleep)
         os::Thread::Sleep(nn::fnd::TimeSpan::FromMicroSeconds(NN_SND_USECS_PER_FRAME));
     }
 
-    if (isSleep) {
+    if (isSleep)
+    {
         ::std::memcpy(this->m_SaveData,this->m_pMasterStatusOnShare[COM_PAGE_0],0x1080);
     }
 
-    this->m_CriticalSection.Enter();
+    m_CriticalSection.Enter();
     m_IsInitialized = false;
-    this->m_EventInterrupt.Finalize();
-    dsp::CTR::RegisterInterruptEvents(this->m_EventInterrupt.GetHandle(), 2,2);
-    svc::CloseHandle(this->m_EventSemaphore.GetHandle());
-    this->m_EventSemaphore.DetachHandle();
-    this->m_CriticalSection.Leave();
-    this->m_CriticalSection.Finalize();
+    m_EventInterrupt.Finalize();
+    dsp::CTR::RegisterInterruptEvents(m_EventInterrupt.GetHandle(), 2,2);
+    svc::CloseHandle(m_EventSemaphore.GetHandle());
+    nn::os::HandleManager::DetachHandle(&this->m_EventSemaphore);
+
+    m_CriticalSection.Leave();
+    m_CriticalSection.Finalize();
 }
 
 bool Dspsnd::InitializeChannelParameters(u8 ch_no)
@@ -289,7 +297,10 @@ bool Dspsnd::ResetChannelNextBuffer(u8 ch_no)
 
 void Dspsnd::SendParameter(void)
 {
-    if (!dsp::CTR::IsComponentLoaded()) return;
+    if (!dsp::CTR::IsComponentLoaded())
+    {
+        return;
+    }
 
     MasterManager& masterManager = MasterManager::GetInstance();
     VoiceManager& voiceManager = VoiceManager::GetInstance();
@@ -709,7 +720,7 @@ void Dspsnd::SyncFrameData()
             }
 
             ::std::memcpy(&m_DspCycles, GetDspCyclesAddr(), sizeof(m_DspCycles));
-            if(m_pOutputCapture && m_pOutputCapture->mIsEnabled)
+            if(m_pOutputCapture && m_pOutputCapture->m_IsEnabled)
             {
                 this->m_pOutputCapture->Write(this->GetMixBusAddr(),0xa0);
             }

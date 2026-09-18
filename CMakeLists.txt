@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.24)
 
-project(CTRSDK C CXX ASM)
+project(CTR_SDK C CXX ASM)
 
 if(NN_BUILD_DEBUG)
     add_compile_definitions(NN_BUILD_DEBUG)
@@ -91,7 +91,7 @@ nn_library(nn_gr      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gr)
 nn_library(nn_gxlow   ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gxlow)
 nn_library(nn_hid     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hid)
 nn_library(nn_hidlow  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hidlow)
-#nn_library(nn_hio     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hio)
+nn_library(nn_hio     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/is/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/kmc/hio)
 nn_library(nn_init    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/init)
 nn_library(nn_ir      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ir)
 nn_library(nn_math    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/math)
@@ -111,9 +111,9 @@ nn_library(nn_ulcd    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ulcd)
 nn_library(nn_util    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/util)
 nn_library(gles2      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gles2)
 
-add_library(CTRSDK INTERFACE)
+add_library(CTR_SDK INTERFACE)
 
-target_link_libraries(CTRSDK INTERFACE
+target_link_libraries(CTR_SDK INTERFACE
     nn_applet
     nn_camera
     nn_cfg

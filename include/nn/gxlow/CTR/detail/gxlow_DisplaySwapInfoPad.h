@@ -25,6 +25,8 @@ struct DisplaySwapInfo
 class DisplaySwapInfoPadBase
 {
 public:
+    static const size_t PAD_BODY_SIZE = 64 * NUM_DISPLAYS;
+
     DisplaySwapInfoPadBase(){ m_pBody[0] = NULL; }
     ~DisplaySwapInfoPadBase(){}
 protected:
@@ -60,6 +62,7 @@ public:
             m_pBody[i]++;
         }
     }
+
     void Finalize()
     {
         for(int i = 0; i < NUM_DISPLAYS; i++)

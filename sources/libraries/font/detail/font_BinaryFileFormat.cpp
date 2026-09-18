@@ -12,7 +12,7 @@ namespace nn {
 namespace font {
 namespace detail {
 
-bool IsValidBinaryFile(const BinaryFileHeader* pHeader,u32 signature, u32 version, u16 minBlocks  /* = 1 */)
+bool IsValidBinaryFile(const BinaryFileHeader* pHeader,u32 signature, u32 version, u16 minBlocks)
 {
     NN_POINTER_ASSERT(pHeader);
 
@@ -37,7 +37,9 @@ bool IsValidBinaryFile(const BinaryFileHeader* pHeader,u32 signature, u32 versio
         return false;
     }
 
-    if (NN_FONT_VERSION_MAJOR(version) != NN_FONT_VERSION_MAJOR(pHeader->version) || NN_FONT_VERSION_MINOR(version) < NN_FONT_VERSION_MINOR(pHeader->version)  || NN_FONT_VERSION_BINARYBUGFIX(version) > NN_FONT_VERSION_BINARYBUGFIX(pHeader->version) ){
+    if (NN_FONT_VERSION_MAJOR(version) != NN_FONT_VERSION_MAJOR(pHeader->version) || NN_FONT_VERSION_MINOR(version) < NN_FONT_VERSION_MINOR(pHeader->version)
+        || NN_FONT_VERSION_BINARYBUGFIX(version) > NN_FONT_VERSION_BINARYBUGFIX(pHeader->version))
+    {
         NN_WARNING_(false, "Version check faild (bin:'%d.%d.%d.%d', lib:'%d.%d.%d.%d').",
             NN_FONT_VERSION_MAJOR(pHeader->version),
             NN_FONT_VERSION_MINOR(pHeader->version),

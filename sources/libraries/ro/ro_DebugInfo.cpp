@@ -18,19 +18,22 @@ namespace detail {
 
 namespace{
 
-    bool sDebugNotificationEnabled = false;
+    bool s_DebugNotificationEnabled = false;
 
-    const char16* GetPath(s32* pPathLength, const Hash& hash){
+    const char16* GetPath(s32* pPathLength, const Hash& hash)
+    {
         const RegistrationList* prl;
         const s32 found = detail::FindRegistrationListEntry(&prl, &hash);
 
-        if(found < 0){
+        if(found < 0)
+        {
             return NULL;
         }
 
         const ModuleRegistrationListHeader& header = *reinterpret_cast<const ModuleRegistrationListHeader*>(prl);
 
-        if(header.debugInfoSize <= 0){
+        if(header.debugInfoSize <= 0)
+        {
             return NULL;
         }
 
@@ -38,7 +41,8 @@ namespace{
         const DebugInfoMapEntry* pdim   = dih.tableOffset.GetPointer(&header);
         const s32 numEntry              = dih.numTableEntry;
 
-        if(found >= numEntry ){
+        if(found >= numEntry)
+        {
             return NULL;
         }
 
@@ -49,7 +53,8 @@ namespace{
         return dib.pathOffset.GetPointer(&header);
     }
 
-    const char16* GetPath(s32* pPathLength, const ModuleHeader& header){
+    const char16* GetPath(s32* pPathLength, const ModuleHeader& header)
+    {
         Hash hash;
         Result result;
 
@@ -57,11 +62,14 @@ namespace{
         return GetPath(pPathLength, hash);
     }
 
-    uptr GetRwAddress(const ModuleHeader& header){
-        for(s32 i = 0; i < header.numSections; ++i){
+    uptr GetRwAddress(const ModuleHeader& header)
+    {
+        for(s32 i = 0; i < header.numSections; ++i)
+        {
             const SectionInfo& si = header.sectionInfo[i];
 
-            if(si.section == SECTION_RW){
+            if(si.section == SECTION_RW)
+            {
                 return si.offset;
             }
         }
@@ -69,10 +77,12 @@ namespace{
         return NULL;
     }
 
-    bool MakeDllInfo(DllInfo* pInfo, const ModuleHeader& header){
+    bool MakeDllInfo(DllInfo* pInfo, const ModuleHeader& header)
+    {
         s32 pathLength;
         const char16* pPath = GetPath(&pathLength, header);
-        if(pPath == NULL){
+        if(pPath == NULL)
+        {
             return false;
         }
 
@@ -85,31 +95,39 @@ namespace{
     }
 }
 
-void NotifyDllLoadedToDebugger(const Module* pModule){
-    if(sDebugNotificationEnabled ){
+void NotifyDllLoadedToDebugger(const Module* pModule)
+{
+    if(s_DebugNotificationEnabled)
+    {
         dbg::detail::CTR::DllInfo dllInfo;
 
-        if(MakeDllInfo(&dllInfo, *reinterpret_cast<const ModuleHeader*>(pModule))){
+        if(MakeDllInfo(&dllInfo, *reinterpret_cast<const ModuleHeader*>(pModule)))
+        {
             dbg::detail::NotifyDllLoadedToDebugger(&dllInfo, sizeof(dllInfo));
         }
-        else{
+        else
+        {
             NN_TLOG_("ro: debug information for module \"%s\" is not registered.\n", pModule->GetName());
         }
     }
 }
 
-void NotifyDllUnloadingToDebugger(const Module* pModule){
-    if(sDebugNotificationEnabled){
+void NotifyDllUnloadingToDebugger(const Module* pModule)
+{
+    if(s_DebugNotificationEnabled)
+    {
         dbg::detail::CTR::DllInfo dllInfo;
 
-        if(MakeDllInfo(&dllInfo, *reinterpret_cast<const ModuleHeader*>(pModule))){
+        if(MakeDllInfo(&dllInfo, *reinterpret_cast<const ModuleHeader*>(pModule)))
+        {
             dbg::detail::NotifyDllUnloadingToDebugger(&dllInfo, sizeof(dllInfo));
         }
     }
 }
 
-void EnableDebugNotification(bool enable){
-    sDebugNotificationEnabled = enable;
+void EnableDebugNotification(bool enable)
+{
+    s_DebugNotificationEnabled = enable;
 }
 
 }

@@ -8,6 +8,7 @@
 #include <nn/srv/srv_API.h>
 #include <nn/err/CTR/err_Api.h>
 #include <nn/gxlow/CTR/gxlow_SystemUse.h>
+#include <nn/os/os_HandleManager.h>
 
 #include <string.h>
 
@@ -94,7 +95,7 @@ void DisconnectAndUnlock()
 
 void InitializeMutex(nn::Handle handle)
 {
-    s_Mutex.SetHandle(handle);
+    nn::os::HandleManager::AttachHandle(&s_Mutex, handle);
 }
 
 }

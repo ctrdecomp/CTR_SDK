@@ -11,7 +11,8 @@ namespace nn{
 namespace dbm{
 
 template <class BucketStorage_,class EntryStorage_,class Key_,class Value_,int MAX_EXTRA_SIZE_>
-class KeyValueRomStorageTemplate{
+class KeyValueRomStorageTemplate
+{
 public:
     typedef BucketStorage_ BucketStorage;
     typedef EntryStorage_ EntryStorage;
@@ -22,7 +23,8 @@ public:
 
     static const Position STORAGE_FREEENTRY = 0xFFFFFFFF;
 
-    struct StorageElement{
+    struct StorageElement
+    {
         Key key;
         Value value;
         Position next;
@@ -30,25 +32,25 @@ public:
     };
 
 private:
-    util::Int64<s64> mOffsetBucket;
-    u32 mCountBucket;
-    BucketStorage* mpBufBucket;
-    s64 mOffsetKeyValue;
-    u32 mSizeKeyValue;
-    EntryStorage* mpBufKeyValue;
-    u32 mTotalEntrySize;
-    u32 mEntryCount;
+    util::Int64<s64> m_OffsetBucket;
+    u32 m_CountBucket;
+    BucketStorage* m_pBufBucket;
+    s64 m_OffsetKeyValue;
+    u32 m_SizeKeyValue;
+    EntryStorage* m_pBufKeyValue;
+    u32 m_TotalEntrySize;
+    u32 m_EntryCount;
 public:
 
    KeyValueRomStorageTemplate(): 
-        mOffsetBucket(0),
-        mCountBucket(0),
-        mpBufBucket(NULL),
-        mOffsetKeyValue(0),
-        mSizeKeyValue(0),
-        mpBufKeyValue(NULL),
-        mTotalEntrySize(0),
-        mEntryCount(0)
+        m_OffsetBucket(0),
+        m_CountBucket(0),
+        m_pBufBucket(NULL),
+        m_OffsetKeyValue(0),
+        m_SizeKeyValue(0),
+        m_pBufKeyValue(NULL),
+        m_TotalEntrySize(0),
+        m_EntryCount(0)
     {}
 
     static u32 QueryBucketCount(u32 size){
@@ -60,13 +62,13 @@ public:
         NN_NULL_TASSERT_(pKeyValue);
         NN_TASSERT_(countBucket > 0);
 
-        mpBufBucket = pBucket;
-        mOffsetBucket = offsetBucket;
-        mCountBucket = countBucket;
+        m_pBufBucket = pBucket;
+        m_OffsetBucket = offsetBucket;
+        m_CountBucket = countBucket;
 
-        mpBufKeyValue = pKeyValue;
-        mOffsetKeyValue = offsetKeyValue;
-        mSizeKeyValue = sizeKeyValue;
+        m_pBufKeyValue = pKeyValue;
+        m_OffsetKeyValue = offsetKeyValue;
+        m_SizeKeyValue = sizeKeyValue;
 
         return ResultSuccess();
     }
@@ -109,7 +111,7 @@ public:
     }
 private:
     IndexBucket HashToBucket(u32 hashKey) const{
-        return hashKey % mCountBucket;
+        return hashKey % m_CountBucket;
     }
 
     Result FindInternal(Position* pPosition,Position* pPreviousPosition,StorageElement* pStoreElement,const Key& key,u32 hashKey,const void* pExtraKey,size_t extraSize) const{
@@ -165,8 +167,8 @@ private:
         NN_NULL_TASSERT_(mpBufBucket);
         NN_TASSERT_(index < mCountBucket);
 
-        s64 offset = mOffsetBucket + index * sizeof(Position);
-        return mpBufBucket->ReadBytes(offset, pKvStorePosition, sizeof(Position));
+        s64 offset = m_OffsetBucket + index * sizeof(Position);
+        return m_pBufBucket->ReadBytes(offset, pKvStorePosition, sizeof(Position));
     }
 
     inline Result ReadKeyValue(StorageElement* pElement,void* pExtraKey,size_t* pExtraSize,Position pos) const{
@@ -176,8 +178,8 @@ private:
 
         Result res;
 
-        s64 offset = mOffsetKeyValue + pos;
-        res = mpBufKeyValue->ReadBytes(offset, pElement, sizeof(StorageElement));
+        s64 offset = m_OffsetKeyValue + pos;
+        res = m_pBufKeyValue->ReadBytes(offset, pElement, sizeof(StorageElement));
         if (res.IsFailure()){
             return res;
         }
@@ -185,7 +187,7 @@ private:
         if ((pExtraKey != NULL) && (pExtraSize != NULL)){
             *pExtraSize = pElement->size;
             if (pElement->size > 0){
-                res = mpBufKeyValue->ReadBytes(offset + sizeof(StorageElement), pExtraKey, pElement->size);
+                res = m_pBufKeyValue->ReadBytes(offset + sizeof(StorageElement), pExtraKey, pElement->size);
                 if (res.IsFailure()){
                     return res;
                 }

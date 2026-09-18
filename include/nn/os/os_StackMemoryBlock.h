@@ -20,7 +20,7 @@ public:
     StackMemoryBlock(size_t size): 
         MemoryBlockBase()
     {
-        Initialize(size)
+        Initialize(size);
     }
 
     void Initialize(size_t size);

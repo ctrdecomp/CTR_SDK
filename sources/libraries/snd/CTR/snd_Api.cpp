@@ -26,7 +26,8 @@ namespace{
     bool s_IsWaitingForFinalize;
     os::LightEvent s_SleepEvent;
     bool s_IsHeadphoneConnected;
-    enum SyncState{
+    enum SyncState
+    {
         SYNC_STATE_WAIT,
         SYNC_STATE_SEND
     };

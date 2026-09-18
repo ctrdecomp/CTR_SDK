@@ -174,7 +174,8 @@ Result GetParentDirectoryName(RomEntryName* pOut, const RomEntryName& base, cons
     {
         size_t length = 0;
         const RomPathChar* p = base.path - 1;
-        while (p >= pHead){
+        while (p >= pHead)
+        {
             if (IsSeparator(*p))
             {
 

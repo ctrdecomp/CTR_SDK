@@ -10,9 +10,18 @@
 #include <nn/Result.h>
 #include <nn/err/CTR/err_Api.h>
 
-namespace nn{
-namespace cfg{
-namespace CTR{
+namespace nn {
+namespace cfg {
+namespace CTR {
+namespace detail {
+
+Result GetDebugParam(DebugParamCfgData* debugParam)
+{
+    Result result;
+    return GetConfig(debugParam, 4, CFG_KEY_USER_DEBUG_DATA);
+}
+
+}
 
 u8 GetFsLatencyEmulationParam()
 {
@@ -31,8 +40,7 @@ u8 GetFsLatencyEmulationParam()
         NN_TLOG_("[cfg] Application is not permitted to use cfg.\n");
     }
 
-    void* pData = &debugParam;
-    NN_ERR_THROW_FATAL_ALL(detail::IpcUser::GetConfig(pData, 4, 0x130000));
+    NN_ERR_THROW_FATAL_ALL(detail::GetDebugParam(&debugParam));
 
     detail::FinalizeProperPort(portType);
 
@@ -57,11 +65,9 @@ bool IsDebugMode()
         NN_TLOG_("[cfg] Application is not permitted to use cfg.\n");
     }
 
-    void* pData = &debugParam;
-    NN_ERR_THROW_FATAL_ALL(detail::IpcUser::GetConfig(pData, 4, 0x130000));
+    NN_ERR_THROW_FATAL_ALL(detail::GetDebugParam(&debugParam));
 
     detail::FinalizeProperPort(portType);
-    bool isMode;
     if(debugParam.param.flags1 & 1)
     {
         return true;

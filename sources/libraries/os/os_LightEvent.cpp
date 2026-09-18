@@ -63,7 +63,7 @@ void LightEvent::Signal(){
     }
     else if(*this->m_Counter == NOT_RESETED_MANUAL)
     {
-#if NN_VERSION_MAJOR > 2 || (NN_VERSION_MAJOR == 2 && NN_VERSION_MICRO > 1)
+#if NN_VERSION_MAJOR > 2 || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR > 4) || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR == 4 && NN_VERSION_MICRO > 1)
         SimpleLock::ScopedLock lock(this->m_Lock);
 #endif
         *this->m_Counter = RESETED_MANUAL;

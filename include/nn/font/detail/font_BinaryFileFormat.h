@@ -24,7 +24,8 @@ typedef u32 SigWord;
 #define NN_FONT_VERSION_MICRO(version)        (((version) >>  8) & 0xff)
 #define NN_FONT_VERSION_BINARYBUGFIX(version) (((version) >>  0) & 0xff)
 
-struct BinaryFileHeader{
+struct BinaryFileHeader
+{
     SigWord signature;
     u16 byteOrder;
     u16 headerSize;
@@ -34,7 +35,8 @@ struct BinaryFileHeader{
     u16 reserved;
 };
 
-struct BinaryBlockHeader{
+struct BinaryBlockHeader
+{
     SigWord kind;
     u32 size;
 };

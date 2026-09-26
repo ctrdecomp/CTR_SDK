@@ -4,7 +4,8 @@
 
 namespace nn {
 namespace os {
-        enum Description{
+        enum Description
+        {
                 DESCRIPTION_FAILED_TO_ALLOCATE_MEMORY          = 1,
                 DESCRIPTION_FAILED_TO_ALLOCATE_SHARED_MEMORY   = 2,
                 DESCRIPTION_FAILED_TO_ALLOCATE_THREAD          = 3,
@@ -54,21 +55,20 @@ namespace os {
                 DESCRIPTION_EXCEED_ADDRESS_ARBITER_LIMIT       = 51,
                 DESCRIPTION_OVER_PORT_CAPACITY                 = 52,
                 DESCRIPTION_NOT_MAPPED                         = 53,
+                DESCRIPTION_BUFFER_TOO_FLAGMENTED              = 54,
                 DESCRIPTION_NO_ADDRESS_SPACE                   = 55,
                 DESCRIPTION_EXCEED_TLS_LIMIT                   = 56,
+                DESCRIPTION_CANT_START                         = 57,
+                DESCRIPTION_LOCKED                             = 58,
+                DESCRIPTION_NOT_FINALIZED                      = 59,
                 DESCRIPTION_OBSOLETE_RESULT                    = 1023
         };
 
 NN_DEFINE_RESULT_CONST(ResultOverPortCapacity,Result::LEVEL_TEMPORARY, Result::SUMMARY_WOULD_BLOCK, Result::MODULE_NN_OS, DESCRIPTION_OVER_PORT_CAPACITY);
-
 NN_DEFINE_RESULT_CONST(ResultNoAddressSpace,Result::LEVEL_PERMANENT, Result::SUMMARY_OUT_OF_RESOURCE, Result::MODULE_NN_OS, DESCRIPTION_NO_ADDRESS_SPACE);
-
 NN_DEFINE_RESULT_CONST(ResultAlreadyInitialized,Result::LEVEL_INFO, Result::SUMMARY_INVALID_STATE, Result::MODULE_NN_OS, nn::Result::DESCRIPTION_ALREADY_INITIALIZED);
-
 NN_DEFINE_RESULT_CONST(ResultMisalignedAddress,Result::LEVEL_USAGE, Result::SUMMARY_INVALID_ARGUMENT, Result::MODULE_NN_OS, nn::Result::DESCRIPTION_MISALIGNED_ADDRESS);
-
 NN_DEFINE_RESULT_CONST(ResultMisalignedSize,Result::LEVEL_USAGE, Result::SUMMARY_INVALID_ARGUMENT, Result::MODULE_NN_OS, nn::Result::DESCRIPTION_MISALIGNED_SIZE);
-
 NN_DEFINE_RESULT_CONST(ResultInvalidHandle, Result::LEVEL_PERMANENT, Result::SUMMARY_WRONG_ARGUMENT, Result::MODULE_NN_OS, nn::Result::DESCRIPTION_INVALID_HANDLE);
 
 }

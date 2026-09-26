@@ -33,8 +33,14 @@ public:
 
     union
     {
+        struct
+        {
+            f32 _00, _01, _02;
+            f32 _10, _11, _12;
+            f32 _20, _21, _22;
+        };
         BaseData f;
-        f32 matrix[3][3];
+        f32 m[3][3];
         f32 a[9];
         VEC3_ v[3];
     };
@@ -145,7 +151,7 @@ inline VEC3* VEC3TransformC(VEC3* pOut, const MTX33* pM, const VEC3* pV)
 
 inline VEC3* VEC3Transform(VEC3* pOut, const MTX33* __restrict pM, const VEC3* __restrict pV)
 {
-    #ifdef NN_BUILD_DEBUG
+    #ifdef NN_MATH_BUILD_FAST
         return ARMv6::VEC3TransformC(pOut,pM,pV);
     #else
         return ARMv6::VEC3TransformAsm(pOut, pM, pV);
@@ -154,7 +160,7 @@ inline VEC3* VEC3Transform(VEC3* pOut, const MTX33* __restrict pM, const VEC3* _
 
 inline MTX33* MTX33Copy(MTX33* pOut, const MTX33* p)
 {
-    #ifdef NN_BUILD_DEBUG
+    #ifdef NN_MATH_BUILD_FAST
         return ARMv6::MTX33CopyC(pOut,p);
     #else
         return ARMv6::MTX33CopyAsm(pOut,p);
@@ -164,7 +170,7 @@ inline MTX33* MTX33Copy(MTX33* pOut, const MTX33* p)
 template<typename TMatrix>
 inline TMatrix* MTX33Mult(TMatrix* pOut, const TMatrix* p1, const TMatrix* p2)
 {
-    #ifdef NN_BUILD_DEBUG
+    #ifdef NN_MATH_BUILD_FAST
         return ARMv6::MTX33MultC(pOut,p1,p2);
     #else
         return ARMv6::MTX33MultAsm(pOut,p1,p2);

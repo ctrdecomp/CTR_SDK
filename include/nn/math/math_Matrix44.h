@@ -1,20 +1,21 @@
 #pragma once
 
-#include <nn/math/math_Vec3.h>
-#include <nn/math/math_Vec4.h>
 #include <nn/math/math_Matrix34.h>
 
 namespace nn{
 namespace math{
-    enum PivotDirection
-    {
-        PIVOT_NONE,
-        PIVOT_UPSIDE_TO_TOP,
-        PIVOT_UPSIDE_TO_RIGHT,
-        PIVOT_UPSIDE_TO_BOTTOM,
-        PIVOT_UPSIDE_TO_LEFT,
-        PIVOT_NUM
-    };
+
+enum PivotDirection
+{
+    PIVOT_NONE,
+    PIVOT_UPSIDE_TO_TOP,
+    PIVOT_UPSIDE_TO_RIGHT,
+    PIVOT_UPSIDE_TO_BOTTOM,
+    PIVOT_UPSIDE_TO_LEFT,
+    PIVOT_NUM
+};
+
+
 class MTX44;
 
 inline MTX44* MTX44Copy(MTX44* pOut, const MTX44* m);
@@ -47,7 +48,14 @@ public:
     union
     {
         BaseData f;
-        f32 matrix[4][4];
+        struct
+        {
+            f32 _00, _01, _02, _03;
+            f32 _10, _11, _12, _13;
+            f32 _20, _21, _22, _23;
+            f32 _30, _31, _32, _33;
+        };
+        f32 m[4][4];
         f32 a[16];
         VEC4_ v[4];
     };
@@ -103,14 +111,8 @@ inline MTX44* MTX44Identity(MTX44* pOut)
 namespace nn{
 namespace math{
 namespace ARMv6{
-
-MTX44* MTX44MultAsm(MTX44* pOut, const MTX44*  p1, const MTX44* p2);
-
-void MTX44MultScaleAsm(MTX44* pOut, MTX44 const* p1, VEC3 const* p2);
-
-void MTX44MultTranslateAsm(MTX44 * pOut, VEC3 const* p1, MTX44 const* p2);
-
-namespace {
+namespace 
+{
     inline void SwapF(f32 &a, f32 &b)
     {
         f32 tmp;
@@ -119,6 +121,95 @@ namespace {
         b = tmp;
     }
 }
+
+inline MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2)
+{
+    NN_NULL_ASSERT_(pOut);
+    NN_NULL_ASSERT_(p1);
+    NN_NULL_ASSERT_(p2);
+    
+    MTX44 mTmp;
+    
+    MTX44* __restrict pDst = ( pOut == p1 || pOut == p2 ) ? &mTmp : pOut;
+    
+    pDst->f._00 = p1->f._00 * p2->f._00 + p1->f._01 * p2->f._10 + p1->f._02 * p2->f._20 + p1->f._03 * p2->f._30;
+    pDst->f._01 = p1->f._00 * p2->f._01 + p1->f._01 * p2->f._11 + p1->f._02 * p2->f._21 + p1->f._03 * p2->f._31;
+    pDst->f._02 = p1->f._00 * p2->f._02 + p1->f._01 * p2->f._12 + p1->f._02 * p2->f._22 + p1->f._03 * p2->f._32;
+    pDst->f._03 = p1->f._00 * p2->f._03 + p1->f._01 * p2->f._13 + p1->f._02 * p2->f._23 + p1->f._03 * p2->f._33;
+    
+    pDst->f._10 = p1->f._10 * p2->f._00 + p1->f._11 * p2->f._10 + p1->f._12 * p2->f._20 + p1->f._13 * p2->f._30;
+    pDst->f._11 = p1->f._10 * p2->f._01 + p1->f._11 * p2->f._11 + p1->f._12 * p2->f._21 + p1->f._13 * p2->f._31;
+    pDst->f._12 = p1->f._10 * p2->f._02 + p1->f._11 * p2->f._12 + p1->f._12 * p2->f._22 + p1->f._13 * p2->f._32;
+    pDst->f._13 = p1->f._10 * p2->f._03 + p1->f._11 * p2->f._13 + p1->f._12 * p2->f._23 + p1->f._13 * p2->f._33;
+    
+    pDst->f._20 = p1->f._20 * p2->f._00 + p1->f._21 * p2->f._10 + p1->f._22 * p2->f._20 + p1->f._23 * p2->f._30;
+    pDst->f._21 = p1->f._20 * p2->f._01 + p1->f._21 * p2->f._11 + p1->f._22 * p2->f._21 + p1->f._23 * p2->f._31;
+    pDst->f._22 = p1->f._20 * p2->f._02 + p1->f._21 * p2->f._12 + p1->f._22 * p2->f._22 + p1->f._23 * p2->f._32;
+    pDst->f._23 = p1->f._20 * p2->f._03 + p1->f._21 * p2->f._13 + p1->f._22 * p2->f._23 + p1->f._23 * p2->f._33;
+
+    pDst->f._30 = p1->f._30 * p2->f._00 + p1->f._31 * p2->f._10 + p1->f._32 * p2->f._20 + p1->f._33 * p2->f._30;
+    pDst->f._31 = p1->f._30 * p2->f._01 + p1->f._31 * p2->f._11 + p1->f._32 * p2->f._21 + p1->f._33 * p2->f._31;
+    pDst->f._32 = p1->f._30 * p2->f._02 + p1->f._31 * p2->f._12 + p1->f._32 * p2->f._22 + p1->f._33 * p2->f._32;
+    pDst->f._33 = p1->f._30 * p2->f._03 + p1->f._31 * p2->f._13 + p1->f._32 * p2->f._23 + p1->f._33 * p2->f._33;
+    
+    if (pDst != pOut)
+    {
+        MTX44Copy(pOut, pDst);
+    }
+    
+    return pOut;
+}
+MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2);
+
+inline MTX44* MTX44MultScaleC(MTX44* pOut, const MTX44* pM, const VEC3* pS)
+{
+    // Version where the scale matrix is applied from the right.
+    pOut->f._00 = pM->f._00 * pS->x;
+    pOut->f._10 = pM->f._10 * pS->x;
+    pOut->f._20 = pM->f._20 * pS->x;
+
+    pOut->f._01 = pM->f._01 * pS->y;
+    pOut->f._11 = pM->f._11 * pS->y;
+    pOut->f._21 = pM->f._21 * pS->y;
+
+    pOut->f._02 = pM->f._02 * pS->z;
+    pOut->f._12 = pM->f._12 * pS->z;
+    pOut->f._22 = pM->f._22 * pS->z;
+
+    if (pOut != pM)
+    {
+        pOut->f._03 = pM->f._03;
+        pOut->f._13 = pM->f._13;
+        pOut->f._23 = pM->f._23;
+    }
+
+    return pOut;
+}
+void MTX44MultScaleAsm(MTX44* pOut, MTX44 const* p1, VEC3 const* p2);
+
+inline MTX44* MTX44MultTranslateC(MTX44* pOut, const VEC3* pT, const MTX44* pM)
+{
+    NN_NULL_ASSERT_(pOut);
+    NN_NULL_ASSERT_(pT);
+    NN_NULL_ASSERT_(pM);
+
+    const f32 (*const src)[4] = pM->m;
+    f32 (*const dst)[4] = pOut->m;
+    
+    if (src != dst)
+    {
+        dst[0][0] = src[0][0];  dst[0][1] = src[0][1];  dst[0][2] = src[0][2];
+        dst[1][0] = src[1][0];  dst[1][1] = src[1][1];  dst[1][2] = src[1][2];
+        dst[2][0] = src[2][0];  dst[2][1] = src[2][1];  dst[2][2] = src[2][2];
+    }
+    
+    dst[0][3] = src[0][3] + pT->x;
+    dst[1][3] = src[1][3] + pT->y;
+    dst[2][3] = src[2][3] + pT->z;
+    
+    return pOut;
+}
+void MTX44MultTranslateAsm(MTX44 * pOut, VEC3 const* p1, MTX44 const* p2);
 
 inline u32 MTX44InverseC(MTX44* pOut, const MTX44* p)
 {
@@ -130,8 +221,8 @@ inline u32 MTX44InverseC(MTX44* pOut, const MTX44* p)
     MTX44Copy(&mTmp, p);
     MTX44Identity(pOut);
     
-    src = mTmp.matrix;
-    inv = pOut->matrix;
+    src = mTmp.m;
+    inv = pOut->m;
     
     for (int i = 0; i < 4; ++i)
     {
@@ -192,8 +283,8 @@ inline u32 MTX44InverseC_FAST(MTX44* pOut, const MTX44* p)
     const f32 (*src)[4];
     f32 (*inv)[4];
 
-    src = p->matrix;
-    inv = pOut->matrix;
+    src = p->m;
+    inv = pOut->m;
 
     f32 a11, a12, a13, a14, a21, a22, a23, a24, a31, a32, a33, a34, a41, a42, a43, a44;
     f32 b11, b12, b13, b14, b21, b22, b23, b24, b31, b32, b33, b34, b41, b42, b43, b44;
@@ -317,30 +408,322 @@ inline u32 MTX44InverseC_FAST(MTX44* pOut, const MTX44* p)
     return 1;
 }
 
-MTX44* MTX44FrustumC_FAST(MTX44* pOut, f32 l, f32 r, f32 b, f32 t, f32 n, f32 f);
-MTX44*  MTX44PivotC_FAST(MTX44* pOut, PivotDirection pivot );
+inline MTX44* MTX44FrustumC_FAST(MTX44* pOut, f32 l, f32 r, f32 b, f32 t, f32 n, f32 f)
+{
+    NN_NULL_ASSERT_(pOut);
 
-MTX44* MTX44PerspectivePivotRadC(MTX44* pOut, f32 fovy, f32 aspect, f32 n, f32 f, PivotDirection pivot = PIVOT_NONE);
-MTX44* MTX44PerspectivePivotRadC_FAST(MTX44* pOut, f32 fovy, f32 aspect, f32 n, f32 f, PivotDirection pivot = PIVOT_NONE);
+    f32 (*const m)[4] = pOut->m;
+    f32 tmp1 =  1.0f / (r - l);
+    f32 tmp3 =  1.0f / (f - n);
+    f32 tmp2 =  1.0f / (t - b);
 
-MTX44* MTX44CopyAsm(nn::math::MTX44 *,nn::math::MTX44 const*);
-MTX44* MTX44CopyC(MTX44* pOut, const MTX44* p);
+    register f32 m00, m02, m11, m12, m22, m23;
+
+    m00 = (2*n) * tmp1;
+    m02 = (r + l) * tmp1;
+
+    m11 = (2*n) * tmp2;
+    m12 = (t + b) * tmp2;
+
+    m22 = f * tmp3;
+    m23 = f * n * tmp3;
+
+    m[0][1] = 0.0f;
+    m[0][3] = 0.0f;
+
+    m[1][0] = 0.0f;
+    m[1][3] = 0.0f;
+
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = -1.0f;
+    m[3][3] = 0.0f;
+
+    m[0][0] = m00;
+    m[0][2] = m02;
+
+    m[1][1] = m11;
+    m[1][2] = m12;
+
+    m[2][2] = m22;
+    m[2][3] = m23;
+
+    return pOut;
+}
+inline MTX44* MTX44FrustumC(MTX44* pOut, f32 l, f32 r, f32 b, f32 t, f32 n, f32 f)
+{
+    NN_NULL_ASSERT_(pOut);
+
+    f32 (*const m)[4] = pOut->m;
+    f32 tmp     =  1.0f / (r - l);
+    m[0][0] =  (2*n) * tmp;
+    m[0][1] =  0.0f;
+    m[0][2] =  (r + l) * tmp;
+    m[0][3] =  0.0f;
+
+    tmp     =  1.0f / (t - b);
+    m[1][0] =  0.0f;
+    m[1][1] =  (2*n) * tmp;
+    m[1][2] =  (t + b) * tmp;
+    m[1][3] =  0.0f;
+
+    m[2][0] =  0.0f;
+    m[2][1] =  0.0f;
+
+    tmp = 1.0f / (f - n);
+
+    m[2][2] = f * tmp;
+    m[2][3] = f * n * tmp;
+
+    m[3][0] =  0.0f;
+    m[3][1] =  0.0f;
+    m[3][2] = -1.0f;
+    m[3][3] =  0.0f;
+
+    return pOut;
+}
+
+inline MTX44* MTX44PivotC_FAST(MTX44* pOut, PivotDirection pivot)
+{
+    f32 (*const m)[4] = pOut->m;
+    if ((pivot == PIVOT_NONE) || (pivot == PIVOT_UPSIDE_TO_LEFT))
+    {
+        return pOut;
+    }
+
+    if (pivot == PIVOT_UPSIDE_TO_RIGHT)
+    {
+        register f32 m00, m01, m02, m03, m10, m11, m12, m13;
+
+        m00 = -m[0][0];
+        m01 = -m[0][1];
+        m02 = -m[0][2];
+        m03 = -m[0][3];
+
+        m10 = -m[1][0];
+        m11 = -m[1][1];
+        m12 = -m[1][2];
+        m13 = -m[1][3];
+
+        m[0][0] = m00;
+        m[0][1] = m01;
+        m[0][2] = m02;
+        m[0][3] = m03;
+
+        m[1][0] = m10;
+        m[1][1] = m11;
+        m[1][2] = m12;
+        m[1][3] = m13;
+    }
+    else if (pivot == PIVOT_UPSIDE_TO_BOTTOM)
+    {
+        register f32 m00, m01, m02, m03, m10, m11, m12, m13;
+
+        m10 = m[0][0];
+        m11 = m[0][1];
+        m12 = m[0][2];
+        m13 = m[0][3];
+
+        m00 = -m[1][0];
+        m01 = -m[1][1];
+        m02 = -m[1][2];
+        m03 = -m[1][3];
+
+        m[0][0] = m00;
+        m[0][1] = m01;
+        m[0][2] = m02;
+        m[0][3] = m03;
+
+        m[1][0] = m10;
+        m[1][1] = m11;
+        m[1][2] = m12;
+        m[1][3] = m13;
+    }
+    else
+    {
+        register f32 m00, m01, m02, m03, m10, m11, m12, m13;
+
+        m10 = -m[0][0];
+        m11 = -m[0][1];
+        m12 = -m[0][2];
+        m13 = -m[0][3];
+
+        m00 = m[1][0];
+        m01 = m[1][1];
+        m02 = m[1][2];
+        m03 = m[1][3];
+
+        m[0][0] = m00;
+        m[0][1] = m01;
+        m[0][2] = m02;
+        m[0][3] = m03;
+
+        m[1][0] = m10;
+        m[1][1] = m11;
+        m[1][2] = m12;
+        m[1][3] = m13;
+    }
+    return pOut;
+}
+inline MTX44* MTX44PivotC(MTX44* pOut, PivotDirection pivot)
+{
+    const f32 PIVOT_ROTATION_SIN_COS[PIVOT_NUM][2] =
+    {
+        { 0.0f,  1.0f }, // NONE
+        { -1.0f, 0.0f }, // TO_UP
+        { 0.0f, -1.0f }, // TO_RIGHT
+        { 1.0f,  0.0f }, // TO_BOTTOM
+        { 0.0f,  1.0f }, // TO_LEFT
+    };
+
+    if (pivot == PIVOT_NONE)
+    {
+        return pOut;
+    }
+
+    f32 sin = PIVOT_ROTATION_SIN_COS[ pivot ][ 0 ];
+    f32 cos = PIVOT_ROTATION_SIN_COS[ pivot ][ 1 ];
+
+    f32 (*const m)[4] = pOut->m;
+
+    if (sin == 0.0f)
+    {
+        m[0][0] = cos * m[0][0];
+        m[0][1] = cos * m[0][1];
+        m[0][2] = cos * m[0][2];
+        m[0][3] = cos * m[0][3];
+
+        m[1][0] = cos * m[1][0];
+        m[1][1] = cos * m[1][1];
+        m[1][2] = cos * m[1][2];
+        m[1][3] = cos * m[1][3];
+    }
+    else
+    {
+        f32 tmp = m[0][0];
+        m[0][0] = -sin * m[1][0];
+        m[1][0] = sin * tmp;
+
+        tmp = m[0][1];
+        m[0][1] = -sin * m[1][1];
+        m[1][1] = sin * tmp;
+
+        tmp = m[0][2];
+        m[0][2] = -sin * m[1][2];
+        m[1][2] = sin * tmp;
+
+        tmp = m[0][3];
+        m[0][3] = -sin * m[1][3];
+        m[1][3] = sin * tmp;
+    }
+
+    return pOut;
+}
+
+inline MTX44* MTX44PerspectiveRadC(MTX44* pOut, f32 fovy, f32 aspect, f32 n, f32 f)
+{
+    NN_NULL_ASSERT_(pOut);
+
+    f32 (*const m)[4] = pOut->m;
+
+    const f32 angle = fovy * 0.5f;
+
+    const f32 cot = 1.0f / ::std::tanf(angle);
+
+    m[0][0] =  cot / aspect;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[0][3] = 0.0f;
+
+    m[1][0] = 0.0f;
+    m[1][1] = cot;
+    m[1][2] = 0.0f;
+    m[1][3] = 0.0f;
+
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+
+    const f32 tmp = 1.0f / (f - n);
+    m[2][2] = f * tmp;
+    m[2][3] = f * n * tmp;
+
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = -1.0f;
+    m[3][3] = 0.0f;
+
+    return pOut;
+}
+inline MTX44* MTX44PerspectiveRadC_FAST(MTX44* pOut, f32 fovy, f32 aspect, f32 n, f32 f)
+{
+    NN_NULL_ASSERT_(pOut);
+
+    f32 (*const m)[4] = pOut->m;
+
+    const f32 angle = fovy * 0.5f;
+
+    const f32 cot = 1.0f / ::std::tanf(angle);
+
+    const f32 tmp = 1.0f / (f - n);
+
+    register f32 m00, m11, m22, m23;
+
+    m00 =  cot / aspect;
+    m11 =  cot;
+    m22 = f * tmp;
+    m23 = f * n * tmp;
+
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[0][3] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][2] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[3][0] = 0.0f;
+    m[3][1] = 0.0f;
+    m[3][2] = -1.0f;
+    m[3][3] = 0.0f;
+
+    m[0][0] = m00;
+    m[1][1] = m11;
+    m[2][2] = m22;
+    m[2][3] = m23;
+
+
+    return pOut;
+}
+
+MTX44* MTX44CopyAsm(MTX44* pOut, const MTX44* p);
+inline MTX44* MTX44CopyC(MTX44* pOut, const MTX44* p)
+{
+    if (pOut != p)
+    {
+        *pOut = *p;
+    }
+
+    return pOut;
+}
 
 }
 
 inline u32 MTX44Inverse(MTX44* pOut, const MTX44* p)
 {
-    #ifdef NN_BUILD_DEBUG
-        ARMv6::MTX44InverseC(pOut,p);
+    #ifdef NN_MATH_BUILD_FAST
+        return ARMv6::MTX44InverseC(pOut,p);
     #else
-        ARMv6::MTX44InverseC_FAST(pOut,p);
+        return ARMv6::MTX44InverseC_FAST(pOut,p);
     #endif
 }
 
 inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2)
 {
-    #ifdef NN_BUILD_DEBUG
-        ARMv6:MTX44MultC(pOut, p1, p2);
+    #ifdef NN_MATH_BUILD_FAST
+        return ARMv6:MTX44MultC(pOut, p1, p2);
     #else
         ARMv6::MTX44MultAsm(pOut, p1, p2);
     #endif
@@ -348,30 +731,36 @@ inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __
 
 inline MTX44* MTX44Copy(MTX44* pOut, const MTX44* p)
 {
-    #ifdef NN_BUILD_DEBUG
-        ARMv6::MTX44CopyC(pOut,p);
+    #ifdef NN_MATH_BUILD_FAST
+        return ARMv6::MTX44CopyC(pOut,p);
     #else
-        ARMv6::MTX44CopyAsm(pOut,p);
+        return ARMv6::MTX44CopyAsm(pOut,p);
     #endif
 }
 
 inline MTX44* MTX44FrustumPivot(MTX44* pOut, f32 l, f32 r, f32 b, f32 t, f32 n, f32 f, PivotDirection pivot = PIVOT_NONE)
 {
-    #ifdef NN_BUILD_DEBUG
-
+    #ifdef NN_MATH_BUILD_FAST
+        ARMv6::MTX44FrustumC(pOut, l, r, b, t, n, f);
+        ARMv6::MTX44PivotC(pOut, pivot);
+        return pOut;
     #else
         ARMv6::MTX44FrustumC_FAST(pOut, l, r, b, t, n, f);
         ARMv6::MTX44PivotC_FAST(pOut, pivot);
+        return pOut;
     #endif
 }
 
 inline MTX44* MTX44PerspectivePivotRad(MTX44* pOut, f32 fovy, f32 aspect, f32 n, f32 f, PivotDirection pivot = PIVOT_NONE)
 {
-    #ifdef NN_BUILD_DEBUG
-
+    #ifdef NN_MATH_BUILD_FAST
+        ARMv6::MTX44PerspectiveRadC(pOut, fovy, aspect, n, f);
+        ARMv6::MTX44PivotC(pOut, pivot);
+        return pOut;
     #else
-        ARMv6::MTX44PerspectivePivotRadC_FAST(pOut, fovy, aspect, n, f);
+        ARMv6::MTX44PerspectiveRadC_FAST(pOut, fovy, aspect, n, f);
         ARMv6::MTX44PivotC_FAST(pOut, pivot);
+        return pOut;
     #endif
 }
 }

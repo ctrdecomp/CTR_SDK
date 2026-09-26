@@ -53,12 +53,21 @@ typedef unsigned long long int  bit64;
 typedef s32 sptr;
 typedef u32 uptr;
 
+#ifdef __cplusplus
 namespace nn
 {
 
 typedef bit64 ProgramId;
 
+struct ProductInfo
+{
+  char productCode[16];
+  bit16 companyCode;
+  u16 remasterVersion;
+};
+
 }
+#endif
 
 #ifndef nullptr
 #define nullptr NULL
@@ -76,7 +85,3 @@ typedef bit64 ProgramId;
 
 #define NN_INLINE inline
 #define NN_NOINLINE __attribute__((noinline))
-
-#ifdef NN_BUILD_DEBUG
-    #pragma O0
-#endif

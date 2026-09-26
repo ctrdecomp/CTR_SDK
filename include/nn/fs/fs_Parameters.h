@@ -166,9 +166,9 @@ namespace detail { struct ArchiveHandleTag {}; }
 
     enum PositionBase
     {
-        BASE_BEGIN = 0,
-        BASE_CURRENT,
-        BASE_END,
+        POSITION_BASE_BEGIN,
+        POSITION_BASE_CURRENT,
+        POSITION_BASE_END
     };
 
     enum SystemMediaType

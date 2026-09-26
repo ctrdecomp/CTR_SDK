@@ -13,7 +13,9 @@ class Cec
 {
 public:
     static Handle s_Session;
-    Cec() {}
+    Cec()
+    {
+    }
 
 public:
     static Result Open(u32 cecTitleId, u32 dataType, u32 option, size_t* filesize);

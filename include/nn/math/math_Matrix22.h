@@ -29,6 +29,11 @@ struct MTX22_
 
     union
     {
+        struct
+        {
+            f32 _00, _01;
+            f32 _10, _11;
+        };
         BaseData f;
         f32 m[2][2];
         f32 a[4];

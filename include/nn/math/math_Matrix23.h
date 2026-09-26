@@ -40,6 +40,11 @@ public:
 
     union
     {
+        struct
+        {
+            f32 _00, _01, _02;
+            f32 _10, _11, _12;
+        };
         BaseData f;
         f32 m[2][3];
         f32 a[6];

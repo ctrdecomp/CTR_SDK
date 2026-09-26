@@ -4,12 +4,15 @@ namespace nn {
 namespace util {
 
 template <typename T>
-class NonCopyable {};
+class NonCopyable
+{
+};
 
 namespace ADLFireWall {
 
 template <typename T>
-struct NonCopyable{
+struct NonCopyable
+{
 protected:
     NonCopyable () {}
     ~NonCopyable () {}

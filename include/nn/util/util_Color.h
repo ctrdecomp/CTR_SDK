@@ -8,7 +8,8 @@ namespace util {
 
 struct FloatColor;
 
-struct Color8 {
+struct Color8
+{
 public:
     typedef Color8 SelfType;
 
@@ -133,7 +134,8 @@ protected:
 
 typedef Color8 Color;
 
-struct FloatColor {
+struct FloatColor
+{
 public:
     typedef FloatColor SelfType;
 

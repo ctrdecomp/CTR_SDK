@@ -4,6 +4,7 @@
 
 #include <nn/ulcd/CTR/ulcd_StereoCamera.h>
 #include <nn/cfg.h>
+#include <nn/cfg/CTR/detail/cfg_DataStructures.h>
 #include <nn/cfg/CTR/cfg_DetailApi.h>
 #include <nn/math.h>
 #include <nn/dbg/dbg_Break.h>
@@ -20,17 +21,17 @@ namespace{
 void GetProjectionParameters(MTX44 *proj,f32 *left,f32 *right,f32 *bottom,f32 *top,f32 *near,f32 *far)
 {
     f32 pos;
-    *near = proj->matrix[2][3] / proj->matrix[2][2];
-    *far = proj->matrix[2][3] / (proj->matrix[2][2] - 1.0f);
-    pos = proj->matrix[2][3] / (proj->matrix[0][0] * proj->matrix[2][2]);
+    *near = proj->m[2][3] / proj->m[2][2];
+    *far = proj->m[2][3] / (proj->m[2][2] - 1.0f);
+    pos = proj->m[2][3] / (proj->m[0][0] * proj->m[2][2]);
 
-    *left = (proj->matrix[0][2] - 1.0f) * pos;
-    *right = (proj->matrix[0][2] + 1.0f) * pos;
+    *left = (proj->m[0][2] - 1.0f) * pos;
+    *right = (proj->m[0][2] + 1.0f) * pos;
 
-    pos = proj->matrix[2][3] / proj->matrix[1][1] * proj->matrix[2][2];
+    pos = proj->m[2][3] / proj->m[1][1] * proj->m[2][2];
 
-    *top = (proj->matrix[1][2] + 1.0f) * pos;
-    *top = (proj->matrix[1][2] - 1.0f) * pos;
+    *top = (proj->m[1][2] + 1.0f) * pos;
+    *top = (proj->m[1][2] - 1.0f) * pos;
 }
 
 float GetSliderVolume()
@@ -74,27 +75,21 @@ void GetLookPose(const nn::math::MTX34 *view, nn::math::VEC3 *pos, Direction *di
 
 namespace
 {
-    static bool s_IsInitialized;
+    cfg::CTR::detail::UlcdLibAssumptionCfgData s_CfgData;
+    bool s_IsInitialized = false;
 }
 
-namespace
+StereoCamera::StereoCamera():
+    m_DepthLevel(0.0f),
+    m_CameraInterval(0.0f)
 {
-    struct cfgdata
-    {
-        void* cfgData;
-        f32 far;
-        f32 near;
-        f32 level;
-        float limit;
-    };
-
-    cfgdata s_CfgData;
 }
 
-StereoCamera::StereoCamera()
+StereoCamera::StereoCamera(const nn::WithInitialize&):
+    m_DepthLevel(0.0f),
+    m_CameraInterval(0.0f)
 {
-    m_DepthLevel = 0.0f;
-    m_CameraInterval = 0.0f;
+    Initialize();
 }
 
 StereoCamera::~StereoCamera()
@@ -107,13 +102,14 @@ void StereoCamera::Initialize()
     if(!s_IsInitialized)
     {
         cfg::CTR::Initialize();
-        Result res = cfg::CTR::detail::GetConfig(&s_CfgData, 0x20, CFG_KEY_STEREO_CAMERA);
+        Result res;
+        res = cfg::CTR::detail::GetConfig(&s_CfgData, sizeof(s_CfgData), CFG_KEY_STEREO_CAMERA);
         NN_UTIL_PANIC_IF_FAILED(res);
         cfg::CTR::Finalize();
         s_IsInitialized = true;
     }
 
-    m_LimitParallax        = s_CfgData.limit;
+    m_LimitParallax        = s_CfgData.maxParallaxBack;
     m_LevelWidth           = 0.0f;
     m_DepthLevel           = 0.0f;
     m_DistanceToNearClip   = 0.0f;
@@ -133,6 +129,53 @@ void StereoCamera::Initialize()
 
 void StereoCamera::Finalize()
 {
+}
+
+void StereoCamera::SetBaseCamera(const nn::math::MTX34 *view)
+{
+    NN_NULL_ASSERT_(view);
+    Direction direction;
+    GetLookPose(view, &this->m_BaseCamera.position, &direction);
+
+    m_BaseCamera.posRight  = direction.right;
+    m_BaseCamera.posUp     = direction.up;
+    m_BaseCamera.posTarget = direction.target;
+}
+
+void StereoCamera::SetBaseFrustum(const nn::math::MTX44 *proj)
+{
+    m_BaseCamera.near = proj->m[2][3] / proj->m[2][2];
+    m_BaseCamera.far = proj->m[2][3] / (proj->m[2][2] - 1.0f);
+
+    f32 inverseProjX = proj->m[2][3] / (proj->m[0][0] * proj->m[2][2]);
+    f32 inverseProjY = proj->m[2][3] / (proj->m[1][1] * proj->m[2][2]);
+
+    m_BaseCamera.left = (proj->m[0][2] - 1.0f) * inverseProjX;
+    m_BaseCamera.right = (proj->m[0][2] + 1.0f) * inverseProjX;
+    m_BaseCamera.top = (proj->m[1][2] + 1.0f) * inverseProjY;
+    m_BaseCamera.bottom = (proj->m[1][2] - 1.0f) * inverseProjY;
+}
+
+void StereoCamera::SetBaseFrustum(const f32 left, const f32 right, const f32 bottom, const f32 top, const f32 near, const f32 far)
+{
+    m_BaseCamera.left   = left;
+    m_BaseCamera.right  = right;
+    m_BaseCamera.bottom = bottom;
+    m_BaseCamera.top    = top;
+    m_BaseCamera.near   = near;
+    m_BaseCamera.far    = far;
+}
+
+void StereoCamera::SetLimitParallax(const f32 limit)
+{
+    if (limit < 0.0f)
+    {
+        NN_TPANIC_("illegal value: limit must not be negative.\n");
+    }
+
+    NN_WARNING_(s_CfgData.maxParallaxBack >= limit, "[WARN]ulcd::StereoCamera::SetLimitParallax() - limit is bigger than %lf.\n", s_CfgData.maxParallaxBack);
+
+    m_LimitParallax = limit;
 }
 
 void StereoCamera::CalculateMatrices(nn::math::MTX44 *projL,nn::math::MTX34 *viewL,nn::math::MTX44 *projR,nn::math::MTX34 *viewR, nn::math::MTX44 *projOriginal,nn::math::MTX34 *viewOriginal,const f32 depthLevel,const f32 factor,const math::PivotDirection pivot)
@@ -223,11 +266,11 @@ void StereoCamera::CalculateMatricesReal(nn::math::MTX44* projL, nn::math::MTX34
         f32 near = depthLevel / m_BaseCamera.near;
         f32 levelWx = nn::math::FAbs(this->m_BaseCamera.right - this->m_BaseCamera.left) * near;
         f32 levelWy = nn::math::FAbs(this->m_BaseCamera.top - this->m_BaseCamera.bottom) * near;
-        f32 r2vScale = levelWy / s_CfgData.level;
+        f32 r2vScale = levelWy / s_CfgData.narrowSideLen;
         
         f32 newN, newF, newL, newR, newB, newT;
 
-        m_DepthLevel = s_CfgData.far * r2vScale;
+        m_DepthLevel = s_CfgData.distEyeAndDisp * r2vScale;
 
         newN = m_DepthLevel - (depthLevel - m_BaseCamera.near);
         newF = m_DepthLevel + (m_BaseCamera.far - depthLevel);
@@ -252,7 +295,7 @@ void StereoCamera::CalculateMatricesReal(nn::math::MTX44* projL, nn::math::MTX34
         newL = m_BaseCamera.left * near;
         newR = m_BaseCamera.right * near;
 
-        m_CameraInterval = s_CfgData.far * r2vScale;  
+        m_CameraInterval = s_CfgData.pupillaryDist * r2vScale;
 
         m_CameraInterval *= factor;
 
@@ -318,42 +361,7 @@ f32 StereoCamera::GetParallax(const f32 distance) const
 
 f32 StereoCamera::GetMaxParallax(void) const
 {
-    return m_LimitParallax / s_CfgData.near * 0.5f * GetSliderVolume();
-}
-
-void StereoCamera::SetBaseCamera(const nn::math::MTX34 *view)
-{
-    NN_NULL_ASSERT_(view);
-    Direction direction;
-    GetLookPose(view, &this->m_BaseCamera.position, &direction);
-    
-    m_BaseCamera.posRight  = direction.right;
-    m_BaseCamera.posUp     = direction.up;
-    m_BaseCamera.posTarget = direction.target;
-}
-
-void StereoCamera::SetBaseFrustum(const nn::math::MTX44 *proj)
-{
-    m_BaseCamera.near = proj->matrix[2][3] / proj->matrix[2][2];
-    m_BaseCamera.far = proj->matrix[2][3] / (proj->matrix[2][2] - 1.0f);
-
-    f32 inverseProjX = proj->matrix[2][3] / (proj->matrix[0][0] * proj->matrix[2][2]);
-    f32 inverseProjY = proj->matrix[2][3] / (proj->matrix[1][1] * proj->matrix[2][2]);
-
-    m_BaseCamera.left = (proj->matrix[0][2] - 1.0f) * inverseProjX;
-    m_BaseCamera.right = (proj->matrix[0][2] + 1.0f) * inverseProjX;
-    m_BaseCamera.top = (proj->matrix[1][2] + 1.0f) * inverseProjY;
-    m_BaseCamera.bottom = (proj->matrix[1][2] - 1.0f) * inverseProjY;
-}
-
-void StereoCamera::SetBaseFrustum(const f32 left, const f32 right, const f32 bottom, const f32 top, const f32 near, const f32 far)
-{
-    m_BaseCamera.left   = left;
-    m_BaseCamera.right  = right;
-    m_BaseCamera.bottom = bottom;
-    m_BaseCamera.top    = top;
-    m_BaseCamera.near   = near;
-    m_BaseCamera.far    = far;
+    return m_LimitParallax / s_CfgData.wideSideLen * 0.5f * GetSliderVolume();
 }
 
 }

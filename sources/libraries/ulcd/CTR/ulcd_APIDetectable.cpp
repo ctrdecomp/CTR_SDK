@@ -14,7 +14,7 @@ namespace{
     NN_MAKE_MODULE(s_DetectableString, "NINTENDO", "3DVolume");
 }
 
-float GetSliderVolume()
+float Get3DVolume()
 {
     NN_REFER_MODULE(s_DetectableString);
     if (os::GetWritableSharedInfo().displayModeLockFlag)

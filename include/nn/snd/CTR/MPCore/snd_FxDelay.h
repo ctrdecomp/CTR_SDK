@@ -6,7 +6,8 @@ namespace nn{
 namespace snd{
 namespace CTR{
 
-class FxDelay{
+class FxDelay
+{
 public:
     FxDelay();
     virtual ~FxDelay();

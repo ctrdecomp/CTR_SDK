@@ -23,7 +23,7 @@ namespace{
 
     inline bool IsMappedIndex(s32 index)
     {
-        if((index < 0) || (TLS_NUM <= index) )
+        if((index < 0) || (TLS_NUM <= index))
         {
             return false;
         }

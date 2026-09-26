@@ -5,7 +5,8 @@
 namespace nn { namespace util {
 
 template <class T, T v>
-struct integral_constant {
+struct integral_constant
+{
     typedef integral_constant<T, v> type;
     typedef T                       value_type;
     static const value_type         value = v;
@@ -45,9 +46,11 @@ namespace detail {
 }
 
 template <size_t Size, size_t Align>
-struct aligned_storage {
+struct aligned_storage
+{
 private:
-    union UnionType {
+    union UnionType
+    {
         char c[Size];
         typename detail::AlignmentType<Align>::type a;
     };
@@ -59,7 +62,8 @@ template <bool, class T = void> struct enable_if {};
 template <class T> struct enable_if<true, T> { typedef T type; };
 
 template <class From, class To>
-struct is_convertible {
+struct is_convertible
+{
 private:
     typedef char T1;
     struct T2 { char dummy[2]; };

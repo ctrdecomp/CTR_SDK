@@ -2,15 +2,19 @@
 //
 // Project: Horizon
 
-#include <nn/fs/fs_Api.h>
-#include <nn/fs/fs_Parameters.h>
+#include <nn/fs.h>
 #include <nn/fs/fs_FileSystemBase.h>
+#include <nn/fs/fs_IpcFileSystem.h>
+#include <nn/fs/fs_Result.h>
 #include <nn/err/CTR/err_Api.h>
 #include <nn/fnd/fnd_TimeSpan.h>
 #include <nn/cfg/CTR/cfg_Api.h>
 #include <nn/srv.h>
 
-#include <string.h>
+#include <nn/dbg/dbg_PrintResult.h>
+
+NN_DBG_DECLARE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs)
+NN_DBG_DECLARE_ADDITIONAL_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs, Private)
 
 namespace nn{
 namespace fs{
@@ -31,6 +35,8 @@ namespace detail{
         Result res;
         if(fs::s_FileServerSession.IsValid())
         {
+            NN_DBG_USE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs);
+            NN_DBG_USE_ADDITIONAL_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs, Private);
             NN_ERR_THROW_FATAL_ALL(res);
         }
         return ipc::FileSystem(s_FileServerSession);
@@ -49,11 +55,16 @@ inline Result SetPriority(s32 pri)
 
 void Initialize()
 {
+    NN_DBG_USE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs);
+    NN_DBG_USE_ADDITIONAL_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(fs, Private);
+
     if(!IsInitialized())
     {
         Result res = srv::Initialize();
         if(res != nn::srv::ResultAlreadyInitialized())
+        {
             NN_ERR_THROW_FATAL_ALL(res);
+        }
         NN_ERR_THROW_FATAL_ALL(srv::GetServiceHandle(&s_FileServerSession, detail::PORT_NAME_USER));
         s_FileSystemBaseImpl.Initialize(s_FileServerSession);
         s_FileSystemBase.Initialize(s_FileSystemBaseImpl);

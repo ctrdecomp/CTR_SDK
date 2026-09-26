@@ -16,7 +16,7 @@ class APPLET
 public:
     static Result AppletUtility(u32 id,u8 *pInParam,size_t inParamSize,u8 *pOutParam,size_t outParamSize,s32 *pReadLen);
     static Result StartLibraryApplet(AppletId id, const u8 pParam[], size_t paramSize, Handle handle);
-    static Result CancelLibraryApplet(bool isCallerEnd);    
+    static Result CancelLibraryApplet(bool isCallerEnd);
     static Result CancelParameter(bool isSenderCheck, AppletId senderId, bool isReceiverCheck, AppletId receiverId, bool* pIdCanceled);
     static Result CloseApplication(u8 *pParam,size_t paramSize,Handle handle);
     static Result Enable(AppletAttr appletAttr);
@@ -30,13 +30,16 @@ public:
     static Result NotifyToWait(AppletId id);
     static Result PrepareToCloseApplication(bool isJumpToHome);
     static Result PrepareToJumpToHomeMenu();
+    static Result PrepareToStartLibraryApplet(AppletId id);
     static Result PrepareToStartSystemApplet(AppletId id);
+    static Result PreloadLibraryApplet(AppletId id);
     static Result ReceiveParameter(AppletId *pSenderId,AppletId receiverId,u32 *pCommand,u8 *pParam,size_t paramSize,s32 *pReadLen,Handle *pHandle);
     static Result ReplySleepNotificationComplete(AppletId id);
     static Result ReplySleepQuery(AppletId id,AppletQueryReply reply);
     static Result SendCaptureBufferInfo(u8 *pParam,size_t paramSize);
     static Result SendParameter(AppletId senderId,AppletId receiverId,u32 command,const u8 *pParam,size_t paramSize,Handle pHandle);
     static Result SleepSystem(bit64 awakeReason);
+    static Result StartLibraryApplet(AppletId id,u8 *pParam,size_t paramSize,Handle handle);
     static Result StartSystemApplet(AppletId id,u8 *pParam,size_t paramSize,Handle handle);
     static Result Wrap(bit8 pWrappedBuffer[], const bit8 pData[], size_t bufferSize, size_t dataSize, s32 idOffset, size_t idSize);
     static Result Unwrap(bit8 pData[], const bit8 pWrapped[], size_t dataSize, size_t bufferSize, s32 idOffset, size_t idSize);

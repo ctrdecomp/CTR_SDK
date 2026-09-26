@@ -24,18 +24,11 @@ extern "C"{
     void nndbgDetailTVPrintf(const char* fmt, va_list arg);
     void nndbgDetailPutString(const char* text, s32 length);
 
-#if NN_VERSION_MAJOR > 2
-
-    void nndbgPrintWarning_ (const char* filename, int lineno, const char* fmt, ...);
-    void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...);
-#else
-
     int nndbgAssertionFailureHandler(bool print, const char* filename, int lineno, const char* fmt, ...);
     int nndbgTAssertionFailureHandler(bool print, const char* filename, int lineno, const char* fmt, ...);
-#endif
 }
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
     #ifdef __cplusplus
             #define NN_LOG_(...)           (void)nn::dbg::detail::Printf(__VA_ARGS__)
             #define NN_SLOG_(fmt, arg)     (void)nn::dbg::detail::Printf(__VA_ARGS__)

@@ -14,14 +14,18 @@
 namespace nn{
 namespace hid{
 namespace CTR{
-namespace{
+namespace {
     bool s_IsEnableSelect;
+}
+
+bool IsSelectButtonEnabled()
+{
+    return s_IsEnableSelect;
 }
 
 PadReader::PadReader(Pad& pad): 
     m_Pad(pad),
-    m_IndexOfRead(-1), 
-#if NN_VERSION_MAJOR <= 2
+    m_IndexOfRead(-1),
     m_MinOfStickClampCircle(MIN_OF_STICK_CLAMP_MODE_CIRCLE),
     m_MinOfStickClampCross(MIN_OF_STICK_CLAMP_MODE_CROSS),
     m_MinOfStickClampMinimum(MIN_OF_STICK_CLAMP_MODE_CIRCLE),
@@ -29,7 +33,6 @@ PadReader::PadReader(Pad& pad):
     m_MaxOfStickClampCross(LIMIT_OF_STICK_CLAMP_MAX),
     m_MaxOfStickClampMinimum(LIMIT_OF_STICK_CLAMP_MAX),
     m_StickClampMode(STICK_CLAMP_MODE_CIRCLE),
-#endif
     m_IsReadLatestFirst(true),
     m_TickOfRead(-1)
 {
@@ -44,22 +47,13 @@ bool PadReader::ReadLatest(PadStatus* pBuf)
 
     if(ExtraPad::IsSampling())
         return false;
-    
-#if NN_VERSION_MAJOR > 2
-    this->m_StickClamper.ClampValueOfClamp();
-#else
+
     this->ClampValueOfClamp();
-#endif
 
     reinterpret_cast<nn::hidlow::CTR::PadLifoRing*>(m_Pad.GetResource())->ReadData(pBuf, 1, &readLen, &tick, &index);
     if(0 < readLen)
     {
-
-#if NN_VERSION_MAJOR > 4
-        this->m_StickClamper.ClampCore(&pBuf->stick.x,&pBuf->stick.y,pBuf->stick.x,pBuf->stick.y);
-#else
         this->ClampCore(&pBuf->stick.x,&pBuf->stick.y,pBuf->stick.x,pBuf->stick.y);
-#endif
 
 
         if(m_IsReadLatestFirst != false)
@@ -79,7 +73,7 @@ bool PadReader::ReadLatest(PadStatus* pBuf)
 
         m_LatestHold = pBuf->hold;
 
-        if(s_IsEnableSelect == false)
+        if(IsSelectButtonEnabled() == false)
         {
             hidlow::GatherStartAndSelect(pBuf);
         }
@@ -92,11 +86,7 @@ void PadReader::Read(PadStatus* pBufs, s32* pReadLen, s32 bufLen)
 {
     NN_TASSERT_(NULL != pBufs);
 
-#if NN_VERSION_MAJOR > 2
-    this->m_StickClamper.ClampValueOfClamp();
-#else
     this->ClampValueOfClamp();
-#endif
 
     reinterpret_cast<nn::hidlow::CTR::PadLifoRing*>(this->m_Pad.GetResource())->ReadData(pBufs, bufLen, pReadLen, &this->m_TickOfRead, &this->m_IndexOfRead);
 
@@ -122,24 +112,17 @@ void PadReader::Read(PadStatus* pBufs, s32* pReadLen, s32 bufLen)
             this->HideKeyInfo(&pBufs[i]);
         }
         
-        if(!s_IsEnableSelect)
+    if(!IsSelectButtonEnabled())
         {
             hidlow::GatherStartAndSelect(&pBufs[i]);
         }
 
-#if NN_VERSION_MAJOR > 2
-        this->m_StickClamper.ClampCore(&pBufs[i].stick.x, &pBufs[i].stick.y, pBufs[i].stick.x, pBufs[i].stick.y);
-#else
         this->ClampCore(&pBufs[i].stick.x, &pBufs[i].stick.y, pBufs[i].stick.x, pBufs[i].stick.y);
-#endif
     }
 }
 
 void PadReader::SetStickClamp(short min, short max)
 {
-#if NN_VERSION_MAJOR > 2
-    return this->m_StickClamper.SetStickClamp(min, max);
-#else
     NN_TASSERT_(0 <= min);
     NN_TASSERT_(min < max);
     
@@ -176,9 +159,6 @@ void PadReader::SetStickClamp(short min, short max)
 
 f32 PadReader::NormalizeStick(short x)
 {
-#if NN_VERSION_MAJOR > 2
-    return this->m_StickClamper.NormalizeStick(pos);
-#else
     f32 fx = (f32)x;
     s16 threshold;
 
@@ -208,9 +188,6 @@ f32 PadReader::NormalizeStick(short x)
 
 void PadReader::NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y)
 {
-#ifdef NN_VERSION_MAJOR > 2
-    return this->m_StickClamper.NormalizeStickWithScale(normalized_x, normalized_y, x, y);
-#else
     f32 length;
     f32 diff_length = 0;
     f32 threshold;
@@ -354,19 +331,14 @@ void PadReader::NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s1
     // normalized = normal
     *normalized_x = normal_x;
     *normalized_y = normal_y;
-#endif
 }
 
 void PadReader::SetNormalizeStickScaleSettings(f32 scale, s16 threshold)
 {
-#ifdef NN_VERSION_MAJOR > 2
-    return this->m_StickClamper.SetNormalizeStickScaleSettings(scale,threshold);
-#else
     if(LIMIT_OF_STICK_CLAMP_MAX < threshold) 
         threshold = LIMIT_OF_STICK_CLAMP_MAX;
     m_Scale = scale;
     m_Threshold = threshold;
-#endif
 }
 
 }

@@ -24,10 +24,659 @@
 
 #include <nn/gx/CTR/gx_CTR.h>
 
+/* PI */
+
+namespace 
+{
+    const size_t WRAP_SIZE = 16;
+}
+
+/* Application Thread */
+
+namespace
+{
+    AppletId                  selfAppletId;
+    AppletAttr                selfAppletAttr;
+    nn::os::Event             eventForCont;
+    nn::os::Mutex             appletMutex;
+    nn::os::Event             eventForMesg;
+    nn::os::Event             eventForAbort;
+    bool                      isClientThreadEnd;
+}
+
+namespace nn {
+namespace applet {
+namespace CTR {
+namespace detail {
+namespace{
+    nn::os::Thread            clientThread;
+    nn::os::StackBuffer<4096> clientStack;
+    AppletReceiveCallback     mReceiveCallback;
+    uptr                      mReceiveCallbackParam;
+    nn::os::LightEvent        waitCont;
+}
+
+void ThreadFunc(int param);
+
+void InitializeClientThread(s32 threadPriority)
+{
+    waitCont.Initialize(true);
+    isClientThreadEnd = false;
+    clientThread.Start(ThreadFunc, 0, clientStack, threadPriority);
+}
+
+void FinalizeClientThread()
+{
+    isClientThreadEnd = true;
+    eventForMesg.Signal();
+    clientThread.Join();
+    clientThread.Finalize();
+    waitCont.Finalize();
+}
+
+void SetReceiveCallback(AppletReceiveCallback callback,uptr parameter)
+{
+    mReceiveCallback = callback;
+    mReceiveCallbackParam = parameter;
+}
+
+void WaitForControlEvent()
+{
+    waitCont.Wait();
+}
+
+bool TryWaitForControlEvent()
+{
+    return waitCont.TryWait();
+}
+
+void ClearControlEvent()
+{
+    waitCont.ClearSignal();
+}
+
+void ThreadFunc(int param)
+{
+    NN_UNUSED_VAR(param);
+
+    Handle handles[3];
+
+    handles[0] = eventForMesg.GetHandle();
+    handles[1] = eventForCont.GetHandle();
+    handles[2] = eventForAbort.GetHandle();
+
+    while (!isClientThreadEnd)
+    {
+        s32 index;
+
+        Result result = nn::svc::WaitSynchronizationN(&index, handles, 3, false, nn::os::WAIT_INFINITE);
+
+        NN_ERR_THROW_FATAL(result);
+
+        if (isClientThreadEnd)
+        {
+            break;
+        }
+
+        if (index == 2)
+        {
+            if (waitCont.TryWait())
+            {
+                WaitBySleep(10);
+                eventForAbort.Signal();
+                continue;
+            }
+
+            eventForAbort.ClearSignal();
+
+            SetMessageCommand(COMMAND_WAKEUP_BY_CANCEL);
+            waitCont.Signal();
+        }
+        else if (index == 1)
+        {
+            if (waitCont.TryWait())
+            {
+                WaitBySleep(10);
+                eventForCont.Signal();
+                continue;
+            }
+
+            eventForCont.ClearSignal();
+
+            bool bSignal = true;
+
+            if (mReceiveCallback)
+            {
+                bSignal = mReceiveCallback(mReceiveCallbackParam);
+            }
+
+            if (bSignal)
+            {
+                waitCont.Signal();
+            }
+        }
+        else if (index == 0)
+        {
+            if (waitCont.TryWait())
+            {
+                WaitBySleep(10);
+                eventForMesg.Signal();
+                continue;
+            }
+
+            eventForMesg.ClearSignal();
+
+            AppletNotification notification;
+
+            detail::LockAndConnect();
+
+            result = APPLET::InquireNotification(GetId(), &notification);
+
+            detail::DisconnectAndUnlock();
+
+            if (!result.IsSuccess())
+            {
+                continue;
+            }
+
+            switch (notification)
+            {
+            case NOTIFICATION_HOME_BUTTON_1:
+            case NOTIFICATION_HOME_BUTTON_2:
+            {
+                if (detail::GetAbsoluteHomeButtonState() == HOME_BUTTON_NONE)
+                {
+                    detail::SetAbsoluteHomeButtonState((notification == NOTIFICATION_HOME_BUTTON_1)
+                            ? HOME_BUTTON_SINGLE_PRESSED : HOME_BUTTON_DOUBLE_PRESSED);
+                }
+
+                bool bSignal = true;
+
+                if (mReceiveCallback)
+                {
+                    bSignal = mReceiveCallback(mReceiveCallbackParam);
+                }
+
+                if (bSignal)
+                {
+                    SetMessageCommand((notification == NOTIFICATION_HOME_BUTTON_1)
+                            ? COMMAND_HOME_BUTTON_SINGLE : COMMAND_HOME_BUTTON_DOUBLE);
+
+                    waitCont.Signal();
+                }
+            }
+            break;
+
+            case NOTIFICATION_SLEEP_QUERY:
+            case NOTIFICATION_SLEEP_CANCELED_BY_OPEN:
+            case NOTIFICATION_SLEEP_ACCEPTED:
+            case NOTIFICATION_AWAKE:
+            {
+                switch (notification)
+                {
+                case NOTIFICATION_SLEEP_QUERY:
+                    detail::SetSleepSysState(SLEEP_SYS_STATE_QUERY);
+                    break;
+
+                case NOTIFICATION_SLEEP_CANCELED_BY_OPEN:
+                    detail::SetSleepSysState(SLEEP_SYS_STATE_CANCELED);
+                    break;
+
+                case NOTIFICATION_SLEEP_ACCEPTED:
+                    detail::SetSleepSysState(SLEEP_SYS_STATE_ACCEPTED);
+                    break;
+
+                case NOTIFICATION_AWAKE:
+                    detail::SetSleepSysState(SLEEP_SYS_STATE_AWAKE);
+                    break;
+                }
+
+                if (mReceiveCallback)
+                {
+                    (void)mReceiveCallback(mReceiveCallbackParam);
+                }
+            }
+            break;
+
+            case NOTIFICATION_SHUTDOWN:
+            {
+                SetShutdownCallbackFlag();
+                detail::SetShutdownState(SHUTDOWN_STATE_RECEIVED);
+                SetOrderToCloseState(ORDER_TO_CLOSE_STATE_RECEIVED);
+
+                if (mReceiveCallback)
+                {
+                    (void)mReceiveCallback(mReceiveCallbackParam);
+                }
+            }
+            break;
+
+            case NOTIFICATION_POWER_BUTTON_CLICK:
+            {
+                SetPowerButtonCallbackFlag();
+                SetPowerButtonState(POWER_BUTTON_STATE_CLICK);
+
+                if (mReceiveCallback)
+                {
+                    (void)mReceiveCallback(mReceiveCallbackParam);
+                }
+            }
+            break;
+
+            case NOTIFICATION_POWER_BUTTON_CLEAR:
+            {
+                SetPowerButtonState(POWER_BUTTON_STATE_NONE);
+            }
+            break;
+
+            case NOTIFICATION_TRY_SLEEP:
+            {
+                detail::LockAndConnect();
+
+                NN_TLOG_("applet_API: SleepSystem\n");
+
+                result = detail::APPLET::SleepSystem(WAKEUP_TRIGGER_SHELL_OPEN);
+
+                NN_ERR_THROW_FATAL(result);
+
+                detail::DisconnectAndUnlock();
+            }
+            break;
+
+            case NOTIFICATION_ORDER_TO_CLOSE:
+            {
+                SetOrderToCloseState(ORDER_TO_CLOSE_STATE_RECEIVED);
+            }
+            break;
+
+            default:
+                NN_PANIC_("applet_API: unknown notification\n");
+            }
+        }
+    }
+}
+} // namespace detail
+} // namespace CTR
+} // namespace applet
+} // namespace nn
+
+/* Application Info */
+
+namespace nn{
+namespace applet{
+namespace CTR{
+namespace{
+    bool                        isAppletMode = false;
+    bool                        isActive = false;
+    u32                         messageCommand = COMMAND_NONE;
+    HomeButtonState             absoluteHomeButtonState = HOME_BUTTON_NONE;
+    SleepSysState               sleepSysState = SLEEP_SYS_STATE_NONE;
+    ShutdownState               shutdownState = SHUTDOWN_STATE_NONE;
+    PowerButtonState            powerButtonState = POWER_BUTTON_STATE_NONE;
+    OrderToCloseState           orderToCloseState = ORDER_TO_CLOSE_STATE_NONE;
+    bool                        isToCallPowerButtonCallback = false;
+    bool                        isToCallShutdownCallback = false;
+    bool                        isReceivedWakeupByCancelFlag = false;
+    TransitionType              prevTransition = TRANSITION_NONE;
+    SleepNotificationState      sleepNotificationState = NOTIFY_NONE;
+    HomeButtonState             homeButtonState = HOME_BUTTON_NONE;
+    bool                        isExpectedToJumpToHomeMenu = false;
+}
+
+CTR::AppletAttr GetAttribute()
+{
+    return selfAppletAttr;
+}
+
+CTR::AppletAttr GetAppletType()
+{
+    return GetAttribute() & 7;
+}
+
+void SetAttribute(CTR::AppletAttr attribute)
+{
+    attribute = attribute;
+}
+
+bool IsSystemApplet()
+{
+    return selfAppletAttr & 7 == 2;
+}
+
+bool IsApplication()
+{
+    return selfAppletAttr & 7 == 0;
+}
+
+bool IsInfoAccess()
+{
+    return selfAppletAttr & 7 == 6;
+}
+
+void SetHomeButtonState(CTR::HomeButtonState state)
+{
+    homeButtonState = state;
+}
+
+CTR::HomeButtonState GetHomeButtonState()
+{
+    return homeButtonState;
+}
+
+void SetExpectationToJumpToHome(bool flag)
+{
+    isExpectedToJumpToHomeMenu = flag;
+}
+
+bool IsExpectedToJumpToHomeMenu()
+{
+    return isExpectedToJumpToHomeMenu;
+}
+
+CTR::AppletId GetId()
+{
+    return selfAppletId;
+}
+
+void SetId(CTR::AppletId aptId)
+{
+    selfAppletId = aptId;
+}
+
+u32 GetMessageCommand()
+{
+    return messageCommand;
+}
+
+void SetMessageCommand(u32 message)
+{
+    messageCommand = message;
+}
+
+SleepNotificationState GetSleepNoticationState()
+{
+    return sleepNotificationState;
+}
+
+void SetSleepNotificationState(SleepNotificationState state)
+{
+    sleepNotificationState = state;
+}
+
+TransitionType GetTransitionType()
+{
+    return prevTransition;
+}
+
+void SetTransitionType(TransitionType type)
+{
+    prevTransition = type;
+}
+
+void SetShutdownCallbackFlag()
+{
+    isToCallShutdownCallback = true;
+}
+
+void ClearShutdownCallbackFlag()
+{
+    isToCallShutdownCallback = false;
+}
+
+bool IsToShutdownCallback()
+{
+    return isToCallShutdownCallback;
+}
+
+void SetPowerButtonCallbackFlag()
+{
+    isToCallPowerButtonCallback = 1;
+}
+
+bool IsToCallPowerButtonCallback()
+{
+    return isToCallPowerButtonCallback;
+}
+
+void ClearPowerButtonCallbackFlag()
+{
+    isToCallPowerButtonCallback = 0;
+}
+
+void SetReceivedWakeupByCancelFlag()
+{
+    isReceivedWakeupByCancelFlag = true;
+}
+
+bool IsReceivedWakeupByCancel()
+{
+    return isReceivedWakeupByCancelFlag;
+}
+
+void SetOrderToCloseState(OrderToCloseState state)
+{
+    orderToCloseState = state;
+}
+
+namespace detail{
+
+CTR::HomeButtonState GetAbsoluteHomeButtonState()
+{
+    return CTR::absoluteHomeButtonState;
+}
+
+void SetAbsoluteHomeButtonState(CTR::HomeButtonState state)
+{
+    CTR::absoluteHomeButtonState = state;
+}
+
+void ClearAbsoluteHomeButtonState()
+{
+    CTR::absoluteHomeButtonState = HOME_BUTTON_NONE;
+}
+
+CTR::SleepSysState GetSleepSysState()
+{
+    return CTR::sleepSysState;
+}
+
+void SetSleepSysState(CTR::SleepSysState state)
+{
+    CTR::sleepSysState = state;
+}
+
+bool IsActive()
+{
+    return CTR::isActive;
+}
+
+void SetActive()
+{
+    CTR::isActive = true;
+}
+
+void SetInactive()
+{
+    CTR::isActive = false;
+}
+
+CTR::PowerButtonState GetPowerButtonState()
+{
+    return CTR::powerButtonState;
+}
+
+void SetPowerButtonState(CTR::PowerButtonState state)
+{
+    CTR::powerButtonState = state;
+}
+
+CTR::OrderToCloseState GetOrderToCloseState()
+{
+    return CTR::orderToCloseState;
+}
+
+void ClearSleepSysState()
+{
+    CTR::sleepSysState = SLEEP_SYS_STATE_NONE;
+}
+
+void SetShutdownState(CTR::ShutdownState state)
+{
+    CTR::shutdownState = state;
+}
+
+bool IsAppletMode()
+{
+    return CTR::isAppletMode;
+}
+
+}
+}
+}
+}
+
+/* Application Connecting */
+
+namespace nn{
+namespace applet{
+namespace CTR{
+namespace detail{
+namespace
+{
+    const char* portName = PORT_NAME_USER;
+}
+
+void SetPortName(const char* name)
+{
+    if(portName == NULL)
+    {
+        portName = name;
+    }
+}
+
+Result InitializePort(Handle* pSession)
+{
+    SetPortName(PORT_NAME_USER);
+    if(pSession->IsValid())
+    {
+        return ResultAlreadyInitialized();
+    }
+    return srv::GetServiceHandle(pSession,portName);
+}
+
+Result FinalizePort(Handle* pSession)
+{
+    if (!pSession->IsValid())
+    {
+        return ResultNotInitialized();
+    }
+
+    Result result = nn::svc::CloseHandle(*pSession);
+    *pSession = INVALID_HANDLE_VALUE;
+    return result;
+}
+
+void Lock()
+{
+    if(appletMutex.IsValid())
+    {
+        appletMutex.Lock();
+    }
+}
+
+void Unlock()
+{
+    if(appletMutex.IsValid())
+    {
+        appletMutex.Unlock();
+    }
+}
+
+Result Connect()
+{
+    Result res = InitializePort(&APPLET::s_Session);
+    NN_ERR_THROW_FATAL(res);
+    return res;
+}
+
+Result Disconnect()
+{
+    Result res = FinalizePort(&APPLET::s_Session);
+    NN_ERR_THROW_FATAL(res);
+    return res;
+}
+
+void LockAndConnect()
+{
+    Lock();
+    Connect();
+}
+
+void DisconnectAndUnlock()
+{
+    Disconnect();
+    Unlock();
+}
+
+void InitializeMutex(nn::Handle handle)
+{
+    nn::os::HandleManager::AttachHandle(&appletMutex, handle);
+}
+
+}
+}
+}
+}
+
+/* Application Parameters */
+
+namespace nn{
+namespace applet{
+namespace CTR {
+namespace detail {
+namespace {
+    bool              isInitialParamValid = false;
+    AppletId          initialSenderId;
+    u8                initializeParamBuffer[4096];
+    s32               initialParamBufferSize;
+    AppletWakeupState initialWakeupState;
+}
+
+u8* GetInitialParamBuffer()
+{
+    return initializeParamBuffer;
+}
+
+void SetInitialParamSenderId(AppletId id)
+{
+    initialSenderId = id;
+}
+
+void SetInitialParamSenderSize(s32 size)
+{
+    initialParamBufferSize = size;
+}
+
+void SetInitialParamValid()
+{
+    isInitialParamValid = true;
+}
+
+void SetInitialWakeupState(WakeupState state)
+{
+    initialWakeupState = state;
+}
+
+}
+}
+}
+}
+
 namespace{
     bool                        isInitialized = false;
     bool                        isGpuRightGiven = false;
     bool                        isDspSleeping   = false;
+    nn::fnd::TimeSpan           sleepSpan;
 
     class ExitHandler : public NotificationHandler
     {
@@ -85,6 +734,241 @@ inline Result SaveVramSysArea()
     return gxlow::CTR::SaveVramSysArea();
 }
 
+} // namespace
+
+/* Misc Funcs */
+
+/* JumpToHomeMenu_Func */
+
+class JumpToHomeMenu_Func
+{
+public:
+    static Result PrepareCore();
+};
+
+Result JumpToHomeMenu_Func::PrepareCore()
+{
+    return APPLET::PrepareToJumpToHomeMenu();
+}
+
+/* StartApplicationApplet_Func */
+
+class StartApplicationApplet_Func
+{
+public:
+    static u32* pLaunchInfo;
+    static u8* pParam;
+    static u32* pHmacBuf;
+    static size_t paramSize;
+    static size_t hmacBufSize;
+    static AppletId id;
+};
+
+u32* StartApplicationApplet_Func::pLaunchInfo;
+u8* StartApplicationApplet_Func::pParam;
+u32* StartApplicationApplet_Func::pHmacBuf;
+size_t StartApplicationApplet_Func::paramSize;
+size_t StartApplicationApplet_Func::hmacBufSize;
+AppletId StartApplicationApplet_Func::id;
+
+/* StartLibraryApplet_Func */
+
+class StartLibraryApplet_Func
+{
+public:
+    static Result PrepareCore();
+    static Result StartCore();
+
+    static AppletId id;
+    static u8* pParam;
+    static size_t paramSize;
+    static Handle* pHandle;
+};
+
+AppletId StartLibraryApplet_Func::id;
+u8* StartLibraryApplet_Func::pParam;
+size_t StartLibraryApplet_Func::paramSize;
+Handle* StartLibraryApplet_Func::pHandle;
+
+Result StartLibraryApplet_Func::PrepareCore()
+{
+    return APPLET::PrepareToStartLibraryApplet(id);
+}
+
+Result StartLibraryApplet_Func::StartCore()
+{
+    return APPLET::StartLibraryApplet(id, pParam, paramSize, *pHandle);
+}
+
+/* StartSystemApplet_Func */
+
+class StartSystemApplet_Func
+{
+public:
+    static Result PrepareCore();
+    static Result StartCore();
+
+    static AppletId id;
+    static u8* pParam;
+    static size_t paramSize;
+    static Handle* pHandle;
+};
+
+AppletId StartSystemApplet_Func::id;
+u8* StartSystemApplet_Func::pParam;
+size_t StartSystemApplet_Func::paramSize;
+Handle* StartSystemApplet_Func::pHandle;
+
+Result StartSystemApplet_Func::PrepareCore()
+{
+    return APPLET::PrepareToStartSystemApplet(id);
+}
+
+Result StartSystemApplet_Func::StartCore()
+{
+    return APPLET::StartSystemApplet(id, pParam, paramSize, *pHandle);
+}
+
+/* StartNewestHomeMenuApplet_Func */
+
+class StartNewestHomeMenuApplet_Func
+{
+public:
+    static u8* pParam;
+    static size_t paramSize;
+    static Handle* pHandle;
+};
+
+u8* StartNewestHomeMenuApplet_Func::pParam;
+size_t StartNewestHomeMenuApplet_Func::paramSize;
+Handle* StartNewestHomeMenuApplet_Func::pHandle;
+
+/* StartResidentApplet_Func */
+
+class StartResidentApplet_Func
+{
+public:
+    static u8* pParam;
+    static size_t paramSize;
+    static Handle* pHandle;
+};
+
+u8* StartResidentApplet_Func::pParam;
+size_t StartResidentApplet_Func::paramSize;
+Handle* StartResidentApplet_Func::pHandle;
+
+/* PreloadResidentApplet_Func */
+
+class PreloadResidentApplet_Func
+{
+public:
+    static AppletId id;
+};
+
+AppletId PreloadResidentApplet_Func::id;
+
+/* PreloadLibraryApplet_Func */
+
+class PreloadLibraryApplet_Func
+{
+public:
+    static Result CancelCore();
+    static Result PrepareCore();
+
+    static AppletId id;
+    static bool isApplicationEnd;
+};
+
+AppletId PreloadLibraryApplet_Func::id;
+bool PreloadLibraryApplet_Func::isApplicationEnd;
+
+Result PreloadLibraryApplet_Func::CancelCore()
+{
+    return APPLET::CancelLibraryApplet(isApplicationEnd);
+}
+
+Result PreloadLibraryApplet_Func::PrepareCore()
+{
+    return APPLET::PreloadLibraryApplet(id);
+}
+
+/* CloseApplication_Func */
+
+class CloseApplication_Func
+{
+public:
+    static Result CloseCore();
+    static Result PrepareCore();
+
+    static bool isToJumpHomeOrSystem;
+    static u8* pParam;
+    static size_t paramSize;
+    static Handle* pHandle;
+};
+
+bool CloseApplication_Func::isToJumpHomeOrSystem;
+u8* CloseApplication_Func::pParam;
+size_t CloseApplication_Func::paramSize;
+Handle* CloseApplication_Func::pHandle;
+
+Result CloseApplication_Func::PrepareCore()
+{
+    return APPLET::PrepareToCloseApplication(isToJumpHomeOrSystem);
+}
+
+Result CloseApplication_Func::CloseCore()
+{
+    return APPLET::CloseApplication(pParam, paramSize, *pHandle);
+}
+
+/* JumpApplication_Func */
+
+class JumpApplication_Func
+{
+public:
+    static u8* pParam;
+    static u32* pHmacBuf;
+    static size_t paramSize;
+    static size_t hmacBufSize;
+    static Handle* pHandle;
+};
+
+u8* JumpApplication_Func::pParam;
+u32* JumpApplication_Func::pHmacBuf;
+size_t JumpApplication_Func::paramSize;
+size_t JumpApplication_Func::hmacBufSize;
+
+/* Result Function for `_func` classes. */
+
+Result ExecFunctionTillSuccess(Result (*function)(), fnd::TimeSpan timeout = WAIT_INFINITE)
+{
+    os::Tick startTick = os::Tick::GetSystemCurrent();
+
+    Result result;
+
+    for(;;)
+    {
+        LockAndConnect();
+
+        result = function();
+
+        DisconnectAndUnlock();
+
+        if (result.IsSuccess())
+            break;
+
+        if (result.GetDescription() == nn::Result::DESCRIPTION_BUSY || 
+            result.GetDescription() == DESCRIPTION_APPLET_TRANSITION_BUSY || 
+            result.GetDescription() == DESCRIPTION_ALREADY_LISTED)
+        {
+            os::Thread::Sleep(sleepSpan);
+            continue;
+        }
+
+        break;
+    }
+
+    return result;
 }
 
 /* Rights */
@@ -131,7 +1015,8 @@ void AssignDspRight(bool flag)
             isDspSleeping = false;
         }
     }
-    else{
+    else
+    {
         if(dsp::CTR::IsComponentLoaded())
         {
             dsp::CTR::Sleep();
@@ -183,7 +1068,7 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
         Handle handle;
         AppletAttr attrDecided;
         bit32 miscState;
-        Result res = APPLET::GetLockHandle(&handle,appletAttr,&attrDecided,&miscState);
+        Result res = APPLET::GetLockHandle(&handle, appletAttr, &attrDecided, &miscState);
     
         if (!res.IsSuccess())
         {
@@ -210,7 +1095,7 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
         nn::Handle handleForCont;
         nn::Handle handleForMesg;
         
-        Result res = APPLET::Initialize(GetId(),GetAttribute(), &handleForMesg, &handleForCont);
+        Result res = APPLET::Initialize(GetId(), GetAttribute(), &handleForMesg, &handleForCont);
         NN_ERR_THROW_FATAL(res);
         
         InitializeWrapper();
@@ -219,7 +1104,9 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
     DisconnectAndUnlock();
 
     if (!IsApplication())
+    {
         gxlow::CTR::SetAppletMode();
+    }
     return ResultSuccess();
 }
 
@@ -229,7 +1116,7 @@ void ReplySleepQueryToManager(QueryReply reply)
 {
     Result res;
     LockAndConnect();
-    res = APPLET::ReplySleepQuery(GetId(),reply);
+    res = APPLET::ReplySleepQuery(GetId(), reply);
     NN_ERR_THROW_FATAL(res);
     DisconnectAndUnlock();
 }
@@ -308,7 +1195,7 @@ bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* 
     AppletAttr appletAttr;
 
     detail::LockAndConnect();
-    res = detail::APPLET::GetAppletInfo(appletId, &programId, &mediaType, &isUsed, &isPreloaded, &appletAttr);
+    res = APPLET::GetAppletInfo(appletId, &programId, &mediaType, &isUsed, &isPreloaded, &appletAttr);
     detail::DisconnectAndUnlock();
 
     if (res.IsSuccess())
@@ -320,7 +1207,7 @@ bool GetAppletInfo(AppletId appletId, ProgramId* pProgramId, nn::fs::MediaType* 
         if (pIsUsed)
             *pIsUsed = isUsed;
         if (pIsPreloaded)
-                *pIsPreloaded = isPreloaded;
+            *pIsPreloaded = isPreloaded;
         if (pAttr)
             *pAttr = appletAttr;
         return true;
@@ -516,7 +1403,7 @@ Result Glance(AppletId* pSenderId, u32* pCommand, u8* pParam, size_t paramSize, 
         nn::Handle tmpHandle = nn::Handle();
         nn::Handle* pHandle0 = (pHandle)? pHandle: &tmpHandle;
 
-        res = detail::APPLET::GlanceParameter( pSenderId0, GetId(), pCommand0, pParam0, paramSize, pReadLen0, pHandle0 );
+        res = detail::APPLET::GlanceParameter(pSenderId0, GetId(), pCommand0, pParam0, paramSize, pReadLen0, pHandle0);
         if (tmpHandle.IsValid())
         {
             svc::CloseHandle(tmpHandle);
@@ -570,7 +1457,7 @@ void LockTransition(u32 action,bool isForced)
 
 void SleepIfShellClosed() {
     Result result = CallUtility(4);
-    NN_UNUSED_VAR( result );
+    NN_UNUSED_VAR(result);
 }
 
 bool IsRetryRequired(Result result)
@@ -591,14 +1478,10 @@ Result CancelLibraryApplet(bool isApplicationEnd)
 {
     Result res;
     SetTransitionType(TRANSITION_CANCEL_APPLIB);
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::CancelLibraryApplet(isApplicationEnd);
-        DisconnectAndUnlock();
-        if(!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+
+    PreloadLibraryApplet_Func::isApplicationEnd = isApplicationEnd;
+    res = ExecFunctionTillSuccess(PreloadLibraryApplet_Func::PrepareCore);
+
     return res;
 }
 
@@ -633,14 +1516,10 @@ Result PrepareToStartSystemApplet(AppletId id)
     CancelLibraryAppletIfRegistered(false);
     SetTransitionType(TRANSITION_START_SYS);
     bool sleep = DisableSleepForTransition();
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::PrepareToStartSystemApplet(id);
-        DisconnectAndUnlock();
-        if(!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+
+    StartLibraryApplet_Func::id = id;
+    res = ExecFunctionTillSuccess(StartLibraryApplet_Func::PrepareCore);
+
     RestoreSleepForTransition(sleep);
     if(IsApplication() && res == ResultAlreadyExist())
     {
@@ -674,14 +1553,12 @@ Result StartSystemApplet(AppletId id,u8* pParam,size_t paramSize,Handle h){
 
     bool sleepEnabled = DisableSleepForTransition();
 
-    while (true)
-    {
-        LockAndConnect();
-        res = APPLET::StartSystemApplet(id,pParam,paramSize,h);
-        DisconnectAndUnlock();
-        if (!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+    StartSystemApplet_Func::id = id;
+    StartSystemApplet_Func::pParam = pParam;
+    StartSystemApplet_Func::paramSize = paramSize;
+    StartSystemApplet_Func::pHandle = &h;
+    res = ExecFunctionTillSuccess(StartSystemApplet_Func::StartCore);
+
     RestoreSleepForTransition(sleepEnabled);
 
     NN_ERR_THROW_FATAL_ALL(res);
@@ -702,14 +1579,10 @@ Result PrepareToCloseApplication(bool isCancelPreload)
     CancelLibraryAppletIfRegistered(false);
     SetTransitionType(TRANSITION_CLOSE_APP);
     Result res;
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::PrepareToCloseApplication(!isCancelPreload);
-        DisconnectAndUnlock();
-        if(!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+
+    CloseApplication_Func::isToJumpHomeOrSystem = isCancelPreload;
+    res = ExecFunctionTillSuccess(CloseApplication_Func::PrepareCore);
+
     NN_ERR_THROW_FATAL(res);
     return res;
 }
@@ -723,14 +1596,9 @@ Result CloseApplication(u8* pParam, size_t paramSize, Handle handle)
     CloseAppletHook();
     AssignGpuRight(false);
     Result res;
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::CloseApplication(pParam, paramSize, handle);
-        DisconnectAndUnlock();
-        if(!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+
+    res = ExecFunctionTillSuccess(CloseApplication_Func::CloseCore);
+
     NN_ERR_THROW_FATAL(res);
     SetInactive();
     svc::ExitProcess();
@@ -761,14 +1629,13 @@ Result StartLibraryApplet(AppletId id, const u8* pParam,size_t paramSize, Handle
     res = CaptureScreen(id);
     AssignGpuRight(false);
     bool sleep = DisableSleepForTransition();
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::StartLibraryApplet(id,pParam,paramSize, handle);
-        DisconnectAndUnlock();
-        if(!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
+
+    StartLibraryApplet_Func::id = id;
+    StartLibraryApplet_Func::pParam = (u8*)pParam;
+    StartLibraryApplet_Func::paramSize = paramSize;
+    StartLibraryApplet_Func::pHandle = &handle;
+    res = ExecFunctionTillSuccess(StartLibraryApplet_Func::StartCore);
+
     RestoreSleepForTransition(sleep);
     NN_ERR_THROW_FATAL(res);
     SetInactive();
@@ -781,17 +1648,7 @@ Result StartLibraryApplet(AppletId id, const u8* pParam,size_t paramSize, Handle
 Result PrepareToJumpToHomeMenu()
 {
     SetTransitionType(TRANSITION_JUMP_HOME);
-        
-    Result res;
-    while(true)
-    {
-        LockAndConnect();
-        res = APPLET::PrepareToJumpToHomeMenu();
-        DisconnectAndUnlock();
-        if (!IsRetryRequired(res)) break;
-        WaitBySleep(10);
-    }
-    return res;
+    return ExecFunctionTillSuccess(JumpToHomeMenu_Func::PrepareCore);
 }
 
 Result JumpToHomeMenu(u8* pParam, size_t paramSize, Handle handle)
@@ -859,6 +1716,26 @@ Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize, u8* pOutPara
     DisconnectAndUnlock();
 
     return res;
+}
+
+/* Application Wrapping */
+
+Result Wrap(void* pWrappedBuffer, const void* pData, size_t dataSize, s32 idOffset, size_t idSize)
+{
+    Result result;
+    detail::LockAndConnect();
+    result = detail::APPLET::Wrap(reinterpret_cast<bit8*>(pWrappedBuffer), reinterpret_cast<const bit8*>(pData), dataSize + WRAP_SIZE, dataSize, idOffset, idSize);
+    detail::DisconnectAndUnlock();
+    return result;
+}
+
+Result Unwrap(void* pData, const void* pWrapped, size_t wrappedSize, s32 idOffset, size_t idSize)
+{
+    Result result;
+    detail::LockAndConnect();
+    result = detail::APPLET::Unwrap(reinterpret_cast<bit8*>(pData),reinterpret_cast<const bit8*>(pWrapped), wrappedSize - WRAP_SIZE, wrappedSize, idOffset, idSize);
+    detail::DisconnectAndUnlock();
+    return result;
 }
 
 } // detail

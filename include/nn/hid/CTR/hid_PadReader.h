@@ -17,16 +17,12 @@ namespace CTR{
 class PadReader : private nn::util::ADLFireWall::NonCopyable<PadReader>
 {
 public:
-#ifdef NN_VERSION_MAJOR > 2
-    typedef AnalogStickClamper::ClampMode StickClampMode;
-#else
     typedef enum
     {
         STICK_CLAMP_MODE_CIRCLE,
         STICK_CLAMP_MODE_CROSS,
         STICK_CLAMP_MODE_MINIMUM
     } StickClampMode;
-#endif
 
 
     PadReader(Pad& pad=GetPad( ));
@@ -36,39 +32,19 @@ public:
 
     void SetStickClamp(short min, short max);
 
-    void GetStickClamp(s16* pMin, s16* pMax) const
-#ifdef NN_VERSION > 2
-    {
-        this->m_StickClamper.GetStickClamp(pMin,pMax);
-    }
-#else
-    ;
-#endif
+    void GetStickClamp(s16* pMin, s16* pMax) const;
 
     StickClampMode GetStickClampMode() const
     {
-#ifdef NN_VERSION > 2
-        return this->m_StickClamper.GetStickClampMode();
-#else
         return m_StickClampMode;
-#endif
     }
-    void SetStickClampMode(StickClampMode mode)
-#if NN_MAJOR_VERSION > 2
-    {
-        this->m_StickClamper.SetStickClampMode(ClamperClampMode(mode));
-    }
-#else
-    ;
-#endif
+    void SetStickClampMode(StickClampMode mode);
     
     f32 NormalizeStick(short x);
     void NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y);
     void SetNormalizeStickScaleSettings(f32 scale, s16 threshold);
-#if NN_VERSION_MAJOR <= 2
     void ClampCore(short* pOutX, short* pOutY, s32 x, s32 y);
     void ClampValueOfClamp();
-#endif
 
     static const s8 MAX_READ_NUM = 7;
     
@@ -84,31 +60,27 @@ protected:
     Pad& m_Pad;
     s32 m_IndexOfRead;
     bit32 m_LatestHold;
-    #if NN_VERSION_MAJOR > 2
-        AnalogStickClamper m_StickClamper;
-    #else
-        short m_MinOfStickClampCircle;
-        short m_MinOfStickClampCross;
-        short m_MinOfStickClampMinimum;
-        short m_MaxOfStickClampCircle;
-        short m_MaxOfStickClampCross;
-        short m_MaxOfStickClampMinimum;
-        SizedEnum1<StickClampMode> m_StickClampMode;
-        s8 rev4;
-        short m_Threshold;
-        f32 m_Scale;
-        f32 m_Stroke;
-        f32 m_StrokeVelocity;
-        f32 m_LastLength;
-        f32 m_LastDiff;
-    #endif 
+    short m_MinOfStickClampCircle;
+    short m_MinOfStickClampCross;
+    short m_MinOfStickClampMinimum;
+    short m_MaxOfStickClampCircle;
+    short m_MaxOfStickClampCross;
+    short m_MaxOfStickClampMinimum;
+    SizedEnum1<StickClampMode> m_StickClampMode;
+    s8 rev4;
+    short m_Threshold;
+    f32 m_Scale;
+    f32 m_Stroke;
+    f32 m_StrokeVelocity;
+    f32 m_LastLength;
+    f32 m_LastDiff;
     bool m_IsReadLatestFirst;
     s8 rev[3];
     s32 rev2;
     s64 m_TickOfRead;
 
 public:
-    static AnalogStickClamper::ClampMode  ClamperClampMode(const StickClampMode mode){ return (AnalogStickClamper::ClampMode)mode; }
+    static AnalogStickClamper::ClampMode ClamperClampMode(const StickClampMode mode){ return (AnalogStickClamper::ClampMode)mode; }
 };
 
 #if NN_VERSION_MAJOR <= 2

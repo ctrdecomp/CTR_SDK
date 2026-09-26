@@ -18,8 +18,6 @@ namespace nn{
 namespace os{
 namespace detail{
 
-#if NN_VERSION_MAJOR <= 2
-
 template <class Locker>
 InterCoreBlockingQueueBase<Locker>::~InterCoreBlockingQueueBase()
 {
@@ -263,8 +261,6 @@ uptr BlockingQueueBase<Locker>::GetFront() const
 }
 
 template class InterCoreBlockingQueueBase<nn::os::InterCoreCriticalSection>;
-
-#endif
 
 } // namespace detail
 } // namespace os

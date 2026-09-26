@@ -6,9 +6,6 @@
 namespace nn{
 namespace os{
 
-#if NN_VERSION_MAJOR > 2
-    typedef CriticalSection InterCoreCriticalSection;
-#else
 class InterCoreCriticalSection : private nn::util::NonCopyable<InterCoreCriticalSection>
 {
 private:
@@ -148,8 +145,6 @@ private:
 };
 
 NN_UTIL_DETAIL_DEFINE_SCOPED_LOCK(InterCoreCriticalSection, Enter(), Leave());
-
-#endif
 
 }
 }

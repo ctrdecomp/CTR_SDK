@@ -35,6 +35,21 @@ Result APPLET::GetAppletInfo(nn::applet::CTR::AppletId appletId, nn::ProgramId* 
     return ipcMsg.GetRaw<Result>(1);
 }
 
+Result APPLET::PrepareToStartLibraryApplet(AppletId id)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x18, 1, 0, 0);
+    ipcMsg.SetRaw(1, id);
+
+    Result ipcResult = SendSyncRequest(s_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    return ipcMsg.GetRaw<Result>(1);
+}
+
 Result APPLET::AppletUtility(u32 id,u8 *pInParam,size_t inParamSize,u8 *pOutParam,size_t outParamSize,s32 *pReadLen)
 {
     MessageBuffer ipcMsg(GetMessageBuffer());
@@ -481,6 +496,42 @@ Result APPLET::StartSystemApplet(AppletId id,u8 *pParam,size_t paramSize,Handle 
 {
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(0x1F, 2, 4, 0);
+    ipcMsg.SetRaw(1, id);
+    ipcMsg.SetRaw(2, paramSize);
+    ipcMsg.SetCopyHandleHeader(3, 1);
+    ipcMsg.SetHandle(4, handle);
+    ipcMsg.SetPointerHeader(5, 0, sizeof(*pParam) * paramSize);
+    ipcMsg.SetPointer(6, pParam);
+
+
+    Result ipcResult = SendSyncRequest(s_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    return ipcMsg.GetRaw<Result>(1);
+}
+
+Result APPLET::PreloadLibraryApplet(AppletId id)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x16, 1, 0, 0);
+    ipcMsg.SetRaw(1, id);
+
+    nn::Result ipcResult = SendSyncRequest(s_Session);
+    if( ipcResult.IsFailure() )
+    {
+        return ipcResult;
+    }
+
+    return ipcMsg.GetRaw<nn::Result>(1);
+}
+
+Result APPLET::StartLibraryApplet(AppletId id,u8 *pParam,size_t paramSize,Handle handle)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x1E, 2, 4, 0);
     ipcMsg.SetRaw(1, id);
     ipcMsg.SetRaw(2, paramSize);
     ipcMsg.SetCopyHandleHeader(3, 1);

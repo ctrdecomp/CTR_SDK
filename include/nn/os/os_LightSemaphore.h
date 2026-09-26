@@ -18,12 +18,14 @@ private:
     {
         bool operator()(s32& x)
         {
-            if(x > 0){
+            if(x > 0)
+            {
                 --x;
                 return true;
             }
 
-            else{
+            else
+            {
                 return false;
             }
         }
@@ -38,11 +40,13 @@ private:
         {
             beforeUpdate = x;
 
-            if(x > max - value){
+            if(x > max - value)
+            {
                 x = max;
             }
 
-            else{
+            else
+            {
                 x += value;
             }
 

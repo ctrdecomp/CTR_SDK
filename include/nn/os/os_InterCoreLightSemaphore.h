@@ -6,10 +6,6 @@
 namespace nn { 
 namespace os {
 
-#if NN_VERSION_MAJOR > 2
-    typedef LightSemaphore InterCoreLightSemaphore;
-#else
-
 class InterCoreLightSemaphore : private util::ADLFireWall::NonCopyable<LightSemaphore>
 {
 public:
@@ -115,5 +111,4 @@ public:
 
 }
 
-#endif
 }

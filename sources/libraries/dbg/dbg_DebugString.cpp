@@ -91,31 +91,6 @@ extern "C"{
         nn::dbg::detail::PutString(text, length);
     }
 
-#if NN_VERSION_MAJOR > 2
-
-    void nndbgPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
-    {
-        va_list vlist;
-
-        va_start(vlist, fmt);
-        nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
-        nn::dbg::detail::VPrintf(fmt, vlist);
-        nn::dbg::detail::TPrintf("\n");
-        va_end(vlist);
-    }
-    void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
-    {
-        va_list vlist;
-
-        va_start(vlist, fmt);
-        nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
-        nn::dbg::detail::TVPrintf(fmt, vlist);
-        nn::dbg::detail::TPrintf("\n");
-        va_end(vlist);
-    }
-
-#else
-
     __weak int nndbgAssertionFailureHandler(bool print, const char* filename, int lineno, const char* fmt, ...)
     {
         va_list vlist;
@@ -146,7 +121,8 @@ extern "C"{
     {
         va_list vlist;
         
-        if (print){
+        if (print)
+        {
             nndbgDetailTPrintf("Failed assertion at %s:%d\n  ", filename, lineno);
         
             va_start(vlist, fmt);
@@ -166,7 +142,6 @@ extern "C"{
 
         return 0;
     }
-#endif // NN_VERSION_MAJOR
 }
 
 //#endif

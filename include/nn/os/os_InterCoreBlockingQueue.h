@@ -7,9 +7,6 @@ namespace nn{
 namespace os{
 namespace detail{
 
-#if NN_VERSION_MAJOR > 2
-    typedef BlockingQueue InterCoreBlockingQueue;
-#else
 
 template <class Locker>
 class InterCoreBlockingQueueBase : private nn::util::ADLFireWall::NonCopyable<InterCoreBlockingQueueBase<Locker> >
@@ -89,8 +86,6 @@ public:
     using Base::GetUsedCount;
     using Base::GetFirstIndex;
 };
-
-#endif
 
 } // namespace os
 } // namespace nn

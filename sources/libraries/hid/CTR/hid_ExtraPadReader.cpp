@@ -13,6 +13,14 @@
 namespace nn{
 namespace hid{
 namespace CTR{
+namespace {
+    bool s_IsEnableSelect = false;
+}
+
+bool IsSelectButtonEnabled()
+{
+    return s_IsEnableSelect;
+}
 
 ExtraPadReader::ExtraPadReader():
     m_IndexOfRead(-1),
@@ -37,7 +45,7 @@ bool ExtraPadReader::ReadLatest(ExtraPadStatus* pBuf)
         this->m_ExtraStickClamper.ClampValueOfClamp();
         this->m_StickClamper.ClampValueOfClamp();
         hidlow::CTR::ExtraPadLifoRing* ring = (hidlow::CTR::ExtraPadLifoRing*)ExtraPad::GetResource();
-        ring->ReadData(pBuf,1,&readLen,&tick,&index);
+        ring->ReadData(pBuf, 1, &readLen, &tick, &index);
         
         if(m_IsReadLatestFirst)
         {
@@ -57,8 +65,10 @@ bool ExtraPadReader::ReadLatest(ExtraPadStatus* pBuf)
             pBuf->extraStick.y = 0;
         }
         m_LatestHold = pBuf->hold;
-        if(s_IsEnableSelect == false)
+        if(IsSelectButtonEnabled() == false)
+        {
             hidlow::GatherStartAndSelect(pBuf);
+        }
         this->m_ExtraStickClamper.ClampCore(&pBuf->extraStick.x, &pBuf->extraStick.y, pBuf->extraStick.x, pBuf->extraStick.y);
         this->m_StickClamper.ClampCore(&pBuf->stick.x, &pBuf->stick.y,pBuf->stick.x, pBuf->stick.y);
 
@@ -82,7 +92,9 @@ bool ExtraPadReader::ReadLatest(ExtraPadStatus* pBuf)
             return true;
         }
         else
+        {
             return false;
+        }
     }
 }
 
@@ -92,9 +104,9 @@ void ExtraPadReader::Read(ExtraPadStatus* pBufs, s32* pReadLen, s32 bufLen)
     PadStatus padStatus[PadReader::MAX_READ_NUM];
     s32 padLen = 0;
 
-    this->m_PadReader.Read(padStatus,&padLen, bufLen);
+    this->m_PadReader.Read(padStatus, &padLen, bufLen);
     hidlow::CTR::ExtraPadLifoRing* ring = (hidlow::CTR::ExtraPadLifoRing*)ExtraPad::GetResource();
-    ring->ReadData(pBufs,bufLen,pReadLen,&this->m_TickOfRead,&this->m_IndexOfRead);
+    ring->ReadData(pBufs, bufLen, pReadLen, &this->m_TickOfRead, &this->m_IndexOfRead);
     if(ExtraPad::IsSampling())
     {
         this->m_ExtraStickClamper.ClampValueOfClamp();
@@ -114,7 +126,10 @@ void ExtraPadReader::Read(ExtraPadStatus* pBufs, s32* pReadLen, s32 bufLen)
                 pBufs[i].extraStick.x = 0;
                 pBufs[i].extraStick.y = 0;
             }
-            if (!sIsEnableSelect) nn::hidlow::GatherStartAndSelect(&pBufs[i]);
+            if (!IsSelectButtonEnabled())
+            {
+                nn::hidlow::GatherStartAndSelect(&pBufs[i]);
+            }
 
             this->m_ExtraStickClamper.ClampCore(&pBufs[i].extraStick.x, &pBufs[i].extraStick.y,pBufs[i].extraStick.x, pBufs[i].extraStick.y);
             this->m_StickClamper.ClampCore(&pBufs[i].stick.x, &pBufs[i].stick.y, pBufs[i].stick.x, pBufs[i].stick.y);
@@ -145,18 +160,18 @@ f32 ExtraPadReader::NormalizeStick(s16 x)
 
 void ExtraPadReader::NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y)
 {
-    //return this->m_StickClamper.NormalizeStickWithScale(normalized_x,normalized_y,x,y);
+    return this->m_StickClamper.NormalizeStickWithScale(normalized_x, normalized_y, x, y);
 }
 
 void ExtraPadReader::SetNormalizeStickScaleSettings(f32 scale, s16 threshold)
 {
-    this->m_StickClamper.SetNormalizeStickScaleSettings(scale,threshold);
-    this->m_PadReader.SetNormalizeStickScaleSettings(scale,threshold);
+    this->m_StickClamper.SetNormalizeStickScaleSettings(scale, threshold);
+    this->m_PadReader.SetNormalizeStickScaleSettings(scale, threshold);
 }
 
 void ExtraPadReader::GetNormalizeStickScaleSettings(f32* scale, s16* threshold) const
 {
-    return this->m_StickClamper.GetNormalizeStickScaleSettings(scale,threshold);
+    return this->m_StickClamper.GetNormalizeStickScaleSettings(scale, threshold);
 }
 
 }

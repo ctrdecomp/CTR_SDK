@@ -146,6 +146,16 @@ void SetAuxReturnVolume(AuxBusId id, f32 fVolume)
     return MasterManager::GetInstance().SetAuxReturnVolume(id, fVolume);
 }
 
+Result FlushDataCache(uptr addr, size_t size)
+{
+    return nn::dsp::CTR::FlushDataCache(addr, size);
+}
+
+Result InvalidateDataCache(uptr addr, size_t size)
+{
+    return nn::dsp::CTR::InvalidateDataCache(addr, size);
+}
+
 OutputMode GetSoundOutputMode()
 {
     return MasterManager::GetInstance().GetSoundOutputMode();
@@ -265,6 +275,11 @@ void WaitForDspSync(nn::os::Tick* pTick)
         s_SyncState = SYNC_STATE_WAIT;
         *pTick = nn::os::Tick::GetSystemCurrent() - tick;
     }
+}
+
+s32 GetDspCycles()
+{
+    return Dspsnd::GetInstance().GetDspCyclesWhole();
 }
 
 Voice* AllocVoice(s32 priority, VoiceDropCallbackFunc callback, uptr userArg)

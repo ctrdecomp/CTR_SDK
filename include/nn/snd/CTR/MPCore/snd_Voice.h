@@ -75,6 +75,7 @@ public:
     void SetBiquadFilterCoefficients(const BiquadFilterCoefficients& coeff);
     void SetMonoFilterCoefficients(const MonoFilterCoefficients* pCoeff);
     void SetMonoFilterCoefficients(const MonoFilterCoefficients& coeff);
+    void SetMonoFilterCoefficients(u16 cutoff);
     void SetState(State state);
     void SetMixParam(const MixParam& mixParam);
     void SetVolume(f32 volume);

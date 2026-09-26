@@ -19,27 +19,43 @@ namespace CTR {
     void WaitForDspSync();
     void WaitForDspSync(nn::os::Tick* pTick);
     void SendParameterToDsp();
+    s32 GetDspCycles();
+
     void Sleep();
     void WakeUp();
     void OrderToWaitForFinalize();
+
     bool GetHeadphoneStatus();
     void SetOutputBufferCount(s32 outputBufferCount);
+
     bool SetSurroundDepth(f32 depth);
     void SetSurroundSpeakerPosition(SurroundSpeakerPosition pos);
+
     f32 GetSystemMasterVolume();
     void SetMasterVolume(f32 fVolume);
     void SetAuxReturnVolume(AuxBusId id, f32 fVolume);
-    void ClearEffect(AuxBusId busId);
+
+    Result FlushDataCache(uptr addr, size_t size);
+    Result InvalidateDataCache(uptr addr, size_t size);
+
     void DecodeAdpcmData(const u8* pInput, s16* pOutput, const AdpcmParam& param, AdpcmContext& context, s32 nSamples);
+
     Result StartSoundThread(const ThreadParameter* mainThreadParam,void (*mainThreadCallback)(uptr),uptr mainThreadArg,const ThreadParameter* userThreadParam,void (*userThreadCallback)(uptr),uptr userThreadArg,s32 coreNo);
     void FinalizeSoundThread();
+    inline void FinalizeUserSoundThread() {}
+
     os::Tick GetSoundThreadTick();
     void EnableSoundThreadTickCounter(bool enable);
+
     void GetAuxCallback(AuxBusId busId, AuxCallback* pcb, uptr* pUserData);
     void RegisterAuxCallback(AuxBusId busId, AuxCallback cb, uptr userData);
+
     OutputMode GetSoundOutputMode();
+
     bool SetEffect(AuxBusId busId, FxDelay* fx);
     bool SetEffect(AuxBusId busId, FxReverb* fx);
+    void ClearEffect(AuxBusId busId);
+
     bool SetSoundOutputMode(OutputMode mode);
     void ClearAuxCallback(AuxBusId busId);
 } // namespace CTR

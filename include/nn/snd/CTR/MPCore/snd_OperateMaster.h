@@ -117,12 +117,15 @@ public:
     void EnableAuxCallbackInSendParameter(bool param){ m_IsAuxCallbackInSendParameterEnabled = param; }
 };
 
-inline bool Dspsnd::UpdateSlotId(ushort recvid){
+inline bool Dspsnd::UpdateSlotId(ushort recvid)
+{
     bool ret = true;
-    if(!recvid){
+    if(!recvid)
+    {
         return ret;
     }
-    else{
+    else
+    {
         m_DirectId = recvid++;
         if(recvid == 0xffff)
             m_DirectId = 2;

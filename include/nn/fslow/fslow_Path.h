@@ -14,16 +14,18 @@ template <class T, typename V>
 class LowPath
 {
 protected:
-        bit32       m_PathType; // todo: possible enum?
+        bit32       m_PathType;
         const void* m_Data;
         size_t      m_BinarySize;
 public:
-    LowPath (){
+    LowPath ()
+    {
         this->m_PathType   = 4;
         this->m_Data       = &m_Data;
         this->m_BinarySize = 1;
     }
-    LowPath (const wchar_t* path){
+    LowPath (const wchar_t* path)
+    {
         this->m_PathType   = 4;
         this->m_Data       = path;
         this->m_BinarySize = 2 * (wcslen (path) + 1);

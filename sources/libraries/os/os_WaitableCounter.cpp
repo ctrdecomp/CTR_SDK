@@ -8,8 +8,8 @@
 
 namespace nn{
 namespace os{
-
-// me: no sti, roll back to kitchen
+    
+// me: no sti roll back to kitchen
 //
 // sti : aww :(
 

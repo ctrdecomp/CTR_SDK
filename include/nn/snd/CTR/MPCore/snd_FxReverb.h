@@ -8,7 +8,8 @@ namespace nn{
 namespace snd{
 namespace CTR{
 
-class FxReverb{
+class FxReverb
+{
 public:
     FxReverb();
     virtual ~FxReverb();

@@ -1,12 +1,14 @@
 #pragma once
 
-typedef struct nnResult{
+typedef struct nnResult
+{
     bit32   value;
 } nnResult;
 
 namespace nn {
 
-class Result {
+class Result
+{
 private:
     static const bit32 MASK_FAIL_BIT        = 0x80000000u;
 
@@ -43,7 +45,8 @@ private:
 #undef NN_RESULT_H_MAKE_MAX
 
 public:
-    enum Level {
+    enum Level
+    {
         LEVEL_INFO      =  1,
         LEVEL_SUCCESS   =  0,
         LEVEL_FATAL     = -1,
@@ -56,7 +59,8 @@ public:
         LEVEL_END
     };
 
-    enum Summary {
+    enum Summary
+    {
         SUMMARY_SUCCESS              =  0,
         SUMMARY_NOTHING_HAPPENED     =  1,
         SUMMARY_WOULD_BLOCK          =  2,
@@ -72,7 +76,8 @@ public:
         SUMMARY_INVALID_RESULT_VALUE = MAX_SUMMARY
     };
 
-    enum Module {
+    enum Module
+    {
         MODULE_COMMON           = 0,
         MODULE_NN_KERNEL        = 1,
         MODULE_NN_UTIL,
@@ -160,7 +165,8 @@ public:
         MODULE_INVALID_RESULT_VALUE = MAX_MODULE
     };
 
-    enum Description {
+    enum Description
+    {
         DESCRIPTION_SUCCESS             =                    0,
         DESCRIPTION_INVALID_SELECTION   = MAX_DESCRIPTION - 23,
         DESCRIPTION_TOO_LARGE           = MAX_DESCRIPTION - 22,
@@ -194,15 +200,15 @@ public:
     template <Result::Level TLevel, Result::Module TModule> struct Const_LM;
     template <Result::Level TLevel> struct Const_L;
 
-public:
-    bit32 mResult;
 private:
+    bit32 m_Result;
+
     template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription> friend struct Const;
     template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription, int TDescriptionMin, int TDescriptionMax> friend struct ConstRange;
 public:
-    explicit Result(bit32 code) : mResult(code) {}
+    explicit Result(bit32 code) : m_Result(code) {}
 private:
-    bit32 GetCodeBits(bit32 mask, s32 shift) const { return ((mResult & mask) >> shift); }
+    bit32 GetCodeBits(bit32 mask, s32 shift) const { return ((m_Result & mask) >> shift); }
 
     template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription, int TDescriptionMin, int TDescriptionMax>
     bool operator==(ConstRange<TLevel, TSummary, TModule, TDescription, TDescriptionMin, TDescriptionMax>) const;
@@ -211,7 +217,7 @@ private:
 
 public:
     Result()
-        : mResult(static_cast<bit32>(
+        : m_Result(static_cast<bit32>(
             ((static_cast<bit32>(LEVEL_USAGE)  << SHIFTS_LEVEL)       & MASK_LEVEL)       |
             ((SUMMARY_INVALID_RESULT_VALUE     << SHIFTS_SUMMARY)     & MASK_SUMMARY)     |
             ((MODULE_INVALID_RESULT_VALUE      << SHIFTS_MODULE)      & MASK_MODULE)      |
@@ -219,18 +225,18 @@ public:
     {}
 
     Result(Level level, Summary summary, Module module, int description)
-        : mResult(static_cast<bit32>(
+        : m_Result(static_cast<bit32>(
             ((level       << SHIFTS_LEVEL)       & MASK_LEVEL)       |
             ((summary     << SHIFTS_SUMMARY)     & MASK_SUMMARY)     |
             ((module      << SHIFTS_MODULE)      & MASK_MODULE)      |
             ((description << SHIFTS_DESCRIPTION) & MASK_DESCRIPTION)))
     {}
 
-    bool IsFailure() const { return (mResult & MASK_FAIL_BIT) != 0; }
+    bool IsFailure() const { return (m_Result & MASK_FAIL_BIT) != 0; }
     bool IsSuccess() const { return !IsFailure(); }
 
     Level GetLevel() const {
-        if(mResult & MASK_FAIL_BIT)
+        if(m_Result & MASK_FAIL_BIT)
             return static_cast<Level>(GetCodeBits(MASK_LEVEL, SHIFTS_LEVEL) | MASK_NEGATIVE_LEVEL);
         return static_cast<Level>(GetCodeBits(MASK_LEVEL, SHIFTS_LEVEL));
     }
@@ -238,17 +244,17 @@ public:
     Summary     GetSummary()     const { return static_cast<Summary>(GetCodeBits(MASK_SUMMARY, SHIFTS_SUMMARY)); }
     Module      GetModule()      const { return static_cast<Module>(GetCodeBits(MASK_MODULE, SHIFTS_MODULE)); }
     int         GetDescription() const { return static_cast<int>(GetCodeBits(MASK_DESCRIPTION, SHIFTS_DESCRIPTION)); }
-    bit32       GetValue()       const { return mResult; }
-    bit32       GetPrintableBits() const { return mResult; }
+    bit32       GetValue()       const { return m_Result; }
+    bit32       GetPrintableBits() const { return m_Result; }
 
-    Result(nnResult result) : mResult(result.value) {}
+    Result(nnResult result) : m_Result(result.value) {}
     operator nnResult() const{
-        nnResult r = {mResult};
+        nnResult r = {m_Result};
         return r;
     }
 
-    bool operator==(const Result& rhs) const { return mResult == rhs.mResult; }
-    bool operator!=(const Result& rhs) const { return mResult != rhs.mResult; }
+    bool operator==(const Result& rhs) const { return m_Result == rhs.m_Result; }
+    bool operator!=(const Result& rhs) const { return m_Result != rhs.m_Result; }
 };
 
 template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription>
@@ -266,7 +272,8 @@ struct Result::Const : public Result {
 
     Const() : Result(Value) {}
 
-    static bool Includes(Result result) {
+    static bool Includes(Result result)
+    {
         return result.GetModule() == TModule && result.GetDescription() == TDescription;
     }
 };
@@ -288,7 +295,8 @@ struct Result::ConstRange : public Result {
 
     ConstRange() : Result(Value) {}
 
-    static bool Includes(Result result) {
+    static bool Includes(Result result)
+    {
         return result.GetModule() == TModule &&
                TDescriptionMin <= result.GetDescription() &&
                result.GetDescription() <= TDescriptionMax;
@@ -302,7 +310,8 @@ private:
 };
 
 template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule>
-struct Result::Const_LSM : public Result {
+struct Result::Const_LSM : public Result
+{
     static const Result::Level   Level   = TLevel;
     static const Result::Summary Summary = TSummary;
     static const Result::Module  Module  = TModule;
@@ -314,7 +323,8 @@ struct Result::Const_LSM : public Result {
 };
 
 template <Result::Level TLevel, Result::Module TModule>
-struct Result::Const_LM : public Result {
+struct Result::Const_LM : public Result
+{
     static const Result::Level  Level  = TLevel;
     static const Result::Module Module = TModule;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <nn/types.h>
+#include <nn/Assert.h>
 #include <cmath>
 
 namespace nn{
@@ -7,14 +9,16 @@ namespace math{
 
 class MTX34;
 
-struct QUAT_{
+struct QUAT_
+{
     f32 x;
     f32 y;
     f32 z;
     f32 w;
 };
 
-class QUAT : public QUAT_{
+class QUAT : public QUAT_
+{
 public:
     typedef QUAT self_type;
     typedef f32  value_type;
@@ -28,57 +32,103 @@ public:
     operator const f32*() const { return &x; }
 };
 
+#define NN_QUAT_EPSILON        0.00001F
+
 namespace ARMv6{
-    QUAT* MTX34ToQUATC_FAST(QUAT* pOut, const MTX34* pMtx);
-    QUAT* MTX34ToQUATC(QUAT* pOut, const MTX34* pMtx);
+
+QUAT* MTX34ToQUATC_FAST(QUAT* pOut, const MTX34* pMtx);
+QUAT* MTX34ToQUATC(QUAT* pOut, const MTX34* pMtx);
     
-    inline QUAT* QUATNormalizeC(QUAT* pOut, const QUAT* __restrict q){
-        f32 mag;
+inline QUAT* QUATNormalizeC(QUAT* pOut, const QUAT* __restrict q)
+{
+    f32 mag;
 
-        NN_NULL_ASSERT_(q);
-        NN_NULL_ASSERT_(pOut);
+    NN_NULL_ASSERT_(q);
+    NN_NULL_ASSERT_(pOut);
 
-        mag = (q->x * q->x) + (q->y * q->y) + (q->z * q->z) + (q->w * q->w);
+    mag = (q->x * q->x) + (q->y * q->y) + (q->z * q->z) + (q->w * q->w);
 
-        if (mag >= 0.00001F){
-            mag = 1.0F / ::std::sqrtf(mag);
+    if (mag >= 0.00001F)
+    {
+        mag = 1.0F / ::std::sqrtf(mag);
             
-            pOut->x = q->x * mag;
-            pOut->y = q->y * mag;
-            pOut->z = q->z * mag;
-            pOut->w = q->w * mag;
-        }
-        else
-        {
-            pOut->x = pOut->y = pOut->z = pOut->w = 0.0F;
-        }
-        
-        return pOut;
+        pOut->x = q->x * mag;
+        pOut->y = q->y * mag;
+        pOut->z = q->z * mag;
+        pOut->w = q->w * mag;
     }
+    else
+    {
+        pOut->x = pOut->y = pOut->z = pOut->w = 0.0F;
+    }
+        
+    return pOut;
+}
+
+inline QUAT* QUATNormalizeC_FAST(QUAT* pOut, const QUAT* __restrict q)
+{
+    f32 mag;
+
+    NN_NULL_ASSERT_(q);
+    NN_NULL_ASSERT_(pOut);
+
+    register f32 x, y, z, w;
+
+    x = q->x;
+    y = q->y;
+    z = q->z;
+    w = q->w;
+
+    mag = (x * x) + (y * y) + (z * z) + (w * w);
+
+    if (mag >= NN_QUAT_EPSILON)
+    {
+        mag = 1.0F / ::std::sqrtf(mag);
+        
+        x = x * mag;
+        y = y * mag;
+        z = z * mag;
+        w = w * mag;
+
+        pOut->x = x;
+        pOut->y = y;
+        pOut->z = z;
+        pOut->w = w;
+
+    }
+    else
+    {
+        pOut->x = pOut->y = pOut->z = pOut->w = 0.0F;
+    }
+    
+    return pOut;
+}
 }
 
 /* Inlines */
 
-#define NN_QUAT_EPSILON        0.00001F
-
-inline QUAT* QUATSlerp(QUAT* pOut, const QUAT* __restrict q1, const QUAT* __restrict q2, f32 t){
+inline QUAT* QUATSlerp(QUAT* pOut, const QUAT* __restrict q1, const QUAT* __restrict q2, f32 t)
+{
     f32 theta, sin_th, cos_th, tp, tq;
 
     cos_th = q1->x * q2->x + q1->y * q2->y + q1->z * q2->z + q1->w * q2->w;
     tq     = 1.0F;
 
-    if (cos_th < 0.0F){
+    if (cos_th < 0.0F)
+    {
         cos_th = -cos_th;
         tq     = -tq;
     }
 
-    if (cos_th <= 1.0F - NN_QUAT_EPSILON ){
+    if (cos_th <= 1.0F - NN_QUAT_EPSILON)
+    {
         theta  = ::std::acosf(cos_th);
         sin_th = ::std::sinf(theta);
         tp     = ::std::sinf((1.0F - t) * theta) / sin_th;
         tq    *= ::std::sinf( t * theta ) / sin_th;
     }
-    else{
+    else
+    {
         tp = 1.0F - t;
         tq = tq * t;
     }
@@ -91,20 +141,25 @@ inline QUAT* QUATSlerp(QUAT* pOut, const QUAT* __restrict q1, const QUAT* __rest
     return pOut;
 }
 
-inline QUAT* QUATSlerp(QUAT* pOut, const QUAT& q1, const QUAT& q2, f32 t) { return QUATSlerp( pOut, &q1, &q2, t ); }
+inline QUAT* QUATSlerp(QUAT* pOut, const QUAT& q1, const QUAT& q2, f32 t) { return QUATSlerp(pOut, &q1, &q2, t); }
 
-inline QUAT* QUATNormalize(QUAT* pOut, const QUAT* q){
-
+inline QUAT* QUATNormalize(QUAT* pOut, const QUAT* __restrict q)
+{
+    #ifdef NN_MATH_BUILD_FAST
+        return ARMv6::QUATNormalizeC(pOut, q);
+    #else
+        return ARMv6::QUATNormalizeC_FAST(pOut, q);
+    #endif
 }
 
-inline QUAT* MTX34ToQUAT(QUAT* pOut, const MTX34* pMtx){
-    #ifdef NN_BUILD_DEBUG
+// #include <nn/math/ARMv6/inlines/math_Types.ipp>
+inline QUAT* MTX34ToQUAT(QUAT* pOut, const MTX34* pMtx)
+{
+    #ifdef NN_MATH_BUILD_FAST
         return ARMv6::MTX34ToQUATC(pOut, pMtx);
     #else
         return ARMv6::MTX34ToQUATC_FAST(pOut, pMtx);
     #endif
 }
-
-QUAT* MTX34ToQUAT(QUAT* pOut, const MTX34* pMtx);
 }
 }

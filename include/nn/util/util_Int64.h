@@ -4,7 +4,8 @@ namespace nn {
 namespace util {
 
 template <typename Base, typename Tag = void>
-struct Int64{
+struct Int64
+{
     bit32 lo;
     bit32 hi;
     Int64() {}

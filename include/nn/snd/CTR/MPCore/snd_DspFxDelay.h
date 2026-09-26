@@ -8,7 +8,8 @@ namespace nn {
 namespace snd {
 namespace CTR {
 
-class DspFxDelay : private nn::util::NonCopyable<DspFxDelay> {
+class DspFxDelay : private nn::util::NonCopyable<DspFxDelay>
+{
 public:
     struct Param 
     {
@@ -54,7 +55,8 @@ protected:
     s8 m_ProcessCount;
 };
 
-class DspFxDelayParams{
+class DspFxDelayParams
+{
 public:
     ushort ctrl;
     ushort enable;

@@ -124,11 +124,11 @@ Result SetHeapSize(size_t size)
         const size_t unmapSize = s_HeapSize - size;
         const uptr freeAddress = 0x08000000 + size;
 
-        res = nn::svc::ControlMemory(&addr,freeAddress,NULL,unmapSize,nn::os::MEMORY_OPERATION_FREE,nn::os::MEMORY_PERMISSION_NONE);
+        res = nn::svc::ControlMemory(&addr, freeAddress, NULL, unmapSize, nn::os::MEMORY_OPERATION_FREE, nn::os::MEMORY_PERMISSION_NONE);
 
         if(res.IsSuccess())
         {
-            s_HeapSize  = size;
+            s_HeapSize = size;
         }
     }
 
@@ -157,7 +157,6 @@ size_t GetCodeRegionSize()
     return reinterpret_cast<size_t>(Load$$LR$$TEXT_SECTION$$Length);
 }
 
-#if NN_PLATFORM_HAS_MMU
 void SetupHeapForMemoryBlock(size_t heapSize)
 {
     Result result;
@@ -169,7 +168,6 @@ void SetupHeapForMemoryBlock(size_t heapSize)
 
     SetDefaultAutoStackManager();
 }
-#endif
 
 }
 }

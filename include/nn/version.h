@@ -3,10 +3,10 @@
 #define VER_STR_(version) #version
 #define VER_STR(version) VER_STR_(version)
 
-#define NN_VERSION_CUSTOM      0
+#define NN_VERSION_NONE        0
 #define NN_VERSION_MILLI4C     1
 #define NN_VERSION_REDPEPPER   2
-#define NN_VERSION_CTRDASH     3
+#define NN_VERSION_CTRDASH     3 /* Is not defined. Multi-Game versions. */
 #define NN_VERSION_GARDEN      4
 #define NN_VERSION_STICKSTR    5
 
@@ -25,6 +25,8 @@
 #define NN_VERSION_FIRMWARE_MINOR 35
 #define NN_VERSION_FIRMWARE_MICRO 00
 
+#define NN_VERSION_PATCH "none"
+
 #elif NN_VERSION == NN_VERSION_REDPEPPER
 
 #define NN_VERSION_MAJOR 2
@@ -35,6 +37,8 @@
 #define NN_VERSION_FIRMWARE_MAJOR 02
 #define NN_VERSION_FIRMWARE_MINOR 30
 #define NN_VERSION_FIRMWARE_MICRO 20
+
+#define NN_VERSION_PATCH "none"
 
 #elif NN_VERSION == NN_VERSION_STICKSTR
 
@@ -47,33 +51,37 @@
 #define NN_VERSION_FIRMWARE_MINOR 35
 #define NN_VERSION_FIRMWARE_MICRO 00
 
+#define NN_VERSION_PATCH "none"
+
 /* Do this yourself */
 
-#elif NN_VERSION == NN_VERSION_CUSTOM
+#elif NN_VERSION == NN_VERSION_NONE
 
 #define NN_VERSION_MAJOR 0
 #define NN_VERSION_MINOR 0
 #define NN_VERSION_MICRO 0
-#define NN_VERSION_ID    200
+#define NN_VERSION_ID    0
 
 #define NN_VERSION_FIRMWARE_MAJOR 00
 #define NN_VERSION_FIRMWARE_MINOR 00
 #define NN_VERSION_FIRMWARE_MICRO 00
+
+#define NN_VERSION_PATCH "none"
 
 #else
 
 #define NN_VERSION_MAJOR
 #define NN_VERSION_MINOR
 #define NN_VERSION_MICRO
-#define NN_VERSION_ID    200
+#define NN_VERSION_ID
 
 #define NN_VERSION_FIRMWARE_MAJOR
 #define NN_VERSION_FIRMWARE_MINOR
 #define NN_VERSION_FIRMWARE_MICRO
 
-#endif
-
 #define NN_VERSION_PATCH "none"
+
+#endif
 
 #define NN_VERSION_RVCT_MAJOR 4
 #define NN_VERSION_RVCT_MINOR 1

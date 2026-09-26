@@ -5,13 +5,15 @@
 namespace nn {
 namespace math {
 
-class VEC2_{
+class VEC2_
+{
 public:
     float x;
     float y;
 };
     
-class VEC2 : public VEC2_{
+class VEC2 : public VEC2_
+{
     typedef VEC2 self_type;
     typedef f32  value_type;
 public:
@@ -37,13 +39,15 @@ public:
     void Set(f32 fx, f32 fy) { x = fx; y = fy; }
 };
 
-static const VEC2& Zero(){
+static const VEC2& Zero()
+{
 
     static const VEC2 zero(0.0f, 0.0f);
     return zero;
 }
 
-static const VEC2& One(){
+static const VEC2& One()
+{
     static const VEC2 one(1.0f, 1.0f);
     return one;
 }

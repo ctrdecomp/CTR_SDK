@@ -10,7 +10,8 @@ namespace nn{
 namespace fs{
 namespace detail{
 
-Result FileBase::TryRead(s32* pOut, void* buffer, size_t size) {
+Result FileBase::TryRead(s32* pOut, void* buffer, size_t size) 
+{
     u32 n = 0;
     if (size != 0) 
     {
@@ -60,9 +61,9 @@ Result FileBase::TrySeek(s64 position, PositionBase base)
 {
     switch (base)
     {
-        case BASE_BEGIN: break;
-        case BASE_CURRENT: position += m_Position; break;
-        case BASE_END:
+        case POSITION_BASE_BEGIN: break;
+        case POSITION_BASE_CURRENT: position += m_Position; break;
+        case POSITION_BASE_END:
         {
             s64 size;
             NN_UTIL_RETURN_IF_FAILED(TryGetSize(&size));

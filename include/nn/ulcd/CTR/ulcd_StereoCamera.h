@@ -22,12 +22,9 @@ class StereoCamera
 {
 public:
     StereoCamera();
-    StereoCamera(const WithInitialize&)
-    { 
-        this->Initialize(); 
-    }
-
+    StereoCamera(const WithInitialize&);
     ~StereoCamera();
+
     void Initialize();
     void Finalize();
     void CalculateMatrices(MTX44 *projL,MTX34 *viewL,MTX44 *projR,MTX34 *viewR, MTX44 *projOriginal,MTX34 *viewOriginal,const f32 depthLevel,const f32 factor, const nn::math::PivotDirection pivot = nn::math::PIVOT_UPSIDE_TO_TOP);

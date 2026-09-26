@@ -12,7 +12,8 @@ namespace detail{
 
 Handle DynamicLoader::s_Session;
 
-Result DynamicLoader::Startup(Handle process, uptr staticInfo, size_t staticInfoSize, uptr locateAddr){
+Result DynamicLoader::Startup(Handle process, uptr staticInfo, size_t staticInfoSize, uptr locateAddr)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(1, 3, 2, 0);
     ipcMsg.SetRaw(1, staticInfo);
@@ -23,14 +24,16 @@ Result DynamicLoader::Startup(Handle process, uptr staticInfo, size_t staticInfo
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::RegisterList(Handle process, uptr rr, size_t rrSize){
+Result DynamicLoader::RegisterList(Handle process, uptr rr, size_t rrSize)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(2, 2, 2, 0);
     ipcMsg.SetRaw(1, rr);
@@ -40,14 +43,16 @@ Result DynamicLoader::RegisterList(Handle process, uptr rr, size_t rrSize){
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::UnregisterList(Handle process, uptr rr){
+Result DynamicLoader::UnregisterList(Handle process, uptr rr)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(3, 1, 2, 0);
     ipcMsg.SetRaw(1, rr);
@@ -56,14 +61,16 @@ Result DynamicLoader::UnregisterList(Handle process, uptr rr){
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::Load(size_t* pFixedSize, Handle process, uptr ro, uptr roRelocate, size_t roSize, uptr dataAddr, uptr dataRelocate, size_t dataSize, uptr bssAddr, uptr bssSize, bool doRegister, nn::ro::FixLevel fixLevel, uptr rr){
+Result DynamicLoader::Load(size_t* pFixedSize, Handle process, uptr ro, uptr roRelocate, size_t roSize, uptr dataAddr, uptr dataRelocate, size_t dataSize, uptr bssAddr, uptr bssSize, bool doRegister, nn::ro::FixLevel fixLevel, uptr rr)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(4, 11, 2, 0);
     ipcMsg.SetRaw(1, ro);
@@ -82,7 +89,8 @@ Result DynamicLoader::Load(size_t* pFixedSize, Handle process, uptr ro, uptr roR
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
@@ -91,7 +99,8 @@ Result DynamicLoader::Load(size_t* pFixedSize, Handle process, uptr ro, uptr roR
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::Unload(Handle process, uptr roModule, size_t roSize, uptr originalAddr){
+Result DynamicLoader::Unload(Handle process, uptr roModule, size_t roSize, uptr originalAddr)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(5, 3, 2, 0);
     ipcMsg.SetRaw(1, roModule);
@@ -102,14 +111,16 @@ Result DynamicLoader::Unload(Handle process, uptr roModule, size_t roSize, uptr 
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::Link(Handle process, uptr roModule){
+Result DynamicLoader::Link(Handle process, uptr roModule)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(6, 1, 2, 0);
     ipcMsg.SetRaw(1, roModule);
@@ -118,14 +129,16 @@ Result DynamicLoader::Link(Handle process, uptr roModule){
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::Unlink(Handle process, uptr roModule){
+Result DynamicLoader::Unlink(Handle process, uptr roModule)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(7, 1, 2, 0);
     ipcMsg.SetRaw(1, roModule);
@@ -141,7 +154,8 @@ Result DynamicLoader::Unlink(Handle process, uptr roModule){
     return ipcMsg.GetRaw<Result>(1);
 }
 
-Result DynamicLoader::Cleanup(Handle process, uptr originalAddr){
+Result DynamicLoader::Cleanup(Handle process, uptr originalAddr)
+{
     MessageBuffer ipcMsg(GetMessageBuffer());
     ipcMsg.SetHeader(8, 1, 2, 0);
     ipcMsg.SetRaw(1, originalAddr);
@@ -150,7 +164,8 @@ Result DynamicLoader::Cleanup(Handle process, uptr originalAddr){
 
 
     Result ipcResult = SendSyncRequest(s_Session);
-    if(ipcResult.IsFailure()){
+    if(ipcResult.IsFailure())
+    {
         return ipcResult;
     }
 

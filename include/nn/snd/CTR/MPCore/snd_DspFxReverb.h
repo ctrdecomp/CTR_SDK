@@ -66,7 +66,8 @@ private:
     s8 m_ProcessCount;
 };
 
-struct DspFxReverbParams {
+struct DspFxReverbParams
+{
     u16  ctrl;                    // 0x00
     u16  enable;                  // 0x02
     s16  padding;                 // 0x04

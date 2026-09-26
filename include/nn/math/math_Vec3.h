@@ -14,32 +14,36 @@ inline VEC3* VEC3Sub(VEC3* pOut, const VEC3& v1, const VEC3& v2);
 inline VEC3* VEC3Mult(VEC3* pOut, const VEC3& v1, const VEC3& v2);
 inline VEC3* VEC3Scale(VEC3* pOut, const VEC3* p, f32 scale);
 inline VEC3* VEC3Normalize(VEC3* pOut, const VEC3* p);
-inline f32   VEC3SquareLen(const VEC3* p);
-inline bool  VEC3IsZero(const VEC3* p);
-inline f32   VEC3Len(const VEC3* p);
+inline f32 VEC3SquareLen(const VEC3* p);
+inline bool VEC3IsZero(const VEC3* p);
+inline f32 VEC3Len(const VEC3* p);
 
-struct VEC3_{
+struct VEC3_
+{
     f32 x;
     f32 y;
     f32 z;
 };
     
-class VEC3 : public VEC3_{
+class VEC3 : public VEC3_
+{
 public:
-    static const VEC3& Zero(){
+    static const VEC3& Zero()
+    {
         static const VEC3 zero(0.0f, 0.0f, 0.0f);
             
         return zero;
     }
         
-    static const VEC3& One(){
+    static const VEC3& One()
+    {
         static const VEC3 one(1.0f, 1.0f, 1.0f);
             
         return one;
     }
 
-    typedef VEC3 self_type; //
-    typedef f32  value_type; //
+    typedef VEC3 self_type;
+    typedef f32  value_type;
 public:
     VEC3() {}
     explicit VEC3(const f32* p) { x = p[0]; y = p[1]; z = p[2]; }
@@ -50,12 +54,25 @@ public:
 
     operator const f32*() const { return &x; }
 
+    self_type& operator += (const self_type& rhs) { (void)VEC3Add(this, this, &rhs); return *this; }
     self_type& operator *= (f32 f) { (void)VEC3Scale(this, this, f); return *this; }
+    self_type& operator *= (const self_type& rhs) { (void)VEC3Mult(this, this, &rhs); return *this; }
+    self_type& operator /= (f32 f) { return operator*=(1.f / f); }
+
+    self_type operator + () const { return *this; }
+    self_type operator - () const { return self_type(-x, -y, -z); }
+
+    self_type operator + (const self_type& rhs) const { VEC3 tmp; (void)VEC3Add(&tmp, this, &rhs); return tmp; }
+    self_type operator - (const self_type& rhs) const { VEC3 tmp; (void)VEC3Sub(&tmp, this, &rhs); return tmp; }
+
+    self_type operator * (f32 f) const { VEC3 tmp; (void)VEC3Scale(&tmp, this, f); return tmp; }
+    self_type operator / (f32 f) const { f32 r = 1.f / f; return operator*(r); }
 
     void Set(f32 fx, f32 fy, f32 fz) { x = fx; y = fy; z = fz; }
     void Set(const self_type& value) { x = value.x; y = value.y; z = value.z; }
     
-    self_type& Normalize(){
+    self_type& Normalize()
+    {
         return *VEC3Normalize(this, this);
     }
 
@@ -71,62 +88,71 @@ public:
 
 /* Inlines */
 
-inline VEC3* VEC3Add(VEC3* pOut, const VEC3* p1, const VEC3* p2){
+inline VEC3* VEC3Add(VEC3* pOut, const VEC3* p1, const VEC3* p2)
+{
     pOut->x = p1->x + p2->x;
     pOut->y = p1->y + p2->y;
     pOut->z = p1->z + p2->z;
     return pOut;
 }
 
-inline VEC3* VEC3Sub(VEC3* pOut, const VEC3* p1, const VEC3* p2){
+inline VEC3* VEC3Sub(VEC3* pOut, const VEC3* p1, const VEC3* p2)
+{
     pOut->x = p1->x - p2->x;
     pOut->y = p1->y - p2->y;
     pOut->z = p1->z - p2->z;
     return pOut;
 }
 
-inline VEC3* VEC3Mult(VEC3* pOut, const VEC3* p1, const VEC3* p2){
+inline VEC3* VEC3Mult(VEC3* pOut, const VEC3* p1, const VEC3* p2)
+{
     pOut->x = p1->x * p2->x;
     pOut->y = p1->y * p2->y;
     pOut->z = p1->z * p2->z;
     return pOut;
 }
 
-inline VEC3* VEC3Scale(VEC3* pOut, const VEC3* p, f32 scale){
+inline VEC3* VEC3Scale(VEC3* pOut, const VEC3* p, f32 scale)
+{
     pOut->x = scale * p->x;
     pOut->y = scale * p->y;
     pOut->z = scale * p->z;
     return pOut;
 }
 
-inline VEC3* VEC3Lerp(VEC3* pOut, const VEC3* p1, const VEC3* p2, f32 t){
+inline VEC3* VEC3Lerp(VEC3* pOut, const VEC3* p1, const VEC3* p2, f32 t)
+{
     pOut->x = p1->x + t * (p2->x - p1->x);
     pOut->y = p1->y + t * (p2->y - p1->y);
     pOut->z = p1->z + t * (p2->z - p1->z);
     return pOut;
 }
 
-inline f32 VEC3Dot(const VEC3* p1, const VEC3* p2){
+inline f32 VEC3Dot(const VEC3* p1, const VEC3* p2)
+{
     return p1->x * p2->x + p1->y * p2->y + p1->z * p2->z;
 }
 
-inline f32 VEC3Len(const VEC3* p){
+inline f32 VEC3Len(const VEC3* p)
+{
     NN_NULL_ASSERT_(p);
     
-    return ::std::sqrtf( VEC3SquareLen( p ) );
+    return ::std::sqrtf(VEC3SquareLen(p));
 }
 
-inline f32 VEC3SquareLen(const VEC3* p){
+inline f32 VEC3SquareLen(const VEC3* p)
+{
     return p->x * p->x + p->y * p->y + p->z * p->z;
 }
 
-inline VEC3* VEC3Cross(VEC3* pOut, const VEC3* p1, const VEC3* p2){
+inline VEC3* VEC3Cross(VEC3* pOut, const VEC3* p1, const VEC3* p2)
+{
 
     VEC3 tmpVec;
 
-    tmpVec.x = ( p1->y * p2->z ) - ( p1->z * p2->y );
-    tmpVec.y = ( p1->z * p2->x ) - ( p1->x * p2->z );
-    tmpVec.z = ( p1->x * p2->y ) - ( p1->y * p2->x );
+    tmpVec.x = (p1->y * p2->z) - (p1->z * p2->y);
+    tmpVec.y = (p1->z * p2->x) - (p1->x * p2->z);
+    tmpVec.z = (p1->x * p2->y) - (p1->y * p2->x);
 
     pOut->x = tmpVec.x;
     pOut->y = tmpVec.y;
@@ -137,7 +163,8 @@ inline VEC3* VEC3Cross(VEC3* pOut, const VEC3* p1, const VEC3* p2){
 
 /* Misc Inlines */
 
-inline bool VEC3IsZero(const VEC3* p){
+inline bool VEC3IsZero(const VEC3* p)
+{
     return p->x == 0.f && p->y == 0.f && p->z == 0.f;
 }
 
@@ -151,7 +178,8 @@ inline VEC3* VEC3Cross(VEC3* pOut, const VEC3& v1, const VEC3& v2) { return VEC3
 
 namespace ARMv6{
 
-inline VEC3* VEC3NormalizeC(VEC3* pOut, const VEC3* p){
+inline VEC3* VEC3NormalizeC(VEC3* pOut, const VEC3* p)
+{
     f32 mag = (p->x * p->x) + (p->y * p->y) + (p->z * p->z);
 
     mag = 1.0f / ::std::sqrtf(mag);
@@ -163,7 +191,8 @@ inline VEC3* VEC3NormalizeC(VEC3* pOut, const VEC3* p){
     return pOut;
 }
 
-inline VEC3* VEC3NormalizeC_FAST(VEC3* pOut, const VEC3* p){
+inline VEC3* VEC3NormalizeC_FAST(VEC3* pOut, const VEC3* p)
+{
 
     register f32 x, y, z, mag;
         
@@ -190,8 +219,9 @@ inline VEC3* VEC3NormalizeC_FAST(VEC3* pOut, const VEC3* p){
 
 inline VEC3* VEC3Normalize(VEC3* pOut, const VEC3& v) { return VEC3Normalize(pOut, &v); }
 
-inline VEC3* VEC3Normalize(VEC3* pOut, const VEC3* p){
-    #ifdef NN_BUILD_DEBUG // Unoptimized check.
+inline VEC3* VEC3Normalize(VEC3* pOut, const VEC3* p)
+{
+    #ifdef NN_MATH_BUILD_FAST // Unoptimized check.
         return ARMv6::VEC3NormalizeC(pOut, p);
     #else  
         return ARMv6::VEC3NormalizeC_FAST(pOut, p);

@@ -47,8 +47,6 @@ void FinalizeFatalErrSession()
 
 }
 
-#if NN_VERSION_MAJOR > 2
-
 namespace{
     NN_NOINLINE void Throw(FatalErrInfo& info)
     {
@@ -115,63 +113,6 @@ namespace{
     {
         ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON, pc);
     }
-
-#else
-namespace{
-    NN_NOINLINE void Throw(FatalErrInfo& info)
-    {
-        os::CriticalSection::ScopedLock lock(s_Lock);
-        Result res = InitializeFatalErrSession();
-        if(res.IsSuccess())
-        {
-            svc::GetProcessId(&info.processId, PSEUDO_HANDLE_CURRENT_PROCESS);
-            FatalErr fe(s_FatalErrSession);
-            fe.FatalErr::Throw(info);
-            FinalizeFatalErrSession();
-        }
-        else
-        {
-            NN_DBG_PRINT_RESULT(res);
-        }
-        if (info.type != NN_ERR_FATAL_TYPE_CARD_EJECTION)
-        {
-            os::LightEvent infiniteLock(true);
-            infiniteLock.Wait();
-        }
-    }
-}
-    void ThrowFatalErr(Result result, nnerrFatalErrType type, uint pc)
-    {
-        {
-            FatalErrInfo& fei = s_FatalErrInfo;
-            s_FatalErrInfo.revisionHi = 0;
-            s_FatalErrInfo.revisionLo = 0xa037;
-            s_FatalErrInfo.type = type;
-            s_FatalErrInfo.result = result;
-            s_FatalErrInfo.pc = pc;
-            Throw(s_FatalErrInfo);
-        }
-    }
-
-    void ThrowFatalErr(Result result, nnerrFatalErrType type)
-    {
-        uint bits;
-        return ThrowFatalErr(result, type, bits);
-    }
-
-    void ThrowFatalErr(Result result)
-    {
-        Result::Level lev = result.Result::GetLevel();
-        if(lev == Result::LEVEL_INFO || lev == Result::LEVEL_STATUS)
-            return;
-        ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON);
-    }
-
-    void ThrowFatalErrAll(Result result, nnerrFatalErrType type)
-    {
-        return ThrowFatalErr(result, type, __return_address());
-    }
-#endif
 
 }
 }

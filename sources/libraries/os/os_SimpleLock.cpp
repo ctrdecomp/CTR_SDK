@@ -9,9 +9,12 @@ namespace nn{
 namespace os{
 
 namespace{
-        struct ReverseIfPositiveUpdater{
-            bool operator()(s32& x){
-                if(x > 0){
+        struct ReverseIfPositiveUpdater
+        {
+            bool operator()(s32& x)
+            {
+                if(x > 0)
+                {
                     x = -x;
                     return true;
                 }
@@ -36,16 +39,17 @@ namespace{
         {
             bool operator()(s32& x)
             {
-            if(x < 0)
-            {
-                --x;
-                return true;
+                if(x < 0)
+                {
+                    --x;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else{
-                return false;
-            }
-        }
-    };
+        };
 
         struct ReverseAndIncrementIfPositiveUpdater
         {
@@ -60,8 +64,8 @@ namespace{
                 {
                     return false;
                 }
-        }
-    };
+            }
+        };
 }
 
 void SimpleLock::Initialize() 
@@ -69,7 +73,8 @@ void SimpleLock::Initialize()
     *this->m_Counter = 1; // ultimate ASM this creates lmao
 }
 
-void SimpleLock::LockImpl(){
+void SimpleLock::LockImpl()
+{
     for(;;)
     {
         DecrementIfNegativeUpdater incrementNumWaiterIfLocked;

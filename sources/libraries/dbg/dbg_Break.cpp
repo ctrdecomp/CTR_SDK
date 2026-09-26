@@ -99,8 +99,6 @@ Result NotifyDllUnloadingToDebugger(const void* pDllInfo, size_t size)
 
 extern "C" {
 
-#ifdef NN_MAJOR_VERSION > 2
-
 void nndbgBreakWithMessage_(nndbgBreakReason reason, const char* filename, int lineno, const char* fmt, ...)
 {
     va_list arg;
@@ -166,8 +164,6 @@ void nndbgBreakWithResultTMessage_(nndbgBreakReason reason, nnResult result, con
 
     Break(static_cast<BreakReason>(reason));
 }
-
-#endif // NN_VERSION_MAJOR
 
 void nndbgPanic()
 {

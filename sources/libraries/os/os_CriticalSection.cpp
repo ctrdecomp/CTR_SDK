@@ -9,8 +9,6 @@
 namespace nn{
 namespace os{
 
-#if NN_VERSION_MAJOR > 2 || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR > 4) || (NN_VERSION_MAJOR == 2 && NN_VERSION_MINOR == 4 && NN_VERSION_MICRO > 1)
-
 void CriticalSection::Initialize() 
 {
     this->m_Lock.Initialize();
@@ -55,26 +53,6 @@ bool CriticalSection::TryEnter()
     m_LockCount++;
     return true;
 }
-
-#else
-
-void CriticalSection::EnterImpl()
-{
-    for(;;)
-    {
-        if(*m_Counter > 0)
-        {
-            if(TryEnterImpl())
-            {
-                break;
-            }
-        }
-
-        this->m_Counter.DecrementAndWaitIfLessThan(0);
-    }
-}
-
-#endif
 
 }
 }

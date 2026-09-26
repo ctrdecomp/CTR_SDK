@@ -136,16 +136,16 @@ Result ThreadManager::StartSoundThread(void (*callback)(uptr), uptr arg, uptr st
     }
 
     ThreadStack stack(stackBuffer + stackSize);
-#if NN_VERSION_MAJOR > 2
-    if (nn::applet::IsSystemApplet() && coreNo == 1){
+
+    if (nn::applet::CTR::IsSystemApplet() && coreNo == 1)
+    {
         prio = 0x5109d500;
     }
-#else
+
     if (coreNo == 1)
     {
         prio += 0x5109d500;
     }
-#endif
 
     this->m_CriticalSection.Initialize();
     Result result = this->m_SoundThread.TryStart(SoundThreadFunc,NULL,stack,prio,coreNo);

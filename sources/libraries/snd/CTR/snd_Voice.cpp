@@ -137,6 +137,22 @@ void Voice::SetMonoFilterCoefficients(const MonoFilterCoefficients& coeff)
     this->GetImpl()->SetMonoFilterCoefficients(m_MonoFilterCoeffs);
 }
 
+void Voice::SetMonoFilterCoefficients(u16 cutoff)
+{
+    NN_TASSERT_(cutoff <= 16000);
+    cutoff = math::Min(cutoff, static_cast<u16>(16000));
+    f32 freq = static_cast<f32>(cutoff);
+    f32 c = 2.0f - math::CosFIdx(freq * (256.0f / 32000.0f));
+    f32 fd1 = math::FSqrt(c * c - 1.0f) - c;
+    f32 fn0 = 1.0f + fd1;
+    s16 n0 = static_cast<s16>(fn0 * (1 << 15));
+    s16 d1 = static_cast<s16>(fd1 * (1 << 15));
+
+    m_MonoFilterCoeffs.n0 = n0;
+    m_MonoFilterCoeffs.d1 = -d1;
+    GetImpl()->SetMonoFilterCoefficients(m_MonoFilterCoeffs);
+}
+
 void Voice::SetFrontBypassFlag(bool flag)
 {
     this->GetImpl()->SetFrontBypassFlag(flag);

@@ -28,32 +28,34 @@ public:
         m_Tick(nnmathMultiplyRate32(span.GetNanoSeconds(), math::MakeRate32<TICKS_PER_SECOND, 1000 * 1000 * 1000>::VALUE))
     {
     }
-    static Tick GetSystemCurrent();
 
     operator s64() const { return m_Tick; }
-    operator nn::fnd::TimeSpan() const;
-    Tick& operator-=(Tick rhs);
-    Tick operator-(Tick rhs) const;
-    nn::fnd::TimeSpan ToTimeSpan() const;
+    operator nn::fnd::TimeSpan() const 
+    { 
+        return nn::fnd::TimeSpan::FromNanoSeconds(nnmathMultiplyRate(this->m_Tick,math::MakeRate<1000 * 1000 * 1000, TICKS_PER_SECOND>::VALUE)); 
+    }
+    Tick& operator-=(Tick rhs){ m_Tick -= rhs.m_Tick; return *this; }
+    Tick operator-(Tick rhs) const{ Tick ret(*this); return ret -= rhs; }
+
+    Tick& operator+=(Tick rhs){ m_Tick += rhs.m_Tick; return *this; }
+    Tick operator+(Tick rhs) const{ Tick ret(*this); return ret += rhs; }
+
+    Tick& operator+=(fnd::TimeSpan rhs)
+    {
+        const s64 tick = nnmathMultiplyRate32(
+            rhs.GetNanoSeconds(), math::MakeRate32<TICKS_PER_SECOND, 1000 * 1000 * 1000>::VALUE);
+        this->m_Tick += tick;
+        return *this;
+    }
+    Tick operator+(fnd::TimeSpan rhs) const{ Tick ret(*this); return ret += rhs; }
+
+    nn::fnd::TimeSpan ToTimeSpan() const{ return *this; }
+
+    static Tick GetSystemCurrent()
+    {
+        return Tick(nn::svc::GetSystemTick());
+    }
 };
-
-inline Tick Tick::GetSystemCurrent()
-{
-    return Tick(nn::svc::GetSystemTick());
-}
-
-inline Tick::operator nn::fnd::TimeSpan() const
-{
-    return nn::fnd::TimeSpan::FromNanoSeconds(nnmathMultiplyRate(this->m_Tick,math::MakeRate<1000 * 1000 * 1000, TICKS_PER_SECOND>::VALUE ));
-}
-
-inline nn::fnd::TimeSpan Tick::ToTimeSpan() const
-{
-    return *this;
-}
-
-inline Tick& Tick::operator-=(Tick rhs) { m_Tick -= rhs.m_Tick; return *this; }
-inline Tick Tick::operator-(Tick rhs)  const { Tick ret(*this); return ret -= rhs; }
 
 }
 }

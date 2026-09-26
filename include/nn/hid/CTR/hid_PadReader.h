@@ -83,8 +83,6 @@ public:
     static AnalogStickClamper::ClampMode ClamperClampMode(const StickClampMode mode){ return (AnalogStickClamper::ClampMode)mode; }
 };
 
-#if NN_VERSION_MAJOR <= 2
-
 inline void PadReader::ClampCore(short* pOutX, short* pOutY,  s32 x, s32 y)
 {
     switch (this->m_StickClampMode) 
@@ -118,8 +116,6 @@ inline void PadReader::ClampValueOfClamp()
   if (m_MaxOfStickClampMinimum > LIMIT_OF_STICK_CLAMP_MAX)
     m_MaxOfStickClampMinimum = LIMIT_OF_STICK_CLAMP_MAX;
 }
-
-#endif
 
 }
 }

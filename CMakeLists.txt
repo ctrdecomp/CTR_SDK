@@ -111,7 +111,6 @@ nn_library(libnn_nstd    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/nstd)
 nn_library(libnn_os      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/os)
 nn_library(libnn_pl      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/pl)
 nn_library(libnn_ptm     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ptm)
-nn_library(libnn_ro      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ro)
 nn_library(libnn_rtport  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/rtport/rvct)
 nn_library(libnn_snd     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/snd)
 nn_library(libnn_srv     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/srv)
@@ -153,7 +152,6 @@ target_link_libraries(CTR_SDK INTERFACE
     nn_os
     nn_pl
     nn_ptm
-    nn_ro
     nn_rtport
     nn_snd
     nn_srv

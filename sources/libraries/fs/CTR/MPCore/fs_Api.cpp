@@ -69,9 +69,6 @@ void Initialize()
         s_FileSystemBaseImpl.Initialize(s_FileServerSession);
         s_FileSystemBase.Initialize(s_FileSystemBaseImpl);
         detail::RegisterGlobalFileSystemBase(s_FileSystemBase);
-        #if NN_VERSION_MAJOR > 2
-            NN_ERR_THROW_FATAL_ALL(SetPriority(0));
-        #endif
     }
 }
 

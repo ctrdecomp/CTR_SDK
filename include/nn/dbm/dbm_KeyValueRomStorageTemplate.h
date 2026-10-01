@@ -51,13 +51,16 @@ public:
         m_pBufKeyValue(NULL),
         m_TotalEntrySize(0),
         m_EntryCount(0)
-    {}
+    {
+    }
 
-    static u32 QueryBucketCount(u32 size){
+    static u32 QueryBucketCount(u32 size)
+    {
         return size / sizeof(Position);
     }
 
-    Result Initialize(BucketStorage* pBucket, s64 offsetBucket, u32 countBucket, EntryStorage* pKeyValue, s64 offsetKeyValue, u32 sizeKeyValue){
+    Result Initialize(BucketStorage* pBucket, s64 offsetBucket, u32 countBucket, EntryStorage* pKeyValue, s64 offsetKeyValue, u32 sizeKeyValue)
+    {
         NN_NULL_TASSERT_(pBucket);
         NN_NULL_TASSERT_(pKeyValue);
         NN_TASSERT_(countBucket > 0);
@@ -73,7 +76,8 @@ public:
         return ResultSuccess();
     }
 
-    Result GetInternal(Position* pPosition,Value* pValue,const Key& key,u32 hashKey,const void* pExtraKey,size_t extraSize) const{
+    Result GetInternal(Position* pPosition,Value* pValue,const Key& key,u32 hashKey,const void* pExtraKey,size_t extraSize) const
+    {
         Position pos;
         Position posPrevious;
         StorageElement storeElement;
@@ -83,7 +87,8 @@ public:
 
         Result res;
         res = FindInternal(&pos,&posPrevious,&storeElement,key,hashKey,pExtraKey,extraSize);
-        if (res.IsFailure()){
+        if (res.IsFailure())
+        {
             return res;
         }
 
@@ -110,18 +115,20 @@ public:
         return ResultSuccess();
     }
 private:
-    IndexBucket HashToBucket(u32 hashKey) const{
+    IndexBucket HashToBucket(u32 hashKey) const
+    {
         return hashKey % m_CountBucket;
     }
 
-    Result FindInternal(Position* pPosition,Position* pPreviousPosition,StorageElement* pStoreElement,const Key& key,u32 hashKey,const void* pExtraKey,size_t extraSize) const{
+    Result FindInternal(Position* pPosition,Position* pPreviousPosition,StorageElement* pStoreElement,const Key& key,u32 hashKey,const void* pExtraKey,size_t extraSize) const
+    {
         Result res;
 
         NN_NULL_TASSERT_(pPosition);
         NN_NULL_TASSERT_(pPreviousPosition);
         NN_NULL_TASSERT_(pStoreElement);
-        NN_TASSERT_(this->mCountBucket > 0);
-        NN_TASSERT_(this->mSizeKeyValue >= 0);
+        NN_TASSERT_(m_CountBucket > 0);
+        NN_TASSERT_(m_SizeKeyValue >= 0);
 
         *pPosition = 0;
         *pPreviousPosition = 0;
@@ -130,70 +137,81 @@ private:
 
         Position posTop;
         res = ReadBucket(&posTop, indexBucket);
-        if (res.IsFailure()){
+        if (res.IsFailure())
+        {
             return res;
         }
-        NN_TASSERT_((posTop == STORAGE_FREEENTRY) || (posTop < mSizeKeyValue));
+        NN_TASSERT_((posTop == STORAGE_FREEENTRY) || (posTop < m_SizeKeyValue));
 
-        if (posTop == STORAGE_FREEENTRY){
+        if (posTop == STORAGE_FREEENTRY)
+        {
             return ResultKeyNotFound();
         }
 
         u8 buf[MAX_EXTRA_SIZE_];
 
         Position pos = posTop;
-        while (true){
+        while (true)
+        {
             size_t currExtraSize = 0;
             res = ReadKeyValue(pStoreElement, buf, &currExtraSize, pos);
-            if (res.IsFailure()){
+            if (res.IsFailure())
+            {
                 return res;
             }
 
-            if (key.IsEqual(pStoreElement->key, pExtraKey, extraSize, buf, currExtraSize)){
+            if (key.IsEqual(pStoreElement->key, pExtraKey, extraSize, buf, currExtraSize))
+            {
                 *pPosition = pos;
                 return ResultSuccess();
             }
 
             *pPreviousPosition = pos;
             pos = pStoreElement->next;
-            if (STORAGE_FREEENTRY == pos){
-                return Result(0xc880446f);
+            if (STORAGE_FREEENTRY == pos)
+            {
+                return ResultKeyNotFound();
             }
         }
     }
 
-    inline Result ReadBucket(Position* pKvStorePosition, IndexBucket index) const{
+    inline Result ReadBucket(Position* pKvStorePosition, IndexBucket index) const
+    {
         NN_NULL_TASSERT_(pKvStorePosition);
-        NN_NULL_TASSERT_(mpBufBucket);
-        NN_TASSERT_(index < mCountBucket);
+        NN_NULL_TASSERT_(m_pBufBucket);
+        NN_TASSERT_(index < m_CountBucket);
 
         s64 offset = m_OffsetBucket + index * sizeof(Position);
         return m_pBufBucket->ReadBytes(offset, pKvStorePosition, sizeof(Position));
     }
 
-    inline Result ReadKeyValue(StorageElement* pElement,void* pExtraKey,size_t* pExtraSize,Position pos) const{
+    inline Result ReadKeyValue(StorageElement* pElement,void* pExtraKey,size_t* pExtraSize,Position pos) const
+    {
         NN_NULL_TASSERT_(pElement);
-        NN_NULL_TASSERT_(this->mpBufKeyValue);
-        NN_TASSERT_(pos < this->mSizeKeyValue);
+        NN_NULL_TASSERT_(m_pBufKeyValue);
+        NN_TASSERT_(pos < m_SizeKeyValue);
 
         Result res;
 
         s64 offset = m_OffsetKeyValue + pos;
         res = m_pBufKeyValue->ReadBytes(offset, pElement, sizeof(StorageElement));
-        if (res.IsFailure()){
+        if (res.IsFailure())
+        {
             return res;
         }
 
-        if ((pExtraKey != NULL) && (pExtraSize != NULL)){
+        if ((pExtraKey != NULL) && (pExtraSize != NULL))
+        {
             *pExtraSize = pElement->size;
-            if (pElement->size > 0){
+            if (pElement->size > 0)
+            {
                 res = m_pBufKeyValue->ReadBytes(offset + sizeof(StorageElement), pExtraKey, pElement->size);
-                if (res.IsFailure()){
+                if (res.IsFailure())
+                {
                     return res;
                 }
             }
         }
-
         return ResultSuccess();
     }
 };

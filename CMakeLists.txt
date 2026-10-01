@@ -22,6 +22,7 @@ function(nn_library TARGET_NAME MODULE_DIR)
         "${MODULE_DIR}/*.c"
         "${MODULE_DIR}/*.s"
         "${MODULE_DIR}/*.asm"
+        "${MODULE_DIR}/*.inc"
     )
 
     if(NOT MODULE_SOURCES)
@@ -82,7 +83,7 @@ nn_library(libnn_applet  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/applet)
 nn_library(libnn_camera  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/camera)
 nn_library(libnn_cec     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cec)
 nn_library(libnn_cfg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cfg)
-nn_library(crt0    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crt0)
+nn_library(crt0          ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crt0)
 nn_library(libnn_crypto  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crypto)
 nn_library(libnn_cx      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cx)
 nn_library(libnn_dbg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dbg)
@@ -91,10 +92,11 @@ nn_library(libnn_dev     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dev)
 #nn_library(libnn_dlp     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dlp)
 nn_library(libnn_dsp     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dsp)
 nn_library(libnn_err     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/err)
-#nn_library(libnn_jpeg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/jpeg)
+nn_library(libnn_erreula ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/erreula)
+nn_library(libnn_jpeg    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/jpeg)
 nn_library(libnn_fnd     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/fnd)
 nn_library(libnn_font    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/font)
-#nn_library(libnn_friends     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/friends)
+#nn_library(libnn_friends ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/friends)
 nn_library(libnn_fs      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/fs)
 nn_library(libnn_fslow   ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/fslow)
 nn_library(libnn_gr      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gr)
@@ -102,6 +104,7 @@ nn_library(libnn_gxlow   ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gxlow)
 nn_library(libnn_hid     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hid)
 nn_library(libnn_hidlow  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hidlow)
 nn_library(libnn_hio     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/IS/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/KMC/HostIO/HostIO)
+#nn_library(libnn_http    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/http)
 nn_library(libnn_init    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/init)
 nn_library(libnn_ir      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ir)
 nn_library(libnn_math    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/math)
@@ -114,7 +117,7 @@ nn_library(libnn_ptm     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ptm)
 nn_library(libnn_rtport  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/rtport/rvct)
 nn_library(libnn_snd     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/snd)
 nn_library(libnn_srv     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/srv)
-nn_library(libnn_ssl     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ssl)
+#nn_library(libnn_ssl     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ssl)
 nn_library(libnn_svc     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/svc)
 nn_library(libnn_ubl     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ugc/ubl)
 nn_library(libnn_ulcd    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ulcd)
@@ -126,6 +129,7 @@ add_library(CTR_SDK INTERFACE)
 target_link_libraries(CTR_SDK INTERFACE
     nn_applet
     nn_camera
+    nn_cec
     nn_cfg
     nn_crt0
     nn_crypto
@@ -133,16 +137,20 @@ target_link_libraries(CTR_SDK INTERFACE
     nn_dbg
     nn_dbm
     nn_dev
+#    nn_dlp
     nn_dsp
     nn_err
+    nn_erreula
     nn_fnd
     nn_font
+#    nn_friends
     nn_fs
     nn_fslow
     nn_gxlow
     nn_hid
     nn_hidlow
 #    nn_hio
+#    nn_http
     nn_init
     nn_ir
     nn_math
@@ -155,6 +163,7 @@ target_link_libraries(CTR_SDK INTERFACE
     nn_rtport
     nn_snd
     nn_srv
+#    nn_ssl
     nn_svc
     nn_ubl
     nn_ulcd

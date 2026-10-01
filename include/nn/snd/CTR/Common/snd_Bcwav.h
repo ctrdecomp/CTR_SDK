@@ -1,12 +1,13 @@
 #pragma once
 
-#include "nn/snd/CTR/Common/snd_Adpcm.h"
+#include <nn/snd/CTR/Common/snd_Adpcm.h>
 
 namespace nn {
 namespace snd {
 namespace CTR {
 
-class Bcwav {
+class Bcwav 
+{
 private:
     Bcwav() {}
     ~Bcwav() {}

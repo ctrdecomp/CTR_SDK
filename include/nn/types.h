@@ -81,7 +81,16 @@ struct ProductInfo
 
 #define splits(S) __attribute__((section("i." #S))) S
 
+#define NN_ATTRIBUTE_ALIGN(n)   __attribute__ ((aligned(n)))
+#define NN_ATTRIBUTE_DEPRECATED __attribute__ ((deprecated))
+
 /* Defines */
 
 #define NN_INLINE inline
 #define NN_NOINLINE __attribute__((noinline))
+
+#ifdef NN_BUILD_DEBUG
+#define NN_FORCE_INLINE inline
+#else
+#define NN_FORCE_INLINE __forceinline
+#endif

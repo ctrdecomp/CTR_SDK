@@ -205,5 +205,27 @@ DateTime DateTime::GetNow()
     return nn::fnd::DateTime::MIN_DATETIME;
 }
 
+DateTimeParameters DateTime::GetParameters() const
+{
+    DateTimeParameters parameters;
+
+    s32 msec = MilliSecondsOnDay(m_MilliSeconds);
+    s32 days = AlignedDays(m_MilliSeconds);
+    s32 year,month,day;
+
+    DaysToDate(&year,&month,&day, days);
+
+    parameters.year = year;
+    parameters.month = month;
+    parameters.day = day;
+    parameters.week = DaysToWeekday(days);
+    parameters.hour = msec / (1000 * 60 * 60);
+    parameters.minute = msec / (1000 * 60) % 60;
+    parameters.second = msec / 1000 % 60;
+    parameters.milliSecond = msec % 1000;
+
+    return parameters;
 }
-}
+
+} // namespace fnd
+} // namespace nn

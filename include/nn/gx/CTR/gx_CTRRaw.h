@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include "nn/gx/CTR/gx_CTR.h"
+#include <nn/gx/CTR/gx_CTR.h>
 
 #ifdef __cplusplus
 extern "C" {

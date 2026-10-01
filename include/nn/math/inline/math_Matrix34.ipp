@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <nn/math/math_Matrix34.h>
-#include <nn/math/math_Vec3.h>
+#include <nn/math/math_Vector3.h>
 #include <nn/Assert.h>
 
 namespace nn {
@@ -12,7 +12,7 @@ inline MTX34* MTX34TextureProjectionFrustum(MTX34* pOut, f32 l, f32 r, f32 b, f3
 {
     f32 reverseWidth = 1.0f / (r - l);
 
-    f32 (*const mtx)[4] = pOut->matrix;
+    f32 (*const mtx)[4] = pOut->m;
 
     mtx[0][0] = ((2.0f * n) * reverseWidth) * scaleS;
     mtx[0][1] = 0.0f;
@@ -37,7 +37,7 @@ inline MTX34* MTX34TextureProjectionPerspective(MTX34* pOut, f32 fovy, f32 aspec
     f32 angle = fovy * 0.5f;
     f32 cot = 1.0f / math::TanRad(angle);
 
-    f32 (*const mtx)[4] = pOut->matrix;
+    f32 (*const mtx)[4] = pOut->m;
 
     mtx[0][0] = (cot / aspect) * scaleS;
     mtx[0][1] = 0.0f;
@@ -66,7 +66,7 @@ MTX34* MTX34LookAtC_FAST(MTX34* pOut, const VEC3* pCamPos, const VEC3* pCamUp, c
     NN_NULL_ASSERT_(pCamUp);
     NN_NULL_ASSERT_(pTarget);
 
-    f32 (*const m)[4] = pOut->matrix;
+    f32 (*const m)[4] = pOut->m;
 
     f32 vLookx, vLooky, vLookz;
     {

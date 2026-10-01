@@ -10,20 +10,24 @@ namespace detail {
 
 template <typename T>
 struct LoadStoreRegEx{
-        static T LoadRegEx (volatile T* ptr){
+        static T LoadRegEx (volatile T* ptr)
+        {
                 return (T)__ldrex (ptr);
         }
-        static int StoreRegEx (T val, volatile T* ptr){
+        static int StoreRegEx (T val, volatile T* ptr)
+        {
                 return __strex (val, ptr);
         }
 };
 
 template <>
 struct LoadStoreRegEx<s64>{
-        static s64 LoadRegEx (volatile s64* ptr){
+        static s64 LoadRegEx (volatile s64* ptr)
+        {
                 return __ldrexd (ptr);
         }
-        static int StoreRegEx (s64 val, volatile s64* ptr){
+        static int StoreRegEx (s64 val, volatile s64* ptr)
+        {
                 return __strexd (val, ptr);
         }
 };

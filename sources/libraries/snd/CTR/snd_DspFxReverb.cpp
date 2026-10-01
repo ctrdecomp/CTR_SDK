@@ -103,7 +103,7 @@ void DspFxReverb::Detach()
 
 bool DspFxReverb::Enable(bool enable) 
 {
-    NN_TASSERTMSG_((m_AuxBusId == AUX_BUS_A || m_AuxBusId == AUX_BUS_B) &&mBuffer != NULL && mBufferSize > 0,"DspFxReverb is not initialized\n");
+    NN_TASSERTMSG_((m_AuxBusId == AUX_BUS_A || m_AuxBusId == AUX_BUS_B) &&m_Buffer != NULL && m_BufferSize > 0,"DspFxReverb is not initialized\n");
 
     if ((m_AuxBusId != AUX_BUS_A) && (m_AuxBusId != AUX_BUS_B))
         return false;
@@ -154,7 +154,7 @@ bool DspFxReverb::SetParam(const DspFxReverb::Param& _param)
         return false;
     }
 
-    NN_TASSERT_(_param.mFusedGain >= 0.0f && _param.m_FusedGain <= 1.0f);
+    NN_TASSERT_(_param.m_FusedGain >= 0.0f && _param.m_FusedGain <= 1.0f);
     if (_param.m_FusedGain < 0.0f || _param.m_FusedGain > 1.0f)
     {
         return false;

@@ -57,7 +57,7 @@ Result SetDeviceMemorySize(size_t size)
 
         if(res.IsSuccess())
         {
-            NN_TASSERT_(sDeviceMemorySize == 0 || addr == requestAddress);
+            NN_TASSERT_(s_DeviceMemorySize == 0 || addr == requestAddress);
 
             if(s_DeviceMemorySize == 0)
             {

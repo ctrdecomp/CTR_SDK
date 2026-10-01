@@ -13,7 +13,7 @@ inline QUAT* MTX34ToQUATC(QUAT* pOut, const MTX34* pMtx)
     s32 nxt[3] = {1, 2, 0};
     f32 q[3];
 
-    const f32 (*const m)[4] = pMtx->matrix;
+    const f32 (*const m)[4] = pMtx->m;
 
     tr = m[0][0] + m[1][1] + m[2][2];
     if (tr > 0.0f)
@@ -62,7 +62,7 @@ inline QUAT* MTX34ToQUATC_FAST(QUAT* pOut, const MTX34* pMtx)
     f32 tr;
     s32 i;
 
-    const f32 (*const m)[4] = pMtx->matrix;
+    const f32 (*const m)[4] = pMtx->m;
 
     tr = m[0][0] + m[1][1] + m[2][2];
     if (tr > 0.0f)
@@ -118,8 +118,6 @@ inline QUAT* MTX34ToQUATC_FAST(QUAT* pOut, const MTX34* pMtx)
             pOut->w = w;
             pOut->y = y;
             pOut->z = z;
-
-
         }
         else if(i==1)
         {

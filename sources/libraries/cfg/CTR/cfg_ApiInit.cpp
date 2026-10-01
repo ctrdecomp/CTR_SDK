@@ -22,7 +22,8 @@ namespace{
 
 Result InitializeInit()
 {
-    if(s_InitializeInitCount == 0){
+    if(s_InitializeInitCount == 0)
+    {
         Result res = detail::InitializeBase(&IpcInit::s_Session,CTR::PORT_NAME_INIT);
         if(res.IsSuccess())
         {

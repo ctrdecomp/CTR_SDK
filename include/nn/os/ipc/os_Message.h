@@ -24,7 +24,7 @@ inline bit32* GetReceiveBuffer()
 class MessageBuffer
 {
 private:
-    bit32*  m_P;
+    bit32*  m_p;
 public:
     enum WordType
     {
@@ -34,82 +34,88 @@ public:
     };
 
     explicit MessageBuffer(bit32* p): 
-        m_P(p) 
+        m_p(p) 
     {
     }
 
     void SetHeader(bit16 tag, s32 rawlen, s32 fmtlen, bit8 flags)
     {
-        *(m_P + 0) = MakeHeader(tag, rawlen, fmtlen, flags);
+        *(m_p + 0) = MakeHeader(tag, rawlen, fmtlen, flags);
     }
 
     template <typename T>
     void SetRaw(s32 offset, const T& value)
     {
-        *reinterpret_cast<T*>(m_P + offset) = value;
+        *reinterpret_cast<T*>(m_p + offset) = value;
     }
 
     void SetRawArray(s32 offset, const void* p, size_t size)
     {
-        memcpy(this->m_P + offset, p, size);
+        memcpy(this->m_p + offset, p, size);
     }
 
     void SetSend(s32 offset, const void* p, size_t size)
     {
-        m_P[offset] = size << 4 | 10;
-        m_P[offset + 1] = reinterpret_cast<bit32>(p);
+        m_p[offset] = size << 4 | 10;
+        m_p[offset + 1] = reinterpret_cast<bit32>(p);
     }
     void SetReceive(s32 offset, const void* p, size_t size)
     {
-        m_P[offset] = size << 4 | 0xc;
-        m_P[offset + 1] = reinterpret_cast<bit32>(p);
+        m_p[offset] = size << 4 | 0xc;
+        m_p[offset + 1] = reinterpret_cast<bit32>(p);
     }
 
     void SetPointer(s32 offset, const void* p)
     {
-        SetPointer(m_P, offset, p);
+        SetPointer(m_p, offset, p);
+    }
+
+    void SetExchange(s32 offset, void *p, size_t size)
+    {
+        m_p[offset] = size << 4 | 14;
+        m_p[offset + 1] = reinterpret_cast<bit32>(p);
     }
 
     void SetPXIOut(s32 offset, s32 index, const void* p, size_t size)
     {
-        m_P[offset] = size << 8 | (index & 0x0fU) << 4 | 4;
-        m_P[offset + 1] = reinterpret_cast<bit32>(p);
+        m_p[offset] = size << 8 | (index & 0x0fU) << 4 | 4;
+        m_p[offset + 1] = reinterpret_cast<bit32>(p);
     }
 
     void SetPXIIn(s32 offset, s32 index, const void* p, size_t size)
     {
-        m_P[offset] = size << 8 | (index & 0xfU) << 4 | 6;
-        m_P[offset + 1] = reinterpret_cast<bit32>(p);
+        m_p[offset] = size << 8 | (index & 0xfU) << 4 | 6;
+        m_p[offset + 1] = reinterpret_cast<bit32>(p);
     }
 
     void SetCopyHandleHeader(s32 offset, s32 num)
     {
-        m_P[offset] = MakeSpecialWordHeader(WORD_TYPE_HANDLE_COPY, num + -1);
+        m_p[offset] = MakeSpecialWordHeader(WORD_TYPE_HANDLE_COPY, num + -1);
     }
 
     void SetPointerHeader(s32 offset, s32 index, size_t size)
     {
-        SetPointerHeader(this->m_P, offset, index, size);
+        SetPointerHeader(this->m_p, offset, index, size);
     }
 
     void SetPointerHeaderForReceive(s32 offset, size_t size)
     {
-        SetPointerHeader(this->m_P, offset, 0, size);
+        SetPointerHeader(this->m_p, offset, 0, size);
     }
 
     void SetProcessIdHeader(s32 offset)
     {
-        m_P[offset] = MakeSpecialWordHeader(WORD_TYPE_PROCESS_ID, 0);
+        m_p[offset] = MakeSpecialWordHeader(WORD_TYPE_PROCESS_ID, 0);
     }
 
     void SetHandle(s32 offset, Handle handle)
     {
-        SetSpecialWord(this->m_P, offset, handle.m_Handle);
+        SetSpecialWord(this->m_p, offset, handle.m_Handle);
     }
 
     bit32 Get(s32 offset)
     {
-        return m_P[offset];
+        return m_p[offset];
     }
 
     Handle GetHandle(s32 offset)
@@ -120,7 +126,7 @@ public:
     template <typename T>
     const T& GetRaw(s32 offset) const
     {
-        return *reinterpret_cast<const T*>(m_P + offset);
+        return *reinterpret_cast<const T*>(m_p + offset);
     }
 
     static bit32 MakeHeader(bit16 tag, s32 rawlen, s32 fmtlen, bit8 flags)

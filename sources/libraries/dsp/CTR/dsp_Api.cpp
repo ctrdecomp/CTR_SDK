@@ -255,8 +255,8 @@ void WakeUp()
     s_IsSleepAcceptedCallbackCalled = 0;
     if(s_IsSleeping)
     {
-        NN_TASSERT_(sRegisteredComponent != NULL);
-        NN_ERR_THROW_FATAL(LoadComponentCore(s_RegisteredComponent,s_RegisteredComponentSize,s_RegisteredProgMask,s_RegisteredDataMask));
+        NN_TASSERT_(s_RegisteredComponent != NULL);
+        NN_ERR_THROW_FATAL(LoadComponentCore(s_RegisteredComponent, s_RegisteredComponentSize, s_RegisteredProgMask, s_RegisteredDataMask));
         for (int i = 0; i < CALLBACK_NUM; i++)
         {
             if (s_WakeUpCallback[i]) s_WakeUpCallback[i]();

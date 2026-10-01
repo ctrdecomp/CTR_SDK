@@ -50,21 +50,21 @@ void GetLookPose(const nn::math::MTX34 *view, nn::math::VEC3 *pos, Direction *di
 {
     MTX34 im;
     math::MTX34Inverse(&im, view);
-    pos->x = im.matrix[0][3];
-    pos->y = im.matrix[1][3];
-    pos->z = im.matrix[2][3];
+    pos->x = im.m[0][3];
+    pos->y = im.m[1][3];
+    pos->z = im.m[2][3];
 
-    dir->right.x = im.matrix[0][0];
-    dir->right.y = im.matrix[1][0];
-    dir->right.z = im.matrix[2][0];
+    dir->right.x = im.m[0][0];
+    dir->right.y = im.m[1][0];
+    dir->right.z = im.m[2][0];
 
-    dir->up.x = im.matrix[0][1];
-    dir->up.y = im.matrix[1][1];
-    dir->up.z = im.matrix[2][1];
+    dir->up.x = im.m[0][1];
+    dir->up.y = im.m[1][1];
+    dir->up.z = im.m[2][1];
 
-    dir->target.x = -im.matrix[0][2];
-    dir->target.y = -im.matrix[1][2];
-    dir->target.z = -im.matrix[2][2];
+    dir->target.x = -im.m[0][2];
+    dir->target.y = -im.m[1][2];
+    dir->target.z = -im.m[2][2];
 
     math::VEC3Normalize(&dir->right, &dir->right);
     math::VEC3Normalize(&dir->up, &dir->up);
@@ -197,7 +197,7 @@ void StereoCamera::CalculateMatrices(nn::math::MTX44 *projL,nn::math::MTX34 *vie
 
         m_DepthLevel = depthLevel;
         f32 heightDiff = m_LimitParallax;
-        heightDiff *= math::FAbs(this->m_BaseCamera.top - this->m_BaseCamera.bottom) * m_DepthLevel / (m_BaseCamera.near * s_CfgData.level);
+        heightDiff *= math::FAbs(this->m_BaseCamera.top - this->m_BaseCamera.bottom) * m_DepthLevel / (m_BaseCamera.near * s_CfgData.narrowSideLen);
         if (m_BaseCamera.far > m_DepthLevel)
         {
             m_CameraInterval = heightDiff * (this->m_BaseCamera.far / (this->m_BaseCamera.far - this->m_DepthLevel));

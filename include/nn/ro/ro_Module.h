@@ -11,9 +11,9 @@ class Module
 public:
     uptr m_Dummy;
 
-    class EnumerateCallback{
+    class EnumerateCallback
+    {
     public:
-
         virtual bool operator()(Module* p) = 0;
     };
 

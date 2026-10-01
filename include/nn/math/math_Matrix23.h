@@ -2,7 +2,7 @@
 
 #include <nn/math/math_Triangular.h>
 #include <nn/math/math_Matrix22.h>
-#include <nn/math/math_Vec3.h>
+#include <nn/math/math_Vector3.h>
 
 #pragma push
 #pragma Otime
@@ -21,7 +21,9 @@ inline MTX23* MTX23Add(MTX23* pOut, const MTX23* p1, const MTX23* p2);
 inline MTX23* MTX23Sub(MTX23* pOut, const MTX23* p1, const MTX23* p2);
 inline MTX23* MTX23Mult(MTX23* pOut, const MTX23* p, f32 f);
 inline MTX23* MTX23Mult(MTX23* pOut, const MTX23* p1, const MTX23* p2);
+
 inline MTX23* MTX22ToMTX23(MTX23* pOut, const MTX22* pM);
+
 inline MTX23* MTX23Scale(MTX23* pOut, const MTX23* pM, const VEC2* pS);
 inline MTX23* MTX23Translate(MTX23* pOut, const MTX23* pM, const VEC2* pT);
 
@@ -216,6 +218,22 @@ inline MTX23* MTX23Mult(MTX23* pOut, const MTX23* __restrict p1, const MTX23* __
         MTX23Copy(pOut, &tmp);
     }
     
+    return pOut;
+}
+
+inline MTX23* MTX22ToMTX23(MTX23* pOut, const MTX22& m) { return MTX22ToMTX23(pOut, &m); }
+
+inline MTX23*  MTX22ToMTX23(MTX23* pOut, const MTX22* pM)
+{
+    NN_NULL_ASSERT_(pOut);
+    NN_NULL_ASSERT_(pM);
+    
+    pOut->f._00 = pM->f._00;
+    pOut->f._01 = pM->f._01;
+    pOut->f._10 = pM->f._10;
+    pOut->f._11 = pM->f._11;
+
+    pOut->f._02 = pOut->f._12 = 0.f;
     return pOut;
 }
 

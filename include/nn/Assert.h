@@ -40,7 +40,7 @@
     #define NN_NULL_TASSERT_(exp)                NN_TASSERTMSG_((exp) != NULL, "%s must not be NULL", #exp)
     #define NN_ALIGN_TASSERT_(exp, align)        NN_TASSERTMSG_(((uptr)(exp)) % (align) == 0, "%s(=0x%08x) must be %d byte aligned.", #exp, (exp), align)
     #define NN_MIN_TASSERT_(exp, min)            NN_TASSERTMSG_((exp) >= (min), "%s(=%d) must be >= %s(=%d).", #exp, (exp), #min, min)
-    #define NN_MAX_TASSERT_(exp, max)            NN_TASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, min)
+    #define NN_MAX_TASSERT_(exp, max)            NN_TASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, max)
     #define NN_MINMAX_TASSERT_(exp, min, max)    NN_TASSERTMSG_((exp) >= (min) && (exp) <= (max), "%s(=%d) must be >= %s(=%d) and <= %s(=%d).", #exp, (exp), #min, min, #max, max)
     #define NN_EQUAL_TASSERT_(exp, equ)          NN_TASSERTMSG_((exp) == (equ), "%s(=%d) must be == %s(=%d).", #exp, (exp), #equ, equ)
     #define NN_NOT_EQUAL_TASSERT_(exp, equ)      NN_TASSERTMSG_((exp) != (equ), "%s(=%d) must be != %s(=%d).", #exp, (exp), #equ, equ)
@@ -60,6 +60,10 @@
                 NN_LOG_(__VA_ARGS__), \
                 NN_LOG_("\n"), \
                 nndbgPanic())
+    
+    #define NN_TWARNING_(exp, ...) (void) ((exp) || (nndbgDetailTPrintf(__VA_ARGS__), 0))
+        
+    #define NN_WARNING_(exp, ...) (void) ((exp) || (nndbgDetailPrintf(__VA_ARGS__), 0))
 
     #define NN_PANIC_IF_FALSE(result) \
         do \
@@ -113,7 +117,7 @@
     #define NN_NULL_ASSERT_(exp)                NN_ASSERTMSG_((exp) != NULL, "%s must not be NULL", #exp)
     #define NN_ALIGN_ASSERT_(exp, align)        NN_ASSERTMSG_(((uptr)(exp)) % (align) == 0, "%s(=0x%08x) must be %d byte aligned.", #exp, (exp), align)
     #define NN_MIN_ASSERT_(exp, min)            NN_ASSERTMSG_((exp) >= (min), "%s(=%d) must be >= %s(=%d).", #exp, (exp), #min, min)
-    #define NN_MAX_ASSERT_(exp, max)            NN_ASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, min)
+    #define NN_MAX_ASSERT_(exp, max)            NN_ASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, max)
     #define NN_MINMAX_ASSERT_(exp, min, max)    NN_ASSERTMSG_((exp) >= (min) && (exp) <= (max), "%s(=%d) must be >= %s(=%d) and <= %s(=%d).", #exp, (exp), #min, min, #max, max)
     #define NN_EQUAL_ASSERT_(exp, equ)          NN_ASSERTMSG_((exp) == (equ), "%s(=%d) must be == %s(=%d).", #exp, (exp), #equ, equ)
     #define NN_NOT_EQUAL_ASSERT_(exp, equ)      NN_ASSERTMSG_((exp) != (equ), "%s(=%d) must be != %s(=%d).", #exp, (exp), #equ, equ)

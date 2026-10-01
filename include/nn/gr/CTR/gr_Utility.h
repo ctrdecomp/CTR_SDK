@@ -7,7 +7,6 @@
 #include <nn/gx.h>
 #include <nn/gx/CTR/gx_PicaAll.h>
 
-
 namespace nn{
 namespace gr{
 namespace CTR{

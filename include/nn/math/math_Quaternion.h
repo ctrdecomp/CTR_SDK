@@ -7,6 +7,11 @@
 namespace nn{
 namespace math{
 
+class QUAT;
+
+QUAT* QUATLerp(QUAT* pOut, const QUAT* q1, const QUAT* q2, f32 t);
+inline QUAT* QUATLerp(QUAT* pOut, const QUAT& q1, const QUAT& q2, f32 t) { return QUATLerp(pOut, &q1, &q2, t); }
+
 class MTX34;
 
 struct QUAT_
@@ -34,7 +39,12 @@ public:
 
 #define NN_QUAT_EPSILON        0.00001F
 
-namespace ARMv6{
+} // namespace math
+} // namespace nn
+
+namespace nn { 
+namespace math {
+namespace ARMv6 {
 
 QUAT* MTX34ToQUATC_FAST(QUAT* pOut, const MTX34* pMtx);
 QUAT* MTX34ToQUATC(QUAT* pOut, const MTX34* pMtx);
@@ -107,6 +117,20 @@ inline QUAT* QUATNormalizeC_FAST(QUAT* pOut, const QUAT* __restrict q)
 
 /* Inlines */
 
+inline QUAT* QUATLerp(QUAT* pOut, const QUAT* __restrict q1, const QUAT* __restrict q2, f32 t)
+{
+    NN_NULL_ASSERT_(pOut);
+    NN_NULL_ASSERT_(q1);
+    NN_NULL_ASSERT_(q2);
+
+    pOut->x = t * (q2->x - q1->x) + q1->x;
+    pOut->y = t * (q2->y - q1->y) + q1->y;
+    pOut->z = t * (q2->z - q1->z) + q1->z;
+    pOut->w = t * (q2->w - q1->w) + q1->w;
+    
+    return pOut;
+}
+
 inline QUAT* QUATSlerp(QUAT* pOut, const QUAT* __restrict q1, const QUAT* __restrict q2, f32 t)
 {
     f32 theta, sin_th, cos_th, tp, tq;
@@ -161,5 +185,5 @@ inline QUAT* MTX34ToQUAT(QUAT* pOut, const MTX34* pMtx)
         return ARMv6::MTX34ToQUATC_FAST(pOut, pMtx);
     #endif
 }
-}
-}
+} // namepspace math
+} // namespace nn

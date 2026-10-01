@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include "nn/gx/CTR/gx_PicaReg.h"
+#include <nn/gx/CTR/gx_PicaReg.h>
 
 #define CMD_PADDING_NAME2( x, name ) u32 padding_##name : x
 #define CMD_PADDING_NAME1( x, name ) CMD_PADDING_NAME2( x, name )

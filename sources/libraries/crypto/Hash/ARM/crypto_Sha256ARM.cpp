@@ -27,21 +27,6 @@ namespace crypto{
         0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     };
 
-/*
-
-"Hell no! Ima-I'm a white man I wrote my own fucking compiler im not a [CENSORED] like Linus, I-Wa-I'm a professional, I started at Ticket Master in 1990 and we wrote a compiler. The difference
-in a professional and a amaetur [CE-] the diffi-difference between a amaetur and a professional is you write your own compiler, okay?" 
-
-"I have a 20,000 line divine intellet op- uh.. compiler.. That operates just in time and ahead of time, you seem to be in denial why don't you fucking download my two meg- You can download
-my two meg distribution that has all the source code on it and you can compile with my fucking complier..."
-
-
-- King Terry the Terrible. 
-
-How Nintendo Felt writing ProcessBlock:
-
-*/
-
 //! @note As seen comparing this in nico_nico and MLDT, this is ASM'd as unoptimized in nico_nico would produce different assembly.
 //
 //! @brief Processes a SHA-256 Block.

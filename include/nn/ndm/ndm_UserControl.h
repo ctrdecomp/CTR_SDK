@@ -13,10 +13,15 @@ namespace {
 using namespace CTR;
 
 Result Initialize();
+Result Finalize();
+
 Result SuspendScheduler(bool bAsync);
 Result ResumeScheduler();
+
 Result SuspendDaemons(bit32 mask);
 Result ResumeDaemons(bit32 mask);
+
+Result Suspend(DaemonName name);
 Result Resume(DaemonName name);
 
 }

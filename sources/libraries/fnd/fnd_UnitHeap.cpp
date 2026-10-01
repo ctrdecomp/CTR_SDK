@@ -13,7 +13,7 @@ void UnitHeapBase::Dump() const
 
 void UnitHeapBase::Initialize(size_t unit, uptr addr, size_t size, s32 alignment, bit32 option)
 {
-    NN_TASSERT_(this->mFreeNode == 0);
+    NN_TASSERT_(m_FreeNode == 0);
     NN_TASSERT_(alignment >= sizeof(void*));
     NN_TASSERT_(unit >= sizeof(void*));
     NN_TASSERT_(alignment % sizeof(void*) == 0);

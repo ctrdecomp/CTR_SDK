@@ -1,11 +1,11 @@
 #pragma once
 
-#include "nn/types.h"
-#include "nn/fnd/fnd_Allocator.h"
-#include "nn/fnd/fnd_HeapBase.h"
-#include "nn/os/os_CriticalSection.h"
-#include "nn/os/os_LockPolicy.h"
-#include "nn/Assert.h"
+#include <nn/types.h>
+#include <nn/fnd/fnd_Allocator.h>
+#include <nn/fnd/fnd_HeapBase.h>
+#include <nn/os/os_CriticalSection.h>
+#include <nn/os/os_LockPolicy.h>
+#include <nn/Assert.h>
 
 // 100%
 
@@ -45,7 +45,8 @@ private:
     uptr   m_CurrentTail;
 };
 
-class FrameHeapBase::State {
+class FrameHeapBase::State 
+{
 public:
     explicit State(FrameHeapBase& heap): 
         m_Head(heap.m_CurrentHead), 

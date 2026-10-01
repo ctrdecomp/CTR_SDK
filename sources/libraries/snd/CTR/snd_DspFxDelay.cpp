@@ -90,7 +90,7 @@ void DspFxDelay::Detach()
 
 bool DspFxDelay::Enable(bool enable)
 {
-    NN_TASSERTMSG_((mAuxBusId == AUX_BUS_A || mAuxBusId == AUX_BUS_B) &&mBuffer != NULL && mBufferSize > 0, "DspFxDelay is not initialized\n");
+    NN_TASSERTMSG_((m_AuxBusId == AUX_BUS_A || m_AuxBusId == AUX_BUS_B) &&m_Buffer != NULL && m_BufferSize > 0, "DspFxDelay is not initialized\n");
 
     if ((m_AuxBusId != AUX_BUS_A) && (m_AuxBusId != AUX_BUS_B))
         return false;
@@ -122,7 +122,7 @@ size_t DspFxDelay::GetRequiredMemorySize(const DspFxDelay::Param& param)
 
 bool DspFxDelay::SetParam(const DspFxDelay::Param& _param)
 {
-    NN_TASSERTMSG_((mAuxBusId == AUX_BUS_A || mAuxBusId == AUX_BUS_B) &&mBuffer != NULL && mBufferSize > 0,"DspFxDelay is not initialized\n");
+    NN_TASSERTMSG_((m_AuxBusId == AUX_BUS_A || m_AuxBusId == AUX_BUS_B) &&m_Buffer != NULL && m_BufferSize > 0,"DspFxDelay is not initialized\n");
 
     if ((m_AuxBusId != AUX_BUS_A) && (m_AuxBusId != AUX_BUS_B))
         return false;
@@ -133,7 +133,7 @@ bool DspFxDelay::SetParam(const DspFxDelay::Param& _param)
     if (_param.m_Damping < 0.0f || _param.m_Damping > 1.0f)
         return false;
 
-    NN_TASSERT_(param.m_FeedbackGain >= 0.0f && _param.m_FeedbackGain <= 1.0f);
+    NN_TASSERT_(_param.m_FeedbackGain >= 0.0f && _param.m_FeedbackGain <= 1.0f);
     if (_param.m_FeedbackGain < 0.0f || _param.m_FeedbackGain > 1.0f)
         return false;
 
@@ -145,7 +145,7 @@ bool DspFxDelay::SetParam(const DspFxDelay::Param& _param)
 
     s32 channels = _param.m_IsEnableSurround ? 4 : 2;
 
-    NN_TASSERTMSG_(sizeof(s32) * NN_SND_SAMPLES_PER_FRAME * channels * delayFrames <= mBufferSize,"mDelayTime is too large\n");
+    NN_TASSERTMSG_(sizeof(s32) * NN_SND_SAMPLES_PER_FRAME * channels * delayFrames <= m_BufferSize,"mDelayTime is too large\n");
 
     if (sizeof(s32) * NN_SND_SAMPLES_PER_FRAME * channels * delayFrames > m_BufferSize)
         return false;

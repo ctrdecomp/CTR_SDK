@@ -58,7 +58,7 @@ public:
         ARM::DataSynchronizationBarrier();
         if (ret)
         {
-            NN_ASSERT_(mLockCount == 0);
+            NN_ASSERT_(m_LockCount == 0);
             m_ThreadUniqueValue = this->GetThreadUniqueValue();
             return true;
         }

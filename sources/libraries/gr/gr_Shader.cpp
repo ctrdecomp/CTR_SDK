@@ -28,7 +28,7 @@ Shader::Shader():
 void Shader::SetupBinary(const void* shader_binary, const s32 vtx_shader_index, const s32 geo_shader_index)
 {
     const bit32* binary = reinterpret_cast<const bit32*>(shader_binary);
-    NN_ASSERT_(binary != NULL );
+    NN_ASSERT_(binary != NULL);
 
     NN_ASSERT_(*binary == 0x424C5644);
     ++binary;
@@ -197,7 +197,7 @@ bit32* Shader::MakeVtxProgramCommand(bit32* command) const{
     }
 
     {
-        NN_ASSERT_(0 <= shader_index && shader_index < mExeImageInfoNum);
+        NN_ASSERT_(0 <= shader_index && shader_index < m_ExeImageInfoNum);
                     
         const ExeImageInfo* exe_info = m_ExeImageInfo[shader_index];
 
@@ -290,17 +290,18 @@ bit32* Shader::MakeShaderModeCommand_(bit32* command, const bool isEnableGeoShad
 void Shader::CheckVtxShaderIndex_(const s32 vtx_shader_index)
 {
     NN_ASSERT_((0 <= vtx_shader_index) && (vtx_shader_index < this->GetShaderNum()));
-    NN_ASSERT_(!mExeImageInfo[vtx_shader_index]->isGeoShader);
+    NN_ASSERT_(!m_ExeImageInfo[vtx_shader_index]->isGeoShader);
 }
 
 void Shader::CheckGeoShaderIndex_(const s32 geo_shader_index)
 {
     NN_UNUSED_VAR(geo_shader_index);
 
-    NN_ASSERT_(mGeoShaderIndex < GetShaderNum());
+    NN_ASSERT_(m_GeoShaderIndex < GetShaderNum());
 
-    if (geo_shader_index > - 1){
-        NN_ASSERT_(mExeImageInfo[geo_shader_index]->isGeoShader);
+    if (geo_shader_index > - 1)
+    {
+        NN_ASSERT_(m_ExeImageInfo[geo_shader_index]->isGeoShader);
     }
 }
 

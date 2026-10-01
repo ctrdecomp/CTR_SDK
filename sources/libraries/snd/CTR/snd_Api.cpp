@@ -192,8 +192,8 @@ void SetSurroundSpeakerPosition(SurroundSpeakerPosition pos)
 
 void WaitForDspSync()
 {
-    NN_TASSERT_(sInitialized);
-    NN_TASSERT_(sSyncState == SYNC_STATE_SEND);
+    NN_TASSERT_(s_Initialized);
+    NN_TASSERT_(s_SyncState == SYNC_STATE_SEND);
     if (s_IsSleepPrepare)
     {
         if (Dspsnd::GetInstance().WaitPipe(nn::fnd::TimeSpan::FromMicroSeconds(NN_SND_USECS_PER_FRAME * 2)))

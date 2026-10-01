@@ -154,7 +154,6 @@ void PadReader::SetStickClamp(short min, short max)
     {
         m_MaxOfStickClampMinimum = max;
     }
-#endif
 }
 
 f32 PadReader::NormalizeStick(short x)
@@ -183,7 +182,6 @@ f32 PadReader::NormalizeStick(short x)
         return 1.0f;
 
     return fx / threshold;
-#endif
 }
 
 void PadReader::NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y)

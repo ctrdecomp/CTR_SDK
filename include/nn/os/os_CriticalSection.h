@@ -35,7 +35,7 @@ private:
     };
 
     WaitableCounter m_Counter;
-#endif
+
     u32 m_ThreadUniqueValue;
     s32 m_LockCount;
 

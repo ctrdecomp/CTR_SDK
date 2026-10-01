@@ -17,16 +17,24 @@ public:
     {
         nn::os::HandleManager::AttachSharedMemoryHandle(&this->m_SharedMemory, hSharedMemory, 0x1000, false);
     }
+
+    void Finalize()
+    {
+        this->m_SharedMemory.Finalize();
+    }
+
     uptr GetBufferForRelayQueue(s32 index)
     {
         uptr addr = m_SharedMemory.GetAddress() + OFFSET_RELAY_QUEUE + index * InterruptRelayQueueBase::QUEUE_BODY_SIZE;
         return addr;
     }
+
     uptr GetBufferForCmdReqQueue(s32 index)
     {
         uptr addr = m_SharedMemory.GetAddress() + OFFSET_CMDREQ_QUEUE + index * CmdReqQueueBase::QUEUE_BODY_SIZE;
         return addr;
     }
+    
     uptr GetBufferForDisplaySwapInfoPad(s32 index)
     {
         uptr addr = m_SharedMemory.GetAddress() + OFFSET_SWAP_INFO_PAD + index * DisplaySwapInfoPadBase::PAD_BODY_SIZE;

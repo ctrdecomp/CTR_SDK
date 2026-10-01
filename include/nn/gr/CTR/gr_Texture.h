@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nn/gr/CTR/gr_Utility.h>
 
 namespace nn{

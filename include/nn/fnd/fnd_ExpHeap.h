@@ -58,7 +58,7 @@ public:
     void Finalize()
     {
         void* ptr;
-        NN_TASSERT_(this->mAllocCount);
+        NN_TASSERT_(this->m_AllocCount);
         if (this->m_ExpHeapImpl.signature != 0) 
         {
             nn::fnd::detail::RemoveListObject((detail::NNSFndList*)&this->m_ExpHeapImpl, ptr);
@@ -86,7 +86,8 @@ public:
 };
 
 template <class LockPolicy>
-class ExpHeapTemplate : public ExpHeapBase, private LockPolicy::LockObject {
+class ExpHeapTemplate : public ExpHeapBase, private LockPolicy::LockObject 
+{
 private:
     typedef ExpHeapBase Base;
     typedef typename LockPolicy::LockObject LockObject;
@@ -278,6 +279,8 @@ private:
     bool m_Reuse;
     s8 PADDING1;
 };
+
+typedef ExpHeapTemplate<nn::os::LockPolicy::Object<nn::os::CriticalSection> > ThreadSafeExpHeap;
 
 }
 }

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "nn/types.h"
+#include <nn/types.h>
 
 namespace nn {
 namespace ro {
 
-    enum FixLevel{
+    enum FixLevel
+    {
         FIX_LEVEL_0,
         FIX_LEVEL_1,
         FIX_LEVEL_2,
@@ -19,22 +20,23 @@ namespace ro {
 
     struct SizeInfo
     {
-        uptr    m_Fix0End;
-        uptr    m_Fix1End;
-        uptr    m_Fix2End;
-        uptr    m_Fix3End;
-        size_t  m_BufferSize;
+        uptr m_Fix0End;
+        uptr m_Fix1End;
+        uptr m_Fix2End;
+        uptr m_Fix3End;
+        size_t m_BufferSize;
     };
 
-    struct RegionInfo{
-        uptr    m_MapBegin;
-        size_t  m_MapSize;
-        uptr    m_CroBegin;
-        size_t  m_CroSize;
-        uptr    m_DataBssBegin;
-        size_t  m_DataBssSize;
-        uptr    m_CodeBegin;
-        size_t  m_CodeSize;
+    struct RegionInfo
+    {
+        uptr m_MapBegin;
+        size_t m_MapSize;
+        uptr m_CroBegin;
+        size_t m_CroSize;
+        uptr m_DataBssBegin;
+        size_t m_DataBssSize;
+        uptr m_CodeBegin;
+        size_t m_CodeSize;
     };
 
 } // end of namespace ro

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nn/math.h>
-#include <nn/math/math_Vec4.h>
+#include <nn/math/math_Vector4.h>
 
 namespace nn {
 namespace util {

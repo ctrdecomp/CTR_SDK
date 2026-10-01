@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nn/Result.h>
 #include <cstdarg>
 
@@ -31,8 +30,8 @@ extern "C"{
 #if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
     #ifdef __cplusplus
             #define NN_LOG_(...)           (void)nn::dbg::detail::Printf(__VA_ARGS__)
-            #define NN_SLOG_(fmt, arg)     (void)nn::dbg::detail::Printf(__VA_ARGS__)
-            #define NN_TLOG_(text, length)  (void)nn::dbg::detail::TPrintf(__VA_ARGS__)
+            #define NN_SLOG_(...)          (void)nn::dbg::detail::Printf(__VA_ARGS__)
+            #define NN_TLOG_(...)          (void)nn::dbg::detail::TPrintf(__VA_ARGS__)
         #else
             #define NN_LOG_(...)           (void)nndbgDetailPrintf(__VA_ARGS__)
             #define NN_LOGV_(fmt, arg)     (void)nndbgDetailVPrintf((fmt), (arg))

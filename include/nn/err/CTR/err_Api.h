@@ -42,7 +42,10 @@ namespace{
     public:
         Handle m_Session;
         
-        FatalErr(Handle h){ m_Session = h; }
+        FatalErr(Handle h):
+            m_Session(h)
+        {
+        }
         Result Throw(err::CTR::FatalErrInfo& info);
     };
 

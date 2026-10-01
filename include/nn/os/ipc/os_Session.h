@@ -8,9 +8,13 @@ namespace nn {
 namespace os {
 namespace ipc {
 
-class Session : public WaitObject{
+class Session : public WaitObject
+{
 public:
-    Session(){};
+    Session()
+    {
+    }
+
     ~Session(){ this->Finalize(); }
     void Close(){ this->WaitObject::Close(); }
 };

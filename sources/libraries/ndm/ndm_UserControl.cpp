@@ -11,7 +11,7 @@
 
 namespace{
     static s32 s_InitializedCount = 0;
-    static nn::os::CriticalSection s_Cs = nn::WithInitialize();
+    static nn::os::CriticalSection s_cs = nn::WithInitialize();
 }
 
 namespace nn{
@@ -22,7 +22,7 @@ using namespace CTR::detail;
 
 Result Initialize()
 {
-    nn::os::CriticalSection::ScopedLock locker(s_Cs);
+    nn::os::CriticalSection::ScopedLock locker(s_cs);
     Result result;
 
     if (s_InitializedCount == 0)
@@ -35,6 +35,26 @@ Result Initialize()
     return ResultSuccess();
 }
 
+Result Finalize()
+{
+    nn::os::CriticalSection::ScopedLock locker(s_cs);
+    Result result;
+
+    if (s_InitializedCount == 0)
+    {
+        return ResultNotInitialized();
+    }
+    else if (s_InitializedCount == 1)
+    {
+        result = nn::svc::CloseHandle(Interface::s_Session);
+        NN_UTIL_RETURN_IF_FAILED(result);
+
+        CTR::detail::Interface::s_Session = Handle();
+    }
+    --s_InitializedCount;
+    return ResultSuccess();
+}
+
 Result SuspendDaemons(bit32 mask)
 {
     return Interface::SuspendDaemons(mask);
@@ -43,6 +63,15 @@ Result SuspendDaemons(bit32 mask)
 Result ResumeDaemons(bit32 mask)
 {
     return Interface::ResumeDaemons(mask);
+}
+
+Result Suspend(DaemonName name)
+{
+    if (name < 0 || name >= NUM_OF_DAEMONS)
+    {
+        return ResultInvalidEnumValue();
+    }
+    return SuspendDaemons(1 << name);
 }
 
 Result Resume(DaemonName name)

@@ -40,7 +40,7 @@ public:
 };
 
 inline Result HandleManager::AttachTransferMemoryBlockHandle(TransferMemoryBlock* pMemBlock, Handle handle, size_t size,
-    bit32 otherPermission = os::MEMORY_PERMISSION_NONE, bit32 myPermission = os::MEMORY_PERMISSION_READ_WRITE)
+    bit32 otherPermission, bit32 myPermission)
 {
     return pMemBlock->AttachAndMap(handle, size, otherPermission, myPermission);
 }

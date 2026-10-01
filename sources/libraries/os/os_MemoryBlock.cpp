@@ -92,7 +92,7 @@ extern "C"
 
 void nnosMemoryBlockAllocate(nnosMemoryBlock* p, size_t size)
 {
-    NN_TASSERT_(os::detail::IsMemoryBlockEnabled());
+    NN_TASSERT_(nn::os::detail::IsMemoryBlockEnabled());
     new (p) nn::os::MemoryBlock(size);
 }
 

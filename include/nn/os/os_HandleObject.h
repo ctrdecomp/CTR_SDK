@@ -48,7 +48,7 @@ public:
 
 inline void HandleObject::SetHandle(nn::Handle handle)
 {
-    NN_TASSERTMSG_(!IsValid(), "current handle(=%08X) is active\n", mHandle.GetPrintableBits());
+    NN_TASSERTMSG_(!IsValid(), "current handle(=%08X) is active\n", m_Handle.GetPrintableBits());
     NN_TASSERT_(handle.IsValid());
     m_Handle = handle;
 }

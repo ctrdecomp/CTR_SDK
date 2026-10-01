@@ -64,8 +64,8 @@ WaveBuffer* SearchPlayingBuffer(ushort currentBufferId, ushort lastBufferId, Wav
 
 void VoiceImpl::AppendWaveBuffer(WaveBuffer* pBuffer)
 {
-    NN_TASSERT_(buffer->status == WaveBuffer::STATUS_FREE);
-    NN_NULL_TASSERT_(buffer->bufferAddress);
+    NN_TASSERT_(pBuffer->status == WaveBuffer::STATUS_FREE);
+    NN_NULL_TASSERT_(pBuffer->bufferAddress);
     NN_TASSERTMSG_(reinterpret_cast<uptr>(pBuffer->bufferAddress) >= nn::os::GetDeviceMemoryAddress() && reinterpret_cast<uptr>(pBuffer->bufferAddress) < nn::os::GetDeviceMemoryAddress() + nn::os::GetDeviceMemorySize(), "pBuffer->bufferAddress must be in device memory area.");
 
     if (pBuffer->sampleLength == 0)

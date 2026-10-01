@@ -63,7 +63,7 @@ void Vertex::DisableAttr_(const bit32 bind_reg){
         }
     }
 
-    NN_ASSERT_(mIsEnableReg[bind_reg] == false);
+    NN_ASSERT_(m_IsEnableReg[bind_reg] == false);
 }
 
 void Vertex::EnableAttrAsArray(const BindSymbolVSInput& symbol, const uptr physical_addr, const PicaDataVertexAttrType type )

@@ -69,7 +69,7 @@ public:
 
     bit32* MakeOutAttrCommand(bit32* command) const
     {
-        NN_ASSERT_((!this->IsEnableGeoShader()) || (mDrawMode == PICA_DATA_DRAW_GEOMETRY_PRIMITIVE));
+        NN_ASSERT_((!this->IsEnableGeoShader()) || (m_DrawMode == PICA_DATA_DRAW_GEOMETRY_PRIMITIVE));
 
         bit32 value_229 = 0x0100;
         if (m_DrawMode != PICA_DATA_DRAW_TRIANGLES)

@@ -15,9 +15,9 @@ void nnnstdMemCpy (void* pOut, const void* pIn, u32 size);
 
 #ifdef __cplusplus
 
-namespace nn { 
-namespace nstd {
-namespace ARMv6{
+namespace nn    { 
+namespace nstd  {
+namespace ARMv6 {
     inline void MemCpy(void *dstp, const void *srcp, size_t size)
     {
         nnnstdMemCpy(dstp, srcp, size);

@@ -228,7 +228,7 @@ void VoiceManager::InsertVoiceToPriorityList(Voice* pVoice, s32 priority)
     }
     else
     {
-        NN_TASSERT_(mMostPriorVoice == NULL && mMostInferiorVoice == NULL );
+        NN_TASSERT_(m_MostPriorVoice == NULL && m_MostInferiorVoice == NULL );
 
         this->SetMostPriorVoice(pVoice);
         this->SetMostInferiorVoice(pVoice);
@@ -276,7 +276,7 @@ void VoiceManager::SetPriority(Voice* pVoice, s32 priority)
     this->InsertVoiceToPriorityList(pVoice,priority);
 }
 
-inline void VoiceManager::SetVoiceDropMode(VoiceDropMode mode)
+void VoiceManager::SetVoiceDropMode(VoiceDropMode mode)
 {
     NN_TASSERT_(mode == VOICE_DROP_MODE_DEFAULT || mode == VOICE_DROP_MODE_REAL_TIME);
     m_VoiceDropMode = mode;

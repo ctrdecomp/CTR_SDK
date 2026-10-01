@@ -51,8 +51,8 @@ Note that some names (especially for inlined, templated functions) are just plai
 * **fs** - File Server I/O
 * **fslow** - Device file I/O backend
 * **gr** - Geometry
-* **gx** - GX manager for GL
-* **gxlow** - GX backend manager for GL
+* **gx** - Graphics
+* **gxlow** - Graphics backend manager for GL
 * **hardware** - Register access (ARMv11)
 * **hid** - Human Interactable Device
 * **hidlow** - Human Interactable Device backend
@@ -61,17 +61,17 @@ Note that some names (especially for inlined, templated functions) are just plai
 * **ir** - IR sensor
 * **math** - Maths utilities (vector, matrix, etc.)
 * **mic** - Microphone
-* **ndm** - Wifi manager
+* **ndm** - Network Daemon Manager (WiFi manager)
 * **nstd** - NintendoStandard (std print, Memory moving / copying)
 * **os** - Operating System (Initializing, OS things)
 * **pl** - Pedometer helper
-* **ptm** - Pedometer RTC Manager?
+* **ptm** - Playtime manager
 * **pxi** - PXI manager (contains the common exh.bin port names)
-* **ro** - Relocation Objects (CRO0, CRS, & CRR initializer)
+* **ro** - Relocation objects (Regisration lists,)
 * **snd** - Sound
 * **srv** - Service (manages the `port service` exheader system)
-* **ssl** - HTTP helper
-* **svc** - Device svc
+* **ssl** - Secure Sockets Layer
+* **svc** - SVC (IPC Communicator)
 * **ubl** - Black list library
 * **ulcd** - ULCD Left/Right stereo manager
 * **util** - Utilities (Since this uses C++03 these contain some pass arrounds)
@@ -103,6 +103,7 @@ CTR_SDK can be configured with several compile-time defines:
 * `NN_BUILD_DEBUG`: Enables assertions. (Note: Debug builds use ARM flags `-O0` `-Otime`)
 * `NN_BUILD_DEVELOPMENT`: Enables assertions but builds optimized. (Note: Development builds use ARM flags `-O3` `-Otime`)
 * `NN_BUILD_RELEASE`: Disables assertions. (Note: Release builds use ARM flags `-O3` `-Otime`)
+* `NN_BUILD_ENABLE_HOSTIO`: Allows the use of the `hostio` library.
 * `NN_BUILD_ENABLE_RO`: Enables quirks with the `RO` service. Such as: no vfe and RTTI.
 * `NN_PLATFORM_HAS_MMU`: If the device uses `nn::srv::Initialize` in its `nninitSystem` function enable this.
 * `NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK`: Disables Printing for SDK.

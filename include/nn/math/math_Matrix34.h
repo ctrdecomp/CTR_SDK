@@ -3,7 +3,7 @@
 #include <nn/math/math_Triangular.h>
 #include <nn/math/math_Quaternion.h>
 #include <nn/math/math_Matrix33.h>
-#include <nn/math/math_Vec4.h>
+#include <nn/math/math_Vector4.h>
 
 #pragma push
 
@@ -424,7 +424,7 @@ inline MTX34* MTX34MultTranslateC(MTX34* pOut, const MTX34* pM, const VEC3* pT)
     }
 
     VEC3 tmp;
-    VEC3Transform(&tmp, pM, pT);
+    VEC3TransformC(&tmp, pM, pT);
 
     pOut->f._03 = tmp.x;
     pOut->f._13 = tmp.y;

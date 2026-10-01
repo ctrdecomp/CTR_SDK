@@ -185,7 +185,7 @@ namespace detail{
 
 Gpu* GetGpuIpc()
 {
-    NN_TASSERT_(sGpuSession != INVALID_HANDLE_VALUE);
+    NN_TASSERT_(s_GpuSession != INVALID_HANDLE_VALUE);
     return &s_GpuIpc;
 }
 

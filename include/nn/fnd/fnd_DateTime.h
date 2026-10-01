@@ -53,7 +53,8 @@ public:
     {
     }
 
-    DateTime FromParamaters(s32,s32,s32,s32,s32,s32,s32);
+    static DateTime FromParamaters(s32 year, s32 month, s32 day, s32 hour=0, s32 minute=0, s32 second = 0, s32 millisecond = 0);
+    DateTimeParameters GetParameters() const;
 
     s32 GetYear() const;
     s32 GetMonth() const;

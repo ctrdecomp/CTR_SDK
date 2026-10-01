@@ -165,7 +165,7 @@ void FxDelay::UpdateBuffer(uptr data)
     }
 
     NN_NULL_ASSERT_(data);
-    NN_ASSERT_(mDelayFrames != 0);
+    NN_ASSERT_(m_DelayFrames != 0);
 
     AuxBusData* auxData = reinterpret_cast<AuxBusData*>(data);
     s32* input[CHANNEL_INDEX_NUM];

@@ -22,6 +22,24 @@
 #define NN_UTIL_RETURN_IF_FAILED_4(result, c1, c2, c3, c4) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,c4,)
 #define NN_UTIL_RETURN_IF_FAILED_5(result, c1, c2, c3, c4, c5) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,c4,c5)
 
+#ifdef NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK
+
+#define NN_UTIL_BEGIN_CHECK_RESULT(result) \
+    { \
+        ::nn::Result nn_util_result_try_result = (result); \
+        if (nn_util_result_try_result.IsFailure()) \
+        {
+
+#define NN_UTIL_ADD_RESULT_MESSAGE(expected, ...)
+
+#define NN_UTIL_END_CHECK_RESULT \
+            ::nnResultTFailureHandler(nn_util_result_try_result, "", 0, ""); \
+            ::nn::dbg::Break(::nn::dbg::BREAK_REASON_PANIC); \
+        } \
+    }
+
+#else
+
 #define NN_UTIL_BEGIN_CHECK_RESULT(result) \
     { \
         ::nn::Result nn_util_result_try_result = (result); \
@@ -42,6 +60,8 @@
             ::nn::dbg::Break(::nn::dbg::BREAK_REASON_PANIC); \
         } \
     }
+
+#endif
 
 #define NN_UTIL_PANIC_IF_FAILED(result)                     \
     do {                                                    \

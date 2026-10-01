@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <nn/assert.h>
-#include <nn/math/math_Vec3.h>
+#include <nn/math/math_Vector3.h>
 
 namespace nn{
 namespace math{

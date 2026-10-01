@@ -21,7 +21,7 @@ namespace{
 
 void InitializeConfig(Config* pConfig)
 {
-    NN_POINTER_ASSERT(pConfig);
+    NN_POINTER_ASSERT_(pConfig);
     pConfig->errorType = ERROR_TYPE_ERROR_CODE;
     pConfig->errorCode = ERROR_TYPE_ERROR_CODE;
     pConfig->upperScreenFlag = UPPER_SCREEN_NORMAL;

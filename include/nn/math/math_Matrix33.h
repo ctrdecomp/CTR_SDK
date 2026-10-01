@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nn/math/math_Vec3.h>
+#include <nn/math/math_Vector3.h>
 
 #pragma push
 #pragma Otime

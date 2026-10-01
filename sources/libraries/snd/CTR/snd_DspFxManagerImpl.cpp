@@ -8,7 +8,8 @@
 namespace nn {
 namespace snd {
 namespace CTR {
-namespace{
+namespace
+{
     enum{
         CTRL_ENABLE     =   1,
         CTRL_ADDRESSES  =   2,
@@ -16,8 +17,10 @@ namespace{
     };
 }
 
-void DspFxManagerImpl::Initialize() {
-    for(int i = 0; i < AUX_BUS_NUM; i++){
+void DspFxManagerImpl::Initialize() 
+{
+    for(int i = 0; i < AUX_BUS_NUM; i++)
+    {
         {
             DspFxDelayParams params;
             params.enable = false;
@@ -43,9 +46,9 @@ void DspFxManagerImpl::ForceUpdateParams()
     for(int i = 0; i < AUX_BUS_NUM; i++)
     {
         AuxBusId busId = (AuxBusId)i;
-        mDspFxDelayParams[busId].ctrl= 0xffff;
+        m_DspFxDelayParams[busId].ctrl= 0xffff;
         Dspsnd::GetInstance().SetDspDelayEffect(busId, &this->m_DspFxDelayParams[busId]);
-        mDspFxReverbParams[busId].ctrl = 0xffff;
+        m_DspFxReverbParams[busId].ctrl = 0xffff;
         Dspsnd::GetInstance().SetDspReverbEffect(busId, &this->m_DspFxReverbParams[busId]);
     }
 }
@@ -60,7 +63,7 @@ bool DspFxManagerImpl::SetDspDelayEffect(AuxBusId id, DspFxDelayParams* param)
 {
     if((param->ctrl & CTRL_ENABLE) != 0)
     {
-        mDspFxDelayParams[id].enable = param->enable;
+        m_DspFxDelayParams[id].enable = param->enable;
     }
     if((param->ctrl & CTRL_COEFS) != 0)
     {

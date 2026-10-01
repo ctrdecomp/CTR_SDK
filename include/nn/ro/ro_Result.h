@@ -5,7 +5,8 @@
 namespace nn{
 namespace ro{
 
-enum Description{
+enum Description
+{
     DESCRIPTION_ATEXIT_NOT_FOUND = 2,
     DESCRIPTION_CONTROL_OBJECT_NOT_FOUND = 4,
     DESCRIPTION_EIT_NODE_NOT_FOUND = 5,

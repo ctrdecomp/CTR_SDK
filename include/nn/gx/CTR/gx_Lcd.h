@@ -1,7 +1,7 @@
 #pragma once
 
-#include "nn/types.h"
-#include "nn/assert.h"
+#include <nn/types.h>
+#include <nn/assert.h>
 
 #ifdef  __cplusplus
 extern "C" {

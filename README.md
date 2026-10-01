@@ -20,6 +20,8 @@ Note that some names (especially for inlined, templated functions) are just plai
 
 *    |____ **sources/libraries** - Module source code.
 
+*    |____ **template** - Project template.
+
 ## Addins
 
 * **IS** - Intelligent Systems HostIO PC <---> CTR communications
@@ -57,6 +59,7 @@ Note that some names (especially for inlined, templated functions) are just plai
 * **hid** - Human Interactable Device
 * **hidlow** - Human Interactable Device backend
 * **hio** - HostIO (Communication with PCs)
+* **http** - Hypertext Transfer Protocol for CTR (WiFi / Network)
 * **init** - crt0 Initializers
 * **ir** - IR sensor
 * **math** - Maths utilities (vector, matrix, etc.)

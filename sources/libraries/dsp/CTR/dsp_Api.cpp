@@ -14,9 +14,9 @@ extern const u8 DSPSND_BEGIN[]={0}; // place the holder
 
 const int CALLBACK_NUM = 8;
 
-namespace nn{
-namespace dsp{
-namespace CTR{
+namespace nn  {
+namespace dsp {
+namespace CTR {
 namespace{
     DSP* s_pDspSession;
     u8 s_DspSessionObject[sizeof(nn::dsp::CTR::DSP)];

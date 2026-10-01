@@ -32,7 +32,7 @@ public:
     static Result GetChangeStateEventHandle(Handle* pEventHandle);
 };
 
-}
-}
-}
-}
+} // namespace detail
+} // namespace CTR
+} // namespace cec
+} // namespace nn

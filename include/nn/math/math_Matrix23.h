@@ -223,7 +223,7 @@ inline MTX23* MTX23Mult(MTX23* pOut, const MTX23* __restrict p1, const MTX23* __
 
 inline MTX23* MTX22ToMTX23(MTX23* pOut, const MTX22& m) { return MTX22ToMTX23(pOut, &m); }
 
-inline MTX23*  MTX22ToMTX23(MTX23* pOut, const MTX22* pM)
+inline MTX23* MTX22ToMTX23(MTX23* pOut, const MTX22* pM)
 {
     NN_NULL_ASSERT_(pOut);
     NN_NULL_ASSERT_(pM);

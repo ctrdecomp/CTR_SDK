@@ -70,7 +70,7 @@
         { \
             if (!(result)) \
             { \
-                NN_PANIC("Failed condition."); \
+                NN_PANIC_("Failed condition."); \
             } \
         } while(0)
 

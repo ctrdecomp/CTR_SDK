@@ -20,6 +20,7 @@ public:
     CecControl();
     ~CecControl();
 
+    static Result  Initialize();
     static Result  Initialize(nn::fnd::IAllocator& cecAllocFunc);
     static Result  Finalize();
 
@@ -30,10 +31,11 @@ public:
     static cec::CTR::TitleId MakeCecTitleId(bit32 id, bit8 variation = 0x0);
 
 private:
-    static bool                s_Initialized;
-    static bool                s_NdmSuspended;
-    static bool                s_EnterExclusiveState;
-    static nn::os::CriticalSection    m_Cs;
+    static bool s_Initialized;
+    static bool s_NdmInitialized;
+    static bool s_NdmSuspended;
+    static bool s_EnterExclusiveState;
+    static nn::os::CriticalSection m_Cs;
 
 };
 

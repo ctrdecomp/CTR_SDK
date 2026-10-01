@@ -51,7 +51,7 @@ public:
     }
 
     explicit MTX22(const f32* p){ MTX22Copy(this, reinterpret_cast<const MTX22*>(p)); }
-    // explicit MTX22(const MTX23& rhs){ MTX23ToMTX22(this, &rhs); }
+    //explicit MTX22(const MTX23& rhs){ MTX23ToMTX22(this, &rhs); }
     MTX22(f32 x00, f32 x01, f32 x10, f32 x11)
     {
         f._00 = x00; f._01 = x01;

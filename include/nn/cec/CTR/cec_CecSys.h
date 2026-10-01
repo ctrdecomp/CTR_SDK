@@ -13,7 +13,9 @@ class CecSys
 {
 public:
     static Handle s_Session;
-    CecSys() {}
+    CecSys()
+    {
+    }
 
 public:
     static Result Open(u32 cecTitleId, u32 dataType, u32 option, size_t* filesize);
@@ -30,7 +32,7 @@ public:
     static Result GetChangeStateEventHandle(Handle* pEventHandle);
 };
 
-}
-}
-}
-}
+} // namespace detail
+} // namespace CTR
+} // namespace cec
+} // namespace nn

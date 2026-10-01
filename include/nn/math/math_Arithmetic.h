@@ -75,5 +75,40 @@ inline f32 U16ToF32(u16 x)
     return f32(x);
 }
 
+inline f32 HermiteC_FAST(f32 v0, f32 t0, f32 v1, f32 t1, f32 p, f32 d)
+{
+
+    f32 s = p / d;
+    f32 s_1 = s - 1;
+    f32 tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, ret;
+    
+    tmp1 = (v0 - v1);
+    tmp2 = (2 * s - 3);
+    tmp3 = s * s;
+    tmp4 = p * s_1;
+    tmp5 = s_1 * t0;
+    tmp6 = s * t1;
+    
+    ret = v0 + tmp1 * tmp2 * tmp3 + tmp4 * (tmp5 + tmp6);
+    return ret;
+}
+
+inline f32 HermiteC(f32 v0, f32 t0, f32 v1, f32 t1, f32 p, f32 d)
+{
+    f32 inv_d = 1 / d;
+    f32 s = p * inv_d;
+    f32 s_1 = s - 1;
+    return v0 + (v0 - v1) * (2 * s - 3) * s * s + p * s_1 * (s_1 * t0 + s * t1);
+}
+
+inline u32 Hermite(f32 v0, f32 t0, f32 v1, f32 t1, f32 p, f32 d)
+{
+    #ifdef NN_MATH_BUILD_FAST
+        return HermiteC(v0, t0, v1, t1, p, d);
+    #else
+        return HermiteC_FAST(v0, t0, v1, t1, p, d);        
+    #endif
+}
+
 }
 }

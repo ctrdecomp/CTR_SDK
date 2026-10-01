@@ -50,7 +50,6 @@ asm void CopyMtx44WithHeader(f32* /* dst */, const nn::math::MTX44* /* src */, u
     VSTR.F32    s15,[r0,#52]
     BX      lr
 }
-
-} // namespace CTR
-} // namespace gr
-} // namespace nn
+}
+}
+}

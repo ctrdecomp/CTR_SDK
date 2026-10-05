@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nn/os/os_SimpleLock.h>
+#include <nn/os/os_WaitableCounter.h>
 
 namespace nn{
 namespace os{

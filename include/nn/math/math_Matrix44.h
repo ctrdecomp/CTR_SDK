@@ -752,6 +752,7 @@ inline u32 MTX44Inverse(MTX44* pOut, const MTX44* p)
         return ARMv6::MTX44InverseC_FAST(pOut,p);
     #endif
 }
+inline u32 MTX44Inverse(MTX44* pOut, const MTX44& m) { return MTX44Inverse(pOut, &m); }
 
 inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2)
 {

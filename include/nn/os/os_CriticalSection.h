@@ -1,8 +1,9 @@
 #pragma once
 
 #include <nn/WithInitialize.h>
-#include <nn/os/os_SimpleLock.h>
+#include <nn/os/os_WaitableCounter.h>
 #include <nn/os/os_Types.h>
+#include <nn/util/detail/util_ScopedLockImpl.h>
 #include <nn/hardware/hardware_RegAccess.h>
 
 namespace nn { 

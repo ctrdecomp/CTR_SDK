@@ -56,8 +56,7 @@ private:
 
     // Use the top to call this!
     
-    Result TryInitializeAndStartImpl(const TypeInfo& typeInfo,nn::os::ThreadFunc f,const void *p,uptr stackBottom,s32 priority, s32 coreNo,bool isAutoStack = false);
-    Result TryInitializeAndStartImpl(const TypeInfo& typeInfo,nn::os::ThreadFunc f,const void *p,uptr stackBottom,s32 priority, s32 coreNo,uptr autoStackBuffer);
+    Result TryInitializeAndStartImpl(const TypeInfo& typeInfo, ThreadFunc f, const void* p, uptr stackBottom, s32 priority, s32 coreNo, bool isAutoStack);
     Result TryInitializeAndStartImplUsingAutoStack(const TypeInfo& typeInfo, ThreadFunc f, const void* p, size_t stackSize, s32 priority, s32 coreNo);
     uptr PreStartUsingAutoStack(size_t stackSize);
     Result PostStartUsingAutoStack(Result result, uptr stackBottom);
@@ -151,7 +150,8 @@ struct Thread::FunctionInfo
     void (*invoke)(ThreadFunc f, const void* p);
     void (*f)(uptr);
     void* p;
-    void* pAutoStackBuffer;
+    void* pStackBottom;
+    bool  isAutoStack;
 
     void Invoke()
     {
@@ -344,7 +344,8 @@ inline nn::Result Thread::TryStart(void (*f)(T), U param, Stack& stack, s32 prio
     TypeInfo info;
     info.SetData<T, U>();
     Result result = TryInitializeAndStartImpl(info, reinterpret_cast<ThreadFunc>(f), &param, stack.GetStackBottom(), priority, coreNo, false);
-    if (result.GetSummary() == Result::SUMMARY_OUT_OF_RESOURCE){
+    if (result.GetSummary() == Result::SUMMARY_OUT_OF_RESOURCE)
+    {
         return result;
     }
     NN_OS_ERROR_IF_FAILED(result);

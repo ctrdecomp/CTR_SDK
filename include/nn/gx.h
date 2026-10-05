@@ -6,7 +6,7 @@
 #include <nn/gx/CTR/gx_CTRRaw.h>
 #include <nn/gx/CTR/gx_Vram.h>
 #include <nn/gx/CTR/gx_Lcd.h>
-    
+
 #ifdef  __cplusplus
 
 using namespace nn::gx::CTR;

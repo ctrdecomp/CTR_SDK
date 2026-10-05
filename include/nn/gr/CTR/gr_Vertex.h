@@ -82,6 +82,17 @@ public:
         return command;
     }
 
+    bit32* MakeEnableAttrCommand(bit32* command) const
+    {
+        if (m_CmdCacheVertexNum == 0)
+        { 
+            m_CmdCacheVertexNum = MakeEnableAttrCommand_( m_CmdCacheVertex ) - m_CmdCacheVertex;
+        }
+
+        std::memcpy(command, m_CmdCacheVertex, m_CmdCacheVertexNum * sizeof(bit32));
+        return command + m_CmdCacheVertexNum;
+    }
+
     void DisableAll()
     {
         m_CmdCacheVertexNum = 0;
@@ -98,10 +109,12 @@ public:
             m_AttrConst[index].DisableAll();
         }
     }
+    bit32* MakeDrawCommand(bit32* command, const IndexStream& index_stream) const;
     void EnableInterleavedArray(const nn::gr::CTR::Vertex::InterleaveInfo& interleave_info, const uptr physical_addr);
     void EnableAttrAsArray(const nn::gr::CTR::BindSymbolVSInput& symbol, const uptr physical_addr, const PicaDataVertexAttrType type);
 private:
     void DisableAttr_(const bit32 bind_reg);
+    bit32* MakeEnableAttrCommand_(bit32* command) const;
 public:
     explicit Vertex()
     {

@@ -20,7 +20,11 @@ class MTX44;
 
 inline MTX44* MTX44Copy(MTX44* pOut, const MTX44* m);
 inline MTX44* MTX44Copy(MTX44* pOut, const MTX44& m) { return MTX44Copy(pOut, &m); }
+
 inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2);
+inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, f32 f);
+
+inline MTX44* MTX44Mult(MTX44* pOut, const MTX44& m1, f32 f){ return MTX44Mult(pOut, &m1, f); }
 inline MTX44* MTX44Mult(MTX44* pOut, const MTX44& m1, const MTX44& m2) { return MTX44Mult(pOut, &m1, &m2); }
 
 class MTX44_
@@ -48,13 +52,15 @@ public:
     union
     {
         BaseData f;
-        struct
-        {
-            f32 _00, _01, _02, _03;
-            f32 _10, _11, _12, _13;
-            f32 _20, _21, _22, _23;
-            f32 _30, _31, _32, _33;
-        };
+        #if defined(NN_MATH_USE_ANONYMOUS)
+            struct
+            {
+                f32 _00, _01, _02, _03;
+                f32 _10, _11, _12, _13;
+                f32 _20, _21, _22, _23;
+                f32 _30, _31, _32, _33;
+            };
+        #endif
         f32 m[4][4];
         f32 a[16];
         VEC4_ v[4];
@@ -88,6 +94,7 @@ public:
     operator f32*() { return this->a; }
     operator const f32*() const { return this->a; }
     self_type& operator *= (const self_type& rhs) { return *MTX44Mult(this, this, &rhs); }
+    self_type& operator *= (f32 f) { return *MTX44Mult(this, this, f); }
 
     static const int ROW_COUNT = 4; //
     static const int COLUMN_COUNT = 4; //
@@ -122,7 +129,7 @@ namespace
     }
 }
 
-inline MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2)
+inline MTX44* MTX44MultC(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2)
 {
     NN_NULL_ASSERT_(pOut);
     NN_NULL_ASSERT_(p1);
@@ -160,6 +167,32 @@ inline MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, const MTX44*
     return pOut;
 }
 MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __restrict p2);
+
+inline MTX44* MTX44MultC(MTX44* pOut, const MTX44* p, f32 f)
+{
+    pOut->f._00 = p->f._00 * f;
+    pOut->f._01 = p->f._01 * f;
+    pOut->f._02 = p->f._02 * f;
+    pOut->f._03 = p->f._03 * f;
+
+    pOut->f._10 = p->f._10 * f;
+    pOut->f._11 = p->f._11 * f;
+    pOut->f._12 = p->f._12 * f;
+    pOut->f._13 = p->f._13 * f;
+
+    pOut->f._20 = p->f._20 * f;
+    pOut->f._21 = p->f._21 * f;
+    pOut->f._22 = p->f._22 * f;
+    pOut->f._23 = p->f._23 * f;
+
+    pOut->f._30 = p->f._30 * f;
+    pOut->f._31 = p->f._31 * f;
+    pOut->f._32 = p->f._32 * f;
+    pOut->f._33 = p->f._33 * f;
+
+    return pOut;
+}
+MTX44* MTX44MultAsm(MTX44* pOut, const MTX44* __restrict p1, f32 f);
 
 inline MTX44* MTX44MultScaleC(MTX44* pOut, const MTX44* pM, const VEC3* pS)
 {
@@ -209,7 +242,7 @@ inline MTX44* MTX44MultTranslateC(MTX44* pOut, const VEC3* pT, const MTX44* pM)
     
     return pOut;
 }
-void MTX44MultTranslateAsm(MTX44 * pOut, VEC3 const* p1, MTX44 const* p2);
+MTX44* MTX44MultTranslateAsm(MTX44* pOut, const VEC3* v, const MTX44* p1);
 
 inline u32 MTX44InverseC(MTX44* pOut, const MTX44* p)
 {
@@ -725,7 +758,16 @@ inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, const MTX44* __
     #ifdef NN_MATH_BUILD_FAST
         return ARMv6:MTX44MultC(pOut, p1, p2);
     #else
-        ARMv6::MTX44MultAsm(pOut, p1, p2);
+        return ARMv6::MTX44MultAsm(pOut, p1, p2);
+    #endif
+}
+
+inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, f32 f)
+{
+    #ifdef NN_MATH_BUILD_FAST
+        return ARMv6:MTX44MultC(pOut, p1, f);
+    #else
+        ARMv6::MTX44MultAsm(pOut, p1, f);
     #endif
 }
 

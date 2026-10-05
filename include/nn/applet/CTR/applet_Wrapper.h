@@ -35,7 +35,7 @@ namespace CTR {
     
     bool IsEnableSleep();
 
-    void SetCommandCallback(s32 callback, uptr arg);
+    void SetCommandCallback(AppletCommandCallback callback, uptr arg);
 
     Result CaptureScreen(AppletId id);
 

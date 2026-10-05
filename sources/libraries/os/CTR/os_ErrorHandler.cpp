@@ -27,8 +27,7 @@ void HandleInternalError(Result result, const char* fileName, int lineNo)
     {
         if(level == Result::LEVEL_FATAL) err::CTR::ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON);
 
-        nndbgBreakWithResultTMessage_(NN_DBG_BREAK_REASON_PANIC,(nnResult)result, fileName, lineNo, "Unexpected Result Failure.");
-    
+        nnResultFailureHandler((nnResult)result, fileName, lineNo, "Unexpected Result Failure.");
     }
     else if((level != Result::LEVEL_STATUS) && (level != Result::LEVEL_INFO)) err::CTR::ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON);
 }

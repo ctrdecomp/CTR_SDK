@@ -29,8 +29,11 @@ inline ThreadLocalRegion* GetThreadLocalRegion()
     return p;
 }
 
+}
 
-
+namespace detail
+{
+    CTR::ThreadLocalRegion* GetMainThreadThreadLocalRegion();
 }
 }
 }

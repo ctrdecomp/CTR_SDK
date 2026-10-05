@@ -124,6 +124,10 @@ enum PicaDataGasShadingDensitySrc
       ((shadingDensitySrc) ? 1 : 0) << 3 | \
       ((zFlip) ? 1 : 0) << 16)
 
+#define PICA_CMD_DATA_SCISSOR_XY( x, y, colorBufferWidth, colorBufferHeight) \
+    ( ((x) < 0) ? 0 : ( (x >= colorBufferWidth)  ? (colorBufferWidth - 1)  : (x) ) ) | \
+    ( ((y) < 0) ? 0 : ( (y >= colorBufferHeight) ? (colorBufferHeight - 1) : (y) ) << 16 )
+
 #define PICA_CMD_SET_GAS_FOG_MODE(fogMode, shadingDensitySrc, zFlip) \
     PICA_CMD_DATA_GAS_FOG_MODE(fogMode, shadingDensitySrc, zFlip), \
     PICA_CMD_HEADER_SINGLE_BE(PICA_REG_GAS_FOG_MODE, 0x5)

@@ -39,12 +39,14 @@ public:
 
     union
     {
-        struct
-        {
-            f32 _00, _01, _02, _03;
-            f32 _10, _11, _12, _13;
-            f32 _20, _21, _22, _23;
-        };
+        #if defined(NN_MATH_USE_ANONYMOUS)
+            struct
+            {
+                f32 _00, _01, _02, _03;
+                f32 _10, _11, _12, _13;
+                f32 _20, _21, _22, _23;
+            };
+        #endif
         BaseData f;
         float m[3][4];
         f32 a[12];

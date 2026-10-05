@@ -1,13 +1,13 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include <GLES2/gl2CTR.h>
 #include <GLES2/gl2extern.h>
+#include <GLES2/gl2CTR.h>
 #include <nn/gx/CTR/gx_CTR.h>
 #include <nn/gx/CTR/gx_CTRRaw.h>
+
 #include <nn/gxlow/CTR/gxlow_CTR.h>
 #include <nn/gx/CTR/gx_Vram.h>
-#include <nn/gxlow/CTR/gxlow_InterruptReceiver.h>
 
 #include <stdio.h>
 #include <stdlib.h>

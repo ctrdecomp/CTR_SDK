@@ -67,6 +67,11 @@ void SaveThreadLocalRegionAddress()
     s_pTlr = CTR::GetThreadLocalRegion();
 }
 
+CTR::ThreadLocalRegion* GetMainThreadThreadLocalRegion()
+{
+    return s_pTlr;
+}
+
 void InitializeThreadEnvrionment()
 {
     os::ThreadLocalStorage::ClearAllSlots();
@@ -112,9 +117,9 @@ void Thread::ThreadStart(uptr p)
     info.Destroy();
     OnThreadExit();
 
-    if(info.pAutoStackBuffer != NULL)
+    if(info.isAutoStack)
     {
-        CallDestructorAndExit(info.pAutoStackBuffer);
+        CallDestructorAndExit(info.pStackBottom);
     }
 
     nn::svc::ExitThread();
@@ -186,22 +191,17 @@ void Thread::SleepImpl(fnd::TimeSpan span)
     }
 }
 
-/* TryInitializeAndStartImpl, use this entry. */
 Result Thread::TryInitializeAndStartImpl(const TypeInfo& typeInfo,nn::os::ThreadFunc f,const void *p,uptr stackBottom,s32 priority, s32 coreNo,bool isAutoStack)
-{
-    return TryInitializeAndStartImpl(typeInfo,f,p,stackBottom,priority,coreNo,(isAutoStack ? stackBottom: NULL));
-}
-
-
-Result Thread::TryInitializeAndStartImpl(const TypeInfo& typeInfo,nn::os::ThreadFunc f,const void *p,uptr stackBottom,s32 priority, s32 coreNo,uptr autoStackBuffer)
 {
     uptr stack = stackBottom;
     
+    // The parameter passed to the handler is copied to the stack region.
     stack -= typeInfo.size;
     stack &= 0xfffffff8;
     void* obj = reinterpret_cast<void*>(stack);
     typeInfo.copy(p, obj);
-
+    
+    // Information passed to the thread is written to the stack region.
     stack -= sizeof(FunctionInfo);
     stack &= 0xfffffff8;
     FunctionInfo& info = *reinterpret_cast<FunctionInfo*>(stack);
@@ -209,10 +209,18 @@ Result Thread::TryInitializeAndStartImpl(const TypeInfo& typeInfo,nn::os::Thread
     info.invoke = typeInfo.invoke;
     info.f = f;
     info.p = obj;
-    info.pAutoStackBuffer = reinterpret_cast<void*>(autoStackBuffer);
-
+    info.isAutoStack = isAutoStack;
+    info.pStackBottom = reinterpret_cast<void*>(stackBottom);
+    
     Handle handle;
-    NN_UTIL_RETURN_IF_FAILED(nn::svc::CreateThread(&handle,ThreadStart,stack,stack,os::detail::ConvertLibraryToSvcPriority(priority),coreNo));
+    NN_UTIL_RETURN_IF_FAILED(
+        nn::svc::CreateThread(
+            &handle,
+            ThreadStart,
+            stack,
+            stack,
+            os::detail::ConvertLibraryToSvcPriority(priority),
+            coreNo));
 
     this->SetHandle(handle);
     this->m_CanFinalize = false;

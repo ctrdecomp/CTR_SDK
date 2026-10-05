@@ -385,7 +385,7 @@ void PrintResult(Result result)
     NN_LOG_("Description: (%4d) %s\n",result.GetDescription(), GetDescriptionString(result));
 }
 
-void PrintTResult(Result result)
+void TPrintResult(Result result)
 {
     NN_TLOG_("Result (%08x)\n", result.GetPrintableBits());
     NN_TLOG_("Level:       (%4d) %s\n",result.GetLevel(), GetLevelString(result));

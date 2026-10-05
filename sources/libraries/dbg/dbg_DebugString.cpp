@@ -32,6 +32,15 @@ namespace detail{
         PutString(text, strlen(text));
     }
 
+    void Printf(const char* fmt, ...)
+    {
+        va_list vlist;
+
+        va_start(vlist, fmt);
+        nn::dbg::detail::VPrintf(fmt, vlist);
+        va_end(vlist);
+    }
+
     void TVPrintf(const char* fmt, ::std::va_list arg)
     {
         char buf[NN_DBG_TPRINTF_BUFFER_LENGTH];
@@ -67,6 +76,15 @@ namespace detail{
 }
 
 extern "C"{
+    void nndbgDetailPrintf(const char* fmt, ...)
+    {
+        va_list vlist;
+
+        va_start(vlist, fmt);
+        nn::dbg::detail::Printf(fmt, vlist);
+        va_end(vlist);
+    }
+
     void nndbgDetailTPrintf(const char* fmt, ...)
     {
         va_list vlist;

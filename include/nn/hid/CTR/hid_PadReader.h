@@ -38,7 +38,10 @@ public:
     {
         return m_StickClampMode;
     }
-    void SetStickClampMode(StickClampMode mode);
+    void SetStickClampMode(StickClampMode mode)
+    {
+        m_StickClampMode = mode;
+    }
     
     f32 NormalizeStick(short x);
     void NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y);

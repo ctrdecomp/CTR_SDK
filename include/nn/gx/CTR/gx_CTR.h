@@ -3,21 +3,22 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2CTR.h>
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined(WIN32) || defined(__VC32__)             /* Win32 */
+#if defined(WIN32) || defined(__VC32__)
 #   if defined (NNGX_EXPORTS)
 #       define NNGX_APICALL __declspec(dllexport)
 #   else
 #       define NNGX_APICALL __declspec(dllimport)
 #   endif
-#elif defined (__ARMCC_VERSION)                      /* ADS */
+#elif defined (__ARMCC_VERSION)
 #   define NNGX_APICALL
-#elif defined (__SYMBIAN32__) && defined (__GCC32__) /* Symbian GCC */
+#elif defined (__SYMBIAN32__) && defined (__GCC32__)
 #   define NNGX_APICALL __declspec(dllexport)
-#elif defined (__GNUC__)                             /* GCC dependencies (kludge) */
+#elif defined (__GNUC__)
 #   define NNGX_APICALL
 #endif
 
@@ -25,7 +26,6 @@ extern "C" {
 #   error Unsupported platform!
 #endif
 
-#define NNGX_APICALL
 #define NNGX_APIENTRY
 
 // Memory areas

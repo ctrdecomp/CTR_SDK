@@ -353,6 +353,11 @@ bool IsInfoAccess()
     return selfAppletAttr & 7 == 6;
 }
 
+bool IsToCallShutdownCallback()
+{
+    return isToCallShutdownCallback;
+}
+
 void SetHomeButtonState(CTR::HomeButtonState state)
 {
     homeButtonState = state;
@@ -1099,7 +1104,7 @@ Result InitializeConnect(AppletId appletId, AppletAttr appletAttr, s32 threadPri
         NN_ERR_THROW_FATAL(res);
         
         InitializeWrapper();
-        InitializeClientThread(threadPriority, handleForCont, handleForMesg);
+        InitializeClientThread(threadPriority);
     }
     DisconnectAndUnlock();
 

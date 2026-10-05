@@ -1,12 +1,12 @@
-// Filename: math_Matrix.cpp
+// Filename: math_Matrix34.cpp
 //
 // Project: Horizon
 
 #include <nn/math/math_Matrix34.h>
 
-namespace nn{ 
-namespace math{ 
-namespace ARMv6{
+namespace nn {
+namespace math {
+namespace ARMv6 {
 
 asm MTX34* MTX34CopyAsm(MTX34* , const MTX34*)
 {
@@ -422,6 +422,6 @@ asm MTX34* MTX34TransposeAsm(MTX34* , const MTX34*)
     BX          lr // Return
 }
 
-}
-}
-}
+} // namespace ARMv6
+} // namespace math
+} // namespace nn

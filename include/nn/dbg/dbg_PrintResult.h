@@ -11,7 +11,7 @@ void TPrintResult(Result result);
 }
 }
 
-#if defined(NN_BUILD_DEBUG) && (NN_BUILD_DEVELOPMENT)
+#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
 #define NN_DBG_DECLARE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(module) \
                 namespace nn { namespace module { namespace detail { \
                     void GetResultDescriptionStringImplKeeper(); \
@@ -24,8 +24,8 @@ void TPrintResult(Result result);
                 (::nn::module::detail::GetResultDescriptionStringImplKeeper())
 #define NN_DBG_USE_ADDITIONAL_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(module, option) \
                 (::nn::module::detail::GetResult##option##DescriptionStringImplKeeper())
-#define NN_DBG_PRINT_RESULT(exp)    ::nn::dbg::PrintResult(exp)
-#define NN_DBG_PRINT_TRESULT(exp)    ::nn::dbg::TPrintResult(exp)
+#define NN_DBG_PRINT_RESULT(exp)    ::nn::dbg::detail::PrintResult(exp)
+#define NN_DBG_PRINT_TRESULT(exp)    ::nn::dbg::detail::TPrintResult(exp)
 #define NN_DBG_CHECK_RESULT(exp)    NN_PANIC_IF_FAILED(exp)
 #else
 #define NN_DBG_DECLARE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(module)

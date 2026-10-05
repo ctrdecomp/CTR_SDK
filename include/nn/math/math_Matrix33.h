@@ -33,12 +33,14 @@ public:
 
     union
     {
-        struct
-        {
-            f32 _00, _01, _02;
-            f32 _10, _11, _12;
-            f32 _20, _21, _22;
-        };
+        #if defined(NN_MATH_USE_ANONYMOUS)
+            struct
+            {
+                f32 _00, _01, _02;
+                f32 _10, _11, _12;
+                f32 _20, _21, _22;
+            };
+        #endif
         BaseData f;
         f32 m[3][3];
         f32 a[9];
@@ -179,6 +181,131 @@ inline TMatrix* MTX33Mult(TMatrix* pOut, const TMatrix* p1, const TMatrix* p2)
 
 template<typename TMatrix>
 inline TMatrix* MTX33Mult(TMatrix* pOut, const TMatrix& m1, const TMatrix& m2) { return MTX33Mult(pOut, &m1, &m2); }
+
+template<typename TMatrix>
+inline asm TMatrix* MTX33MultAsm(TMatrix* pOut, const TMatrix* p1, const TMatrix* p2)
+{
+    MOV         r3,#__cpp(offsetof(TMatrix,f))
+    ADD         r1,r1,r3
+    ADD         r2,r2,r3
+    MOV         r3,#__cpp(TMatrix::COLUMN_COUNT)*4
+
+    CMP         r3,#3*4
+    BNE         LABELX
+
+    VPUSH       {d8}                  // Save registers
+    VLDMIA      r2!,{s10-s15}         // First and second line of matrix p2 to registers [S10-S15]
+
+    VLDR.F32    s16,[r1,#3*4*0+4*0]
+    VLDR.F32    s17,[r1,#3*4*1+4*0]
+
+    VMUL.F32    s0,s10,s16
+    VMUL.F32    s1,s11,s16
+    VMUL.F32    s2,s12,s16
+    VLDR.F32    s16,[r1,#3*4*2+4*0]
+
+    VMUL.F32    s3,s10,s17
+    VMUL.F32    s4,s11,s17
+    VMUL.F32    s5,s12,s17
+    VLDR.F32    s17,[r1,#3*4*0+4*1]
+
+    VMUL.F32    s6,s10,s16
+    VMUL.F32    s7,s11,s16
+    VMUL.F32    s8,s12,s16
+    VLDR.F32    s16,[r1,#3*4*1+4*1]
+
+    VLDMIA      r2,{s10-s12}         // Third line of matrix p2 to registers [S10-S12]
+    VMLA.F32    s0,s13,s17
+    VMLA.F32    s1,s14,s17
+    VMLA.F32    s2,s15,s17
+    VLDR.F32    s17,[r1,#3*4*2+4*1]
+                
+    VMLA.F32    s3,s13,s16
+    VMLA.F32    s4,s14,s16
+    VMLA.F32    s5,s15,s16
+    VLDR.F32    s16,[r1,#3*4*0+4*2]
+                
+    VMLA.F32    s6,s13,s17
+    VMLA.F32    s7,s14,s17
+    VMLA.F32    s8,s15,s17
+    VLDR.F32    s17,[r1,#3*4*1+4*2]
+
+    VMLA.F32    s0,s10,s16
+    VMLA.F32    s1,s11,s16
+    VMLA.F32    s2,s12,s16
+    VLDR.F32    s16,[r1,#3*4*2+4*2]
+                
+    VMLA.F32    s3,s10,s17
+    VMLA.F32    s4,s11,s17
+    VMLA.F32    s5,s12,s17
+                
+    VMLA.F32    s6,s10,s16
+    VMLA.F32    s7,s11,s16
+    VMLA.F32    s8,s12,s16
+
+    VPOP        {d8}
+
+    VSTMIA      r0,{s0-s8}
+    BX          lr
+
+LABELX
+    VPUSH       {d8-d13}
+    VLDMIA      r2,{s9-s11}
+    VLDMIA      r1,{s18-s20}
+    ADD         r1,r1,r3
+    ADD         r2,r2,r3
+    VLDMIA      r2,{s12-s14}
+    VLDMIA      r1,{s21-s23}
+    ADD         r1,r1,r3
+    ADD         r2,r2,r3
+    VLDMIA      r2,{s15-s17}
+    VLDMIA      r1,{s24-s26}
+
+    VMUL.F32    s0,s9,s18
+    VMUL.F32    s1,s10,s18
+    VMUL.F32    s2,s11,s18
+
+    VMUL.F32    s3,s9,s21
+    VMUL.F32    s4,s10,s21
+    VMUL.F32    s5,s11,s21
+
+    VMUL.F32    s6,s9,s24
+    VMUL.F32    s7,s10,s24
+    VMUL.F32    s8,s11,s24
+
+    VMLA.F32    s0,s12,s19
+    VMLA.F32    s1,s13,s19
+    VMLA.F32    s2,s14,s19
+                
+    VMLA.F32    s3,s12,s22
+    VMLA.F32    s4,s13,s22
+    VMLA.F32    s5,s14,s22
+                
+    VMLA.F32    s6,s12,s25
+    VMLA.F32    s7,s13,s25
+    VMLA.F32    s8,s14,s25
+
+    VMLA.F32    s0,s15,s20
+    VMLA.F32    s1,s16,s20
+    VMLA.F32    s2,s17,s20
+                
+    VMLA.F32    s3,s15,s23
+    VMLA.F32    s4,s16,s23
+    VMLA.F32    s5,s17,s23
+                
+    VMLA.F32    s6,s15,s26
+    VMLA.F32    s7,s16,s26
+    VMLA.F32    s8,s17,s26
+
+    VPOP        {d8-d13}
+
+    ADD         r1,r0,r3
+    ADD         r2,r1,r3
+    VSTMIA      r0,{s0-s2}
+    VSTMIA      r1,{s3-s5}
+    VSTMIA      r2,{s6-s8}
+    BX          lr
+}
 
 }
 }

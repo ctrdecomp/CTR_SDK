@@ -29,6 +29,34 @@ bit32* Combiner::MakeCombinerBufferCommand(bit32* command) const
     return command;
 }
 
+bit32* Combiner::Stage::MakeCommand(bit32* command) const
+{
+    NN_ASSERT_(PICA_REG_TEX_ENV0 <= headRegister &&
+                 PICA_REG_TEX_ENV5 >= headRegister);
+
+    *command++ = PICA_CMD_DATA_TEX_ENV_SRC(
+        rgb.source[0], rgb.source[1], rgb.source[2],
+        alpha.source[0], alpha.source[1], alpha.source[2]);
+
+    *command++ = PICA_CMD_HEADER_BURSTSEQ(
+        headRegister, 5);
+
+    *command++ = PICA_CMD_DATA_TEX_ENV_OPERAND(
+        rgb.operand[0], rgb.operand[1], rgb.operand[2],
+        alpha.operand[0], alpha.operand[1], alpha.operand[2]);
+
+    *command++ = PICA_CMD_DATA_TEX_ENV_COMBINE(
+        rgb.combine, alpha.combine);
+
+    *command++ = PICA_CMD_DATA_TEX_ENV_CONST(
+        constColorR, constColorG, constColorB, constColorA);
+
+    *command++ = PICA_CMD_DATA_TEX_ENV_SCALE(
+        rgb.scale, alpha.scale);
+
+    return command;
+}
+
 void Combiner::Stage::SetupPrimary()
 {
     rgb.combine = PICA_DATA_TEX_ENV_COMBINE_REPLACE;

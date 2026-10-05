@@ -6,6 +6,10 @@
 #include <new>
 #include <limits>
 
+#ifndef __cplusplus
+  #include <stdbool.h>
+#endif
+
 #ifndef NULL
 #define NULL (void*)0
 #endif
@@ -88,6 +92,10 @@ struct ProductInfo
 
 #define NN_INLINE inline
 #define NN_NOINLINE __attribute__((noinline))
+
+#if defined(NN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT)
+  #define NN_MATH_USE_ANONYMOUS
+#endif
 
 #ifdef NN_BUILD_DEBUG
 #define NN_FORCE_INLINE inline

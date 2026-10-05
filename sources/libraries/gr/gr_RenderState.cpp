@@ -396,6 +396,20 @@ RenderState::FBAccess::FBAccess(const RenderState& renderState_):
 
 /* RenderState::RenderState */
 
+RenderState::RenderState() :
+    blend(*this),
+    logicOp(*this),
+    shadowMap(*this),
+    alphaTest(*this),
+    stencilTest(*this),
+    colorMask(COLOR_MASK_RGBA),
+    depthTest(*this),
+    cullingTest(*this),
+    wBuffer(),
+    fbAccess(*this)
+{
+}
+
 bit32* RenderState::RenderState::MakeCommand(bit32* buffer, bool isClearFrameBufferCache) const
 {
     bit32* command = buffer;

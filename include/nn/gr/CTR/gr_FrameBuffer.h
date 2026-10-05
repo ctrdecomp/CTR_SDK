@@ -65,7 +65,7 @@ public:
     explicit FrameBuffer();
     static bit32* MakeClearCacheCommand(bit32* command);
     bit32* MakeCommand(bit32* command, const u32 bufferBit, bool isClearCache = true) const;
-    void MakeClearRequest(const u32 bufferBit, bool isAddSplitDrawCmdlist = true);
+    void MakeClearRequest(const u32 bufferBit, bool isAddSplitDrawCmdlist = true) const;
 };
 
 }

@@ -15,6 +15,7 @@
 #include <nn/dbg/dbg_Break.h>
 
 #define NN_NOTIFICATION_PRIORITY 1359598848
+
 #ifdef NN_BUILD_DEVELOPMENT
     const size_t DISPATCHER_STACK_SIZE  = 1024;
 #else
@@ -46,8 +47,10 @@ public:
         NN_TASSERT_(message != 0);
 
         NotificationHandler *i;
-        for(i = this->m_Handlers.GetFront(); i != NULL; i = this->m_Handlers.GetNext(i)){
-            if(i->m_AttachedMessage == message){
+        for(i = this->m_Handlers.GetFront(); i != NULL; i = this->m_Handlers.GetNext(i))
+        {
+            if(i->m_AttachedMessage == message)
+            {
                 break;
             }
         }

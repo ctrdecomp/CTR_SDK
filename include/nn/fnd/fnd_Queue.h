@@ -10,7 +10,6 @@ template <typename T, typename Tag = void>
 class IntrusiveQueue : private nn::util::NonCopyable<IntrusiveQueue<T, Tag> >
 {
 public:
-    
     class Item;
 
     IntrusiveQueue(): 
@@ -19,7 +18,7 @@ public:
     {
     }
 
-    bool IsEmpty() const { return m_Head == 0; }
+    bool IsEmpty() const { return this->m_Head == 0; }
     void Enqueue(T* p);
     T* Dequeue();
     void Clear();
@@ -36,7 +35,11 @@ class IntrusiveQueue<T, Tag>::Item : private nn::util::NonCopyable<IntrusiveQueu
 {
     friend class IntrusiveQueue;
 protected:
-    Item() : m_NextLink(0) {}
+    Item(): 
+        m_NextLink(0) 
+    {
+    }
+    
     ~Item() { NN_TASSERT_(!m_NextLink); }
 private:
     Item* m_NextLink;
@@ -55,7 +58,7 @@ inline void IntrusiveQueue<T, Tag>::Enqueue(T* p)
     }
     else
     {
-        m_Tail->m_NextLink = p;
+        this->m_Tail->m_NextLink = p;
         this->m_Tail = p;
     }
 }
@@ -69,14 +72,14 @@ inline T* IntrusiveQueue<T, Tag>::Dequeue()
     }
     else
     {
-        Item* ret = m_Head;
-        if (m_Head == m_Tail)
+        Item* ret = this->m_Head;
+        if (this->m_Head == this->m_Tail)
         {
             this->m_Head = 0;
         }
         else
         {
-            this->m_Head = m_Head->m_NextLink;
+            this->m_Head = this->m_Head->m_NextLink;
         }
         ret->m_NextLink = 0;
         return static_cast<T*>(ret);
@@ -86,15 +89,15 @@ inline T* IntrusiveQueue<T, Tag>::Dequeue()
 template <typename T, typename Tag>
 inline void IntrusiveQueue<T, Tag>::Clear()
 {
-    if (m_Head)
+    if (this->m_Head)
     {
-        Item* p = m_Head;
+        Item* p = this->m_Head;
         do
         {
             Item* q = p;
             p = p->m_NextLink;
             q->m_NextLink = 0;
-        } while (p != m_Tail);
+        } while (p != this->m_Tail);
         this->m_Head = 0;
     }
 }

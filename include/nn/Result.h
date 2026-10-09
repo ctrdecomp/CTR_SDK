@@ -206,7 +206,11 @@ private:
     template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription> friend struct Const;
     template <Result::Level TLevel, Result::Summary TSummary, Result::Module TModule, int TDescription, int TDescriptionMin, int TDescriptionMax> friend struct ConstRange;
 public:
-    explicit Result(bit32 code) : m_Result(code) {}
+    explicit Result(bit32 code): 
+        m_Result(code) 
+    {
+    }
+
 private:
     bit32 GetCodeBits(bit32 mask, s32 shift) const { return ((m_Result & mask) >> shift); }
 
@@ -216,21 +220,23 @@ private:
     bool operator!=(ConstRange<TLevel, TSummary, TModule, TDescription, TDescriptionMin, TDescriptionMax>) const;
 
 public:
-    Result()
-        : m_Result(static_cast<bit32>(
+    Result(): 
+        m_Result(static_cast<bit32>(
             ((static_cast<bit32>(LEVEL_USAGE)  << SHIFTS_LEVEL)       & MASK_LEVEL)       |
             ((SUMMARY_INVALID_RESULT_VALUE     << SHIFTS_SUMMARY)     & MASK_SUMMARY)     |
             ((MODULE_INVALID_RESULT_VALUE      << SHIFTS_MODULE)      & MASK_MODULE)      |
             ((DESCRIPTION_INVALID_RESULT_VALUE << SHIFTS_DESCRIPTION) & MASK_DESCRIPTION)))
-    {}
+    {
+    }
 
-    Result(Level level, Summary summary, Module module, int description)
-        : m_Result(static_cast<bit32>(
+    Result(Level level, Summary summary, Module module, int description): 
+        m_Result(static_cast<bit32>(
             ((level       << SHIFTS_LEVEL)       & MASK_LEVEL)       |
             ((summary     << SHIFTS_SUMMARY)     & MASK_SUMMARY)     |
             ((module      << SHIFTS_MODULE)      & MASK_MODULE)      |
             ((description << SHIFTS_DESCRIPTION) & MASK_DESCRIPTION)))
-    {}
+    {
+    }
 
     bool IsFailure() const { return (m_Result & MASK_FAIL_BIT) != 0; }
     bool IsSuccess() const { return !IsFailure(); }
@@ -247,8 +253,13 @@ public:
     bit32       GetValue()       const { return m_Result; }
     bit32       GetPrintableBits() const { return m_Result; }
 
-    Result(nnResult result) : m_Result(result.value) {}
-    operator nnResult() const{
+    Result(nnResult result): 
+        m_Result(result.value) 
+    {
+    }
+
+    operator nnResult() const
+    {
         nnResult r = {m_Result};
         return r;
     }
@@ -298,8 +309,8 @@ struct Result::ConstRange : public Result {
     static bool Includes(Result result)
     {
         return result.GetModule() == TModule &&
-               TDescriptionMin <= result.GetDescription() &&
-               result.GetDescription() <= TDescriptionMax;
+            TDescriptionMin <= result.GetDescription() &&
+            result.GetDescription() <= TDescriptionMax;
     }
 
     friend bool operator<=(Result lhs, ConstRange) { return ConstRange::Includes(lhs); }
@@ -383,21 +394,19 @@ inline Result MakeStatusResult   (Result::Summary summary, Result::Module module
 
 typedef nn::Result Result;
 
-#if NN_VERSION <= 2
-    #ifdef __cplusplus
-    extern "C" {
-    #endif
-        typedef void (*nnResultHandlerImpl)(nnResult result, const char* filename, int lineno, const char* fmt, va_list vlist);
+#ifdef __cplusplus
+extern "C" {
+#endif
+    typedef void (*nnResultHandlerImpl)(nnResult result, const char* filename, int lineno, const char* fmt, va_list vlist);
 
-        int nnResultFailureHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
-        int nnResultTFailureHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
+    int nnResultFailureHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
+    int nnResultTFailureHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
 
-        int nnResultPanicHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
-        int nnResultTPanicHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
+    int nnResultPanicHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
+    int nnResultTPanicHandler(nnResult result, const char* filename, int lineno, const char* fmt, ...);
 
-        nnResult nnMakeInvalidResult();
-    #ifdef __cplusplus
-    }
-    #endif
+    nnResult nnMakeInvalidResult();
+#ifdef __cplusplus
+}
 #endif
 

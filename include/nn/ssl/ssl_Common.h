@@ -19,6 +19,7 @@ namespace
         NUM_OF_PORTS
     };
 } // namespace
+
 } // namespace ssl
 } // namespace nn
 

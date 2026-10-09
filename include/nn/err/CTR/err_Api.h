@@ -5,12 +5,13 @@
 #include <nn/os/ARM/os_ExceptionHandler.h>
 #include <nn/err/CTR/err_FatalErrTypes.h>
 
-namespace nn{
-namespace err{
-namespace CTR{
-namespace{
+namespace nn {
+namespace err {
+namespace CTR {
+
+namespace {
     const char PORT_NAME_ERR_F[] = "err:f";
-}
+} // namespace
 
     struct FatalErrInfo
     {
@@ -50,63 +51,31 @@ namespace{
     void ThrowFatalErr(Result result, nnerrFatalErrType type);
     void ThrowFatalErr(Result res);
     void ThrowFatalErrAll(Result res);
+} // namespace CTR
+} // namespace err
+} // namespace nn
 
-namespace detail
-{
-    template <bool(*IsTarget)(Result), void(*TargetFunc)(Result, uptr)>
-    inline void CallIf(Result r, uptr pc)
-    {
-        if (IsTarget(r))
-        {
-            TargetFunc(r, pc);
-        }
-    }
-
-    template <bool(*IsTarget)(Result), void(*TargetFunc)(Result, const char*, int, uptr)>
-    inline void CallIf(Result r, const char* fileName, int lineno, uptr pc)
-    {
-        if (IsTarget(r))
-        {
-            TargetFunc(r, fileName, lineno, pc);
-        }
-    }
-
-    inline bool IsResultFailure(Result r) {return r.IsFailure(); }
-    inline bool IsResultFatal  (Result r) {return r.GetLevel() == ::Result::LEVEL_FATAL; }
-
-}
-} 
-}
-}
-
-
-#define NN_ERR_THROW_FATAL_IF_FATAL_ONLY(result) \
-    do { \
-        ::nn::Result resultLocal = (result); \
-        if (resultLocal.GetLevel() == ::nn::Result::LEVEL_FATAL) { \
-            ::nn::err::CTR::ThrowFatalErrAll(resultLocal); \
-        } \
-    } while (0)
-
-#define NN_ERR_THROW_FATAL(result) \
-    do \
-    { \
-        ::nn::Result resultLocal = (result); \
-        if ( resultLocal.IsFailure() ) \
-        { \
-            ::nn::err::CTR::ThrowFatalErr(resultLocal); \
-        } \
+#define NN_ERR_THROW_FATAL(result)                          \
+    do                                                      \
+    {                                                       \
+        ::nn::Result resultLocal = (result);                \
+        if (resultLocal.IsFailure())                        \
+        {                                                   \
+            ::nn::err::CTR::ThrowFatalErr(resultLocal);     \
+        }                                                   \
     } while(0)
 
 
-#define NN_ERR_THROW_FATAL_ALL(result) \
-    do { \
-        ::nn::Result resultLocal = (result); \
-        if (resultLocal.IsFailure()) { \
-            ::nn::err::CTR::ThrowFatalErrAll(resultLocal); \
-        } \
+#define NN_ERR_THROW_FATAL_ALL(result)                      \
+    do                                                      \
+    {                                                       \
+        ::nn::Result resultLocal = (result);                \
+        if (resultLocal.IsFailure())                        \
+        {                                                   \
+            ::nn::err::CTR::ThrowFatalErrAll(resultLocal);  \
+        }                                                   \
     } while (0)
 
-#define NN_ERR_LOG_AND_PANIC_IF_FAILED(result) \
+#define NN_ERR_LOG_AND_PANIC_IF_FAILED(result)              \
     NN_ERR_THROW_FATAL_ALL(result)
 

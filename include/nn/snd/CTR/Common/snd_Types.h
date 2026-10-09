@@ -90,7 +90,8 @@ struct MixParam
     }
 };
 
-struct WaveBuffer{
+struct WaveBuffer
+{
     enum Status
     {
         STATUS_FREE,

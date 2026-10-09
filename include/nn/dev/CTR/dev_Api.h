@@ -7,7 +7,8 @@
 namespace nn{
 namespace dev{
 namespace CTR{
-    enum SectorSize {
+    enum SectorSize 
+    {
         SECTOR_SIZE_0BYTE   = 0x0,
         SECTOR_SIZE_4BYTE   = 0x1,
         SECTOR_SIZE_16BYTE  = 0x2,

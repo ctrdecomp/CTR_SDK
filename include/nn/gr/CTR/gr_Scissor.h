@@ -16,7 +16,8 @@ public:
         height(320),
         bufferWidth(256),
         bufferHeight(320)
-    {}
+    {
+    }
 
     bit32* MakeCommand(bit32* command) const;
 
@@ -25,10 +26,10 @@ public:
         s32 temp_width  = colorBufferWidth  - 1;
         s32 temp_height = colorBufferHeight - 1;
 
-        *command++ = PICA_CMD_DATA_SCISSOR( false );
-        *command++ = PICA_CMD_HEADER_BURSTSEQ( PICA_REG_SCISSOR, 3 );
+        *command++ = PICA_CMD_DATA_SCISSOR(false);
+        *command++ = PICA_CMD_HEADER_BURSTSEQ(PICA_REG_SCISSOR, 3);
         *command++ = 0;
-        *command++ = PICA_CMD_DATA_SCISSOR_SIZE( temp_width, temp_height );
+        *command++ = PICA_CMD_DATA_SCISSOR_SIZE(temp_width, temp_height);
 
         return command;
     }

@@ -23,7 +23,7 @@ extern "C" {
 #define NN_GX_DISPLAY1_HEIGHT   320
 #endif
 
-void nngxStartLcdDisplay( void );
+void nngxStartLcdDisplay();
 
 #ifdef  __cplusplus
 } // extern "C"

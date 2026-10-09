@@ -40,7 +40,8 @@ public:
     Result TryInitialize(bool initialLocked)
     {
         Result result = TryInitializeImpl(initialLocked);
-        if (result.GetSummary() == Result::SUMMARY_OUT_OF_RESOURCE){
+        if (result.GetSummary() == Result::SUMMARY_OUT_OF_RESOURCE)
+        {
             return result;
         }
         NN_OS_ERROR_IF_FAILED(result);

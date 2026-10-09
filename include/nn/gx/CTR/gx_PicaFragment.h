@@ -2,7 +2,6 @@
 
 #include <nn/gx/CTR/gx_PicaCommon.h>
 
-
 #define PICA_CMD_DATA_FRAG_LIGHT_EN(flag) ( (flag) ? 1 : 0 )
 #define PICA_CMD_DATA_FRAG_LIGHT_EN_INV(flag) ( (flag) ? 0 : 1 )
 
@@ -10,7 +9,6 @@
     PICA_CMD_DATA_FRAG_LIGHT_EN(flag), PICA_CMD_HEADER_SINGLE(PICA_REG_FRAG_LIGHT_EN0), \
     PICA_CMD_DATA_FRAG_LIGHT_EN_INV(flag), PICA_CMD_HEADER_SINGLE(PICA_REG_FRAG_LIGHT_EN1)
     
-// PICA_REG_FRAG_LIGHT_SRC_NUM     0x1c2
 #define PICA_CMD_DATA_FRAG_LIGHT_NUM(num) ( (num > 0) ? (num - 1) : 0 )
 
 #define PICA_CMD_SET_FRAG_LIGHT_NUM(num) \

@@ -11,20 +11,8 @@ struct Int64
     Int64() {}
     Int64(Base s) : lo(static_cast<bit32>(s)), hi(static_cast<bit32>(s >> 32))  {}
     operator Base() const { return (static_cast<Base>(hi) << 32) | static_cast<Base>(lo); }
-    Int64& operator++() { Base lhs = *this; lhs++; *this = lhs; return *this; }
-    Int64& operator--() { Base lhs = *this; lhs--; *this = lhs; return *this; }
     Int64& operator+=(Base rhs) { Base lhs = *this; lhs += rhs; *this = lhs; return *this; }
     Int64& operator-=(Base rhs) { Base lhs = *this; lhs -= rhs; *this = lhs; return *this; }
-    Int64& operator*=(Base rhs) { Base lhs = *this; lhs *= rhs; *this = lhs; return *this; }
-    Int64& operator/=(Base rhs) { Base lhs = *this; lhs /= rhs; *this = lhs; return *this; }
-    Int64& operator%=(Base rhs) { Base lhs = *this; lhs %= rhs; *this = lhs; return *this; }
-    Int64& operator|=(Base rhs) { Base lhs = *this; lhs |= rhs; *this = lhs; return *this; }
-    Int64& operator&=(Base rhs) { Base lhs = *this; lhs &= rhs; *this = lhs; return *this; }
-    Int64& operator^=(Base rhs) { Base lhs = *this; lhs ^= rhs; *this = lhs; return *this; }
-    Int64& operator<<=(int rhs) { Base lhs = *this; lhs <<= rhs; *this = lhs; return *this; }
-    Int64& operator>>=(int rhs) { Base lhs = *this; lhs >>= rhs; *this = lhs; return *this; }
-    Int64 operator++(int) { Base lhs = *this; *this = lhs + 1; return Int64(lhs); }
-    Int64 operator--(int) { Base lhs = *this; *this = lhs - 1; return Int64(lhs); }
     
     Int64(const Int64<Base, void>& other) : lo(other.lo), hi(other.hi) {}
 #pragma push
@@ -43,10 +31,6 @@ struct Int64
     bool operator>(Int64 rhs) const { return rhs < *this; }
     bool operator<(Base rhs) const { return static_cast<Base>(*this) < rhs; }
     bool operator>(Base rhs) const { return rhs < *this; }
-    bool operator<=(Int64 rhs) const { return !(*this > rhs); }
-    bool operator>=(Int64 rhs) const { return !(*this < rhs); }
-    bool operator<=(Base rhs) const { return !(static_cast<Base>(*this) > rhs); }
-    bool operator>=(Base rhs) const { return !(static_cast<Base>(*this) < rhs); }
 };
 
 }

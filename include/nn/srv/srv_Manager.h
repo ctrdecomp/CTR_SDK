@@ -6,7 +6,8 @@ namespace nn{
 namespace srv{
 namespace detail{
 
-class Manager{
+class Manager
+{
 public:
     static Handle s_Session;
 };

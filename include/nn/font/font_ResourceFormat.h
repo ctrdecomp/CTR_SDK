@@ -8,28 +8,17 @@ using namespace nn::font::detail;
 namespace nn {
 namespace font {
 
-// "CFNT"
-
-const SigWord BINFILE_SIG_FONT = NN_FONT_MAKE_SIGWORD('C','F','N','T');
-
-// "CFNU"
-const SigWord BINFILE_SIG_FONT_RESOLEVED = NN_FONT_MAKE_SIGWORD('C','F','N','U');
-
-// "CFNA"
-const SigWord BINFILE_SIG_FONTA = NN_FONT_MAKE_SIGWORD('C','F','N','A');
-
-const SigWord BINBLOCK_SIG_FINF = NN_FONT_MAKE_SIGWORD('F','I','N','F');
-const SigWord BINBLOCK_SIG_CGLP = NN_FONT_MAKE_SIGWORD('C','G','L','P');
-const SigWord BINBLOCK_SIG_TGLP = NN_FONT_MAKE_SIGWORD('T','G','L','P');
-const SigWord BINBLOCK_SIG_CWDH = NN_FONT_MAKE_SIGWORD('C','W','D','H');
-const SigWord BINBLOCK_SIG_CMAP = NN_FONT_MAKE_SIGWORD('C','M','A','P');
-
-const SigWord BINBLOCK_SIG_GLGR = NN_FONT_MAKE_SIGWORD('G','L','G','R');
-const SigWord BINBLOCK_SIG_HTGL = NN_FONT_MAKE_SIGWORD('H','T','G','L');
-
-const u32 FONT_FILE_VERSION  = NN_FONT_MAKE_SIGWORD(3, 0, 0, 0);
-
 const u16 INVALID_CHAR_CODE   = 0xFFFF;
+
+ #define NN_FONT_MAKE_HEADER(a,b,c,d)       \
+    static_cast<SigWord >(                  \
+          (static_cast<u8>(a) <<  0)        \
+        | (static_cast<u8>(b) <<  8)        \
+        | (static_cast<u8>(c) << 16)        \
+        | (static_cast<u8>(d) << 24)        \
+    )
+
+const SigWord BINFILE_SIG_FONT_RESOLEVED = NN_FONT_MAKE_HEADER('C','F','N','U');
 
 enum FontType
 {

@@ -45,14 +45,14 @@ static GLsizei __initialCommandSize;
 }
 
 static void sys_executeCommandRequest(cl_cmdreq_t* cmdreq);
-static void sys_P3DCallback();
-static void sys_PSC0Callback();
-static void sys_PSC1Callback();
-static void sys_PPFCallback();
-static void sys_DMACallback();
-static void sys_PDC0Callback();
-static void sys_PDC1Callback();
-static void sys_commonIntrHandler();
+static void sys_P3DCallback(void);
+static void sys_PSC0Callback(void);
+static void sys_PSC1Callback(void);
+static void sys_PPFCallback(void);
+static void sys_DMACallback(void);
+static void sys_PDC0Callback(void);
+static void sys_PDC1Callback(void);
+static void sys_commonIntrHandler(void);
 
 static void sys_issueSpeculativeCommandRequests();
 
@@ -2178,10 +2178,6 @@ void nngxAdd3DCommand(const GLvoid* bufferaddr, GLsizei buffersize, GLboolean co
 	}
 	
 	return;
-}
-
-void nngxAddVramDmaCommandRaw(nngxCommandList* cmdlist, const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size){
-	sys_AddVramDmaCommandCore((cl_list_t*)cmdlist, srcaddr, dstaddr, size);
 }
 
 void sys_AddVramDmaCommandCore(cl_list_t* cmdlist, const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size){

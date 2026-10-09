@@ -10,7 +10,9 @@ namespace nn{
 namespace ulcd{
 namespace CTR{
 namespace{
-struct Direction{
+    
+struct Direction
+{
     VEC3 right;
     VEC3 up;
     VEC3 target;

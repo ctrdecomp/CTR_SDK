@@ -9,10 +9,8 @@ namespace camera{
 namespace CTR{
 namespace detail{
 
-//!@note Not for public use. Don't use this class, as I believe NintendoSPD did not include this class in its original SDK.
-//!
-//!@brief Camera IPC.
-class Camera{
+class Camera
+{
 public:
     static Result Activate(CameraSelect pSelect);
     static Result GetActivatedCamera(CameraSelect* pSelect);

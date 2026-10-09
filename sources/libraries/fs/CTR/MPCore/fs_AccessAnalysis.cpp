@@ -43,7 +43,7 @@ void FsAnalysisLog(nn::Result result, nn::os::Tick tickStart, const char* fmt, .
         (s64)tickEnd * 1000 / nn::os::Tick::TICKS_PER_SECOND,buffer,result.GetPrintableBits());
 
     nn::dbg::detail::PutString(buffer2, std::strlen(buffer2));
-    }
+}
 
 #else
 

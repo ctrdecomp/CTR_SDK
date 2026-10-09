@@ -2,7 +2,8 @@
 
 #include <nn/types.h>
 
-typedef enum nngxlowInterrupt{
+typedef enum nngxlowInterrupt
+{
     NN_GXLOW_INTERRUPT_GPU_PSC_0 = 0,
     NN_GXLOW_INTERRUPT_GPU_PSC_1 = 1,
     NN_GXLOW_INTERRUPT_GPU_PDC_0 = 2,

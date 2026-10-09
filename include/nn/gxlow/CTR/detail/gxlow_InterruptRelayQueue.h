@@ -30,8 +30,18 @@ public:
     {
     }
         
-    void Initialize(nn::Handle eventHandle,void* pQueueBody);
-    void Finalize();
+    void Initialize(nn::Handle eventHandle,void* pQueueBody)
+    {
+        this->m_RxEvent.SetHandle(eventHandle);
+    
+        NN_TASSERT_(pQueueBody != 0);
+        m_pBody = reinterpret_cast<QueueBody*>(pQueueBody);
+    }
+    void Finalize()
+    {
+        nn::os::HandleManager::DetachHandle(&this->m_RxEvent);
+        m_pBody = NULL;
+    }
     
 protected:
     static const s32  QUEUE_LENGTH = 52;
@@ -64,21 +74,7 @@ protected:
     QueueBody*      m_pBody;
 };
 
-inline void InterruptRelayQueueBase::Initialize(nn::Handle  eventHandle,void* pQueueBody)
-{
-    this->m_RxEvent.SetHandle(eventHandle);
-    
-    NN_TASSERT_(pQueueBody != 0);
-    m_pBody = reinterpret_cast<QueueBody*>(pQueueBody);
 }
-
-inline void InterruptRelayQueueBase::Finalize()
-{
-    nn::os::HandleManager::DetachHandle(&this->m_RxEvent);
-    m_pBody = NULL;
-}
-
-
 }
 }
 }

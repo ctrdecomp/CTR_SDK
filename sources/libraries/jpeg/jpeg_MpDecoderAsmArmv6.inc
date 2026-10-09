@@ -1343,8 +1343,8 @@ NN_ASM void JpegMpDecoderAsmWrite21Yuyv8(register JpegMpDecoderContext* pCtx NN_
 
 	sub	stride, stride, #16 << DST_PIXEL_SHIFT
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	ldr	loopFlags, =0x00810080
 
@@ -1444,8 +1444,8 @@ NN_ASM void JpegMpDecoderAsmWrite12Yuyv8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	mov	loopFlags, #0x80
 
@@ -1551,8 +1551,8 @@ NN_ASM void JpegMpDecoderAsmWrite22Yuyv8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	ldr	loopFlags, =0x00210088
 
@@ -1678,7 +1678,7 @@ NN_ASM void JpegMpDecoderAsmWrite11CtrRgb565(register JpegMpDecoderContext* pCtx
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl11CtrRgb565
 
@@ -1849,8 +1849,8 @@ NN_ASM void JpegMpDecoderAsmWrite21CtrRgb565(register JpegMpDecoderContext* pCtx
 
 	sub	stride, stride, #16 << DST_PIXEL_SHIFT
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21CtrRgb565
 
@@ -2006,8 +2006,8 @@ NN_ASM void JpegMpDecoderAsmWrite12CtrRgb565(register JpegMpDecoderContext* pCtx
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12CtrRgb565
 
@@ -2167,8 +2167,8 @@ NN_ASM void JpegMpDecoderAsmWrite22CtrRgb565(register JpegMpDecoderContext* pCtx
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22CtrRgb565
 
@@ -2540,8 +2540,8 @@ NN_ASM void JpegMpDecoderAsmWrite21CtrRgb565Block8(register JpegMpDecoderContext
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21CtrRgb565Block8
 	adr	pDstOffsetTbl, dstOffsetTbl21CtrRgb565Block8
@@ -2712,8 +2712,8 @@ NN_ASM void JpegMpDecoderAsmWrite12CtrRgb565Block8(register JpegMpDecoderContext
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12CtrRgb565Block8
 
@@ -2892,8 +2892,8 @@ NN_ASM void JpegMpDecoderAsmWrite22CtrRgb565Block8(register JpegMpDecoderContext
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22CtrRgb565Block8
 
@@ -3260,8 +3260,8 @@ NN_ASM void JpegMpDecoderAsmWrite21Rgb8(register JpegMpDecoderContext* pCtx NN_I
 
 	sub	stride, stride, #(16 * 3)
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21Rgb8
 
@@ -3411,8 +3411,8 @@ NN_ASM void JpegMpDecoderAsmWrite12Rgb8(register JpegMpDecoderContext* pCtx NN_I
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12Rgb8
 
@@ -3567,8 +3567,8 @@ NN_ASM void JpegMpDecoderAsmWrite22Rgb8(register JpegMpDecoderContext* pCtx NN_I
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22Rgb8
 
@@ -3920,8 +3920,8 @@ NN_ASM void JpegMpDecoderAsmWrite21CtrRgb8Block8(register JpegMpDecoderContext* 
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21CtrRgb8Block8
 	adr	pDstOffsetTbl, dstOffsetTbl21CtrRgb8Block8
@@ -4086,8 +4086,8 @@ NN_ASM void JpegMpDecoderAsmWrite12CtrRgb8Block8(register JpegMpDecoderContext* 
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12CtrRgb8Block8
 
@@ -4265,8 +4265,8 @@ NN_ASM void JpegMpDecoderAsmWrite22CtrRgb8Block8(register JpegMpDecoderContext* 
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22CtrRgb8Block8
 
@@ -4624,8 +4624,8 @@ NN_ASM void JpegMpDecoderAsmWrite21Rgba8(register JpegMpDecoderContext* pCtx NN_
 
 	sub	stride, stride, #(16 * 4)
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21Rgba8
 
@@ -4774,8 +4774,8 @@ NN_ASM void JpegMpDecoderAsmWrite12Rgba8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12Rgba8
 
@@ -4924,8 +4924,8 @@ NN_ASM void JpegMpDecoderAsmWrite22Rgba8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22Rgba8
 
@@ -5275,8 +5275,8 @@ NN_ASM void JpegMpDecoderAsmWrite21CtrRgba8Block8(register JpegMpDecoderContext*
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21CtrRgba8Block8
 	adr	pDstOffsetTbl, dstOffsetTbl21CtrRgba8Block8
@@ -5440,8 +5440,8 @@ NN_ASM void JpegMpDecoderAsmWrite12CtrRgba8Block8(register JpegMpDecoderContext*
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12CtrRgba8Block8
 
@@ -5614,8 +5614,8 @@ NN_ASM void JpegMpDecoderAsmWrite22CtrRgba8Block8(register JpegMpDecoderContext*
 
 	mla	pDst_, tmp_stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22CtrRgba8Block8
 
@@ -5972,8 +5972,8 @@ NN_ASM void JpegMpDecoderAsmWrite21Bgr8(register JpegMpDecoderContext* pCtx NN_I
 
 	sub	stride, stride, #(16 * 3)
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21Bgr8
 
@@ -6123,8 +6123,8 @@ NN_ASM void JpegMpDecoderAsmWrite12Bgr8(register JpegMpDecoderContext* pCtx NN_I
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12Bgr8
 
@@ -6279,8 +6279,8 @@ NN_ASM void JpegMpDecoderAsmWrite22Bgr8(register JpegMpDecoderContext* pCtx NN_I
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22Bgr8
 
@@ -6624,8 +6624,8 @@ NN_ASM void JpegMpDecoderAsmWrite21Abgr8(register JpegMpDecoderContext* pCtx NN_
 
 	sub	stride, stride, #(16 * 4)
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl21Abgr8
 
@@ -6774,8 +6774,8 @@ NN_ASM void JpegMpDecoderAsmWrite12Abgr8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl12Abgr8
 
@@ -6925,8 +6925,8 @@ NN_ASM void JpegMpDecoderAsmWrite22Abgr8(register JpegMpDecoderContext* pCtx NN_
 
 	mla	pDst_, stride, arg_y, tmp_pDst
 
-	add	pDcrDcb,    arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, dcr)
-	add	pDrawBlock, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpDecoderContext, drawBlockUnion.draw_block)
+ 	add r4, r0, #0x380
+    add r5, r0, #0x400
 
 	adr	pConst, constTbl22Abgr8
 

@@ -4,7 +4,6 @@
 #include <GLES2/gl2extern.h>
 #include <GLES2/gl2CTR.h>
 #include <nn/gx/CTR/gx_CTR.h>
-#include <nn/gx/CTR/gx_CTRRaw.h>
 
 #include <nn/gxlow/CTR/gxlow_CTR.h>
 #include <nn/gx/CTR/gx_Vram.h>
@@ -15,7 +14,7 @@
 #include <math.h>
 #include <assert.h>
 
-#define GL_ACCELERATE_TRIANGLES_DMP       0x6502
+#define GL_ACCELERATE_TRIANGLES_DMP 0x6502
 
 #define MAX_TEXTURE_UNITS				3
 #define MAX_TEXTURE_SIZE				1024

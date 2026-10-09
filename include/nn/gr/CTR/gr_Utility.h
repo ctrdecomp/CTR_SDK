@@ -45,7 +45,7 @@ inline u8 FloatToUnsignedByte(f32 val)
 
 inline u32 Float32ToUnsignedFix24(f32 val)
 {
-    unsigned v_ = *(reinterpret_cast<unsigned*>(&val));
+    uint v_ = *(reinterpret_cast<uint*>(&val));
 
     if (val <= 0 || (v_ & 0x7f800000) == 0x7f800000)
     {
@@ -62,7 +62,7 @@ inline u32 Float32ToUnsignedFix24(f32 val)
         }
         else
         {
-            return (unsigned)(val);
+            return (uint)(val);
         }
     }
 }
@@ -83,11 +83,11 @@ inline u16 Float32ToFloat16(f32 val)
 
 inline u32 Float32ToFloat31(f32 val)
 {
-    unsigned uval_, m_;
+    uint uval_, m_;
     int e_;
     float f_ = val;
     static const int bias_ = 128 - (1 << (7 - 1));
-    uval_ = *( reinterpret_cast<unsigned*>( &f_ ) );
+    uval_ = *( reinterpret_cast<uint*>( &f_ ) );
     e_ = (uval_ & 0x7fffffff) ? (((uval_ >> 23) & 0xff) - bias_) : 0;
     m_ = (uval_ & 0x7fffff) >> (23 - 23);
     return e_ >= 0 ? m_ | (e_ << 23) | ((uval_ >> 31) << (23 + 7)) : ((uval_ >> 31) << (23 + 7));
@@ -95,7 +95,7 @@ inline u32 Float32ToFloat31(f32 val)
 
 inline u32 Float32ToFix13Fraction8(f32 val)
 {
-    unsigned v_ = *(reinterpret_cast<unsigned*>(&val));
+    uint v_ = *(reinterpret_cast<uint*>(&val));
 
     if ((val == 0.0f) ||
          ((v_ & 0x7f800000 ) == 0x7f800000))
@@ -116,13 +116,13 @@ inline u32 Float32ToFix13Fraction8(f32 val)
     }
 
     return (val >= (1 << (13 - 1)))
-               ? (unsigned)(val - (1 << (13 - 1)))
-               : (unsigned)(val + (1 << (13 - 1)));
+               ? (uint)(val - (1 << (13 - 1)))
+               : (uint)(val + (1 << (13 - 1)));
 }
 
 inline u32 Float32ToUnsignedFix16(f32 val)
 {
-    unsigned v_ = *(reinterpret_cast<unsigned*>(&val));
+    uint v_ = *(reinterpret_cast<uint*>(&val));
 
     if (val <= 0 || (v_ & 0x7f800000) == 0x7f800000)
     {
@@ -138,7 +138,7 @@ inline u32 Float32ToUnsignedFix16(f32 val)
         }
         else
         {
-            return static_cast<unsigned>(val);
+            return static_cast<uint>(val);
         }
     }
 }

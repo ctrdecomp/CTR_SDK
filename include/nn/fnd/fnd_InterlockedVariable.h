@@ -4,31 +4,8 @@
 #include <nn/fnd/ARMv6/fnd_Interlocked.h>
 #include <nn/util/util_TypeTraits.h>
 
-namespace nn{
-namespace fnd{
-
-/*struct InterlockedVariable64{
-    s64 mValue;
-};
-
-struct InterlockedVariable32{
-private:
-    s32 mValue;
-
-    T CompareAndSwap (T comprand, T value){
-        CompareAndSwapFunc f (comprand, value);
-        AtomicUpdateConditional (f);
-        return f.m_result;
-    }
-};
-
-struct InterlockedVariable16{
-    short mValue;
-};
-
-struct InterlockedVariable8{
-    u8 mValue;
-};*/
+namespace nn {
+namespace fnd {
 
 template <typename T>
 class InterlockedVariable
@@ -40,25 +17,25 @@ private:
     template <typename U>
     struct StorageSelecter<U, typename nn::util::enable_if<sizeof (U) == sizeof (s64)>::type>
     {
-            typedef s64 Type;
+        typedef s64 Type;
     };
 
     template <typename U>
     struct StorageSelecter<U, typename nn::util::enable_if<sizeof (U) == sizeof (s32)>::type>
     {
-            typedef s32 Type;
+        typedef s32 Type;
     };
 
     template <typename U>
     struct StorageSelecter<U, typename nn::util::enable_if<sizeof (U) == sizeof (s16)>::type>
     {
-            typedef s16 Type;
+        typedef s16 Type;
     };
 
     template <typename U>
     struct StorageSelecter<U, typename nn::util::enable_if<sizeof (U) == sizeof (s8)>::type>
     {
-            typedef s8 Type;
+        typedef s8 Type;
     };
 
     struct AssignFunc
@@ -73,51 +50,55 @@ private:
             x = m_operand;
             return true;
         }
+    };
 
-        };
-        struct PreIncFunc
+    struct PreDecFunc
+    {
+        bool operator() (T& x)
         {
-            bool operator() (T& x)
+            --x; 
+            return true;
+        }
+    };
+
+    struct PreIncFunc
+    {
+        bool operator() (T& x)
+        {
+            ++x;   
+            return true;
+        }
+    };
+
+    struct CompareAndSwapFunc
+    {
+        T m_comparand;
+        T m_value;
+        T m_result;
+
+        CompareAndSwapFunc (T comparand, T value): 
+            m_comparand (comparand), 
+            m_value (value) 
+        {
+        }
+
+        bool operator() (T& x)
+        {
+            m_result = x;
+            if (x == m_comparand) 
             {
-                ++x;   
+                x = m_value;
                 return true;
             }
-        };
-
-        struct PreDecFunc
-        {
-            bool operator() (T& x)
-            {
-                --x; 
-                return true;
-            }
-        };
-        struct CompareAndSwapFunc
-        {
-            T m_comparand;
-            T m_value;
-            T m_result;
-
-            CompareAndSwapFunc (T comparand, T value) : m_comparand (comparand), m_value (value) {}
-
-            bool operator() (T& x)
-            {
-                m_result = x;
-                if (x == m_comparand) 
-                {
-                        x = m_value;
-                        return true;
-                }
-                return false;
-            }
-
+            return false;
+        }
     };
 
     volatile T m_v;
 
 public:
-    InterlockedVariable (): 
-        m_v () 
+    InterlockedVariable(): 
+        m_v()
     {
     }
     InterlockedVariable(T v): 
@@ -151,6 +132,7 @@ public:
         PreIncFunc func;
         AtomicUpdateConditional (func);
     }
+
     void operator-- ()
     {
         PreDecFunc func;

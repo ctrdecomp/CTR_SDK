@@ -226,15 +226,7 @@ protected:
     const nn::math::VEC4& ToVEC4() const { return *reinterpret_cast<const nn::math::VEC4*>(this); }
 };
 
-#if !defined(NN_SWAP_ENDIAN)
-    typedef FloatColor ResFloatColor;
-#else
-    typedef struct {
-        nw::ut::ResF32 r, g, b, a;
-        operator FloatColor() const { FloatColor c; c.r=r; c.g=g; c.b=b; c.a=a; return c; }
-        void operator=(const FloatColor& v) { r=v.r; g=v.g; b=v.b; a=v.a; }
-    } ResFloatColor;
-#endif
+typedef FloatColor ResFloatColor;
 
 }
 }

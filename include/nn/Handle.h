@@ -4,18 +4,20 @@
 #include <nn/Result.h>
 #include <nn/WithInitialize.h>
 
-typedef struct nnHandle{
+typedef struct nnHandle
+{
     bit32 value;
 } nnHandle;
 
 
-namespace nn{
-namespace{
+namespace nn {
+namespace {
     const nnHandle PSEUDO_HANDLE_CURRENT_THREAD  = {0xFFFF8000};
     const nnHandle PSEUDO_HANDLE_CURRENT_PROCESS = {0xFFFF8001};
     const nnHandle INVALID_HANDLE_VALUE = {0};
-}
-struct Handle {
+} // namespace
+struct Handle 
+{
 public:
     Handle (): 
         m_Handle (0)
@@ -45,6 +47,7 @@ public:
     {
         return m_Handle == (u32)other;
     }
+
     bool operator!=(int other) const 
     {
         return m_Handle != (u32)other;
@@ -70,6 +73,7 @@ public:
 
     bool operator== (const Handle& rhs) const { return this->m_Handle == rhs.m_Handle; }
     bool operator!= (const Handle& rhs) const { return this->m_Handle != rhs.m_Handle; }
+
     operator nnHandle () const
     {
         nnHandle result = {m_Handle};
@@ -83,5 +87,6 @@ public:
         return this->m_Handle;
     }
 };
-}
+
+} // namespace nn
 

@@ -19,8 +19,6 @@
 #define NN_UTIL_RETURN_IF_FAILED_1(result, c1) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,,,,)
 #define NN_UTIL_RETURN_IF_FAILED_2(result, c1, c2) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,,,)
 #define NN_UTIL_RETURN_IF_FAILED_3(result, c1, c2, c3) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,,)
-#define NN_UTIL_RETURN_IF_FAILED_4(result, c1, c2, c3, c4) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,c4,)
-#define NN_UTIL_RETURN_IF_FAILED_5(result, c1, c2, c3, c4, c5) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,c4,c5)
 
 #ifdef NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK
 

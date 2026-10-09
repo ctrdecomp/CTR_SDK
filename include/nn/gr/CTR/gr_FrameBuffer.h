@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nn/gr/CTR/gr_Utility.h>
-#include <nn/gx/CTR/gx_CTRRaw.h>
+#include <nn/gx/CTR/gx_CTR.h>
 
 namespace nn  {
 namespace gr  {

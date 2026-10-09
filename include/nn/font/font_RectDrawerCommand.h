@@ -2,22 +2,6 @@
 
 #include <nn/types.h>
 
-#define NW_FONT_ADD_COMMANDS_PTR( ptr, command, size )  \
-    std::memcpy( ptr, command, size );                  \
-    (ptr) += (size) >> 2
-
-#define NW_FONT_ADD_SINGLE_COMMAND_PTR( ptr, header, data ) \
-    *(ptr)++ = (data);                                      \
-    *(ptr)++ = (header)
-
-#define NW_FONT_RECTDRAWER_ADD_COMMAND( command, size )         \
-    std::memcpy( __cb_current_command_buffer, command, size );  \
-    __cb_current_command_buffer += (size) >> 2
-
-#define NW_FONT_RECTDRAWER_ADD_SINGLE_COMMAND( header, data )   \
-    *__cb_current_command_buffer++ = (data);                    \
-    *__cb_current_command_buffer++ = (header)
-
 enum
 {
     NW_FONT_CMD_CULL_FACE_DISABLE,

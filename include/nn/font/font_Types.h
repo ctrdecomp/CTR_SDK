@@ -36,7 +36,8 @@ enum
     COLOR_NUM
 };
 
-enum{
+enum
+{
     TEXCOORD_X,
     TEXCOORD_Y,
 

@@ -39,9 +39,11 @@ inline void SetOptForHeap(NNSiFndHeapHead* pHeapHd,u16 optFlag){
     NNSi_FndSetBitValue(pHeapHd->attribute, 0, 8, optFlag);
 }
 
-inline void MI_CpuFill32(void* dest, u32 data, u32 size){
+inline void MI_CpuFill32(void* dest, u32 data, u32 size)
+{
     u32* pDest = reinterpret_cast<u32*>(dest);
-    for(int i = 0; i < size / 4; ++i){
+    for(int i = 0; i < size / 4; ++i)
+    {
         pDest[i] = data;
     }
 }
@@ -55,7 +57,8 @@ inline void FillAllocMemory(NNSiFndHeapHead* pHeapHd,void* address,u32 size)
     else
     {
         #ifdef NN_DEBUG
-            if (GetOptForHeap(pHeapHd) & 2){
+            if (GetOptForHeap(pHeapHd) & 2)
+            {
                 MI_CpuFill32(address, GetFillValForHeap(0), size);
             }
         #endif

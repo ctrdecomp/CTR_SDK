@@ -2,7 +2,8 @@
 
 #include <nn/types.h>
 
-namespace nn { namespace util {
+namespace nn { 
+namespace util {
 
 template <class T, T v>
 struct integral_constant
@@ -23,19 +24,15 @@ struct is_void<void> : public true_type {};
 
 namespace detail {
     template <class T>
-    class AlignmentHack {
+    class AlignmentHack 
+    {
         char c;
-        T    x;
+        T x;
     };
 }
 
-#ifdef NN_COMPILER_RVCT
 template <class T>
 struct alignment_of : public integral_constant<size_t, __alignof__(T)> {};
-#else
-template <class T>
-struct alignment_of : public integral_constant<size_t, sizeof(detail::AlignmentHack<T>) - sizeof(T)> {};
-#endif
 
 namespace detail {
     template <size_t> struct AlignmentType {};

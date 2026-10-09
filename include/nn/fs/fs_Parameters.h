@@ -94,7 +94,7 @@ namespace detail { struct ArchiveHandleTag {}; }
 
         void CopyTo(TitleDataSpecifier* p) const
         {
-            p->id =    this->id;
+            p->id = this->id;
             p->media = this->media;
         }
     };

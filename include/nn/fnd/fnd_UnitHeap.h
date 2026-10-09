@@ -35,6 +35,7 @@ public:
             this->m_FreeNode = 0;
         }
     }
+
     void* Allocate()
     {
         void* ret = reinterpret_cast<void*&>(m_FreeNode);
@@ -49,6 +50,7 @@ public:
 
         return ret;
     }
+
     void Free(void* p)
     {
         p = this->m_FreeNode;
@@ -60,7 +62,7 @@ public:
     virtual void FreeV(void* p){ this->Free(p); }
     virtual void* GetStartAddress() const{ return reinterpret_cast<void*>(this->m_Addr); }
     virtual size_t GetTotalSize() const{ return m_Size; }
-    virtual void Dump() const ;
+    virtual void Dump() const;
     virtual bool HasAddress(const void* addr) const{ return m_Addr <= reinterpret_cast<uptr>(addr) && reinterpret_cast<uptr>(addr) < (m_Addr + m_Size);}
 
 protected:
@@ -72,10 +74,10 @@ protected:
     };
 
     size_t m_Unit;
-    uptr   m_Addr;
+    uptr m_Addr;
     size_t m_Size;
-    Node*  m_FreeNode;
-    s32    m_Alignment;
+    Node* m_FreeNode;
+    s32 m_Alignment;
     size_t m_Count;
 
 };
@@ -139,20 +141,11 @@ public:
         Base::Free(p);
     }
 
-    virtual void FreeV(void* p)
-    {
-        Free(p); 
-    }
+    virtual void FreeV(void* p){ Free(p); }
 
-    virtual void*  GetStartAddress() const 
-    {
-        return Base::GetStartAddress(); 
-    }
+    virtual void*  GetStartAddress() const { return Base::GetStartAddress(); }
 
-    virtual size_t GetTotalSize()    const 
-    {
-        return Base::GetTotalSize(); 
-    }
+    virtual size_t GetTotalSize() const { return Base::GetTotalSize(); }
 
     virtual void Dump() const 
     {
@@ -160,10 +153,7 @@ public:
         Base::Dump();
     }
 
-    virtual bool HasAddress(const void* addr) const 
-    {
-        return Base::HasAddress(addr); 
-    }
+    virtual bool HasAddress(const void* addr) const { return Base::HasAddress(addr); }
 };
 
 typedef UnitHeapTemplate<nn::os::LockPolicy::NoLock> UnitHeap;

@@ -129,15 +129,15 @@ protected:
     {
         bit32 signature;
         u16 version;
-        u8  isGeoShader;
-        u8  outputMaps;
+        u8 isGeoShader;
+        u8 outputMaps;
         uptr mainAddress;
         uptr endAddress;
         bit32 maskInputOutput;
-        u8  gsDataMode;
-        u8  gsVertexStartIndex;
-        u8  gsPatchSize;
-        u8  gsVertexNum;
+        u8 gsDataMode;
+        u8 gsVertexStartIndex;
+        u8 gsPatchSize;
+        u8 gsVertexNum;
         u32 setupOffset;
         u32 setupCount;
         u32 labelOffset;

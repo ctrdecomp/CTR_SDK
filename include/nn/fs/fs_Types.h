@@ -51,14 +51,19 @@ namespace fs{
         u64 compatibilityInfo;
     };
 
-    struct CtrCardLatencyParamater{
+    struct CtrCardLatencyParamater
+    {
         u64 latencyInfo;
     };
 
-    struct Fs9CompatibilityInfo : public CtrCardCompatibilityInfo{
+    struct Fs9CompatibilityInfo : public CtrCardCompatibilityInfo
+    {
+
     };
 
-    struct FsCompatibilityInfo : public Fs9CompatibilityInfo{
+    struct FsCompatibilityInfo : public Fs9CompatibilityInfo
+    {
+
     };
 
 }

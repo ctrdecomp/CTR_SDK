@@ -45,16 +45,16 @@ namespace CTR {
         u8  messageId_pair[8];
         u8  messageTypeFlag;
         u8  sendMode;
-        bit8    flagUnread;
-        bit8    flagNew;
-        u64  senderId;
-        u64  senderId2;
-        nn::fnd::DateTimeParameters     sendDate;
-        nn::fnd::DateTimeParameters     recvDate;
-        nn::fnd::DateTimeParameters     createDate;
-        u8  sendCount;
-        u8  propagationCount;
-        bit16   tag;
+        bit8 flagUnread;
+        bit8 flagNew;
+        u64 senderId;
+        u64 senderId2;
+        nn::fnd::DateTimeParameters sendDate;
+        nn::fnd::DateTimeParameters recvDate;
+        nn::fnd::DateTimeParameters createDate;
+        u8 sendCount;
+        u8 propagationCount;
+        bit16 tag;
     };
 
 } // namespace CTR

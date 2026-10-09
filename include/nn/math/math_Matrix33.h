@@ -214,7 +214,7 @@ inline asm TMatrix* MTX33MultAsm(TMatrix* pOut, const TMatrix* p1, const TMatrix
     VMUL.F32    s8,s12,s16
     VLDR.F32    s16,[r1,#3*4*1+4*1]
 
-    VLDMIA      r2,{s10-s12}         // Third line of matrix p2 to registers [S10-S12]
+    VLDMIA      r2,{s10-s12}
     VMLA.F32    s0,s13,s17
     VMLA.F32    s1,s14,s17
     VMLA.F32    s2,s15,s17

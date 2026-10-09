@@ -45,11 +45,12 @@ public:
             void SetupPrimaryModulateTexture0();
 
             bit32* MakeCommand(bit32* command) const;
-            bit32* MakeConstantColorCommand(bit32* command) const{
+            bit32* MakeConstantColorCommand(bit32* command) const
+            {
                 u32 constColorReg = headRegister + 3;
                                 
                 *command++ = PICA_CMD_DATA_TEX_ENV_CONST(constColorR, constColorG,constColorB, constColorA );      
-                *command++ = PICA_CMD_HEADER_SINGLE( constColorReg );
+                *command++ = PICA_CMD_HEADER_SINGLE(constColorReg);
 
                 return command;
             }

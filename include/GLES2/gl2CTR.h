@@ -1,9 +1,7 @@
-#if defined(WIN32) || defined(__VC32__)
-#   if defined (GL_EXPORTS)
-#       define GL_APICALL __declspec(dllexport)
-#   else
-#       define GL_APICALL __declspec(dllimport)
-#   endif
+#pragma once
+
+#if defined(_WIN32) || defined(WIN32) || defined(__VC32__)
+#   define GL_APICALL __declspec(dllimport)
 #elif defined (__ARMCC_VERSION)
 #   define GL_APICALL
 #elif defined (__SYMBIAN32__) && defined (__GCC32__)
@@ -13,12 +11,12 @@
 #endif
 
 #if !defined (GL_APICALL)
-//#   error Unsupported platform!
+#   error Unsupported platform!
 #endif
 
 #define GL_APIENTRY
 
-#ifdef WIN32
+#if defined(_WIN32) || defined(WIN32)
 typedef __int64 GLint64EXT;
 typedef unsigned __int64 GLuint64EXT;
 #else

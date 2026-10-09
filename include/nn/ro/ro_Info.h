@@ -5,6 +5,8 @@
 #include <nn/ro/ro_ObjectFile.h>
 #include <nn/ro/ro_Types.h>
 
+/* literally like NW_UT_MAKE_SIGNATURE */
+
 #define NN_RO_MAKE_SIGNATURE(a, b, c, d)  \
     ( (((a) & 0xFF) <<  0)          \
     | (((b) & 0xFF) <<  8)          \

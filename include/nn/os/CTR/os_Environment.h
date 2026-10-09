@@ -6,7 +6,6 @@ namespace nn{
 namespace os{
 
 inline bool IsRunOnDevelopmentHardWare(){ return GetReadOnlySharedInfo().deviceEnv & 1 ^ 1; }
-bool IsRunOnSnake();
 
 }
 }

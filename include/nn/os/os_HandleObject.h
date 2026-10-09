@@ -55,3 +55,4 @@ inline void HandleObject::SetHandle(nn::Handle handle)
 
 }
 }
+

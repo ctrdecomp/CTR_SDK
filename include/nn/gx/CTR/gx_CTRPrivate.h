@@ -65,3 +65,4 @@
         "[gx] Address %08X is neither on the device memory nor the VRAM.\n",    \
         addr                                                                    \
     )
+

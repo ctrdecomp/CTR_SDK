@@ -187,3 +187,4 @@ inline QUAT* MTX34ToQUAT(QUAT* pOut, const MTX34* pMtx)
 }
 } // namepspace math
 } // namespace nn
+

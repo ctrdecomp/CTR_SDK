@@ -215,3 +215,4 @@ enum PicaDataFragLightEnvBump
        ( (bumpMode)                  << 28) | \
        ( PICA_CMD_DATA_FRAG_LIGHT_ENV_BUMP(bumpMode, bumpRenorm) << 30) | \
          0x80000000 )
+

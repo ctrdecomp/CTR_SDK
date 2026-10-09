@@ -69,3 +69,4 @@ inline u64 nnmathMultiplyRate32(u64 x, u32 rate)
 }
 
 }
+

@@ -234,3 +234,4 @@ Result GetCecdState(u32* state)
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

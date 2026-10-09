@@ -243,3 +243,4 @@ __asm void Thread::CallDestructorAndExit(void* pStackBottom)
 
 }
 }
+

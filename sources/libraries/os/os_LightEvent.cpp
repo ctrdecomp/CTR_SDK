@@ -72,3 +72,4 @@ bool LightEvent::TryWait()
 
 } // os
 } // nn
+

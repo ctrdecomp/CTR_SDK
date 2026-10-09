@@ -13,3 +13,4 @@ bool nninitIsStartUpDefaultUsing(void);
 #ifdef __cplusplus
 }
 #endif
+

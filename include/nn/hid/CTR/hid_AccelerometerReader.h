@@ -86,3 +86,4 @@ inline void AccelerometerReader::GetSensitivity(s16* pPlay, s16* pSensitivity) c
 }
 }
 }
+

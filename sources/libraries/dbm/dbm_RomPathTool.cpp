@@ -236,3 +236,4 @@ Result GetParentDirectoryName(RomEntryName* pOut, const RomEntryName& base, cons
 }
 }
 }
+

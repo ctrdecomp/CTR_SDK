@@ -17,7 +17,7 @@
 #include <nn/cec/CTR/cec_ControlSys.h>
 #include <nn/cec/cec_Result.h>
 
-#define DBG_PRINTF_ERR(format, args...) NN_LOG_ERROR_(format, ##args)
+#define NN_LOG_ERROR(format, args...) NN_LOG_ERROR_(format, ##args)
 
 #define NWM_BE2LE16(x)       ((static_cast<u16>(          \
                               (((x) & 0xFF00UL) >> 8UL) | \
@@ -56,7 +56,7 @@ Message::Message()
     m_pMessBody = NULL;
     m_pHash = NULL;
     m_hashSize = 0;
-    std::memset(m_hmacKey, 0, MESSAGE_HMAC_KEYLEN);
+    memset(m_hmacKey, 0, MESSAGE_HMAC_KEYLEN);
     Init_Message();
 }
 
@@ -66,7 +66,7 @@ Message::Message(const void* messData, size_t messSize)
     m_pMessBody = NULL;
     m_pHash = NULL;
     m_hashSize = 0;
-    std::memset(m_hmacKey, 0, MESSAGE_HMAC_KEYLEN);
+    memset(m_hmacKey, 0, MESSAGE_HMAC_KEYLEN);
     Init_Message();
 
     InputMessage(messData, messSize);
@@ -83,7 +83,7 @@ Result Message::Init_Message()
         }
         numOfExHeader = 0;
     }
-    std::memset(&m_cec_mh, 0, sizeof(CecMessageHeader));
+    memset(&m_cec_mh, 0, sizeof(CecMessageHeader));
     m_messBodyLen = 0;
     m_messBody = NULL;
     numOfExHeader = 0;
@@ -423,7 +423,7 @@ u32 Message::GetMessageBody(void* dataBody, size_t size) const
 
     if (m_pMessBody != NULL)
     {
-        std::memcpy(dataBody, m_pMessBody, size);
+        memcpy(dataBody, m_pMessBody, size);
     }
     return m_messBodyLen;
 }
@@ -434,16 +434,16 @@ u32 Message::MakeMessageBinary(void* messData) const
 
     u8* pMessageData = static_cast<u8*>(messData);
 
-    std::memcpy(pMessageData, &m_cec_mh, sizeof(CecMessageHeader));
+    memcpy(pMessageData, &m_cec_mh, sizeof(CecMessageHeader));
     pMessageData += sizeof(CecMessageHeader);
 
     const u32 nExHeader = numOfExHeader;
     for (int i = 0; i < nExHeader; ++i)
     { 
-        std::memcpy(pMessageData, &m_cec_mhex[i], GetExHeaderCoreSize());
+        memcpy(pMessageData, &m_cec_mhex[i], GetExHeaderCoreSize());
         pMessageData += GetExHeaderCoreSize();
 
-        std::memcpy(pMessageData, m_cec_mhex[i].exHeaderData, m_cec_mhex[i].exHeaderLen);
+        memcpy(pMessageData, m_cec_mhex[i].exHeaderData, m_cec_mhex[i].exHeaderLen);
         const u32 exHeaderBodySize = GetExHeaderBodySize(m_cec_mhex[i]);
 
         pMessageData += exHeaderBodySize;
@@ -451,13 +451,13 @@ u32 Message::MakeMessageBinary(void* messData) const
 
     if (m_pMessBody != NULL)
     {
-        std::memcpy(pMessageData, m_pMessBody, m_messBodyLen);
+        memcpy(pMessageData, m_pMessBody, m_messBodyLen);
         pMessageData += m_messBodyLen;
     }
 
     if (m_pHash)
     {
-        std::memcpy(pMessageData, m_pHash, 32);
+        memcpy(pMessageData, m_pHash, 32);
     }
     return m_cec_mh.messSize;
 }
@@ -465,7 +465,7 @@ u32 Message::MakeMessageBinary(void* messData) const
 void Message::OutputMessageHeader(void* pHeaderBuf) const
 {
     NN_TASSERT_(pHeaderBuf);
-    std::memcpy(pHeaderBuf, &m_cec_mh, sizeof(CecMessageHeader));
+    memcpy(pHeaderBuf, &m_cec_mh, sizeof(CecMessageHeader));
 }
 
 u32 Message::calcCecMessSize()
@@ -489,3 +489,4 @@ u32 Message::calcCecMessSize()
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

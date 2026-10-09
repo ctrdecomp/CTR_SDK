@@ -110,3 +110,4 @@ void nninitCheckVersion()
 #endif
 
 } // extern "C"
+

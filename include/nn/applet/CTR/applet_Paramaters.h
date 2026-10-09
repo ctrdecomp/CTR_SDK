@@ -338,3 +338,4 @@ namespace CTR{
 }
 
 #define NN_APPLET_HANDLE_NONE (nn::applet::CTR::HANDLE_NONE)
+

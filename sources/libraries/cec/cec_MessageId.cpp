@@ -13,18 +13,18 @@ namespace CTR {
 
 MessageId::MessageId(void)
 {
-    std::memset(m_data, 0x00, SIZE);
+    memset(m_data, 0x00, SIZE);
 }
 
 MessageId::MessageId(const u8 msgId[SIZE])
 {
     if(msgId != NULL)
     {
-        std::memcpy(m_data, msgId, SIZE);
+        memcpy(m_data, msgId, SIZE);
     }
     else
     {
-        std::memset(m_data, 0x00, SIZE);
+        memset(m_data, 0x00, SIZE);
     }
 }
 
@@ -32,11 +32,11 @@ MessageId::MessageId(CECMessageId msgId)
 {
     if(msgId != NULL)
     {
-        std::memcpy(m_data, msgId, SIZE);
+        memcpy(m_data, msgId, SIZE);
     }
     else
     {
-        std::memset(m_data, 0x00, SIZE);
+        memset(m_data, 0x00, SIZE);
     }
 }
 
@@ -44,7 +44,7 @@ bool MessageId::IsEqual(const u8 msgId[SIZE]) const
 {
     if(msgId != NULL)
     {
-        return std::memcmp(msgId, m_data, SIZE) == 0;
+        return memcmp(msgId, m_data, SIZE) == 0;
     }
     else
     {
@@ -56,7 +56,7 @@ void MessageId::GetBinary(u8 msgId[SIZE]) const
 {
     NN_TASSERT_(msgId);
 
-    std::memcpy(msgId, m_data, SIZE);
+    memcpy(msgId, m_data, SIZE);
 }
 
 bool MessageId::IsEmpty() const
@@ -74,3 +74,4 @@ bool MessageId::IsEmpty() const
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

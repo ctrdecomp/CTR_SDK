@@ -65,3 +65,4 @@ void DebugPadReader::Read(DebugPadStatus* pBufs, s32* pReadLen, s32 bufLen)
 }
 }
 }
+

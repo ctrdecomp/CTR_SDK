@@ -79,3 +79,4 @@ void nnosStackMemoryBlockInitialize(nnosStackMemoryBlock* p)
 {
     new (p) StackMemoryBlock();
 }
+

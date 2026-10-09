@@ -54,3 +54,4 @@ void __vb_setAttribArrayBuffer(GLuint index);
 
 void __vbv_initializeVBValidator(bit_mask_t* _mask);
 void __vbv_validateVBValidator(bit_mask_t* _mask);
+

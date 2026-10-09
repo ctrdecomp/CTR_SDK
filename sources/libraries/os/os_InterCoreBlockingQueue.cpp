@@ -265,3 +265,4 @@ template class InterCoreBlockingQueueBase<nn::os::InterCoreCriticalSection>;
 } // namespace detail
 } // namespace os
 } // namespace nn
+

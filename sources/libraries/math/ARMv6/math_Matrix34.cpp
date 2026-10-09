@@ -425,3 +425,4 @@ asm MTX34* MTX34TransposeAsm(MTX34* , const MTX34*)
 } // namespace ARMv6
 } // namespace math
 } // namespace nn
+

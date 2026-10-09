@@ -153,9 +153,9 @@ extern "C" {
 
 // Initialize
 NNGX_APICALL GLboolean  NNGX_APIENTRY nngxInitialize(GLvoid* (*allocator)(GLenum, GLenum, GLuint, GLsizei), void (*deallocator)(GLenum, GLenum, GLuint, GLvoid*));
-NNGX_APICALL void       NNGX_APIENTRY nngxFinalize();
+NNGX_APICALL void       NNGX_APIENTRY nngxFinalize(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxGetAllocator(GLvoid* (**allocator)(GLenum, GLenum, GLuint, GLsizei), void (**deallocator)(GLenum, GLenum, GLuint, GLvoid*));
-NNGX_APICALL GLboolean  NNGX_APIENTRY nngxGetIsInitialized();
+NNGX_APICALL GLboolean  NNGX_APIENTRY nngxGetIsInitialized(void);
 NNGX_APICALL GLsizei    NNGX_APIENTRY nngxGetInitializationCommand(GLsizei datasize, GLvoid* data);
 
 // Execution control
@@ -163,12 +163,12 @@ NNGX_APICALL void       NNGX_APIENTRY nngxGenCmdlists(GLsizei n, GLuint* cmdlist
 NNGX_APICALL void       NNGX_APIENTRY nngxDeleteCmdlists(GLsizei n, const GLuint* cmdlists);
 NNGX_APICALL void       NNGX_APIENTRY nngxBindCmdlist(GLuint cmdlist);
 NNGX_APICALL void       NNGX_APIENTRY nngxCmdlistStorage(GLsizei bufsize, GLsizei requestcount);
-NNGX_APICALL void       NNGX_APIENTRY nngxRunCmdlist();
+NNGX_APICALL void       NNGX_APIENTRY nngxRunCmdlist(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxRunCmdlistByID(GLuint cmdlist);
-NNGX_APICALL void       NNGX_APIENTRY nngxStopCmdlist();
+NNGX_APICALL void       NNGX_APIENTRY nngxStopCmdlist(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxReserveStopCmdlist(GLint id);
-NNGX_APICALL void       NNGX_APIENTRY nngxSplitDrawCmdlist();
-NNGX_APICALL void       NNGX_APIENTRY nngxClearCmdlist();
+NNGX_APICALL void       NNGX_APIENTRY nngxSplitDrawCmdlist(void);
+NNGX_APICALL void       NNGX_APIENTRY nngxClearCmdlist(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxSetCmdlistCallback(void (*func)(GLint));
 NNGX_APICALL void       NNGX_APIENTRY nngxEnableCmdlistCallback(GLint id);
 NNGX_APICALL void       NNGX_APIENTRY nngxDisableCmdlistCallback(GLint id);
@@ -177,7 +177,7 @@ NNGX_APICALL void       NNGX_APIENTRY nngxGetCmdlistParameteri(GLenum pname, GLi
 NNGX_APICALL GLint      NNGX_APIENTRY nngxCheckVSync(GLenum display);
 NNGX_APICALL void       NNGX_APIENTRY nngxWaitVSync(GLenum display);
 NNGX_APICALL void       NNGX_APIENTRY nngxSetVSyncCallback(GLenum display, void (*func)(GLenum));
-NNGX_APICALL void       NNGX_APIENTRY nngxWaitCmdlistDone();
+NNGX_APICALL void       NNGX_APIENTRY nngxWaitCmdlistDone(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddVramDmaCommand(const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddVramDmaCommandNoCacheFlush(const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size);
 NNGX_APICALL void       NNGX_APIENTRY nngxClearFillCmdlist(GLuint data);
@@ -187,12 +187,12 @@ NNGX_APICALL void       NNGX_APIENTRY nngxAddL2BTransferCommand(const GLvoid* sr
 NNGX_APICALL void       NNGX_APIENTRY nngxAddB2LTransferCommand(const GLvoid* srcaddr, GLsizei srcwidth, GLsizei srcheight, GLenum srcformat, GLvoid* dstaddr, GLsizei dstwidth, GLsizei dstheight, GLenum dstformat, GLenum aamode, GLboolean yflip, GLsizei blocksize);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddBlockImageCopyCommand(const GLvoid* srcaddr, GLsizei srcunit, GLsizei srcinterval, GLvoid* dstaddr, GLsizei dstunit, GLsizei dstinterval, GLsizei totalsize);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddMemoryFillCommand(GLvoid* startaddr0, GLsizei size0, GLuint data0, GLsizei width0, GLvoid* startaddr1, GLsizei size1, GLuint data1, GLsizei width1);
-NNGX_APICALL void       NNGX_APIENTRY nngxFlush3DCommand();
-NNGX_APICALL void       NNGX_APIENTRY nngxFlush3DCommandNoCacheFlush();
+NNGX_APICALL void       NNGX_APIENTRY nngxFlush3DCommand(void);
+NNGX_APICALL void       NNGX_APIENTRY nngxFlush3DCommandNoCacheFlush(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxFlush3DCommandPartially(GLsizei buffersize);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddJumpCommand(const GLvoid* bufferaddr, GLsizei buffersize);
 NNGX_APICALL void       NNGX_APIENTRY nngxAddSubroutineCommand(const GLvoid* bufferaddr, GLsizei buffersize);
-NNGX_APICALL GLboolean  NNGX_APIENTRY nngxGetIsRunning();
+NNGX_APICALL GLboolean  NNGX_APIENTRY nngxGetIsRunning(void);
 
 // Display control
 NNGX_APICALL void       NNGX_APIENTRY nngxGenDisplaybuffers(GLsizei n, GLuint* buffers);
@@ -210,7 +210,7 @@ NNGX_APICALL void       NNGX_APIENTRY nngxFilterBlockImage(const GLvoid* srcaddr
 NNGX_APICALL void       NNGX_APIENTRY nngxSwapBuffersByAddress(GLenum display, const GLvoid* addr, const GLvoid* addrB, GLsizei width, GLenum format);
 
 // Command cache
-NNGX_APICALL void       NNGX_APIENTRY nngxStartCmdlistSave();
+NNGX_APICALL void       NNGX_APIENTRY nngxStartCmdlistSave(void);
 NNGX_APICALL void       NNGX_APIENTRY nngxStopCmdlistSave(GLuint* bufferoffset, GLsizei* buffersize, GLuint* requestid, GLsizei* requestsize);
 NNGX_APICALL void       NNGX_APIENTRY nngxUseSavedCmdlist(GLuint cmdlist, GLuint bufferoffset, GLsizei buffersize, GLuint requestid, GLsizei requestsize, GLbitfield statemask, GLboolean copycmd);
 NNGX_APICALL void       NNGX_APIENTRY nngxUseSavedCmdlistNoCacheFlush(GLuint cmdlist, GLuint bufferoffset, GLsizei buffersize, GLuint requestid, GLsizei requestsize, GLbitfield statemask);
@@ -239,3 +239,4 @@ NNGX_APICALL void       NNGX_APIENTRY nngxGetProfilingParameter(GLenum pname, GL
 #ifdef __cplusplus
 }
 #endif
+

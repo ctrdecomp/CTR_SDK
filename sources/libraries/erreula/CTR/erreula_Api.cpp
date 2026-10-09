@@ -49,3 +49,4 @@ void StartErrEulaApplet(applet::CTR::AppletWakeupState* pWakeupState, Parameter*
 }
 }
 }
+

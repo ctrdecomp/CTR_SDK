@@ -194,3 +194,4 @@ inline bit32* MakeUniformCommandGS(bit32* command, u8 location, const nn::math::
 }
 }
 }
+

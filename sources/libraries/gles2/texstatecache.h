@@ -29,3 +29,4 @@ typedef struct tag_texcube_state_t{
 	tx_tex_container_base_t		texparam;
 	srf_container_t				surface[6];
 } texcube_state_t;
+

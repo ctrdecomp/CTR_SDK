@@ -31,3 +31,4 @@ inline static u32 RotateLeft32(int shift, u32 value)
 
 }
 }
+

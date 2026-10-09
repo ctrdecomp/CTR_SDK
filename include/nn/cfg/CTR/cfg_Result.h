@@ -23,3 +23,4 @@ NN_DEFINE_RESULT_CONST(ResultAlreadyInitialized, Result::LEVEL_STATUS, Result::S
 
 } // namespace cfg
 } // namespace nn
+

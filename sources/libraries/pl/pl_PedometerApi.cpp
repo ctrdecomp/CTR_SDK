@@ -20,3 +20,4 @@ void GetStepHistory(ushort* pStepCounts, s32 numHours, nn::fnd::DateTime start)
 }
 }
 }
+

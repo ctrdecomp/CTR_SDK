@@ -113,3 +113,4 @@ static void ena_enableStatus(GLenum param, GLboolean bEnable){
 	BASE_GL_FAIL_IF(!__cb_isCommandbufferEnabled, GL_ERROR_COMMANDBUFFER_FULL_DMP);
 	return;
 }
+

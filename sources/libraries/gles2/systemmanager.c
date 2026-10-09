@@ -576,7 +576,7 @@ void nngxCmdlistStorage(GLsizei bufsize, GLsizei requestcount){
 	if (cmdlist->command_buffer)
 		free_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, cmdlist->command_buffer);
 
-	(void*)newbuffer = malloc_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, bufsize + requestcount * sizeof(cl_cmdreq_t));
+	newbuffer = (unsigned char*)malloc_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, bufsize + requestcount * sizeof(cl_cmdreq_t));
 	BASE_GL_FAIL_IF(newbuffer == 0 && (bufsize != 0 || requestcount != 0), GL_ERROR_8006_DMP);
 	
 	sys_CmdlistStorageCore(cmdlist, bufsize, newbuffer, requestcount, (void*)_PICA_MEM_NATIVE(newbuffer + bufsize));
@@ -2264,3 +2264,4 @@ static void sys_fixSubroutineCommand(cl_list_t* cmdlist, cl_cmdreq_t* cmdreq){
 	cmdlist->subr_addr = 0;
 	cmdlist->subr_bufsize = 0;
 }
+

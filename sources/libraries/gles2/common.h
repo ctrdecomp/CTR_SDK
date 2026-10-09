@@ -53,3 +53,4 @@ extern dmpgl_deallocator_t __dmpgl_deallocator;
 #define malloc_ext(arg0, arg1, arg2, arg3)	(__dmpgl_allocator) ? __dmpgl_allocator(arg0, arg1, arg2, arg3) : 0
 #define free(arg)		(__dmpgl_deallocator) ? __dmpgl_deallocator(NN_GX_MEM_FCRAM, NN_GX_MEM_SYSTEM, 0, arg) : (void)0
 #define free_ext(arg0, arg1, arg2, arg3)	(__dmpgl_deallocator) ? __dmpgl_deallocator(arg0, arg1, arg2, arg3) : (void)0
+

@@ -122,3 +122,6 @@ inline MTX22* MTX22Identity(MTX22* pOut)
 
 }
 }
+
+#pragma pop
+

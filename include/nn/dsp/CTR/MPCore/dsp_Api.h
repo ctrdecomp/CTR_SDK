@@ -7,8 +7,8 @@ namespace nn {
 namespace dsp {
 namespace CTR {
 namespace detail {
-    inline Result InitializeBase(nn::Handle* pSession, const char* name){ }
-    inline Result FinalizeBase(nn::Handle* pSession){ Result res = svc::CloseHandle(pSession->m_Handle); }
+    inline Result InitializeBase(nn::Handle* pSession, const char* name){ return (Result)0; } // TODO
+    inline Result FinalizeBase(nn::Handle* pSession){ Result res = svc::CloseHandle(pSession->m_Handle); return res; } // TODO
 }
 namespace {
     const char PORT_NAME_DSP[] = "dsp::DSP";
@@ -56,3 +56,4 @@ namespace {
 } // namespace CTR
 } // namespace dsp
 } // namespace nn
+

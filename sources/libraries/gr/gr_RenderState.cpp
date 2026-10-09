@@ -430,3 +430,4 @@ bit32* RenderState::RenderState::MakeCommand(bit32* buffer, bool isClearFrameBuf
 }
 }
 }
+

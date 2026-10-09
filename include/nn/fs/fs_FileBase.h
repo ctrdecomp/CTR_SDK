@@ -133,3 +133,4 @@ inline void FileBase::Initialize(const char* pathName, bit32 mode)
 }
 }
 }
+

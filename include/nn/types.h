@@ -3,8 +3,6 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h>
-#include <new>
-#include <limits>
 
 #ifndef __cplusplus
   #include <stdbool.h>

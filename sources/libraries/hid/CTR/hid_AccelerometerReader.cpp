@@ -164,3 +164,4 @@ void AccelerometerReader::SetAxisRotationMatrix(const nn::math::MTX34& mtx)
 }
 }
 }
+

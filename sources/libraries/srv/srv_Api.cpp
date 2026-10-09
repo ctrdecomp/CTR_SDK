@@ -204,3 +204,4 @@ Result GetServiceHandle(nn::Handle* pOut, const char* pName, s32 nameLen, bit32 
 
 }
 }
+

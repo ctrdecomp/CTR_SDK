@@ -101,3 +101,4 @@ inline void IntrusiveQueue<T, Tag>::Clear()
 
 }
 }
+

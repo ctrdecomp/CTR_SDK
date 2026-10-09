@@ -28,3 +28,4 @@ s32 LightSemaphore::Release(s32 releaseCount /*= 1*/)
 
 }
 }
+

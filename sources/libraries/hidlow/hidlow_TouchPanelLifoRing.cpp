@@ -112,3 +112,4 @@ void TouchPanelLifoRing::ReadData(nn::hid::CTR::TouchPanelStatus* pBuffers, s32 
 }
 }
 }
+

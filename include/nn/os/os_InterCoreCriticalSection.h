@@ -148,3 +148,4 @@ NN_UTIL_DETAIL_DEFINE_SCOPED_LOCK(InterCoreCriticalSection, Enter(), Leave());
 
 }
 }
+

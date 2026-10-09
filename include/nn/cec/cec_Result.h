@@ -47,3 +47,4 @@ NN_DEFINE_RESULT_CONST(ResultStateBusy, Result::LEVEL_STATUS, Result::SUMMARY_IN
 
 } // namespace cec
 } // namespace nn
+

@@ -26,3 +26,4 @@ Result Resume(DaemonName name);
 
 }
 }
+

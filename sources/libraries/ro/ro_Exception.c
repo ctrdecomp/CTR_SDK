@@ -14,3 +14,4 @@ extern "C" nnResult nnRoDetailInitializeLinkException(void* pRs, size_t rsSize)
 {
     return nnRoDetailInitializeImpl(pRs, rsSize);
 }
+

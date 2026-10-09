@@ -52,3 +52,4 @@ inline void StartLcdDisplay()
 }
 }
 #endif // __cplusplus
+

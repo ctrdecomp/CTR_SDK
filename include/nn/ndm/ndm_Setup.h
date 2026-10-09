@@ -7,3 +7,4 @@ namespace ndm{
 void SetupDaemonsDefault();
 }
 }
+

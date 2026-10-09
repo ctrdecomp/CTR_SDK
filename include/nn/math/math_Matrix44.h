@@ -768,7 +768,7 @@ inline MTX44* MTX44Mult(MTX44* pOut, const MTX44* __restrict p1, f32 f)
     #ifdef NN_MATH_BUILD_FAST
         return ARMv6:MTX44MultC(pOut, p1, f);
     #else
-        ARMv6::MTX44MultAsm(pOut, p1, f);
+        return ARMv6::MTX44MultAsm(pOut, p1, f);
     #endif
 }
 
@@ -808,3 +808,4 @@ inline MTX44* MTX44PerspectivePivotRad(MTX44* pOut, f32 fovy, f32 aspect, f32 n,
 }
 }
 }
+

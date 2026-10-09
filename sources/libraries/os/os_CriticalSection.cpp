@@ -27,3 +27,4 @@ void CriticalSection::EnterImpl()
 
 }
 }
+

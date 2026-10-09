@@ -55,3 +55,4 @@ const nn::cfg::CTR::LanguageCfgData LANGUAGE_CFG_DEFAULT =
 }
 }
 }
+

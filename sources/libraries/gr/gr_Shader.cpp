@@ -913,3 +913,4 @@ bit32* Shader::MakeConstRgCommand_(bit32* command, const s32 shader_index)
 }
 }
 }
+

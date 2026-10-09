@@ -39,3 +39,4 @@ void GetResultDescriptionStringImplKeeper()
 } // namespace detail
 } // namespace cfg
 } // namespace nn
+

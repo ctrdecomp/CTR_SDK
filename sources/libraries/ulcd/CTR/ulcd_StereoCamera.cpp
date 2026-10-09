@@ -367,3 +367,4 @@ f32 StereoCamera::GetMaxParallax(void) const
 }
 }
 }
+

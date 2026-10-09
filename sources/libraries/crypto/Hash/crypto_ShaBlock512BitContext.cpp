@@ -69,3 +69,4 @@ void ShaBlock512BitContext::AddPadding()
 }
 }
 }
+

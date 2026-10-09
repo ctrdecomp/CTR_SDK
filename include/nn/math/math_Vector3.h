@@ -384,3 +384,4 @@ inline VEC3* VEC3Normalize(VEC3* pOut, const VEC3* p)
 
 }
 }
+

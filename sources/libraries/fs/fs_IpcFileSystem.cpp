@@ -474,3 +474,4 @@ Result FileSystem::GetFreeBytes(s64* freeBytes, bit64 archiveHandle)
 }
 }
 }
+

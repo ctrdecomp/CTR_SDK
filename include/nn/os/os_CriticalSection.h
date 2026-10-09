@@ -158,3 +158,4 @@ NN_UTIL_DETAIL_DEFINE_SCOPED_LOCK(CriticalSection, Enter(), Leave());
 
 }
 }
+

@@ -31,3 +31,4 @@ inline MTX22* MTX23ToMTX22(MTX22* pOut, const MTX23* pM)
 
 }
 }
+

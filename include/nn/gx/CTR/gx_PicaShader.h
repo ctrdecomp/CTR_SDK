@@ -213,3 +213,4 @@ enum PicaDataVSFloat
     0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                           \
     0x0, 0x0,                                                         \
     PICA_CMD_SET_VERTEX_ATTR_ARRAYS_BASE_ADDR_DUMMY()
+

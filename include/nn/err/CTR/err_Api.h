@@ -94,7 +94,7 @@ namespace detail
         ::nn::Result resultLocal = (result); \
         if ( resultLocal.IsFailure() ) \
         { \
-            ::nn::err::ThrowFatalErr(resultLocal); \
+            ::nn::err::CTR::ThrowFatalErr(resultLocal); \
         } \
     } while(0)
 
@@ -110,14 +110,3 @@ namespace detail
 #define NN_ERR_LOG_AND_PANIC_IF_FAILED(result) \
     NN_ERR_THROW_FATAL_ALL(result)
 
-#define NN_ERR_THROW_FATAL_IF_FATAL_ONLY(result) \
-    NN_UTIL_PANIC_IF_FAILED(result)
-
-#define NN_ERR_THROW_FATAL(result) \
-    NN_UTIL_PANIC_IF_FAILED(result)
-
-#define NN_ERR_THROW_FATAL_ALL(result) \
-    NN_UTIL_PANIC_IF_FAILED(result)
-
-#define NN_ERR_LOG_AND_PANIC_IF_FAILED(result) \
-    NN_UTIL_PANIC_IF_FAILED(result)

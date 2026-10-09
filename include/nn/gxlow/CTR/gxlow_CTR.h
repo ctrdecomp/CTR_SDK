@@ -20,22 +20,22 @@ typedef void (*nngxlowFuncPtr)(void);
 extern "C" {
 #endif
 
-void nngxlowInitialize();
-bool nngxlowIsFirstInitialization();
+void nngxlowInitialize(void);
+bool nngxlowIsFirstInitialization(void);
 
 void nngxlowFlushDataCache(const void* pData, size_t size);
 uptr nngxlowGetPhysicalAddr(uptr virtualAddr);
 
-void nngxlowFinalize();
+void nngxlowFinalize(void);
 
-s32 nngxlowGetNumSpeculativeRequests();
+s32 nngxlowGetNumSpeculativeRequests(void);
 
 nngxlowFuncPtr nngxlowRegisterInterruptHandler(nngxlowFuncPtr interruptHandler,nngxlowInterrupt type);
 
-void nngxlowLock();
-void nngxlowUnlock();
+void nngxlowLock(void);
+void nngxlowUnlock(void);
 
-void nngxlowYieldThread();
+void nngxlowYieldThread(void);
 
 void nngxlowReadHWRegs(uint regOffset, void* pDst, size_t size);
 void nngxlowRequestDMA(void* pDst, const void* pSrc, size_t size);
@@ -47,7 +47,7 @@ void nngxlowSetDisplayTransfer(void* pSrc, u16 srcWidth, u16 srcHeight, void* pD
 void nngxlowSetMemoryFill(void *startAddr0,void *endAddr0,bit32 data0,bit32 ctrl0,void *startAddr1,void *endAddr1,bit32 data1,bit32 ctrl1);
 void nngxlowSetTextureCopy(void *pSrc,void *pDst,u32 dmaSize,u16 srcIntv,u16 srcIntiv,u16 dstIntv,u16 dstIntiv,bit32 mode);
 void nngxlowWriteHWRegs(uint regOffset, const void* pSrc, size_t size);
-s64 nngxlowGetSystemTick();
+s64 nngxlowGetSystemTick(void);
 void nngxlowWriteHWRegsWithMask(uint regOffset, const void* pSrc, const void* pMask, size_t size);
 
 
@@ -55,3 +55,4 @@ void nngxlowWriteHWRegsWithMask(uint regOffset, const void* pSrc, const void* pM
 #ifdef __cplusplus
 }
 #endif
+

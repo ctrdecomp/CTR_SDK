@@ -35,7 +35,7 @@ namespace detail{
 Handle& GetFileServerHandle(){ return fs::g_FileServerHandle; }
 
 namespace{
-    fnd::UnitHeapBase s_ArchiveHeap = *(fnd::UnitHeapBase*)0;
+    fnd::UnitHeapBase s_ArchiveHeap;
 
     const wchar_t* GetArchivePath(const wchar_t* path)
     {

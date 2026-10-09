@@ -24,7 +24,7 @@ public:
         Initialize(initialLocked);
     }
 
-    Mutex::~Mutex() 
+    ~Mutex() 
     { 
         this->Close(); 
     }

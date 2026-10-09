@@ -10,7 +10,7 @@
 namespace nn {
 namespace fslow {
 
-template <class T, typename V>
+template <class U, typename V> // TODO: use U / V
 class LowPath
 {
 protected:

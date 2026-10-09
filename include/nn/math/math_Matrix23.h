@@ -278,3 +278,5 @@ inline MTX23* MTX23RotFIdx(MTX23* pOut, f32 fIdx)
 }
 }
 
+#pragma pop
+

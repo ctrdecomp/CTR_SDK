@@ -102,8 +102,9 @@ public:
     DspsndChannelDirect* GetChannelDirectAddr(u8 ch){ u32 page = this->getCurrentPage(); return this->m_pChannelDirectOnShare[page][ch]; }
     DspsndChannelOption* GetChannelOptionAddr(u8 ch){ return this->m_pChannelOptionOnShare[this->m_WritePage][ch]; }
     DspsndChannelStatus* GetChannelStatusAddr(u8 ch){ return this->m_pChannelStatusOnShare[this->m_ReadPage][ch]; }
-    u32 getCurrentPage(){ m_DirectId & 1; }
-    ushort* GetDirectIdAddrOnShared(int page){ this->m_pDirectIdOnShare[page]; }
+    u32 getCurrentPage(){ return (m_DirectId & 1); }
+    u32 getNextPage(){ return (this->getCurrentPage() + 1) & 1; }
+    ushort* GetDirectIdAddrOnShared(int page){ return this->m_pDirectIdOnShare[page]; }
     DspsndDspCycles* GetDspCyclesAddr(){ return this->m_pDspCyclesOnShare[this->m_ReadPage]; }
     s32 GetDspCyclesFrame(){ return this->m_DspCycles.ch0.frame; }
     static Dspsnd& GetInstance(){ return internal::sDspsnd; }
@@ -111,7 +112,6 @@ public:
     DspsndMasterStatus* GetMasterStatusAddr(){ return this->m_pMasterStatusOnShare[this->m_ReadPage]; }
     short* GetMixBusAddr(){ return this->m_pMixBusOnShare[this->m_ReadPage]; }
     s32 GetDspCyclesWhole() { return m_DspCycles.ch0.whole; }
-    u32 getNextPage(){ u32 page = this->getCurrentPage(); return page + 1 & 1; }
     bool UpdateSlotId(ushort recvid);
     bool SetIsHeadSet(bool flag);
     void EnableAuxCallbackInSendParameter(bool param){ m_IsAuxCallbackInSendParameterEnabled = param; }

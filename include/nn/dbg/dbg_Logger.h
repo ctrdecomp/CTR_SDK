@@ -7,6 +7,13 @@ namespace nn {
 namespace dbg { 
 namespace detail {
 
+#define NN_LOGGER_LEVEL_DEBUG 0
+#define NN_LOGGER_LEVEL_INFO 1
+#define NN_LOGGER_LEVEL_WARN 2
+#define NN_LOGGER_LEVEL_ERROR 3
+#define NN_LOGGER_LEVEL_FATAL 4
+#define NN_LOGGER_LEVEL_FORCE 5
+
 class Logger
 {
 private:
@@ -29,13 +36,42 @@ public:
 
 #ifndef NN_LOG_BASE_
 #define NN_LOG_BASE_(level, ...)                                     \
-    ::nn::dbg::detail::Logger::PrintLog(::nn::dbg::detail::Logger::LEVEL_ ## level,   \
+    ::nn::dbg::detail::Logger::PrintLog(NN_LOGGER_LEVEL_ ## level,   \
         NN_FUNCTION, NN_FILE_NAME, __LINE__, __VA_ARGS__)
 #endif
 
-#ifdef NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK
-#define NN_LOG_ERROR_(...)  NN_LOG_BASE_(DEBUG, __VA_ARGS__)
+#if 0
+#define NN_LOG_DEBUG(...)  NN_LOG_BASE_(DEBUG, __VA_ARGS__)
 #else
-#define NN_LOG_ERROR_(...) ((void)0)
+#define NN_LOG_DEBUG(...)  ((void)0)
 #endif
 
+#if 0
+#define NN_LOG_INFO(...)  NN_LOG_BASE_(INFO, __VA_ARGS__)
+#else
+#define NN_LOG_INFO(...)  ((void)0)
+#endif
+
+#if 0
+#define NN_LOG_WARN(...)  NN_LOG_BASE_(WARN, __VA_ARGS__)
+#else
+#define NN_LOG_WARN(...)  ((void)0)
+#endif
+
+#if 0
+#define NN_LOG_ERROR(...)  NN_LOG_BASE_(ERROR, __VA_ARGS__)
+#else
+#define NN_LOG_ERROR(...)  ((void)0)
+#endif
+
+#if 0
+#define NN_LOG_FATAL(...)  NN_LOG_BASE_(FATAL, __VA_ARGS__)
+#else
+#define NN_LOG_FATAL(...)  ((void)0)
+#endif
+
+#if 0
+#define NN_LOG_FORCE(...)  NN_LOG_BASE_(FORCE, __VA_ARGS__)
+#else
+#define NN_LOG_FORCE(...)  ((void)0)
+#endif

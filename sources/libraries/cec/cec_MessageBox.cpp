@@ -25,12 +25,6 @@
             return ResultNotAuthorized();                                                                              \
     } while (0)
 
-#define TRACE()
-
-#define DBG_PRINTF_ERR(format, args...) NN_LOG_ERROR_(format, ##args)
-
-#define MEMCPY(dest, src, len) std::memcpy(dest, src, len)
-
 namespace
 {
 bool IsInboxInfoBodyBufAllocated;
@@ -58,8 +52,8 @@ MessageBox::MessageBox(bool NoInitialize)
     b_SkippedWriteInboxInfo = false;
     b_SkippedWriteOutboxInfo = false;
 
-    std::memset(&tmp_cecInboxInfo, 0, sizeof(tmp_cecInboxInfo));
-    std::memset(&tmp_cecOutboxInfo, 0, sizeof(tmp_cecOutboxInfo));
+    memset(&tmp_cecInboxInfo, 0, sizeof(tmp_cecInboxInfo));
+    memset(&tmp_cecOutboxInfo, 0, sizeof(tmp_cecOutboxInfo));
 
     if (!NoInitialize)
     {
@@ -84,7 +78,7 @@ Result MessageBox::Initialize()
         currentCecTitleId = 0;
         if (CecControl::IsInitialized() == false)
         {
-            DBG_PRINTF_ERR("%s(%d): ### CecControl is not Initialized...\n", __FUNCTION__, __LINE__);
+            NN_LOG_ERROR("%s(%d): ### CecControl is not Initialized...\n", __FUNCTION__, __LINE__);
         }
         if (CecControlSys::IsInitializedSys())
         {
@@ -176,7 +170,7 @@ size_t MessageBox::ReadMessageBoxList()
         currentCecTitleId, FILETYPE_MESSAGE_BOX_LIST, FILEOPT_READ | FILEOPT_NOCHECK);
     if (result.GetDescription() == Result::DESCRIPTION_INVALID_HANDLE)
     {
-        DBG_PRINTF_ERR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
+        NN_LOG_ERROR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
         return 0;
     }
     if (filesize == 0)
@@ -233,7 +227,7 @@ size_t MessageBox::ReadMessageBoxList(void *bufOut, size_t size)
         FILETYPE_MESSAGE_BOX_LIST, FILEOPT_READ | FILEOPT_NOCHECK);
     if (result.GetDescription() == nn::Result::DESCRIPTION_INVALID_HANDLE)
     {
-        DBG_PRINTF_ERR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
+        NN_LOG_ERROR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
         return 0;
     }
 
@@ -258,7 +252,7 @@ size_t MessageBox::ReadMessageBoxList(void *bufOut, size_t size)
         }
     }
 
-    std::memcpy(&bufOut, &messBoxList, sizeof(cecMessageBoxList));
+    memcpy(&bufOut, &messBoxList, sizeof(cecMessageBoxList));
 
     return filesize;
 }
@@ -345,7 +339,7 @@ nn::Result MessageBox::OpenMessageBox(const u32 cecTitleId, const u32 privateId)
     b_SkippedWriteInboxInfo = false;
     b_SkippedWriteOutboxInfo = false;
 
-    std::memcpy(&cecMessageBoxInfo, &tmp_messageboxinfo, sizeof(MessageBoxInfo));
+    memcpy(&cecMessageBoxInfo, &tmp_messageboxinfo, sizeof(MessageBoxInfo));
     result = ReadInBoxInfo();
     if (result.IsFailure())
     {
@@ -404,12 +398,12 @@ void MessageBox::CloseMessageBox(bool bWithoutCommit)
     }
 
     currentCecTitleId = 0;
-    std::memset(&cecInboxInfo, 0, sizeof(cecInboxInfo));
-    std::memset(&cecOutboxInfo, 0, sizeof(cecOutboxInfo));
-    std::memset(cecInboxInfo_body, 0, sizeof(cecInboxInfo_body));
-    std::memset(cecOutboxInfo_body, 0, sizeof(cecOutboxInfo_body));
-    std::memset(&cecOutboxIndex_header, 0, sizeof(cecOutboxIndex_header));
-    std::memset(cecOutboxIndex, 0, sizeof(cecOutboxIndex));
+    memset(&cecInboxInfo, 0, sizeof(cecInboxInfo));
+    memset(&cecOutboxInfo, 0, sizeof(cecOutboxInfo));
+    memset(cecInboxInfo_body, 0, sizeof(cecInboxInfo_body));
+    memset(cecOutboxInfo_body, 0, sizeof(cecOutboxInfo_body));
+    memset(&cecOutboxIndex_header, 0, sizeof(cecOutboxIndex_header));
+    memset(cecOutboxIndex, 0, sizeof(cecOutboxIndex));
 
     FreeInboxInfoBodyBuf();
     FreeOutboxInfoBodyBuf();
@@ -501,7 +495,7 @@ Result MessageBox::CreateMessageBox(const u32 cecTitleId, const u32 privateId, c
     CreateInBox(currentCecTitleId);
     CreateOutBox(currentCecTitleId);
 
-    std::memset(&cecMessageBoxInfo, 0, sizeof(MessageBoxInfo));
+    memset(&cecMessageBoxInfo, 0, sizeof(MessageBoxInfo));
     cecMessageBoxInfo.magic16 = MESSAGEBOXINFO_MAGIC;
     cecMessageBoxInfo.cecTitleId = cecTitleId;
     cecMessageBoxInfo.isActive = true;
@@ -509,7 +503,7 @@ Result MessageBox::CreateMessageBox(const u32 cecTitleId, const u32 privateId, c
 
     cecMessageBoxInfo.MessageBoxInfoFlag = MESSAGE_BOX_FLAG_APPLICATION;
 
-    std::memcpy(cecMessageBoxInfo.hmacKey, hmacKey, MESSAGE_HMAC_KEYLEN);
+    memcpy(cecMessageBoxInfo.hmacKey, hmacKey, MESSAGE_HMAC_KEYLEN);
 
     cecMessageBoxInfo.lastOpened = nn::fnd::DateTime::GetNow().GetParameters();
 
@@ -671,13 +665,13 @@ nn::Result MessageBox::ReadMessageBoxInfo(struct MessageBoxInfo *outbuf, u32 cec
     nn::Result result;
     size_t readLen = 0;
 
-    std::memset(outbuf, 0, sizeof(MessageBoxInfo));
+    memset(outbuf, 0, sizeof(MessageBoxInfo));
     result = OpenAndReadFile(reinterpret_cast<u8 *>(outbuf), sizeof(struct MessageBoxInfo), &readLen, cecTitleId,
                              nn::cec::CTR::FILETYPE_MESSAGE_BOX_INFO,
                              nn::cec::CTR::FILEOPT_READ | nn::cec::CTR::FILEOPT_NOCHECK);
     if (result.GetDescription() == nn::Result::DESCRIPTION_INVALID_HANDLE)
     {
-        DBG_PRINTF_ERR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
+        NN_LOG_ERROR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
         return result;
     }
 
@@ -711,25 +705,25 @@ Result MessageBox::GetMessageBoxData(const u32 datatype, void *dataBuf, const si
 
     if (datatype == FILETYPE_BOXDATA_FLAG_1)
     {
-        std::memcpy(dataBuf, &cecMessageBoxInfo.flag1, dataBufSize);
+        memcpy(dataBuf, &cecMessageBoxInfo.flag1, dataBufSize);
         return ResultSuccess();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_2)
     {
-        std::memcpy(dataBuf, &cecMessageBoxInfo.flag2, dataBufSize);
+        memcpy(dataBuf, &cecMessageBoxInfo.flag2, dataBufSize);
         return ResultSuccess();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_3)
     {
-        std::memcpy(dataBuf, &cecMessageBoxInfo.flag3, dataBufSize);
+        memcpy(dataBuf, &cecMessageBoxInfo.flag3, dataBufSize);
         return ResultSuccess();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_4)
     {
-        std::memcpy(dataBuf, &cecMessageBoxInfo.flag4, dataBufSize);
+        memcpy(dataBuf, &cecMessageBoxInfo.flag4, dataBufSize);
         return ResultSuccess();
     }
 
@@ -797,28 +791,28 @@ nn::Result MessageBox::SetMessageBoxData(const u32 datatype, const void *data, c
 
     if (datatype == FILETYPE_BOXDATA_FLAG_1)
     {
-        std::memcpy(&cecMessageBoxInfo.flag1, reinterpret_cast<u8 *>(const_cast<void *>(data)),
+        memcpy(&cecMessageBoxInfo.flag1, reinterpret_cast<u8 *>(const_cast<void *>(data)),
             sizeof(cecMessageBoxInfo.flag1));
         return WriteMessageBoxInfo();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_2)
     {
-        std::memcpy(&cecMessageBoxInfo.flag2, reinterpret_cast<u8 *>(const_cast<void *>(data)),
+        memcpy(&cecMessageBoxInfo.flag2, reinterpret_cast<u8 *>(const_cast<void *>(data)),
             sizeof(cecMessageBoxInfo.flag2));
         return WriteMessageBoxInfo();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_3)
     {
-        std::memcpy(&cecMessageBoxInfo.flag3, reinterpret_cast<u8 *>(const_cast<void *>(data)),
+        memcpy(&cecMessageBoxInfo.flag3, reinterpret_cast<u8 *>(const_cast<void *>(data)),
             sizeof(cecMessageBoxInfo.flag3));
         return WriteMessageBoxInfo();
     }
 
     if (datatype == FILETYPE_BOXDATA_FLAG_4)
     {
-        std::memcpy(&cecMessageBoxInfo.flag4, reinterpret_cast<u8 *>(const_cast<void *>(data)),
+        memcpy(&cecMessageBoxInfo.flag4, reinterpret_cast<u8 *>(const_cast<void *>(data)),
             sizeof(cecMessageBoxInfo.flag4));
         return WriteMessageBoxInfo();
     }
@@ -884,8 +878,8 @@ nn::Result MessageBox::GetBoxInfo(struct CecBoxInfoHeader *boxinfo, CecMessageHe
         {
             return ResultNoData();
         }
-        std::memcpy(boxinfo, &cecInboxInfo, sizeof(CecBoxInfoHeader));
-        std::memcpy(boxInfoBody, cecInboxInfo_body, sizeof(cecInboxInfo_body));
+        memcpy(boxinfo, &cecInboxInfo, sizeof(CecBoxInfoHeader));
+        memcpy(boxInfoBody, cecInboxInfo_body, sizeof(cecInboxInfo_body));
     }
     else
     {
@@ -894,8 +888,8 @@ nn::Result MessageBox::GetBoxInfo(struct CecBoxInfoHeader *boxinfo, CecMessageHe
         {
             return ResultNoData();
         }
-        std::memcpy(boxinfo, &cecOutboxInfo, sizeof(CecBoxInfoHeader));
-        std::memcpy(boxInfoBody, cecOutboxInfo_body, sizeof(cecOutboxInfo_body));
+        memcpy(boxinfo, &cecOutboxInfo, sizeof(CecBoxInfoHeader));
+        memcpy(boxInfoBody, cecOutboxInfo_body, sizeof(cecOutboxInfo_body));
     }
     return ResultSuccess();
 }
@@ -994,7 +988,7 @@ nn::Result MessageBox::ReadBoxInfo(struct CecBoxInfoHeader *boxinfo, CecMessageH
     {
         return nn::cec::ResultInvalidData();
     }
-    std::memcpy(reinterpret_cast<u8 *>(boxinfo), pBodyBuf, sizeof(struct CecBoxInfoHeader));
+    memcpy(reinterpret_cast<u8 *>(boxinfo), pBodyBuf, sizeof(struct CecBoxInfoHeader));
     if (readLen != boxinfo->boxInfoSize ||
         readLen < sizeof(struct CecBoxInfoHeader) + sizeof(struct CecMessageHeader) * boxinfo->messNum)
     {
@@ -1006,7 +1000,7 @@ nn::Result MessageBox::ReadBoxInfo(struct CecBoxInfoHeader *boxinfo, CecMessageH
     for (int i = 0; i < boxinfo->messNum; i++)
     {
 
-        std::memcpy(reinterpret_cast<u8 *>(&tmp_cec_mh), p_boxinfo, sizeof(struct CecMessageHeader));
+        memcpy(reinterpret_cast<u8 *>(&tmp_cec_mh), p_boxinfo, sizeof(struct CecMessageHeader));
 
         if (tmp_cec_mh.magic16 != MESSAGE_MAGIC || tmp_cec_mh.cecTitleId != currentCecTitleId)
         {
@@ -1149,7 +1143,7 @@ u32 MessageBox::ReadOutBoxIndex()
     result = OpenFile(currentCecTitleId, nn::cec::CTR::FILETYPE_OUTBOX_INDEX, nn::cec::CTR::FILEOPT_READ, &filesize);
     if (result.GetDescription() == nn::Result::DESCRIPTION_INVALID_HANDLE)
     {
-        DBG_PRINTF_ERR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
+        NN_LOG_ERROR("%s(%d): DESCRIPTION_INVALID_HANDLE\n", __FUNCTION__, __LINE__);
         return 0;
     }
 
@@ -1175,7 +1169,7 @@ u32 MessageBox::ReadOutBoxIndex()
                         nn::cec::CTR::FILEOPT_READ | nn::cec::CTR::FILEOPT_NOCHECK);
     if (result.IsFailure())
     {
-        DBG_PRINTF_ERR("%s(%d): OpenAndReadFile Failed result[0x%08x]\n", __FUNCTION__, __LINE__, result.GetPrintableBits());
+        NN_LOG_ERROR("%s(%d): OpenAndReadFile Failed result[0x%08x]\n", __FUNCTION__, __LINE__, result.GetPrintableBits());
         os_free(cecOutboxIndexBuf);
         return 0;
     }
@@ -1183,7 +1177,7 @@ u32 MessageBox::ReadOutBoxIndex()
     p_filebuf = cecOutboxIndexBuf;
     if (readLen > 0)
     {
-        std::memcpy(reinterpret_cast<u8 *>(&cecOutboxIndex_header), p_filebuf, sizeof(CecOutBoxIndexHeader));
+        memcpy(reinterpret_cast<u8 *>(&cecOutboxIndex_header), p_filebuf, sizeof(CecOutBoxIndexHeader));
     }
 
     if (cecOutboxIndex_header.magic16 != CEC_OUTBOXINDEX_MAGIC ||
@@ -1216,7 +1210,7 @@ u32 MessageBox::ReadOutBoxIndex()
         }
 
         p_filebuf = cecOutboxIndexBuf;
-        std::memcpy(reinterpret_cast<u8 *>(&cecOutboxIndex_header), p_filebuf, sizeof(CecOutBoxIndexHeader));
+        memcpy(reinterpret_cast<u8 *>(&cecOutboxIndex_header), p_filebuf, sizeof(CecOutBoxIndexHeader));
         if (cecOutboxIndex_header.magic16 != CEC_OUTBOXINDEX_MAGIC ||
             (filesize - sizeof(CecOutBoxIndexHeader)) / CEC_SIZEOF_MESSAGEID != cecOutboxIndex_header.messageNum)
         {
@@ -1230,7 +1224,7 @@ u32 MessageBox::ReadOutBoxIndex()
     NN_TASSERT_(cecOutboxIndex_header.messageNum <= CEC_OUTBOX_MESSNUM_DEFAULT);
     for (int i = 0; i < cecOutboxIndex_header.messageNum; i++)
     {
-        std::memcpy(cecOutboxIndex[i], p_filebuf, CEC_SIZEOF_MESSAGEID);
+        memcpy(cecOutboxIndex[i], p_filebuf, CEC_SIZEOF_MESSAGEID);
         p_filebuf += CEC_SIZEOF_MESSAGEID;
     }
 
@@ -1378,7 +1372,7 @@ Result MessageBox::WriteMessage(const Message &cecMessage, const CecBoxType boxT
 
     if (currentCecTitleId == 0)
     {
-        DBG_PRINTF_ERR("%s(%d): Err. Not opened mess box\n", __FUNCTION__, __LINE__);
+        NN_LOG_ERROR("%s(%d): Err. Not opened mess box\n", __FUNCTION__, __LINE__);
         return ResultNotAuthorized();
     }
 
@@ -1525,7 +1519,7 @@ Result MessageBox::WriteMessage(const Message &cecMessage, const CecBoxType boxT
     }
 
     cecMessage.MakeMessageBinary(bufWrite);
-    std::memcpy(bufWrite, reinterpret_cast<u8 *>(&messHeaderOuts), sizeof(CecMessageHeader));
+    memcpy(bufWrite, reinterpret_cast<u8 *>(&messHeaderOuts), sizeof(CecMessageHeader));
     u8 tmp_messIdBin[CEC_SIZEOF_MESSAGEID] = {0};
     if (!tmp_messId.IsEmpty())
     {
@@ -1563,7 +1557,7 @@ Result MessageBox::WriteMessage(const Message &cecMessage, const CecBoxType boxT
         {
             if (b_SkippedWriteOutboxInfo == false)
             {
-                std::memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
+                memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
             }
             b_SkippedWriteOutboxInfo = true;
             if (writeResult.IsSuccess())
@@ -1577,7 +1571,7 @@ Result MessageBox::WriteMessage(const Message &cecMessage, const CecBoxType boxT
             NN_TASSERT_(boxType == CEC_BOXTYPE_INBOX);
             if (b_SkippedWriteInboxInfo == false)
             {
-                std::memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
+                memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
             }
             b_SkippedWriteInboxInfo = true;
             if (writeResult.IsSuccess())
@@ -1640,7 +1634,7 @@ Result MessageBox::DeleteMessage(const CecBoxType boxType, const MessageId &mess
             {
                 if (b_SkippedWriteOutboxInfo == false)
                 {
-                    std::memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
+                    memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
                 }
                 b_SkippedWriteOutboxInfo = true;
             }
@@ -1656,7 +1650,7 @@ Result MessageBox::DeleteMessage(const CecBoxType boxType, const MessageId &mess
         {
             if (b_SkippedWriteOutboxInfo == false)
             {
-                std::memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
+                memcpy(&tmp_cecOutboxInfo, &cecOutboxInfo, sizeof(tmp_cecOutboxInfo));
             }
             b_SkippedWriteOutboxInfo = true;
             tmp_cecOutboxInfo.boxSize -= targetMessSize;
@@ -1687,7 +1681,7 @@ Result MessageBox::DeleteMessage(const CecBoxType boxType, const MessageId &mess
             {
                 if (b_SkippedWriteInboxInfo == false)
                 {
-                    std::memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
+                    memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
                 }
                 b_SkippedWriteInboxInfo = true;
             }
@@ -1703,7 +1697,7 @@ Result MessageBox::DeleteMessage(const CecBoxType boxType, const MessageId &mess
         {
             if (b_SkippedWriteInboxInfo == false)
             {
-                std::memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
+                memcpy(&tmp_cecInboxInfo, &cecInboxInfo, sizeof(tmp_cecInboxInfo));
             }
             b_SkippedWriteInboxInfo = true;
             tmp_cecInboxInfo.boxSize -= targetMessSize;
@@ -1920,7 +1914,7 @@ u32 MessageBox::GetInBoxMessHeader(CecMessageHeader &messHeader, const MessageId
 
 u32 MessageBox::GetInBoxMessHeaderByIndex(CecMessageHeader &messHeader, const u32 messIndex) const
 {
-    MEMCPY(reinterpret_cast<u8 *>(&messHeader), reinterpret_cast<u8 *>(cecInboxInfo_body[messIndex]),
+    memcpy(reinterpret_cast<u8 *>(&messHeader), reinterpret_cast<u8 *>(cecInboxInfo_body[messIndex]),
            sizeof(CecMessageHeader));
     return 0;
 }
@@ -1941,7 +1935,7 @@ u32 MessageBox::GetOutBoxMessHeader(CecMessageHeader &messHeader, const MessageI
     {
         if (messageId.IsEqual(cecOutboxInfo_body[i]->messageId))
         {
-            MEMCPY(reinterpret_cast<u8 *>(&messHeader), reinterpret_cast<u8 *>(cecOutboxInfo_body[i]),
+            memcpy(reinterpret_cast<u8 *>(&messHeader), reinterpret_cast<u8 *>(cecOutboxInfo_body[i]),
                    sizeof(CecMessageHeader));
             return 0;
         }
@@ -2319,7 +2313,7 @@ u32 MessageBox::GetMessageIndex(CecBoxType boxType, u8 *messId)
     u32 messNum = GetBoxMessageNum(boxType);
     for (u32 i = 0; i < messNum; i++)
     {
-        if (std::memcmp(messId, GetMessageId(boxType, i).GetBinary(), CEC_SIZEOF_MESSAGEID) == 0)
+        if (memcmp(messId, GetMessageId(boxType, i).GetBinary(), CEC_SIZEOF_MESSAGEID) == 0)
         {
             return i;
         }

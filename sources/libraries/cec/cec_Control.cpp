@@ -16,8 +16,6 @@
 
 #include <nn/cec/CTR/cec_ControlSys.h>
 
-#define DBG_PRINTF_ERR(format, args...)     NN_LOG_ERROR_(format, ## args)
-
 namespace
 {
 bool isDebugMode = false;
@@ -58,7 +56,7 @@ Result CecControl::Initialize()
         result = nn::ndm::Initialize() ;
         if(result.IsFailure())
         {
-            DBG_PRINTF_ERR("nn::ndm::Initialize Failure\n");
+            NN_LOG_FORCE("nn::ndm::Initialize Failure\n");
             return result;
         }
         s_NdmInitialized = true;
@@ -124,7 +122,7 @@ Result CecControl::StartScanning(bool reset)
             }
             else
             {
-                DBG_PRINTF_ERR("### Cannot reset.... \n");
+                NN_LOG_FORCE("### Cannot reset.... \n");
                 return ResultNotAuthorized();
             }
         }
@@ -136,7 +134,7 @@ Result CecControl::StartScanning(bool reset)
                 result = nn::ndm::Resume(nn::ndm::DN_CEC);
                 if(result.IsFailure())
                 {
-                    DBG_PRINTF_ERR("### nn::ndm::Resume Failure .... \n");
+                    NN_LOG_FORCE("### nn::ndm::Resume Failure .... \n");
                     NN_DBG_PRINT_TRESULT(result);
                     return result;
                 }
@@ -150,7 +148,7 @@ Result CecControl::StartScanning(bool reset)
     }
     else
     {
-        DBG_PRINTF_ERR("CecControl Not Initialized .... \n");
+        NN_LOG_FORCE("CecControl Not Initialized .... \n");
         result = ResultStateBusy();
     }
     return result;
@@ -167,7 +165,7 @@ Result CecControl::Suspend()
             result = nn::ndm::Suspend(nn::ndm::DN_CEC);
             if(result.IsFailure())
             {
-                DBG_PRINTF_ERR("### nn::ndm::Suspend Failure .... \n");
+                NN_LOG_FORCE("### nn::ndm::Suspend Failure .... \n");
                 NN_DBG_PRINT_TRESULT(result);
                 return result;
             }
@@ -197,7 +195,7 @@ Result CecControl::StopScanning(bool b_Immediate, bool b_Async)
                 result = nn::ndm::Suspend( nn::ndm::DN_CEC );
                 if(result.IsFailure())
                 {
-                    DBG_PRINTF_ERR("### nn::ndm::Suspend Failure .... \n");
+                    NN_LOG_FORCE("### nn::ndm::Suspend Failure .... \n");
                     NN_DBG_PRINT_TRESULT(result);
                     return result;
                 }
@@ -260,7 +258,7 @@ Result CecControl::StopScanning(bool b_Immediate, bool b_Async)
     }
     else
     {
-        DBG_PRINTF_ERR("CecControl Not Initialized .... \n");
+        NN_LOG_FORCE("CecControl Not Initialized .... \n");
         result = ResultStateBusy();
     }
 

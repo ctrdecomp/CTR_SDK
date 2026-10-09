@@ -149,3 +149,4 @@ void Logger::PrintLog(const u32 level, const char8* funcName, const char8* fileN
 } // namespace detail
 } // namespace dbg
 } // namespace nn
+

@@ -124,3 +124,4 @@ typedef struct tag_attriblocation_state_t{
 	unsigned			name_index;
 	unsigned			index;
 } attriblocation_state_t;
+

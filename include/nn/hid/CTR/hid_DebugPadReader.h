@@ -63,3 +63,4 @@ inline void DebugPadReader::SetStickClampMode(DebugPadReader::StickClampMode mod
 }
 }
 }
+

@@ -24,3 +24,4 @@ typedef struct tag_vb_state_t{
 	GLenum					allocarea;
 	GLenum					transtype;
 } vb_state_t;
+

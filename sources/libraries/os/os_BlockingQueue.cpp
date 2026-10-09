@@ -256,3 +256,4 @@ template class BlockingQueueBase<nn::os::CriticalSection>;
 } // namespace detail
 } // namespace os
 } // namespace nn
+

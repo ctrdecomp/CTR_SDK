@@ -246,3 +246,4 @@ void CaptureDisplayBuffer(uptr buffer, const AppletDisplayInfo* pInfo, const Cap
 }
 }
 }
+

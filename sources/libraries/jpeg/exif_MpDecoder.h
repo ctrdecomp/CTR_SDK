@@ -37,3 +37,4 @@ bool GetApp1GpsData(GpsData* pBuffer, const JpegMpDecoderContext* pCtx);
 #endif
 
 #endif
+

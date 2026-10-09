@@ -193,3 +193,4 @@ inline void IntrusiveLinkedList<T, Tag>::Insert(T* position, T* inserted)
 
 }
 }
+

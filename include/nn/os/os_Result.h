@@ -73,3 +73,4 @@ NN_DEFINE_RESULT_CONST(ResultInvalidHandle, Result::LEVEL_PERMANENT, Result::SUM
 
 }
 }
+

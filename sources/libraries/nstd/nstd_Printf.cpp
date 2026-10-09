@@ -628,3 +628,4 @@ s32 nnnstdTSWPrintf (wchar_t* dst, const wchar_t* fmt, ...)
     return ret;
 }
 }
+

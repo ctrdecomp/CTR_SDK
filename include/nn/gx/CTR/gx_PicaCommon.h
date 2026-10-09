@@ -36,3 +36,4 @@ typedef struct _color8
 
 #define PICA_CMD_DATA_COLOR_RGBA8( r, g, b, a ) \
     ( r | g << 8 | b << 16 | a << 24 )
+

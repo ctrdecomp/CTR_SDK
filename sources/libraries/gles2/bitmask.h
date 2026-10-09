@@ -67,3 +67,4 @@ typedef struct bit_mask{
 }
 
 #define AND_MASK(lhs, rhs)		(((lhs).mask_[0] & (rhs).mask_[0]))
+

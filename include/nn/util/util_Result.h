@@ -69,3 +69,4 @@
         NN_TLOG_("RESULT FAILURE: result = %s\n", #result);   \
         NN_UTIL_END_CHECK_RESULT                            \
     } while (0)
+

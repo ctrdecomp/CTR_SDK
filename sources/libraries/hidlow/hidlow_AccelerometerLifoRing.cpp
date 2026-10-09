@@ -110,3 +110,4 @@ void AccelerometerLifoRing::ReadData(hid::CTR::AccelerometerStatus *pBuffers,s32
 }
 }
 }
+

@@ -26,3 +26,4 @@ NN_DEFINE_RESULT_CONST(ResultNotRegistered, Result::LEVEL_PERMANENT, Result::SUM
 }
 }
 }
+

@@ -140,3 +140,4 @@ bool PostEncodeJpegMpApp2(detail::JpegMpEncoderWorkObj* pWork, bool fromApi);
 #endif
 
 #endif
+

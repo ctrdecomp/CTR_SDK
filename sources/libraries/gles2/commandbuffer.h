@@ -31,3 +31,4 @@ void __cb_addDummyWrite(GLuint _addr, GLuint _count);
 	} while (0)
 
 unsigned* __cb_writeRegsBuffer(GLuint _addr, GLuint _count, GLuint* _data, unsigned* _command_buffer);
+

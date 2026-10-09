@@ -82,3 +82,4 @@ void GetRegionInfo(RegionInfo* pri, const void* pModule);
 }
 }
 }
+

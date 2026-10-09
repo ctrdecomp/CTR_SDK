@@ -1300,3 +1300,4 @@ const u8* GetApp1TwlPrivateDataPointer(const JpegMpDecoderContext* pCtx)
 }
 }
 }
+

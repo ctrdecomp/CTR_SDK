@@ -130,3 +130,4 @@ struct ras_textureunit_regmap_t{
 	unsigned int	r_TEX_FORMAT_2		:4;
 	unsigned int    b_1E_00				:28;
 };
+

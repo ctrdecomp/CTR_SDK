@@ -172,3 +172,4 @@ typedef UnitHeapTemplate<nn::os::LockPolicy::Object<nn::os::CriticalSection> > T
 
 }
 }
+

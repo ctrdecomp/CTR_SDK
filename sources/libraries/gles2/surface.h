@@ -19,3 +19,4 @@ typedef struct SRF_CONTAINER_T{
 } srf_container_t;
 
 void __srf_initSurface(GLsizei width, GLsizei height, GLenum format, GLenum type, GLint numLevels, GLsizei size, srf_container_t* container);
+

@@ -36,3 +36,4 @@ void TPrintResult(Result result);
 #define NN_DBG_PRINT_TRESULT(exp)   ((void)(exp))
 #define NN_DBG_CHECK_RESULT(exp)    ((void)(exp))
 #endif
+

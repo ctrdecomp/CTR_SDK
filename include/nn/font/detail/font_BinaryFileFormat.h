@@ -45,3 +45,4 @@ bool IsValidBinaryFile(const BinaryFileHeader* pHeader,u32 signature,u32 version
 }
 }
 }
+

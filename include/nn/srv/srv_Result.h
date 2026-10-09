@@ -31,3 +31,4 @@ inline Result ResultNotInitialized(){
 
 }
 }
+

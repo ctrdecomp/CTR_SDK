@@ -164,3 +164,4 @@ void ExtraPadReader::GetNormalizeStickScaleSettings(f32* scale, s16* threshold) 
 }
 
 #endif
+

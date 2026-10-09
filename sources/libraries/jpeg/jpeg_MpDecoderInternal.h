@@ -278,3 +278,4 @@ struct JpegMpDecoderWorkObj
 }
 
 #endif
+

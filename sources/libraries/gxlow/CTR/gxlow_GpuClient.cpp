@@ -247,3 +247,4 @@ Result Gpu::RestoreVramSysArea()
 }
 }
 }
+

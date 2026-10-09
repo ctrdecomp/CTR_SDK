@@ -24,3 +24,4 @@ bit32* Scissor::MakeCommand(bit32* command) const
 } // namespace CTR
 } // namespace gr
 } // namespace nn
+

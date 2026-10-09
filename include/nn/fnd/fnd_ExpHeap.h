@@ -284,3 +284,4 @@ typedef ExpHeapTemplate<nn::os::LockPolicy::Object<nn::os::CriticalSection> > Th
 
 }
 }
+

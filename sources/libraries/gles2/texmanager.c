@@ -2141,3 +2141,4 @@ static GLenum tx_validateCubeTexture(tx_cube_tex_container_t* _ctc){
 	
 	return GL_NO_ERROR;
 }
+

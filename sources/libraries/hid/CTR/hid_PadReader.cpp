@@ -342,3 +342,4 @@ void PadReader::SetNormalizeStickScaleSettings(f32 scale, s16 threshold)
 }
 }
 }
+

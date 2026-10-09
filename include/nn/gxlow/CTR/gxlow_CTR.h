@@ -55,3 +55,4 @@ void nngxlowWriteHWRegsWithMask(uint regOffset, const void* pSrc, const void* pM
 #ifdef __cplusplus
 }
 #endif
+

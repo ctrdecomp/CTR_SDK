@@ -542,3 +542,4 @@ void VoiceImpl::UpdateInterpolationType()
 }
 }
 }
+

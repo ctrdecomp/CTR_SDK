@@ -112,3 +112,4 @@ void GyroscopeLowLifoRing::ReadData(nn::hid::CTR::GyroscopeLowStatus* pBuffers, 
 }
 }
 }
+

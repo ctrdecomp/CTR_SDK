@@ -270,3 +270,4 @@ Result CecControl::StopScanning(bool b_Immediate, bool b_Async)
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

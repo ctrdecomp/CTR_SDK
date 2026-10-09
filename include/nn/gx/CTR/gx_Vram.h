@@ -57,3 +57,4 @@ inline size_t GetVramSize(VramArea area)
 }
 }
 #endif
+

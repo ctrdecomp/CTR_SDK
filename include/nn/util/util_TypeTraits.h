@@ -84,3 +84,4 @@ struct is_base_of : public integral_constant<bool,
     !is_same<const Base*, const void*>::value> {};
 
 }} // namespace nn::util
+

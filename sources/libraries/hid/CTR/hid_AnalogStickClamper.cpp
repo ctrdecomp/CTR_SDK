@@ -301,3 +301,4 @@ void AnalogStickClamper::SetStickClamp(short min, short max)
 }
 }
 }
+

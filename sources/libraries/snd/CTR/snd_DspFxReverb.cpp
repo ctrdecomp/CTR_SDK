@@ -326,3 +326,4 @@ bool DspFxReverb::IsBufferInUse()
 } // namespace CTR
 } // namespace snd
 } // namespace nn
+

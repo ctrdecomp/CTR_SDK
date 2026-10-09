@@ -16,3 +16,4 @@ NN_DEFINE_RESULT_CONST(ResultIsSleeping,Result::LEVEL_STATUS, Result::SUMMARY_ST
 }
 }
 }
+

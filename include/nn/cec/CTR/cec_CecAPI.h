@@ -42,3 +42,4 @@ Result GetChangeStateEventHandle(Handle* pEventHandle);
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

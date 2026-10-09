@@ -362,3 +362,4 @@ void __sta_finalizeState();
 extern stt_state_t* __gl_state;
 
 #define GET_CURRENT_STATE(state) stt_state_t* state = __gl_state;
+

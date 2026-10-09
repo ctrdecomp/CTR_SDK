@@ -21,3 +21,4 @@ NN_DEFINE_RESULT_CONST(ResultOutOfRange,Result::LEVEL_USAGE, Result::SUMMARY_INV
 
 }
 }
+

@@ -200,3 +200,4 @@ asm MTX44* MTX44MultScaleAsm(MTX44*, const VEC3*, const MTX44*)
 } // namespace ARMv6
 } // namespace math
 } // namespace nn
+

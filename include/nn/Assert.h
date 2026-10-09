@@ -183,3 +183,4 @@
         ((void)nnResultPanicHandler(static_cast< ::nn::Result>(result), NN_FILE_NAME, __LINE__, __VA_ARGS__), NN_PANIC(__VA_ARGS__))
 
 #endif
+

@@ -29,3 +29,4 @@ void InterCoreCriticalSection::EnterImpl()
 
 }
 }
+

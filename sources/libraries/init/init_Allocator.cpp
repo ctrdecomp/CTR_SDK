@@ -79,3 +79,4 @@ __weak void operator delete[] (void* p) throw()
 {
     operator delete(p);
 }
+

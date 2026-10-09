@@ -121,3 +121,4 @@ namespace detail
 
 #define NN_ERR_LOG_AND_PANIC_IF_FAILED(result) \
     NN_UTIL_PANIC_IF_FAILED(result)
+

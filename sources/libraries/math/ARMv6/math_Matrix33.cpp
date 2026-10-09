@@ -43,3 +43,4 @@ asm VEC3* VEC3TransformAsm(VEC3*, const MTX33*, const VEC3*)
 } // namespace ARMv6
 } // namespace math
 } // namespace nn
+

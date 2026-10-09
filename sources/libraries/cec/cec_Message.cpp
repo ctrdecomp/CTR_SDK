@@ -489,3 +489,4 @@ u32 Message::calcCecMessSize()
 } // namespace CTR
 } // namespace cec
 } // namespace nn
+

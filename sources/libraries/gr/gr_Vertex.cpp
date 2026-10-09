@@ -311,3 +311,4 @@ bit32* Vertex::MakeEnableAttrCommand_(bit32* command) const
 }
 }
 }
+

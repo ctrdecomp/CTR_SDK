@@ -51,3 +51,4 @@ void __fbv_initializeFBValidator(bit_mask_t* _mask);
 void __fbv_validateFBValidator(bit_mask_t* _mask);
 void __fb_detachSurfaceContainer(srf_container_t* _pCont);
 srf_container_t* __fb_getCurrentFBColorSurface(void);
+

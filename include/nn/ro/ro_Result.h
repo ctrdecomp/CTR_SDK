@@ -23,3 +23,4 @@ NN_DEFINE_RESULT_CONST(ResultUnknownObjectControl, Result::LEVEL_PERMANENT, Resu
 
 }
 }
+

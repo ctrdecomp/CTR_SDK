@@ -118,3 +118,4 @@ void DebugPadLifoRing::ReadData(nn::hidlow::CTR::DebugPadRawStatus* pBuffers, s3
 }
 }
 }
+

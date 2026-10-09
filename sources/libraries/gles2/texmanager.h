@@ -154,3 +154,4 @@ tx_lut_container_t* __tx_getBoundTextureLut(GLuint _lut);
 void __txv_initializeTextureValidator(bit_mask_t* _mask);
 void __txv_validateTextureValidator(bit_mask_t* _mask);
 void __txv_initializeTextureValidatorHWRegister(void);
+

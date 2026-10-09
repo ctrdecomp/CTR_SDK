@@ -393,3 +393,4 @@ struct JpegMpDecoderTemporarySettingObj
 #endif
 
 #endif
+

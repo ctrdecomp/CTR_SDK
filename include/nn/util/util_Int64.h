@@ -13,6 +13,7 @@ struct Int64
     operator Base() const { return (static_cast<Base>(hi) << 32) | static_cast<Base>(lo); }
     Int64& operator+=(Base rhs) { Base lhs = *this; lhs += rhs; *this = lhs; return *this; }
     Int64& operator-=(Base rhs) { Base lhs = *this; lhs -= rhs; *this = lhs; return *this; }
+    Int64& operator|=(Base rhs) { Base lhs = *this; lhs |= rhs; *this = lhs; return *this; }
     
     Int64(const Int64<Base, void>& other) : lo(other.lo), hi(other.hi) {}
 #pragma push

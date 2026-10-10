@@ -14,6 +14,7 @@ typedef u32 DSPByte32;
 typedef u32 DSPAddrInARM;
 
 #define NN_DSP_32BIT_TO_DSP(value)   (u32)(((u32)(value) >> 16) | ((u32)(value) << 16))
+#define NN_DSP_32BIT_TO_ARM(value)     (u32)(((u32)(value) >> 16) | ((u32)(value) << 16))
 
 } // namespace CTR
 } // namespace dsp

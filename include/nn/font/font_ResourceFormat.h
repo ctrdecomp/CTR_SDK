@@ -19,6 +19,7 @@ const u16 INVALID_CHAR_CODE   = 0xFFFF;
     )
 
 const SigWord BINFILE_SIG_FONT_RESOLEVED = NN_FONT_MAKE_HEADER('C','F','N','U');
+const SigWord BINBLOCK_SIG_TGLP          = NN_FONT_MAKE_HEADER('T','G','L','P');
 
 enum FontType
 {

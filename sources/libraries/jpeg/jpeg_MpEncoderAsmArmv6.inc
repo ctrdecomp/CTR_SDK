@@ -12,244 +12,184 @@
 
 #define ASM_OP_LOG_OR :OR:
 
-       void JpegMpEncoderAsm_ConvertWorkToAsm(register JpegMpEncoderContext* pCtx);
+void JpegMpEncoderAsm_ConvertWorkToAsm(register JpegMpEncoderContext* pCtx);
+
 NN_ASM void JpegMpEncoderAsm_ConvertWorkToAsm(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR)
 {
-	PRESERVE8
-
-#define arg_pCtx r0
-#define t1       r1
-#define t2       r2
-#define t3       r3
-#define t0       r12
-
-	ldr	t0, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pDst)]
-	ldr	t1, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, dstOffset)]
-	ldr	t2, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, writeLimit)]
-	ldr	t3, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, bitCode)]
-
-	add	t1, t0, t1
-	add	t2, t0, t2
-
-	ldrb	t0, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, bitLen)]
-	sub	t2, t2, #1
-	str	t1, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.pDst2)]
-	str	t2, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.pDst2Limit)]
-
-	mov	t3, t3, lsl #24
-	str	t3, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitCode2)]
-	add	t0, t0, #24
-	str	t0, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)]
-
-	bx	lr
-
-#undef arg_pCtx
-#undef t1
-#undef t2
-#undef t3
-#undef t0
+    LDR     R12, [R0,#0x310]
+    LDR     R1, [R0,#0x314]
+    LDR     R2, [R0,#0x318]
+    LDR     R3, [R0,#0x31C]
+    ADD     R1, R12, R1
+    ADD     R2, R12, R2
+    LDRB    R12, [R0,#0x320]
+    SUB     R2, R2, #1
+    STR     R1, [R0,#0x354]
+	STR     R2, [R0,#0x358]
+    MOV     R3, R3,LSL#24
+    STR     R3, [R0,#0x350]
+    ADD     R12, R12, #0x18
+    STR     R12, [R0,#0x34C]
+    BX      LR
 }
 
-       void JpegMpEncoderAsm_ConvertWorkToC(register JpegMpEncoderContext* pCtx);
+void JpegMpEncoderAsm_ConvertWorkToC(register JpegMpEncoderContext* pCtx);
+
 NN_ASM void JpegMpEncoderAsm_ConvertWorkToC(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
-
-#define arg_pCtx r0
-#define t1       r1
-#define t2       r2
-#define t3       r3
-#define t0       r12
-
-	ldr	t0, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pDst)]
-	ldr	t1, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.pDst2)]
-	ldr	t2, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitCode2)]
-	ldr	t3, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)]
-
-	sub	t0, t1, t0
-	str	t0, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, dstOffset)]
-
-	mov	t2, t2, lsr #24
-	str	t2, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, bitCode)]
-	sub	t3, t3, #24
-
-	strb	t3, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, bitLen)]
-
-	bx	lr
-
-#undef arg_pCtx
-#undef t1
-#undef t2
-#undef t3
-#undef t0
+    LDR     R12, [R0,#0x310]
+    LDR     R1, [R0,#0x354]
+    LDR     R2, [R0,#0x350]
+    LDR     R3, [R0,#0x34C]
+    SUB     R12, R1, R12
+    STR     R12, [R0,#0x314]
+    MOV     R2, R2,LSR#24
+    STR     R2, [R0,#0x31C]
+    SUB     R3, R3, #0x18
+    STRB    R3, [R0,#0x320]
+    BX      LR
 }
 
-       bool JpegMpEncoderAsm_ComponentSequential(register JpegMpEncoderContext* pCtx, register JpegMpEncoderComponentStructure* component);
+bool JpegMpEncoderAsm_ComponentSequential(register JpegMpEncoderContext* pCtx, register JpegMpEncoderComponentStructure* component);
+
 NN_ASM bool JpegMpEncoderAsm_ComponentSequential(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register JpegMpEncoderComponentStructure* component NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx       r0
-#define arg_pComponent r1
+	ldr	r12, [r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mDcTable)]
 
-#define pWork          r2
+	push	{r1, r4-r11, lr}
 
-#define du             r3
-#define pHufsi         r4
-#define pHufco         r5
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)
 
-#define bitLen2_       du
-#define bitCode2_      pHufsi
-#define pDst2_         pHufco
+	add	r3, r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mCoefficients)
 
-#define t0             r6
-#define t1             r7
-#define t2             r8
-#define t3             r9
-#define t4             arg_pComponent
+	add	r4, r12, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufsi)
+	add	r5, r12, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufco)
 
-#define value          r10
-#define pZig           r11
-#define zerorun        r12
+	ldr	r8, [r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mLastDcValue)]
+	ldrsh	r7, [r3]
 
-#define rrrrssss       lr
+	subs	r8, r7, r8
 
-#define PROLOGUE_INST         push {r1, r4-r11, lr}
-#define EPILOGUE_INST         pop  {r1, r4-r11, pc}
+	str	r7, [r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mLastDcValue)]
 
-	ldr	r12, [arg_pComponent, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mDcTable)]
+	rsbmi	r8, r8, #0
 
-	PROLOGUE_INST
+	clz	r9, r8
+	rsb	r9, r9, #32
 
-	add	pWork, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)
+	mvnmi	r8, r8
 
-	add	du, arg_pComponent, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mCoefficients)
+	ldr	r1, [r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mAcTable)]
 
-	add	pHufsi, r12, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufsi)
-	add	pHufco, r12, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufco)
+	ldrb	r7, [r4, r9]
+	ldr	r6, [r5, r9, lsl #2]
 
-	ldr	t2, [arg_pComponent, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mLastDcValue)]
-	ldrsh	t1, [du]
+	add	r4, r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufsi)
+	add	r5, r1, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufco)
+	stmdb	r2, {r3, r4, r5}
 
-	subs	t2, t1, t2
+	mvn	r1, #0
 
-	str	t1, [arg_pComponent, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mLastDcValue)]
-
-	rsbmi	t2, t2, #0
-
-	clz	t3, t2
-	rsb	t3, t3, #32
-
-	mvnmi	t2, t2
-
-	ldr	t4, [arg_pComponent, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderComponentStructure, mAcTable)]
-
-	ldrb	t1, [pHufsi, t3]
-	ldr	t0, [pHufco, t3, lsl #2]
-
-	add	pHufsi, t4, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufsi)
-	add	pHufco, t4, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderHuffmanStructure, mEhufco)
-	stmdb	pWork, {du, pHufsi, pHufco}
-
-	mvn	t4, #0
-
-	bic	t0, t0, t4, lsl t1
-	ldmia	pWork, {bitLen2_, bitCode2_, pDst2_}
-	bic	t2, t2, t4, lsl t3
+	bic	r6, r6, r1, lsl r7
+	ldmia	r2, {r3, r4, r5}
+	bic	r8, r8, r1, lsl r9
 	bl	bitWrite
 
-	ldrsh	value, [du, #1 * 2]
+	ldrsh	r10, [r3, #1 * 2]
 
-	adr	pZig, zigTable
+	adr	r11, zigTable
 
-	mov	zerorun, #0
+	mov	r12, #0
 
-	cmp	value, #0
+	cmp	r10, #0
 	bne	zerorunDone
 	b	asm_sequential_zero
 
-	cmp	zerorun, #16
+	cmp	r12, #16
 	blt	zerorunDone
 
 zerorunLoop
-	ldrb	t1, [pHufsi, #0xF0]
-	ldr	t0, [pHufco, #0xF0 * 4]
-	ldmia	pWork, {bitLen2_, bitCode2_, pDst2_}
-	mvn	t4, #0
-	mov	t3, #0
-	bic	t0, t0, t4, lsl t1
+	ldrb	r7, [r4, #0xF0]
+	ldr	r6, [r5, #0xF0 * 4]
+	ldmia	r2, {r3, r4, r5}
+	mvn	r1, #0
+	mov	r9, #0
+	bic	r6, r6, r1, lsl r7
 	bl	bitWrite
 
-	cmp	zerorun, #32
-	sub	zerorun, zerorun, #16
+	cmp	r12, #32
+	sub	r12, r12, #16
 	bge	zerorunLoop
 
 zerorunDone
 
-	movs	t2, value
-	rsbmi	t2, t2, #0
+	movs	r8, r10
+	rsbmi	r8, r8, #0
 
-	clz	t3, t2
-	rsb	t3, t3, #32
+	clz	r9, r8
+	rsb	r9, r9, #32
 
-	orr	rrrrssss, t3, zerorun, lsl #4
+	orr	lr, r9, r12, lsl #4
 
-	mvnmi	t2, t2
+	mvnmi	r8, r8
 
-	ldrb	t1, [pHufsi, rrrrssss]
-	ldr	t0, [pHufco, rrrrssss, lsl #2]
+	ldrb	r7, [r4, lr]
+	ldr	r6, [r5, lr, lsl #2]
 
-	mvn	t4, #0
-	ldmia	pWork, {bitLen2_, bitCode2_, pDst2_}
-	bic	t0, t0, t4, lsl t1
-	bic	t2, t2, t4, lsl t3
+	mvn	r1, #0
+	ldmia	r2, {r3, r4, r5}
+	bic	r6, r6, r1, lsl r7
+	bic	r8, r8, r1, lsl r9
 
-	ldrb	t4, [pZig, #1]!
+	ldrb	r1, [r11, #1]!
 
 	bl	bitWrite
 
-	ldrsh	value, [du, t4]
-	cmp	t4, #0
+	ldrsh	r10, [r3, r1]
+	cmp	r1, #0
 	beq	asm_sequential_end
 
-	cmp	value, #0
-	mov	zerorun, #0
+	cmp	r10, #0
+	mov	r12, #0
 	bne	zerorunDone
 
 asm_sequential_zero
 
-	ldrb	t4, [pZig, #1]!
-	add	zerorun, zerorun, #1
+	ldrb	r1, [r11, #1]!
+	add	r12, r12, #1
 
-	cmp	t4, #0
+	cmp	r1, #0
 	beq	asm_sequential_end_zerorun
 
-	ldrsh	value, [du, t4]
+	ldrsh	r10, [r3, r1]
 
-	cmp	value, #0
+	cmp	r10, #0
 
 	beq	asm_sequential_zero
 
-	cmp	zerorun, #16
+	cmp	r12, #16
 	blt	zerorunDone
 	b	zerorunLoop
 
 asm_sequential_end_zerorun
-	ldrb	t1, [pHufsi]
-	ldr	t0, [pHufco]
-	mvn	t4, #0
-	ldmia	pWork, {bitLen2_, bitCode2_, pDst2_}
-	bic	t0, t0, t4, lsl t1
-	mov	t3, #0
+	ldrb	r7, [r4]
+	ldr	r6, [r5]
+	mvn	r1, #0
+	ldmia	r2, {r3, r4, r5}
+	bic	r6, r6, r1, lsl r7
+	mov	r9, #0
 	bl	bitWrite
 
 asm_sequential_end
 	mov	r0, #1
-	EPILOGUE_INST
+	pop	{r1, r4-r11, pc}
 
 bitWriteError
 	mov	r0, #0
-	EPILOGUE_INST
+	pop	{r1, r4-r11, pc}
 
 zigTable
 	dcb	       1*2,  8*2, 16*2,  9*2,  2*2,  3*2, 10*2
@@ -263,584 +203,321 @@ zigTable
 	dcb	 0
 
 bitWriteCont
-	mov	t0, t2
-	mov	t3, #0
+	mov	r6, r8
+	mov	r9, #0
 bitWrite
-	sub	bitLen2_, bitLen2_, t1
-	cmp	bitLen2_, #24
-	orr	bitCode2_, bitCode2_, t0, lsl bitLen2_
+	sub	r3, r3, r7
+	cmp	r3, #24
+	orr	r4, r4, r6, lsl r3
 	bgt	done
-	ldr	t1, [pWork, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.pDst2Limit)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)]
-	mov	t0, bitCode2_, lsr #24
-	mov	bitCode2_, bitCode2_, lsl #8
-	strb	t0, [pDst2_], #1
-	cmp	pDst2_, t1
-	add	bitLen2_, bitLen2_, #8
+	ldr	r7, [r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.pDst2Limit)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.bitLen2)]
+	mov	r6, r4, lsr #24
+	mov	r4, r4, lsl #8
+	strb	r6, [r5], #1
+	cmp	r5, r7
+	add	r3, r3, #8
 	bcc	next
 
 	b	bitWriteError
 next
-	cmp	t0, #0xff
-	streqb	bitCode2_, [pDst2_], #1
-	cmp	bitLen2_, #24
+	cmp	r6, #0xff
+	streqb	r4, [r5], #1
+	cmp	r3, #24
 	bgt	done2
 
-	mov	t0, bitCode2_, lsr #24
-	mov	bitCode2_, bitCode2_, lsl #8
-	strb	t0, [pDst2_], #1
-	cmp	pDst2_, t1
-	add	bitLen2_, bitLen2_, #8
+	mov	r6, r4, lsr #24
+	mov	r4, r4, lsl #8
+	strb	r6, [r5], #1
+	cmp	r5, r7
+	add	r3, r3, #8
 	bcc	next2
 
 	b	bitWriteError
 next2
-	cmp	t0, #0xff
-	streqb	bitCode2_, [pDst2_], #1
+	cmp	r6, #0xff
+	streqb	r4, [r5], #1
 done2
 done
-	movs	t1, t3
-	stmia	pWork, {bitLen2_, bitCode2_, pDst2_}
+	movs	r7, r9
+	stmia	r2, {r3, r4, r5}
 	bne	bitWriteCont
-	ldmdb	pWork, {du, pHufsi, pHufco}
+	ldmdb	r2, {r3, r4, r5}
 	bx	lr
-
-#undef arg_pCtx
-#undef arg_pComponent
-
-#undef pWork
-#undef du
-#undef pHufsi
-#undef pHufco
-
-#undef bitLen2_
-#undef bitCode2_
-#undef pDst2_
-
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-
-#undef value
-#undef pZig
-#undef zerorun
-
-#undef rrrrssss
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 }
 
-#if 1
+void JpegMpEncoderAsm_Yuyv8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
 
-       void JpegMpEncoderAsm_Yuyv8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
 NN_ASM void JpegMpEncoderAsm_Yuyv8ToYuv444(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx          r0
-#define arg_col           r1
-#define arg_row           r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldr	r3,  [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define pDstY             arg_pCtx
-#define pDstCbCr          arg_col
-#define t9                arg_row
-#define pYuyv             r3
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define t0                r4
-#define t1                r5
-#define t2                r6
-#define t3                r7
-#define t4                r8
-#define t5                r9
-#define t6                r10
-#define t7                r11
-#define width_            r12
-#define t8                lr
+	push	{r4-r11, r12, lr}
 
-#define PROLOGUE_INST     push {r4-r11, r12, lr}
-#define EPILOGUE_INST     pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_PDSTYEND       0x20
+	mov	r2, r2, lsl #3 + 1
+	add	r3, r3, r1, lsl #3 + 1
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r12, r3
 
-	ldr	width_, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
-	ldr	pYuyv, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r12, r12, lsl #1
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r4, r0, #8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r4, [sp, #0x20]
 
-	PROLOGUE_INST
-
-	mov	arg_row, arg_row, lsl #3 + 1
-	add	pYuyv, pYuyv, arg_col, lsl #3 + 1
-
-	mla	pYuyv, arg_row, width_, pYuyv
-
-	mov	width_, width_, lsl #1
-
-	add	t0, pDstY, #8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	t0, [sp, #STACK_OFFSET_PDSTYEND]
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	add	r1, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 10
 
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
-	ldr	t7, [pYuyv], width_
-	ldr	t6, [pYuyv], width_
-	ldr	t2, [pYuyv], width_
-	ldr	t0, [pYuyv], width_
+	ldr	r8,  [r3], r12
+	ldr	r9,  [r3], r12
+	ldr	r11, [r3], r12
+	ldr	r10, [r3], r12
+	ldr	r6,  [r3], r12
+	ldr	r4,  [r3], r12
 
-	pkhbt	t3, t6, t7, lsl #16
-	pkhtb	t7, t7, t6, asr #16
-	pkhtb	t6, t0, t2, asr #16
-	pkhbt	t2, t2, t0, lsl #16
+	pkhbt	r7,  r10, r11, lsl #16
+	pkhtb	r11, r11, r10, asr #16
+	pkhtb	r10, r4,  r6,  asr #16
+	pkhbt	r6,  r6,  r4,  lsl #16
 
-	uxtb16	t0, t6, ror #8
-	uxtb16	t1, t7, ror #8
+	uxtb16	r4, r10, ror #8
+	uxtb16	r5, r11, ror #8
 
-	strd	t0, t1, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	strd	t0, t1, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + (8 + 4) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + (8 + 4) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t0, t2, ror #8
-	uxtb16	t1, t3, ror #8
+	uxtb16	r4, r6, ror #8
+	uxtb16	r5, r7, ror #8
 
-	strd	t0, t1, [pDstCbCr, #4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	strd	t0, t1, [pDstCbCr, #(8 + 4) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #(8 + 4) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhtb	t0, t5, t4, asr #16
-	pkhbt	t1, t4, t5, lsl #16
+	pkhtb	r4, r9, r8, asr #16
+	pkhbt	r5, r8, r9, lsl #16
 
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
+	ldr	r8, [r3], r12
+	ldr	r9, [r3], r12
 
-	uxtb16	t2, t2
-	uxtb16	t3, t3
+	uxtb16	r6, r6
+	uxtb16	r7, r7
 
-	pkhbt	t8, t5, t4, lsl #16
-	pkhtb	t9, t4, t5, asr #16
+	pkhbt	lr, r9, r8, lsl #16
+	pkhtb	r2, r8, r9, asr #16
 
-	uxtb16	t4, t0, ror #8
-	uxtb16	t5, t9, ror #8
+	uxtb16	r8, r4, ror #8
+	uxtb16	r9, r2, ror #8
 
-	strd	t4, t5, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strd	r8, r9, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strd	t4, t5, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r8, r9, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t4, t1, ror #8
-	uxtb16	t5, t8, ror #8
+	uxtb16	r8, r5, ror #8
+	uxtb16	r9, lr, ror #8
 
-	strd	t4, t5, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strd	r8, r9, [r1], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	strd	t4, t5, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strd	r8, r9, [r1], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	uxtb16	t4, t0
-	uxtb16	t0, t1
-	uxtb16	t1, t8
+	uxtb16	r8, r4
+	uxtb16	r4, r5
+	uxtb16	r5, lr
 
-	ldr	t8, [sp, #STACK_OFFSET_PDSTYEND]
+	ldr	lr, [sp, #0x20]
 
-	uxtb16	t5, t9
-	uxtb16	t6, t6
-	uxtb16	t7, t7
+	uxtb16	r9,  r2
+	uxtb16	r10, r10
+	uxtb16	r11, r11
 
-	stmia	pDstY!, {t0, t1, t2, t3, t4, t5, t6, t7}
+	stmia	r0!, {r4, r5, r6, r7, r8, r9, r10, r11}
 
-	add	pYuyv, pYuyv, #4
-	sub	pYuyv, pYuyv, width_, lsl #3
-	cmp	pDstY, t8
-	pld	[pYuyv, #0x20]
-
-	bne	%b10
-
-	EPILOGUE_INST
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pDstY
-#undef pDstCbCr
-#undef t9
-#undef pYuyv
-
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef width_
-#undef t8
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_PDSTYEND
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
-}
-#else
-
-       void JpegMpEncoderAsm_Yuyv8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
-NN_ASM void JpegMpEncoderAsm_Yuyv8ToYuv444(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
-{
-	PRESERVE8
-
-#define arg_pCtx          r0
-#define arg_col           r1
-#define arg_row           r2
-
-#define pDstY             arg_pCtx
-#define pDstCbCr          arg_col
-#define y2                arg_row
-#define pYuyv             r3
-
-#define t0                r4
-#define t1                r5
-#define t2                r6
-#define t3                r7
-#define t4                r8
-#define t5                r9
-#define t6                r10
-#define t7                r11
-#define width_            r12
-#define t8                lr
-
-#define PROLOGUE_INST     stmfd sp!, {r4-r11, r12, lr}
-#define EPILOGUE_INST     ldmfd sp!, {r4-r11, r12, pc}
-
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
-
-	ldr	width_, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
-	ldr	pYuyv, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	PROLOGUE_INST
-
-	mov	arg_row, arg_row, lsl #3 + 1
-	add	pYuyv, pYuyv, arg_col, lsl #3 + 1
-
-	mla	pYuyv, arg_row, width_, pYuyv
-
-	mov	width_, width_, lsl #1
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldr	y2, =0x16fe1ef0
-
-10
-
-	ldrb	t0, [pYuyv, #0x1]
-	ldrb	t1, [pYuyv, #0x5]
-	ldrb	t2, [pYuyv, #0x9]
-	ldrb	t3, [pYuyv, #0xd]
-
-	ldrb	t4, [pYuyv, #0x3]
-	ldrb	t5, [pYuyv, #0x7]
-	ldrb	t6, [pYuyv, #0xb]
-	ldrb	t7, [pYuyv, #0xf]
-
-	ands	t8, y2, #0xf0000000
-
-	strb	t0, [pDstCbCr, #0x08 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t1, [pDstCbCr, #0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t1, [pDstCbCr, #0x18 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t2, [pDstCbCr, #0x20 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t2, [pDstCbCr, #0x28 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t3, [pDstCbCr, #0x30 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t3, [pDstCbCr, #0x38 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-
-	strb	t4, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x00 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t4, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x08 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t5, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t5, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x18 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t6, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x20 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t6, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x28 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t7, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x30 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t7, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 0x38 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t0, [pDstCbCr], t8, asr #28 - 1
-
-	mov	y2, y2, lsl #4
-
-	ldrb	t1, [pYuyv, #0x2]
-	ldrb	t2, [pYuyv, #0x4]
-	ldrb	t3, [pYuyv, #0x6]
-	ldrb	t4, [pYuyv, #0x8]
-	ldrb	t5, [pYuyv, #0xa]
-	ldrb	t6, [pYuyv, #0xc]
-	ldrb	t7, [pYuyv, #0xe]
-	ldrb	t0, [pYuyv], width_
-
-	strb	t1, [pDstY, #0x08 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t2, [pDstY, #0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t3, [pDstY, #0x18 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t4, [pDstY, #0x20 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t5, [pDstY, #0x28 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t6, [pDstY, #0x30 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t7, [pDstY, #0x38 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strb	t0, [pDstY], t8, asr #28 - 1
+	add	r3, r3, #4
+	sub	r3, r3, r12, lsl #3
+	cmp	r0, lr
+	pld	[r3, #0x20]
 
 	bne	%b10
 
-	EPILOGUE_INST
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pDstY
-#undef pDstCbCr
-#undef y2
-#undef pYuyv
-
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef width_
-#undef t8
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
+	pop	{r4-r11, r12, pc}
 }
-#endif
 
-       void JpegMpEncoderAsm_Yuyv8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Yuyv8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Yuyv8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx          r0
-#define arg_col           r1
-#define arg_row           r2
 
-#define pDstY             arg_pCtx
-#define pDstCbCr          arg_col
-#define t9                arg_row
-#define pYuyv             r3
 
-#define t0                r4
-#define t1                r5
-#define t2                r6
-#define t3                r7
-#define t4                r8
-#define t5                r9
-#define t6                r10
-#define t7                r11
-#define width_            r12
-#define t8                lr
 
-#define PROLOGUE_INST     push {r4-r11, r12, lr}
-#define EPILOGUE_INST     pop  {r4-r11, r12, pc}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	width_, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
-	ldr	pYuyv, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	PROLOGUE_INST
-
-	mov	arg_row, arg_row, lsl #4 + 1
-	add	pYuyv, pYuyv, arg_col, lsl #4 + 1
-
-	mla	pYuyv, arg_row, width_, pYuyv
-
-	mov	width_, width_, lsl #1
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+    LDR     R12, [R0,#0x328]
+    LDR     R3, [R0,#0x308]
+    ADD     R0, R0, #0
+    PUSH    {R4-R11,R12, LR}
+    MOV     R2, R2,LSL#5
+    ADD     R3, R3, R1,LSL#5
+    MLA     R3, R2, R12, R3
+    MOV     R12, R12,LSL#1
+    ADD     R1, R0, #0x200
 
 10
 
-	ldr	t2, [pYuyv], width_
-	ldr	t3, [pYuyv], width_
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
-	ldr	t6, [pYuyv], width_
-	ldr	t7, [pYuyv], width_
-	ldr	t8, [pYuyv], width_
-	ldr	t9, [pYuyv], width_
+	ldr	r6, [r3], r12
+	ldr	r7, [r3], r12
+	ldr	r8, [r3], r12
+	ldr	r9, [r3], r12
+	ldr	r10, [r3], r12
+	ldr	r11, [r3], r12
+	ldr	lr, [r3], r12
+	ldr	r2, [r3], r12
 
-	pkhbt	t0, t2, t3, lsl #16
-	pkhtb	t1, t3, t2, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
+	pkhbt	r4, r6, r7, lsl #16
+	pkhtb	r5, r7, r6, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
 
-	str	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r4, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	str	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r5, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pkhbt	t0, t9, t8, lsl #16
-	pkhtb	t1, t8, t9, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  2 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xa - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r2, lr, lsl #16
+	pkhtb	r5, lr, r2, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  2 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xa - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t6, t7, lsl #16
-	pkhtb	t1, t7, t6, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  4 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xc - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r10, r11, lsl #16
+	pkhtb	r5, r11, r10, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  4 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xc - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t5, t4, lsl #16
-	pkhtb	t1, t4, t5, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  6 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xe - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r9, r8, lsl #16
+	pkhtb	r5, r8, r9, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  6 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xe - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t2, t4, lsl #16
-	pkhtb	t1, t4, t2, asr #16
-	pkhbt	t2, t3, t5, lsl #16
-	pkhtb	t3, t5, t3, asr #16
-	pkhbt	t4, t8, t6, lsl #16
-	pkhtb	t5, t6, t8, asr #16
-	pkhbt	t6, t9, t7, lsl #16
-	pkhtb	t7, t7, t9, asr #16
+	pkhbt	r4, r6, r8, lsl #16
+	pkhtb	r5, r8, r6, asr #16
+	pkhbt	r6, r7, r9, lsl #16
+	pkhtb	r7, r9, r7, asr #16
+	pkhbt	r8, lr, r10, lsl #16
+	pkhtb	r9, r10, lr, asr #16
+	pkhbt	r10, r2, r11, lsl #16
+	pkhtb	r11, r11, r2, asr #16
 
-	uhadd8	t8, t4, t6
-	uhadd8	t9, t5, t7
-	uhadd8	t6, t0, t2
-	uhadd8	t7, t1, t3
+	uhadd8	lr, r8, r10
+	uhadd8	r2, r9, r11
+	uhadd8	r10, r4, r6
+	uhadd8	r11, r5, r7
 
-	uxtb16	t8, t8, ror #8
+	uxtb16	lr, lr, ror #8
 
-	str	t8, [pDstCbCr, #6 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	uxtb16	t9, t9, ror #8
+	str	lr, [r1, #6 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	uxtb16	r2, r2, ror #8
 
-	str	t9, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 6 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r2, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 6 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t7, t7, ror #8
+	uxtb16	r11, r11, ror #8
 
-	str	t7, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	str	r11, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	uxtb16	t1, t6, ror #8
+	uxtb16	r5, r10, ror #8
 
-	ldr	t2, [pYuyv], width_
-	ldr	t3, [pYuyv], width_
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
-	ldr	t6, [pYuyv], width_
-	ldr	t7, [pYuyv], width_
-	ldr	t8, [pYuyv], width_
-	ldr	t9, [pYuyv], width_
+	ldr	r6, [r3], r12
+	ldr	r7, [r3], r12
+	ldr	r8, [r3], r12
+	ldr	r9, [r3], r12
+	ldr	r10, [r3], r12
+	ldr	r11, [r3], r12
+	ldr	lr, [r3], r12
+	ldr	r2, [r3], r12
 
-	str	t1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r5, [r1], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pkhbt	t0, t2, t3, lsl #16
-	pkhtb	t1, t3, t2, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
+	pkhbt	r4, r6, r7, lsl #16
+	pkhtb	r5, r7, r6, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
 
-	str	t0, [pDstY, #(      0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(  8 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r4, [r0, #(      0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(  8 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t9, t8, lsl #16
-	pkhtb	t1, t8, t9, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  2 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xa + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r2, lr, lsl #16
+	pkhtb	r5, lr, r2, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  2 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xa + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t6, t7, lsl #16
-	pkhtb	t1, t7, t6, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  4 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xc + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r10, r11, lsl #16
+	pkhtb	r5, r11, r10, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  4 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xc + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t5, t4, lsl #16
-	pkhtb	t1, t4, t5, asr #16
-	uxtb16	t0, t0
-	uxtb16	t1, t1
-	str	t0, [pDstY, #(  6 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	str	t1, [pDstY, #(0xe + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	pkhbt	r4, r9, r8, lsl #16
+	pkhtb	r5, r8, r9, asr #16
+	uxtb16	r4, r4
+	uxtb16	r5, r5
+	str	r4, [r0, #(  6 + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r5, [r0, #(0xe + 0x80 - 0x10) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhbt	t0, t2, t4, lsl #16
-	pkhtb	t1, t4, t2, asr #16
-	pkhbt	t2, t3, t5, lsl #16
-	pkhtb	t3, t5, t3, asr #16
-	pkhbt	t4, t8, t6, lsl #16
-	pkhtb	t5, t6, t8, asr #16
-	pkhbt	t6, t9, t7, lsl #16
-	pkhtb	t7, t7, t9, asr #16
+	pkhbt	r4, r6, r8, lsl #16
+	pkhtb	r5, r8, r6, asr #16
+	pkhbt	r6, r7, r9, lsl #16
+	pkhtb	r7, r9, r7, asr #16
+	pkhbt	r8, lr, r10, lsl #16
+	pkhtb	r9, r10, lr, asr #16
+	pkhbt	r10, r2, r11, lsl #16
+	pkhtb	r11, r11, r2, asr #16
 
-	uhadd8	t8, t4, t6
-	uhadd8	t9, t5, t7
-	uhadd8	t6, t0, t2
-	uhadd8	t7, t1, t3
+	uhadd8	lr, r8, r10
+	uhadd8	r2, r9, r11
+	uhadd8	r10, r4, r6
+	uhadd8	r11, r5, r7
 
-	uxtb16	t8, t8, ror #8
+	uxtb16	lr, lr, ror #8
 
-	str	t8, [pDstCbCr, #(2 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	uxtb16	t9, t9, ror #8
+	str	lr, [r1, #(2 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	uxtb16	r2, r2, ror #8
 
-	str	t9, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + (2 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r2, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + (2 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t7, t7, ror #8
+	uxtb16	r11, r11, ror #8
 
-	str	t7, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + (4 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r11, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + (4 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t6, t6, ror #8
+	uxtb16	r10, r10, ror #8
 
-	str	t6, [pDstCbCr, #(4 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	str	r10, [r1, #(4 - 8) * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	sub	t0, pDstCbCr, pDstY
-	add	pYuyv, pYuyv, #4
-	sub	pYuyv, pYuyv, width_, lsl #4
+	sub	r4, r1, r0
+	add	r3, r3, #4
+	sub	r3, r3, r12, lsl #4
 
-	cmp	t0, #STRUCT_OFFSET_CBBUF - (8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
-	pld	[pYuyv, #0x20]
+	cmp	r4, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	pld	[r3, #0x20]
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pDstY
-#undef pDstCbCr
-#undef t9
-#undef pYuyv
 
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef width_
-#undef t8
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Yuyv8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -848,138 +525,96 @@ NN_ASM void JpegMpEncoderAsm_Yuyv8ToYuv422(register JpegMpEncoderContext* pCtx N
 {
 	PRESERVE8
 
-#define arg_pCtx          r0
-#define arg_col           r1
-#define arg_row           r2
 
-#define pDstY             arg_pCtx
-#define pDstCbCr          arg_col
-#define t9                arg_row
-#define pYuyv             r3
 
-#define t0                r4
-#define t1                r5
-#define t2                r6
-#define t3                r7
-#define t4                r8
-#define t5                r9
-#define t6                r10
-#define t7                r11
-#define width_            r12
-#define t8                lr
 
-#define PROLOGUE_INST     push {r4-r11, r12, lr}
-#define EPILOGUE_INST     pop  {r4-r11, r12, pc}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	width_, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
-	ldr	pYuyv, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	mov	arg_row, arg_row, lsl #3 + 1
-	add	pYuyv, pYuyv, arg_col, lsl #4 + 1
+	mov	r2, r2, lsl #3 + 1
+	add	r3, r3, r1, lsl #4 + 1
 
-	mla	pYuyv, arg_row, width_, pYuyv
+	mla	r3, r2, r12, r3
 
-	mov	width_, width_, lsl #1
+	mov	r12, r12, lsl #1
 
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	add	r1, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 10
 
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
-	ldr	t7, [pYuyv], width_
-	ldr	t6, [pYuyv], width_
-	ldr	t2, [pYuyv], width_
-	ldr	t0, [pYuyv], width_
+	ldr	r8, [r3], r12
+	ldr	r9, [r3], r12
+	ldr	r11, [r3], r12
+	ldr	r10, [r3], r12
+	ldr	r6, [r3], r12
+	ldr	r4, [r3], r12
 
-	pkhbt	t3, t6, t7, lsl #16
-	pkhtb	t7, t7, t6, asr #16
-	pkhtb	t6, t0, t2, asr #16
-	pkhbt	t2, t2, t0, lsl #16
+	pkhbt	r7, r10, r11, lsl #16
+	pkhtb	r11, r11, r10, asr #16
+	pkhtb	r10, r4, r6, asr #16
+	pkhbt	r6, r6, r4, lsl #16
 
-	uxtb16	t0, t6, ror #8
-	uxtb16	t1, t7, ror #8
+	uxtb16	r4, r10, ror #8
+	uxtb16	r5, r11, ror #8
 
-	strd	t0, t1, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	uxtb16	t0, t2, ror #8
-	uxtb16	t1, t3, ror #8
+	uxtb16	r4, r6, ror #8
+	uxtb16	r5, r7, ror #8
 
-	strd	t0, t1, [pDstCbCr, #4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strd	r4, r5, [r1, #4 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pkhtb	t0, t5, t4, asr #16
-	pkhbt	t1, t4, t5, lsl #16
+	pkhtb	r4, r9, r8, asr #16
+	pkhbt	r5, r8, r9, lsl #16
 
-	ldr	t4, [pYuyv], width_
-	ldr	t5, [pYuyv], width_
+	ldr	r8, [r3], r12
+	ldr	r9, [r3], r12
 
-	uxtb16	t2, t2
-	uxtb16	t3, t3
+	uxtb16	r6, r6
+	uxtb16	r7, r7
 
-	pkhbt	t8, t5, t4, lsl #16
-	pkhtb	t9, t4, t5, asr #16
+	pkhbt	lr, r9, r8, lsl #16
+	pkhtb	r2, r8, r9, asr #16
 
-	uxtb16	t4, t0, ror #8
-	uxtb16	t5, t9, ror #8
+	uxtb16	r8, r4, ror #8
+	uxtb16	r9, r2, ror #8
 
-	strd	t4, t5, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strd	r8, r9, [r1, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	uxtb16	t4, t1, ror #8
-	uxtb16	t5, t8, ror #8
+	uxtb16	r8, r5, ror #8
+	uxtb16	r9, lr, ror #8
 
-	strd	t4, t5, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strd	r8, r9, [r1], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	uxtb16	t4, t0
-	uxtb16	t0, t1
-	uxtb16	t1, t8
-	uxtb16	t5, t9
-	uxtb16	t6, t6
-	uxtb16	t7, t7
+	uxtb16	r8, r4
+	uxtb16	r4, r5
+	uxtb16	r5, lr
+	uxtb16	r9, r2
+	uxtb16	r10, r10
+	uxtb16	r11, r11
 
-	stmia	pDstY!, {t0, t1, t2, t3, t4, t5, t6, t7}
+	stmia	r0!, {r4, r5, r6, r7, r8, r9, r10, r11}
 
-	sub	t0, pDstCbCr, pDstY
-	add	pYuyv, pYuyv, #4
-	sub	pYuyv, pYuyv, width_, lsl #3
+	sub	r4, r1, r0
+	add	r3, r3, #4
+	sub	r3, r3, r12, lsl #3
 
-	cmp	t0, #STRUCT_OFFSET_CBBUF - (8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
-	pld	[pYuyv, #0x20]
+	cmp	r4, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (8 * 8 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	pld	[r3, #0x20]
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pDstY
-#undef pDstCbCr
-#undef t9
-#undef pYuyv
 
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef width_
-#undef t8
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -987,134 +622,109 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565ToYuv444(register JpegMpEncoderContext* pC
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
 
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x2)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x2)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r2, r2, lsl #3
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #3 + 1
+	add	r3, r3, r1, lsl #3 + 1
 
-	add	t0, r12, #8 * 2
+	add	r1, r12, #8 * 2
 
-	mov	loopXY, #0x00000010
+	mov	r4, #0x00000010
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	adr	pConst, constTblCenterCtrRgb565To444
+	adr	r5, constTblCenterCtrRgb565To444
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	ldr	t0, [pRgb], #4
+	ldr	r1, [r3], #4
 
-	ldmib	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r10, r11, r12, lr}
 
 10
 
-	and	g1r1, rgbMask, t0, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	b1b0, rgbMask, t0, lsr #8
+	and	r8, r10, r1, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r9, r10, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, rgbMask, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r10, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6,   r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1,   r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6,   r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	ldmia	pConst, {t1, rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r10, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6,   #8, r6,   asr #12
+	usat	r7, #8, r7, asr #12
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	ldrcc	t0, [pRgb], #4
+	ldrcc	r1, [r3], #4
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6,   [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
-	sub	t1, loopXY, #0x1e
+	ldr	r1, [sp, #0x20]
+	sub	r2, r4, #0x1e
 
-	subs	loopXY, loopXY, #0x00000002
-	ldrnesh	t2, [pConst, t1]
+	subs	r4, r4, #0x00000002
+	ldrnesh	r6, [r5, r2]
 
-	ldrne	t0, [pRgb, t0]!
+	ldrne	r1, [r3, r1]!
 
-	addne	pRgb, pRgb, #4
-	addne	pDstY, pDstY, t2
+	addne	r3, r3, #4
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -1129,45 +739,20 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565ToYuv444(register JpegMpEncoderContext* pC
 	dcd	__cpp(s_Coef565Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef565G2crMul << 16) | s_Coef565R2crMul_B2cbMul)
 constTblCenterCtrRgb565To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	0x00fc00fc
 	dcd	__cpp((s_Coef565G2yMul << 16)  | s_Coef565R2yMul)
 	dcd	__cpp(s_Coef565Rgb2yAdd)
 	dcd	__cpp((s_Coef565B2crMul << 16) | s_Coef565B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
 
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -1175,183 +760,153 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565ToYuv420(register JpegMpEncoderContext* pC
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define t3   g0r0
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
 
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x2)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x2)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #4
+	mov	r2, r2, lsl #4
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
+	add	r3, r3, r1, lsl #4 + 1
 
-	add	t0, r12, #8 * 2
+	add	r1, r12, #8 * 2
 
-	mov	loopXY, #0x00000020
+	mov	r4, #0x00000020
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	adr	pConst, constTblCenterCtrRgb565To420
+	adr	r5, constTblCenterCtrRgb565To420
 
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldr	g0r0, [pRgb, t0]
+	ldr	r7, [r3, r1]
 
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r10, r11, r12, lr}
 
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
-	mov	t0, g0r0
+	mov	r1, r7
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	and	g1r1, rgbMask, t0, lsr #3
+	and	r8, r10, r1, lsr #3
 
-	and	t1,   rgbMask, rgbMask, lsl #1
-	and	b1b0, t1, t0, lsr #8
+	and	r2,   r10, r10, lsl #1
+	and	r9, r2, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, t1, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r2, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldr	t2, [pRgb], #4
+	ldr	r6, [r3], #4
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	and	g1r1, rgbMask, t2, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	t1,   rgbMask, t2, lsr #8
-	and	b3b2, rgbMask, t2, lsl #3
+	and	r8, r10, r6, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r2,   r10, r6, lsr #8
+	and	r10, r10, r6, lsl #3
 
-	pkhbt	t2,   t1,   g1r1, lsl #16
-	pkhtb	g1r1, g1r1, t1,   asr #16
+	pkhbt	r6,   r2,   r8, lsl #16
+	pkhtb	r8, r8, r2,   asr #16
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6,   r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r10, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	usat	t1, #8, t1, asr #14
-	ldrcc	t0, [pRgb, t0]
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	ldrcc	r1, [r3, r1]
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	ldr	t2, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r6, [sp, #0x30]
 
-	subs	loopXY, loopXY, #0x00000004
+	subs	r4, r4, #0x00000004
 
-	EPILOGUE_EQ_INST
+	popeq  {r0-r3, r4-r11, r12, pc}
 
-	sub	t1, loopXY, #0x2c
+	sub	r2, r4, #0x2c
 
-	add	pRgb, pRgb, t2, lsl #1
+	add	r3, r3, r6, lsl #1
 
-	ldr	t1, [pConst, t1]
-	ldr	t2, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r2, [r5, r2]
+	ldr	r6, [sp, #0x08]
 
-	ldr	t0, [pRgb, t0]
+	ldr	r1, [r3, r1]
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	b	%b10
 
@@ -1373,45 +928,15 @@ constTblCenterCtrRgb565To420
 	dcd	__cpp(s_Coef565Rgb2yAdd)
 	dcd	__cpp((s_Coef565B2crMul << 16) | s_Coef565B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef t3
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTH
-#undef STACK_OFFSET_PDSTCBCR
 
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -1419,130 +944,105 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565ToYuv422(register JpegMpEncoderContext* pC
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x2)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x2)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r2, r2, lsl #3
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
+	add	r3, r3, r1, lsl #4 + 1
 
-	add	t0, r12, #16 * 2
+	add	r1, r12, #16 * 2
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	adr	pConst, constTblCenterCtrRgb565To422
+	adr	r5, constTblCenterCtrRgb565To422
 
-	mov	loopXY, #0x00000010
+	mov	r4, #0x00000010
 
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	ldr	t0, [pRgb], #4
+	ldr	r1, [r3], #4
 
-	ldmib	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r10, r11, r12, lr}
 
 10
 
-	and	g1r1, rgbMask, t0, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	b1b0, rgbMask, t0, lsr #8
+	and	r8, r10, r1, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r9, r10, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, rgbMask, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r10, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
-	ldmia	pConst, {t1, rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
+	ldmia	r5, {r2, r10, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	ldrcc	t0, [pRgb], #4
+	ldrcc	r1, [r3], #4
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r1, [sp, #0x20]
 
-	ldrsh	pDstCbCr, [t1, loopXY]
+	ldrsh	r6, [r2, r4]
 
-	subs	loopXY, loopXY, #0x00000002
+	subs	r4, r4, #0x00000002
 
-	ldrne	t0, [pRgb, t0]!
+	ldrne	r1, [r3, r1]!
 
-	addne	pRgb, pRgb, #4
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r3, r3, #4
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 offsetTblCtrRgb565To422
 	dcw	0
@@ -1566,38 +1066,13 @@ constTblCenterCtrRgb565To422
 	dcd	__cpp(s_Coef565Rgb2yAdd)
 	dcd	__cpp((s_Coef565B2crMul << 16) | s_Coef565B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565Block8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -1605,131 +1080,107 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565Block8ToYuv444(register JpegMpEncoderConte
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-	mov	arg_row, arg_row, lsl #3 + 1
+	mov	r2, r2, lsl #3 + 1
 
-	add	pRgb, pRgb, arg_col, lsl #3 + 1 + 3
+	add	r3, r3, r1, lsl #3 + 1 + 3
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	mla	pRgb, arg_row, r12, pRgb
+	mla	r3, r2, r12, r3
 
-	adr	pConst, constTblCenterCtrRgb565Block8To444
+	adr	r5, constTblCenterCtrRgb565Block8To444
 
-	mov	loopXY, #0x00000008
+	mov	r4, #0x00000008
 
-	ldr	t0, [pRgb]
+	ldr	r1, [r3]
 
-	ldmib	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r10, r11, r12, lr}
 
 10
 
-	and	g1r1, rgbMask, t0, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	b1b0, rgbMask, t0, lsr #8
+	and	r8, r10, r1, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r9, r10, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, rgbMask, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r10, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6,   r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1,   r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6,   r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	adr	t0, srcOffsetTblCtrRgb565Block8To444 - 4
+	adr	r1, srcOffsetTblCtrRgb565Block8To444 - 4
 
-	ldmia	pConst, {t1, rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r10, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6,   #8, r6,   asr #12
+	usat	r7, #8, r7, asr #12
 
-	ldrb	t0, [t0, loopXY, ror #30]
+	ldrb	r1, [r1, r4, ror #30]
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	teq	t0, #0x00
-	ldrne	t0, [pRgb, t0]
+	teq	r1, #0x00
+	ldrne	r1, [r3, r1]
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6,   [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
-	ldrnesh	t2, [t1, #-0x1e]
+	subs	r4, r4, #0x00000001
+	ldrnesh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, t2
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -1744,7 +1195,7 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565Block8ToYuv444(register JpegMpEncoderConte
 	dcd	__cpp(s_Coef565Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef565G2crMul << 16) | s_Coef565R2crMul_B2cbMul)
 constTblCenterCtrRgb565Block8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	0x00fc00fc
 	dcd	__cpp((s_Coef565G2yMul << 16)  | s_Coef565R2yMul)
 	dcd	__cpp(s_Coef565Rgb2yAdd)
@@ -1760,37 +1211,13 @@ srcOffsetTblCtrRgb565Block8To444
 	dcd	0x08161206*2
 	dcd	0x02141004*2
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565Block8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -1798,194 +1225,163 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565Block8ToYuv420(register JpegMpEncoderConte
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define t3   g0r0
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTHx8        0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
-#define STACK_OFFSET_PRGB           0x04
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-	mov	arg_row, arg_row, lsl #4 + 1
+	mov	r2, r2, lsl #4 + 1
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1 + 3
+	add	r3, r3, r1, lsl #4 + 1 + 3
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	mla	pRgb, arg_row, r12, pRgb
+	mla	r3, r2, r12, r3
 
-	mov	loopXY, #0x00000008
+	mov	r4, #0x00000008
 
-	adr	pConst, constTblCenterCtrRgb565Block8To420
+	adr	r5, constTblCenterCtrRgb565Block8To420
 
-	add	r12, pRgb, r12, lsl #3 + 1
-	str	r12, [sp, #STACK_OFFSET_WIDTHx8 - 0x10]
+	add	r12, r3, r12, lsl #3 + 1
+	str	r12, [sp, #0x30 - 0x10]
 
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	ldr	g0r0, [pRgb, #0x02*2]!
+	ldr	r7, [r3, #0x02*2]!
 
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r10, r11, r12, lr}
 
-	sub	t0, pRgb, #0x02*2
+	sub	r1, r3, #0x02*2
 
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	mov	t0, g0r0
+	mov	r1, r7
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	and	g1r1, rgbMask, t0, lsr #3
+	and	r8, r10, r1, lsr #3
 
-	and	t1,   rgbMask, rgbMask, lsl #1
-	and	b1b0, t1, t0, lsr #8
+	and	r2,   r10, r10, lsl #1
+	and	r9, r2, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, t1, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r2, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldr	t2, [pRgb, #-0x02*2]
+	ldr	r6, [r3, #-0x02*2]
 
-	adr	pRgb, srcOffsetTblCtrRgb565Block8To420 - 8
+	adr	r3, srcOffsetTblCtrRgb565Block8To420 - 8
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldrb	pRgb, [pRgb, loopXY, ror #29]
+	ldrb	r3, [r3, r4, ror #29]
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	and	g1r1, rgbMask, t2, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	t1,   rgbMask, t2, lsr #8
-	and	b3b2, rgbMask, t2, lsl #3
+	and	r8, r10, r6, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r2,   r10, r6, lsr #8
+	and	r10, r10, r6, lsl #3
 
-	pkhbt	t2,   t1,   g1r1, lsl #16
-	pkhtb	g1r1, g1r1, t1,   asr #16
+	pkhbt	r6,   r2,   r8, lsl #16
+	pkhtb	r8, r8, r2,   asr #16
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6,   r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r10, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	teq	pRgb, #0x00
-	ldrne	t0, [pRgb, t0]!
+	teq	r3, #0x00
+	ldrne	r1, [r3, r1]!
 
-	usat	t1, #8, t1, asr #14
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	addne	t1, pConst, loopXY, lsl #2
-	ldrne	t2, [sp, #STACK_OFFSET_PDSTY0]
-	ldrne	t1, [t1, #-0x2c]
+	addne	r2, r5, r4, lsl #2
+	ldrne	r6, [sp, #0x08]
+	ldrne	r2, [r2, #-0x2c]
 
-	EPILOGUE_EQ_INST
+	popeq  {r0-r3, r4-r11, r12, pc}
 
-	cmp	loopXY, #0x00000004
+	cmp	r4, #0x00000004
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	bne	%b10
 
-	ldr	pRgb, [sp, #STACK_OFFSET_WIDTHx8]
+	ldr	r3, [sp, #0x30]
 
-	str	pRgb, [sp, #STACK_OFFSET_PRGB]
-	ldr	t0, [pRgb, #0x02*2]!
+	str	r3, [sp, #0x04]
+	ldr	r1, [r3, #0x02*2]!
 
 	b	%b10
 
@@ -2017,45 +1413,14 @@ srcOffsetTblCtrRgb565Block8To420
 	dcd	0x4a1e1a0e*2,0x225e5a4e*2
 	dcd	0x42161206*2,0x0a565246*2
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef t3
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTHx8
-#undef STACK_OFFSET_PDSTCBCR
-#undef STACK_OFFSET_PRGB
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb565Block8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -2063,130 +1428,106 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb565Block8ToYuv422(register JpegMpEncoderConte
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-	mov	arg_row, arg_row, lsl #3 + 1
+	mov	r2, r2, lsl #3 + 1
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1 + 3
+	add	r3, r3, r1, lsl #4 + 1 + 3
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	mla	pRgb, arg_row, r12, pRgb
+	mla	r3, r2, r12, r3
 
-	adr	pConst, constTblCenterCtrRgb565Block8To422
+	adr	r5, constTblCenterCtrRgb565Block8To422
 
-	mov	loopXY, #0x00000008
+	mov	r4, #0x00000008
 
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	ldr	t0, [pRgb]
+	ldr	r1, [r3]
 
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r10, r11, r12, lr}
 
 10
 
-	and	g1r1, rgbMask, t0, lsr #3
-	and	rgbMask, rgbMask, rgbMask, lsl #1
-	and	b1b0, rgbMask, t0, lsr #8
+	and	r8, r10, r1, lsr #3
+	and	r10, r10, r10, lsl #1
+	and	r9, r10, r1, lsr #8
 
-	pkhbt	g0r0, b1b0, g1r1, lsl #16
-	pkhtb	g1r1, g1r1, b1b0, asr #16
-	and	b1b0, rgbMask, t0, lsl #3
+	pkhbt	r7, r9, r8, lsl #16
+	pkhtb	r8, r8, r9, asr #16
+	and	r9, r10, r1, lsl #3
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	adr	t0, srcOffsetTblCtrRgb565Block8To422 - 8
+	adr	r1, srcOffsetTblCtrRgb565Block8To422 - 8
 
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldrb	t0, [t0, loopXY, ror #29]
+	ldrb	r1, [r1, r4, ror #29]
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
 
-	ldmia	pConst, {rgbMask, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r10, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	teq	t0, #0x00
-	ldrne	t0, [pRgb, t0]
+	teq	r1, #0x00
+	ldrne	r1, [r3, r1]
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	ldrsh	pDstCbCr, [t1, #-0x1e]
+	ldrsh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 offsetTblCtrRgb565Block8To422
 	dcw	(-128-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -2217,37 +1558,13 @@ srcOffsetTblCtrRgb565Block8To422
 	dcd	0x42161206*2,0x08565246*2
 	dcd	0x40141004*2,0x02545044*2
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgb8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -2255,136 +1572,111 @@ NN_ASM void JpegMpEncoderAsm_Rgb8ToYuv444(register JpegMpEncoderContext* pCtx NN
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
 
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r2, r2, lsl #3
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #3 + 1
-	add	pRgb, pRgb, arg_col, lsl #3
+	add	r3, r3, r1, lsl #3 + 1
+	add	r3, r3, r1, lsl #3
 
-	add	t0, r12, #8 * 3
+	add	r1, r12, #8 * 3
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	adr	pConst, constTblCenter_Rgb8To444
+	adr	r5, constTblCenter_Rgb8To444
 
-	mov	loopXY, #0x00000010
+	mov	r4, #0x00000010
 
-	ldr	t0, [pRgb], #2
-	ldr	rgbMask, [pRgb], #4
+	ldr	r1, [r3], #2
+	ldr	r10, [r3], #4
 
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	pkhtb	b1b0, t0, rgbMask, asr #24
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1, ror #8
-	uxtb16	b1b0, b1b0, ror #16
+	pkhbt	r7, r1, r1, lsl #8
+	pkhbt	r8, r10, r10, lsl #8
+	pkhtb	r9, r1, r10, asr #24
+	uxtb16	r7, r7
+	uxtb16	r8, r8, ror #8
+	uxtb16	r9, r9, ror #16
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6,   r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1,   r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6,   r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6,   #8, r6,   asr #12
+	usat	r7, #8, r7, asr #12
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	ldrcc	t0, [pRgb], #2
-	ldrcc	rgbMask, [pRgb], #4
+	ldrcc	r1, [r3], #2
+	ldrcc	r10, [r3], #4
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6,   [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
-	sub	t1, loopXY, #0x1e
+	ldr	r1, [sp, #0x20]
+	sub	r2, r4, #0x1e
 
-	subs	loopXY, loopXY, #0x00000002
-	ldrnesh	t2, [pConst, t1]
+	subs	r4, r4, #0x00000002
+	ldrnesh	r6, [r5, r2]
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #2]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #2]
 
-	addne	pRgb, pRgb, #2 * 3
-	addne	pDstY, pDstY, t2
+	addne	r3, r3, #2 * 3
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -2399,44 +1691,19 @@ NN_ASM void JpegMpEncoderAsm_Rgb8ToYuv444(register JpegMpEncoderContext* pCtx NN
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenter_Rgb8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
 
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgb8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -2444,186 +1711,156 @@ NN_ASM void JpegMpEncoderAsm_Rgb8ToYuv420(register JpegMpEncoderContext* pCtx NN
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define t3   g0r0
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
 
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #4
+	mov	r2, r2, lsl #4
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
-	add	pRgb, pRgb, arg_col, lsl #4
+	add	r3, r3, r1, lsl #4 + 1
+	add	r3, r3, r1, lsl #4
 
-	add	t0, r12, #8 * 3
+	add	r1, r12, #8 * 3
 
-	adr	pConst, constTblCenter_Rgb8To420
+	adr	r5, constTblCenter_Rgb8To420
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	mov	loopXY, #0x00000020
+	mov	r4, #0x00000020
 
-	add	g1r1, pRgb, t0
+	add	r8, r3, r1
 
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldr	rgbMask, [g1r1]
-	ldr	g1r1, [g1r1, #2]
+	ldr	r10, [r8]
+	ldr	r8, [r8, #2]
 
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r11, r12, lr}
 
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	pkhbt	g0r0, rgbMask, rgbMask, lsl #8
-	pkhtb	b1b0, rgbMask, g1r1, asr #24
-	pkhbt	g1r1, g1r1, g1r1, lsl #8
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1, ror #8
-	uxtb16	b1b0, b1b0, ror #16
+	pkhbt	r7, r10, r10, lsl #8
+	pkhtb	r9, r10, r8, asr #24
+	pkhbt	r8, r8, r8, lsl #8
+	uxtb16	r7, r7
+	uxtb16	r8, r8, ror #8
+	uxtb16	r9, r9, ror #16
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldr	rgbMask, [pRgb], #2
+	ldr	r10, [r3], #2
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldr	g1r1, [pRgb], #4
+	ldr	r8, [r3], #4
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhbt	t2, rgbMask, rgbMask, lsl #8
-	pkhtb	b3b2, rgbMask, g1r1, asr #24
-	pkhbt	g1r1, g1r1, g1r1, lsl #8
-	uxtb16	t2, t2
-	uxtb16	g1r1, g1r1, ror #8
-	uxtb16	b3b2, b3b2, ror #16
+	pkhbt	r6, r10, r10, lsl #8
+	pkhtb	r10, r10, r8, asr #24
+	pkhbt	r8, r8, r8, lsl #8
+	uxtb16	r6, r6
+	uxtb16	r8, r8, ror #8
+	uxtb16	r10, r10, ror #16
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6,   r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	usat	t1, #8, t1, asr #14
-	ldrcc	rgbMask, [t0, pRgb]!
-	usat	t2, #8, t2, asr #14
-	ldrcc	g1r1, [t0, #2]
+	usat	r2, #8, r2, asr #14
+	ldrcc	r10, [r1, r3]!
+	usat	r6, #8, r6, asr #14
+	ldrcc	r8, [r1, #2]
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	ldr	t2, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r6, [sp, #0x30]
 
-	subs	loopXY, loopXY, #0x00000004
+	subs	r4, r4, #0x00000004
 
-	EPILOGUE_EQ_INST
+	popeq  {r0-r3, r4-r11, r12, pc}
 
-	sub	t1, loopXY, #0x2c
+	sub	r2, r4, #0x2c
 
-	add	pRgb, pRgb, t2, lsl #1
+	add	r3, r3, r6, lsl #1
 
-	ldr	t1, [pConst, t1]
-	ldr	t2, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r2, [r5, r2]
+	ldr	r6, [sp, #0x08]
 
-	ldr	rgbMask, [t0, pRgb]!
+	ldr	r10, [r1, r3]!
 
-	and	t3, t1, #0xff
-	ldr	g1r1, [t0, #2]
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	ldr	r8, [r1, #2]
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	b	%b10
 
@@ -2644,45 +1881,15 @@ constTblCenter_Rgb8To420
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef t3
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTH
-#undef STACK_OFFSET_PDSTCBCR
 
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgb8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -2690,132 +1897,107 @@ NN_ASM void JpegMpEncoderAsm_Rgb8ToYuv422(register JpegMpEncoderContext* pCtx NN
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x3)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x3)]
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r2, r2, lsl #3
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
-	add	pRgb, pRgb, arg_col, lsl #4
+	add	r3, r3, r1, lsl #4 + 1
+	add	r3, r3, r1, lsl #4
 
-	add	t0, r12, #16 * 3
+	add	r1, r12, #16 * 3
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	mla	pRgb, arg_row, t0, pRgb
+	mla	r3, r2, r1, r3
 
-	adr	pConst, constTblCenter_Rgb8To422
+	adr	r5, constTblCenter_Rgb8To422
 
-	mov	loopXY, #0x00000010
+	mov	r4, #0x00000010
 
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	ldr	t0, [pRgb], #2
-	ldr	rgbMask, [pRgb], #4
+	ldr	r1, [r3], #2
+	ldr	r10, [r3], #4
 
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	pkhtb	b1b0, t0, rgbMask, asr #24
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1, ror #8
-	uxtb16	b1b0, b1b0, ror #16
+	pkhbt	r7, r1, r1, lsl #8
+	pkhbt	r8, r10, r10, lsl #8
+	pkhtb	r9, r1, r10, asr #24
+	uxtb16	r7, r7
+	uxtb16	r8, r8, ror #8
+	uxtb16	r9, r9, ror #16
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
+	ldmia	r5, {r2, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	ldrcc	t0, [pRgb], #2
-	ldrcc	rgbMask, [pRgb], #4
+	ldrcc	r1, [r3], #2
+	ldrcc	r10, [r3], #4
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r1, [sp, #0x20]
 
-	ldrsh	pDstCbCr, [t1, loopXY]
+	ldrsh	r6, [r2, r4]
 
-	subs	loopXY, loopXY, #0x00000002
+	subs	r4, r4, #0x00000002
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #2]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #2]
 
-	addne	pRgb, pRgb, #2 * 3
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r3, r3, #2 * 3
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 offsetTbl_Rgb8To422
 	dcw	0
@@ -2838,38 +2020,13 @@ constTblCenter_Rgb8To422
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb8Block8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -2877,131 +2034,107 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb8Block8ToYuv444(register JpegMpEncoderContext
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
 
-#define b2crMul_b2yMul   lr
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r2, r2, lsl #3
 
-	add	pRgb, pRgb, arg_col, lsl #3 + 1 + 3
-	add	pRgb, pRgb, arg_col, lsl #3 + 3
+	add	r3, r3, r1, lsl #3 + 1 + 3
+	add	r3, r3, r1, lsl #3 + 3
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	PROLOGUE_INST
+	push {r4-r11, r12, lr}
 
-	mla	pRgb, arg_row, r12, pRgb
+	mla	r3, r2, r12, r3
 
-	adr	pConst, constTblCenterCtrRgb8Block8To444
+	adr	r5, constTblCenterCtrRgb8Block8To444
 
-	mov	loopXY, #0x00000008
+	mov	r4, #0x00000008
 
-	ldr	rgbMask, [pRgb]
-	ldr	t0, [pRgb, #2]
+	ldr	r10, [r3]
+	ldr	r1, [r3, #2]
 
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, rgbMask, rgbMask, lsl #8
-	pkhtb	g1r1, t0, t0, asr #8
-	pkhbt	b1b0, rgbMask, t0, lsl #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r10, r10, lsl #8
+	pkhtb	r8, r1, r1, asr #8
+	pkhbt	r9, r10, r1, lsl #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6,   r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1,   r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6,   r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	adr	t0, srcOffsetTblCtrRgb8Block8To444 - 4
+	adr	r1, srcOffsetTblCtrRgb8Block8To444 - 4
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6,   #8, r6,   asr #12
+	usat	r7, #8, r7, asr #12
 
-	ldrb	t0, [t0, loopXY, ror #30]
+	ldrb	r1, [r1, r4, ror #30]
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	teq	t0, #0x00
-	ldrne	rgbMask, [t0, pRgb]!
-	ldrne	t0, [t0, #2]
+	teq	r1, #0x00
+	ldrne	r10, [r1, r3]!
+	ldrne	r1, [r1, #2]
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6,   [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
-	ldrnesh	t2, [t1, #-0x1e]
+	subs	r4, r4, #0x00000001
+	ldrnesh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, t2
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop  {r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -3016,7 +2149,7 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb8Block8ToYuv444(register JpegMpEncoderContext
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenterCtrRgb8Block8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
@@ -3031,234 +2164,170 @@ srcOffsetTblCtrRgb8Block8To444
 	dcd	0x08161206*3
 	dcd	0x02141004*3
 
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
 
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
 
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
 
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
 
-#undef b2crMul_b2yMul
 
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
 
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
 
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_CtrRgb8Block8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_CtrRgb8Block8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_CtrRgb8Block8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #4
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
+	add	r3, r3, r1, lsl #4 + 1 + 3
+	add	r3, r3, r1, lsl #4 + 3
 
-#define b2crMul_b2yMul   lr
+	push	{r4-r11, r12, lr}
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	mla	r3, r2, r12, r3
 
-#define t3   g0r0
+	mov	r4, #0x00000008
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
+	adr	r5, constTblCenterCtrRgb8Block8To420
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTHx8        0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
-#define STACK_OFFSET_PRGB           0x04
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
+	add	r12, r3, r12, lsl #3
+	str	r12, [sp, #0x30 - 0x10]
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r7, [r3, #(0x02*3) + 2]!
+	ldr	r10, [r3, #-2]!
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
+	ldmia	r5, {r11, r12, lr}
 
-	mov	arg_row, arg_row, lsl #4
+	sub	r1, r3, #(0x02*3)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1 + 3
-	add	pRgb, pRgb, arg_col, lsl #4 + 3
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	PROLOGUE_INST
+	push	{r0, r1, r2, r6}
 
-	mla	pRgb, arg_row, r12, pRgb
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	mov	loopXY, #0x00000008
-
-	adr	pConst, constTblCenterCtrRgb8Block8To420
-
-	add	r12, pRgb, r12, lsl #3
-	str	r12, [sp, #STACK_OFFSET_WIDTHx8 - 0x10]
-
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	ldr	g0r0, [pRgb, #(0x02*3) + 2]!
-	ldr	rgbMask, [pRgb, #-2]!
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
-
-	sub	t0, pRgb, #(0x02*3)
-
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-
-	push	{pDst, t0, t1, t2}
-
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
-
-	mov	t0, g0r0
+	mov	r1, r7
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
+	str	r0, [sp, #0x00]
 
-	pkhbt	g0r0, rgbMask, rgbMask, lsl #8
-	pkhtb	g1r1, t0, t0, asr #8
-	pkhbt	b1b0, rgbMask, t0, lsl #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r10, r10, lsl #8
+	pkhtb	r8, r1, r1, asr #8
+	pkhbt	r9, r10, r1, lsl #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldr	rgbMask, [pRgb, #-(0x02*3)]
-	ldr	t2, [pRgb, #-(0x02*3) + 2]
+	ldr	r10, [r3, #-(0x02*3)]
+	ldr	r6, [r3, #-(0x02*3) + 2]
 
-	adr	pRgb, srcOffsetTblCtrRgb8Block8To420 - 8
+	adr	r3, srcOffsetTblCtrRgb8Block8To420 - 8
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldrb	pRgb, [pRgb, loopXY, ror #29]
+	ldrb	r3, [r3, r4, ror #29]
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhbt	t1, rgbMask, rgbMask, lsl #8
-	pkhtb	g1r1, t2, t2, asr #8
-	pkhbt	b3b2, rgbMask, t2, lsl #8
-	uxtb16	t2, t1, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b3b2, b3b2
+	pkhbt	r2, r10, r10, lsl #8
+	pkhtb	r8, r6, r6, asr #8
+	pkhbt	r10, r10, r6, lsl #8
+	uxtb16	r6, r2, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r10, r10
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	add	t0, t0, pRgb, lsl #1
-	teq	pRgb, #0x00
-	ldrne	rgbMask, [pRgb, t0]!
-	ldrne	t0, [pRgb, #2]
+	add	r1, r1, r3, lsl #1
+	teq	r3, #0x00
+	ldrne	r10, [r3, r1]!
+	ldrne	r1, [r3, #2]
 
-	usat	t1, #8, t1, asr #14
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	addne	t1, pConst, loopXY, lsl #2
-	ldrne	t2, [sp, #STACK_OFFSET_PDSTY0]
-	ldrne	t1, [t1, #-0x2c]
+	addne	r2, r5, r4, lsl #2
+	ldrne	r6, [sp, #0x08]
+	ldrne	r2, [r2, #-0x2c]
 
-	EPILOGUE_EQ_INST
+	popeq	{r0-r3, r4-r11, r12, pc}
 
-	cmp	loopXY, #0x00000004
+	cmp	r4, #0x00000004
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	bne	%b10
 
-	ldr	pRgb, [sp, #STACK_OFFSET_WIDTHx8]
+	ldr	r3, [sp, #0x30]
 
-	str	pRgb, [sp, #STACK_OFFSET_PRGB]
-	ldr	rgbMask, [pRgb, #0x03*2]!
-	ldr	t0, [pRgb, #2]
+	str	r3, [sp, #0x04]
+	ldr	r10, [r3, #0x03*2]!
+	ldr	r1, [r3, #2]
 
 	b	%b10
 
@@ -3288,46 +2357,6 @@ srcOffsetTblCtrRgb8Block8To420
 	dcd	0x62363226,0x2a767266
 	dcd	0x4a1e1a0e,0x225e5a4e
 	dcd	0x42161206,0x0a565246
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef t3
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTHx8
-#undef STACK_OFFSET_PDSTCBCR
-#undef STACK_OFFSET_PRGB
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgb8Block8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -3335,132 +2364,105 @@ NN_ASM void JpegMpEncoderAsm_CtrRgb8Block8ToYuv422(register JpegMpEncoderContext
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then Y output pointer    r1, r2 = col, row, then temps
+	; r3 = source pointer                 r4 = loop counter    r5 = constant table
+	; r6 = CbCr output pointer            r7 = g0r0   r8 = g1r1   r9 = b1b0
+	; r10-r12, lr = mask/constants
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	mov	r2, r2, lsl #3
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #4 + 1 + 3
+	add	r3, r3, r1, lsl #4 + 3
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
+	push	{r4-r11, r12, lr}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r12, r3
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	adr	r5, constTblCenterCtrRgb8Block8To422
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthX3)]
+	mov	r4, #0x00000008
 
-	mov	arg_row, arg_row, lsl #3
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1 + 3
-	add	pRgb, pRgb, arg_col, lsl #4 + 3
+	ldr	r10, [r3]
+	ldr	r1, [r3, #2]
 
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	PROLOGUE_INST
-
-	mla	pRgb, arg_row, r12, pRgb
-
-	adr	pConst, constTblCenterCtrRgb8Block8To422
-
-	mov	loopXY, #0x00000008
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldr	rgbMask, [pRgb]
-	ldr	t0, [pRgb, #2]
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, rgbMask, rgbMask, lsl #8
-	pkhtb	g1r1, t0, t0, asr #8
-	pkhbt	b1b0, rgbMask, t0, lsl #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r10, r10, lsl #8
+	pkhtb	r8, r1, r1, asr #8
+	pkhbt	r9, r10, r1, lsl #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	adr	t0, srcOffsetTblCtrRgb8Block8To422 - 8
+	adr	r1, srcOffsetTblCtrRgb8Block8To422 - 8
 
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldrb	t0, [t0, loopXY, ror #29]
+	ldrb	r1, [r1, r4, ror #29]
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
 
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	add	t0, t0, t0, lsl #1
-	teq	t0, #0x00
-	ldrne	rgbMask, [t0, pRgb]!
-	ldrne	t0, [t0, #2]
+	add	r1, r1, r1, lsl #1
+	teq	r1, #0x00
+	ldrne	r10, [r1, r3]!
+	ldrne	r1, [r1, #2]
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	ldrsh	pDstCbCr, [t1, #-0x1e]
+	ldrsh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 offsetTblCtrRgb8Block8To422
 	dcw	(-128-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -3489,38 +2491,6 @@ srcOffsetTblCtrRgb8Block8To422
 	dcd	0x481c180c,0x0a5c584c
 	dcd	0x42161206,0x08565246
 	dcd	0x40141004,0x02545044
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgba8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -3528,133 +2498,104 @@ NN_ASM void JpegMpEncoderAsm_Rgba8ToYuv444(register JpegMpEncoderContext* pCtx N
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then Y output pointer    r1, r2 = col, row, then temps
+	; r3 = source pointer                 r4 = loop counter    r5 = constant table
+	; r6 = temp   r7 = g0r0   r8 = g1r1   r9 = b1b0   r10-r12, lr = mask/constants
+	; [sp, #0x20] = source stride
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
 
-#define t0         arg_col
-#define t1         arg_row
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #3
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #3 + 2
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #8 * 4
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r1, r3
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
+	adr	r5, constTblCenter_Rgba8To444
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r4, #0x00000010
 
-	mov	arg_row, arg_row, lsl #3
+	ldmia	r3!, {r1, r10}
 
-	PROLOGUE_INST
-
-	add	pRgb, pRgb, arg_col, lsl #3 + 2
-
-	add	t0, r12, #8 * 4
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Rgba8To444
-
-	mov	loopXY, #0x00000010
-
-	ldmia	pRgb!, {t0, rgbMask}
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	pkhtb	b1b0, rgbMask, t0, asr #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r1, r1, lsl #8
+	pkhbt	r8, r10, r10, lsl #8
+	pkhtb	r9, r10, r1, asr #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6, r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1, r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6, r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6, #8, r6, asr #12
+	usat	r7, #8, r7, asr #12
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	ldmiacc	pRgb!, {t0, rgbMask}
+	ldmiacc	r3!, {r1, r10}
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6, [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
-	sub	t1, loopXY, #0x1e
+	ldr	r1, [sp, #0x20]
+	sub	r2, r4, #0x1e
 
-	subs	loopXY, loopXY, #0x00000002
-	ldrnesh	t2, [pConst, t1]
+	subs	r4, r4, #0x00000002
+	ldrnesh	r6, [r5, r2]
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #4]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #4]
 
-	addne	pRgb, pRgb, #2 * 4
-	addne	pDstY, pDstY, t2
+	addne	r3, r3, #2 * 4
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -3669,44 +2610,10 @@ NN_ASM void JpegMpEncoderAsm_Rgba8ToYuv444(register JpegMpEncoderContext* pCtx N
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenter_Rgba8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgba8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -3714,183 +2621,147 @@ NN_ASM void JpegMpEncoderAsm_Rgba8ToYuv420(register JpegMpEncoderContext* pCtx N
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then pDst      r1, r2 = col, row, then temps    r3 = source pointer
+	; r4 = loop counter         r5 = constant table              r6 = temp
+	; r7 = g0r0   r8 = g1r1     r9 = b1b0    r10-r12, lr = mask/constants
+	; Stack: [sp+0x00] pDstCbCr  [sp+0x08] pDstY0  [sp+0x0c] pDstY1  [sp+0x30] stride
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
+	mov	r2, r2, lsl #4
 
-#define b2crMul_b2yMul   lr
+	push	{r4-r11, r12, lr}
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r3, r3, r1, lsl #4 + 2
 
-#define t3   g0r0
+	add	r1, r12, #8 * 4
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
+	adr	r5, constTblCenter_Rgba8To420
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
+	mla	r3, r2, r1, r3
 
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mov	r4, #0x00000020
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
+	add	r8, r3, r1
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	mov	arg_row, arg_row, lsl #4
+	ldmia	r8, {r8, r10}
 
-	PROLOGUE_INST
+	ldmia	r5, {r11, r12, lr}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	add	t0, r12, #8 * 4
-
-	adr	pConst, constTblCenter_Rgba8To420
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mov	loopXY, #0x00000020
-
-	add	g1r1, pRgb, t0
-
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-
-	ldmia	g1r1, {g1r1, rgbMask}
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
-
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
-
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	pkhbt	g0r0, g1r1, g1r1, lsl #8
-	pkhtb	b1b0, rgbMask, g1r1, asr #16
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r8, r8, lsl #8
+	pkhtb	r9, r10, r8, asr #16
+	pkhbt	r8, r10, r10, lsl #8
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldmia	pRgb!, {g1r1, rgbMask}
+	ldmia	r3!, {r8, r10}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhbt	t2, g1r1, g1r1, lsl #8
-	pkhtb	pDst, rgbMask, g1r1, asr #16
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	uxtb16	t2, t2
-	uxtb16	g1r1, g1r1
-	uxtb16	b3b2, pDst
+	pkhbt	r6, r8, r8, lsl #8
+	pkhtb	r0, r10, r8, asr #16
+	pkhbt	r8, r10, r10, lsl #8
+	uxtb16	r6, r6
+	uxtb16	r8, r8
+	uxtb16	r10, r0
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	addcc	g1r1, pRgb, t0
+	addcc	r8, r3, r1
 
-	usat	t1, #8, t1, asr #14
-	ldmiacc	g1r1, {g1r1, rgbMask}
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	ldmiacc	r8, {r8, r10}
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	ldr	t2, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r6, [sp, #0x30]
 
-	subs	loopXY, loopXY, #0x00000004
+	subs	r4, r4, #0x00000004
 
-	EPILOGUE_EQ_INST
+	popeq	{r0-r3, r4-r11, r12, pc}
 
-	sub	t1, loopXY, #0x2c
+	sub	r2, r4, #0x2c
 
-	add	pRgb, pRgb, t2, lsl #1
+	add	r3, r3, r6, lsl #1
 
-	ldr	t1, [pConst, t1]
-	add	g1r1, pRgb, t0
-	ldr	t2, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r2, [r5, r2]
+	add	r8, r3, r1
+	ldr	r6, [sp, #0x08]
 
-	ldmia	g1r1, {g1r1, rgbMask}
+	ldmia	r8, {r8, r10}
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	b	%b10
 
@@ -3910,46 +2781,6 @@ constTblCenter_Rgba8To420
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef t3
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTH
-#undef STACK_OFFSET_PDSTCBCR
-
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_Rgba8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -3957,129 +2788,101 @@ NN_ASM void JpegMpEncoderAsm_Rgba8ToYuv422(register JpegMpEncoderContext* pCtx N
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then Y output pointer    r1, r2 = col, row, then temps
+	; r3 = source pointer                 r4 = loop counter    r5 = constant table
+	; r6 = CbCr output pointer            r7 = g0r0   r8 = g1r1   r9 = b1b0
+	; r10-r12, lr = mask/constants        [sp, #0x20] = source stride
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x4)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	mov	r2, r2, lsl #3
 
-#define b2crMul_b2yMul   lr
+	push	{r4-r11, r12, lr}
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r3, r3, r1, lsl #4 + 2
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	add	r1, r12, #16 * 4
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x4)]
+	mla	r3, r2, r1, r3
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	adr	r5, constTblCenter_Rgba8To422
 
-	mov	arg_row, arg_row, lsl #3
+	mov	r4, #0x00000010
 
-	PROLOGUE_INST
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2
+	ldmia	r3!, {r1, r10}
 
-	add	t0, r12, #16 * 4
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Rgba8To422
-
-	mov	loopXY, #0x00000010
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldmia	pRgb!, {t0, rgbMask}
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhbt	g1r1, rgbMask, rgbMask, lsl #8
-	pkhtb	b1b0, rgbMask, t0, asr #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r1, r1, lsl #8
+	pkhbt	r8, r10, r10, lsl #8
+	pkhtb	r9, r10, r1, asr #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
+	ldmia	r5, {r2, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	ldmiacc	pRgb!, {t0, rgbMask}
+	ldmiacc	r3!, {r1, r10}
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r1, [sp, #0x20]
 
-	ldrsh	pDstCbCr, [t1, loopXY]
+	ldrsh	r6, [r2, r4]
 
-	subs	loopXY, loopXY, #0x00000002
+	subs	r4, r4, #0x00000002
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #4]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #4]
 
-	addne	pRgb, pRgb, #2 * 4
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r3, r3, #2 * 4
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 offsetTbl_Rgba8To422
 	dcw	0
@@ -4101,39 +2904,6 @@ constTblCenter_Rgba8To422
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
        void JpegMpEncoderAsm_CtrRgba8Block8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
@@ -4141,129 +2911,101 @@ NN_ASM void JpegMpEncoderAsm_CtrRgba8Block8ToYuv444(register JpegMpEncoderContex
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then Y output pointer    r1, r2 = col, row, then temps
+	; r3 = source pointer                 r4 = loop counter    r5 = constant table
+	; r6 = temp   r7 = g0r0   r8 = g1r1   r9 = b1b0   r10-r12, lr = mask/constants
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	mov	r2, r2, lsl #3 + 2
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #3 + 2 + 3
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
+	push	{r4-r11, r12, lr}
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r12, r3
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	adr	r5, constTblCenterCtrRgba8Block8To444
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	mov	r4, #0x00000008
 
-	mov	arg_row, arg_row, lsl #3 + 2
+	ldmia	r3, {r1, r10}
 
-	add	pRgb, pRgb, arg_col, lsl #3 + 2 + 3
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	PROLOGUE_INST
-
-	mla	pRgb, arg_row, r12, pRgb
-
-	adr	pConst, constTblCenterCtrRgba8Block8To444
-
-	mov	loopXY, #0x00000008
-
-	ldmia	pRgb, {t0, rgbMask}
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhtb	g0r0, t0, t0, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, t0, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r1, r1, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r9, r1, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6, r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1, r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6, r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	adr	t0, srcOffsetTblCtrRgba8Block8To444 - 4
+	adr	r1, srcOffsetTblCtrRgba8Block8To444 - 4
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6, #8, r6, asr #12
+	usat	r7, #8, r7, asr #12
 
-	ldrb	t0, [t0, loopXY, ror #30]
+	ldrb	r1, [r1, r4, ror #30]
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	add	rgbMask, pRgb, t0, lsl #2
-	teq	t0, #0x00
-	ldmiane	rgbMask, {t0, rgbMask}
+	add	r10, r3, r1, lsl #2
+	teq	r1, #0x00
+	ldmiane	r10, {r1, r10}
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6, [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
-	ldrnesh	t2, [t1, #-0x1e]
+	subs	r4, r4, #0x00000001
+	ldrnesh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, t2
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -4278,7 +3020,7 @@ NN_ASM void JpegMpEncoderAsm_CtrRgba8Block8ToYuv444(register JpegMpEncoderContex
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenterCtrRgba8Block8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
@@ -4292,232 +3034,160 @@ srcOffsetTblCtrRgba8Block8To444
 	dcd	0x0a1c180c
 	dcd	0x08161206
 	dcd	0x02141004
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_CtrRgba8Block8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_CtrRgba8Block8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_CtrRgba8Block8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #4 + 2
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
+	add	r3, r3, r1, lsl #4 + 2 + 3
 
-#define b2crMul_b2yMul   lr
+	push	{r4-r11, r12, lr}
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	mla	r3, r2, r12, r3
 
-#define t3   g0r0
+	mov	r4, #0x00000008
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
+	adr	r5, constTblCenterCtrRgba8Block8To420
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTHx8        0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
-#define STACK_OFFSET_PRGB           0x04
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
+	add	r12, r3, r12, lsl #3 + 2
+	str	r12, [sp, #0x30 - 0x10]
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r7, [r3, #(0x02*4)]!
+	ldr	r10, [r3, #4]
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	ldmia	r5, {r11, r12, lr}
 
-	mov	arg_row, arg_row, lsl #4 + 2
+	sub	r1, r3, #(0x02*4)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2 + 3
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	PROLOGUE_INST
+	push	{r0, r1, r2, r6}
 
-	mla	pRgb, arg_row, r12, pRgb
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	mov	loopXY, #0x00000008
-
-	adr	pConst, constTblCenterCtrRgba8Block8To420
-
-	add	r12, pRgb, r12, lsl #3 + 2
-	str	r12, [sp, #STACK_OFFSET_WIDTHx8 - 0x10]
-
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	ldr	g0r0, [pRgb, #(0x02*4)]!
-	ldr	rgbMask, [pRgb, #4]
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
-
-	sub	t0, pRgb, #(0x02*4)
-
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-
-	push	{pDst, t0, t1, t2}
-
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
-
-	mov	t0, g0r0
+	mov	r1, r7
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
+	str	r0, [sp, #0x00]
 
-	pkhtb	g0r0, t0, t0, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, t0, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r1, r1, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r9, r1, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldmdb	pRgb, {t2, rgbMask}
+	ldmdb	r3, {r6, r10}
 
-	adr	pRgb, srcOffsetTblCtrRgba8Block8To420 - 8
+	adr	r3, srcOffsetTblCtrRgba8Block8To420 - 8
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldrb	pRgb, [pRgb, loopXY, ror #29]
+	ldrb	r3, [r3, r4, ror #29]
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhtb	t1, t2, t2, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b3b2, t2, rgbMask, lsl #16
-	uxtb16	t2, t1
-	uxtb16	g1r1, g1r1
-	uxtb16	b3b2, b3b2, ror #8
+	pkhtb	r2, r6, r6, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r10, r6, r10, lsl #16
+	uxtb16	r6, r2
+	uxtb16	r8, r8
+	uxtb16	r10, r10, ror #8
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	add	pRgb, t0, pRgb, lsl #2
-	teq	pRgb, t0
-	ldmiane	pRgb, {t0, rgbMask}
+	add	r3, r1, r3, lsl #2
+	teq	r3, r1
+	ldmiane	r3, {r1, r10}
 
-	usat	t1, #8, t1, asr #14
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	addne	t1, pConst, loopXY, lsl #2
-	ldrne	t2, [sp, #STACK_OFFSET_PDSTY0]
-	ldrne	t1, [t1, #-0x2c]
+	addne	r2, r5, r4, lsl #2
+	ldrne	r6, [sp, #0x08]
+	ldrne	r2, [r2, #-0x2c]
 
-	EPILOGUE_EQ_INST
+	popeq	{r0-r3, r4-r11, r12, pc}
 
-	cmp	loopXY, #0x00000004
+	cmp	r4, #0x00000004
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	bne	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTHx8]
+	ldr	r1, [sp, #0x30]
 
-	add	pRgb, t0, #(0x02*4)
-	str	t0, [sp, #STACK_OFFSET_PRGB]
-	ldmia	pRgb, {t0, rgbMask}
+	add	r3, r1, #(0x02*4)
+	str	r1, [sp, #0x04]
+	ldmia	r3, {r1, r10}
 
 	b	%b10
 
@@ -4547,176 +3217,105 @@ srcOffsetTblCtrRgba8Block8To420
 	dcd	0x62363226,0x2a767266
 	dcd	0x4a1e1a0e,0x225e5a4e
 	dcd	0x42161206,0x0a565246
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef t3
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTHx8
-#undef STACK_OFFSET_PDSTCBCR
-#undef STACK_OFFSET_PRGB
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_CtrRgba8Block8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_CtrRgba8Block8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_CtrRgba8Block8ToYuv422(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #3 + 2
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	add	r3, r3, r1, lsl #4 + 2 + 3
 
-#define b2crMul_b2yMul   lr
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	push	{r4-r11, r12, lr}
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
+	mla	r3, r2, r12, r3
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	adr	r5, constTblCenterCtrRgba8Block8To422
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r4, #0x00000008
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	mov	arg_row, arg_row, lsl #3 + 2
+	ldmia	r3, {r1, r10}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2 + 3
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	PROLOGUE_INST
-
-	mla	pRgb, arg_row, r12, pRgb
-
-	adr	pConst, constTblCenterCtrRgba8Block8To422
-
-	mov	loopXY, #0x00000008
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldmia	pRgb, {t0, rgbMask}
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmia	r5, {r11, r12, lr}
 
 10
-	pkhtb	g0r0, t0, t0, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, t0, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r1, r1, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r9, r1, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	adr	t0, srcOffsetTblCtrRgba8Block8To422 - 8
+	adr	r1, srcOffsetTblCtrRgba8Block8To422 - 8
 
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldrb	t0, [t0, loopXY, ror #29]
+	ldrb	r1, [r1, r4, ror #29]
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
 
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	add	t0, pRgb, t0, lsl #2
-	teq	t0, pRgb
-	ldmiane	t0, {t0, rgbMask}
+	add	r1, r3, r1, lsl #2
+	teq	r1, r3
+	ldmiane	r1, {r1, r10}
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	add	t1, pConst, loopXY, lsl #1
+	add	r2, r5, r4, lsl #1
 
-	subs	loopXY, loopXY, #0x00000001
+	subs	r4, r4, #0x00000001
 
-	ldrsh	pDstCbCr, [t1, #-0x1e]
+	ldrsh	r6, [r2, #-0x1e]
 
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 offsetTblCtrRgba8Block8To422
 	dcw	(-128-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -4745,175 +3344,110 @@ srcOffsetTblCtrRgba8Block8To422
 	dcd	0x481c180c,0x0a5c584c
 	dcd	0x42161206,0x08565246
 	dcd	0x40141004,0x02545044
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Bgr8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Bgr8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Bgr8ToYuv444(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
+	mov	r2, r2, lsl #3
 
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	push	{r4-r11, r12, lr}
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	add	r3, r3, r1, lsl #3 + 1
+	add	r3, r3, r1, lsl #3
 
-#define b2crMul_b2yMul   lr
+	add	r1, r12, #8 * 3
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	mla	r3, r2, r1, r3
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	adr	r5, constTblCenter_Bgr8To444
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
+	mov	r4, #0x00000010
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r1, [r3], #2
+	ldr	r10, [r3], #4
 
-	mov	arg_row, arg_row, lsl #3
-
-	PROLOGUE_INST
-
-	add	pRgb, pRgb, arg_col, lsl #3 + 1
-	add	pRgb, pRgb, arg_col, lsl #3
-
-	add	t0, r12, #8 * 3
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Bgr8To444
-
-	mov	loopXY, #0x00000010
-
-	ldr	t0, [pRgb], #2
-	ldr	rgbMask, [pRgb], #4
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhtb	g1r1, rgbMask, rgbMask, asr #8
-	pkhbt	b1b0, t0, rgbMask, lsl #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r1, r1, lsl #8
+	pkhtb	r8, r10, r10, asr #8
+	pkhbt	r9, r1, r10, lsl #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6, r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1, r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6, r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6, #8, r6, asr #12
+	usat	r7, #8, r7, asr #12
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	ldrcc	t0, [pRgb], #2
-	ldrcc	rgbMask, [pRgb], #4
+	ldrcc	r1, [r3], #2
+	ldrcc	r10, [r3], #4
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6, [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
-	sub	t1, loopXY, #0x1e
+	ldr	r1, [sp, #0x20]
+	sub	r2, r4, #0x1e
 
-	subs	loopXY, loopXY, #0x00000002
-	ldrnesh	t2, [pConst, t1]
+	subs	r4, r4, #0x00000002
+	ldrnesh	r6, [r5, r2]
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #2]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #2]
 
-	addne	pRgb, pRgb, #2 * 3
-	addne	pDstY, pDstY, t2
+	addne	r3, r3, #2 * 3
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -4928,231 +3462,157 @@ NN_ASM void JpegMpEncoderAsm_Bgr8ToYuv444(register JpegMpEncoderContext* pCtx NN
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenter_Bgr8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Bgr8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Bgr8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Bgr8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #4
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #4 + 1
+	add	r3, r3, r1, lsl #4
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #8 * 3
 
-#define t3   g0r0
+	adr	r5, constTblCenter_Bgr8To420
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
+	mla	r3, r2, r1, r3
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
+	mov	r4, #0x00000020
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	add	r8, r3, r1
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x3)]
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldr	r10, [r8]
+	ldr	r8, [r8, #2]
 
-	mov	arg_row, arg_row, lsl #4
+	ldmia	r5, {r11, r12, lr}
 
-	PROLOGUE_INST
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
-	add	pRgb, pRgb, arg_col, lsl #4
-
-	add	t0, r12, #8 * 3
-
-	adr	pConst, constTblCenter_Bgr8To420
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mov	loopXY, #0x00000020
-
-	add	g1r1, pRgb, t0
-
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-
-	ldr	rgbMask, [g1r1]
-	ldr	g1r1, [g1r1, #2]
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
-
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
-
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	pkhbt	g0r0, rgbMask, rgbMask, lsl #8
-	pkhbt	b1b0, rgbMask, g1r1, lsl #8
-	pkhtb	g1r1, g1r1, g1r1, asr #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r10, r10, lsl #8
+	pkhbt	r9, r10, r8, lsl #8
+	pkhtb	r8, r8, r8, asr #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	ldr	rgbMask, [pRgb], #2
+	ldr	r10, [r3], #2
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldr	g1r1, [pRgb], #4
+	ldr	r8, [r3], #4
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhbt	t2, rgbMask, rgbMask, lsl #8
-	pkhbt	b3b2, rgbMask, g1r1, lsl #8
-	pkhtb	g1r1, g1r1, g1r1, asr #8
-	uxtb16	t2, t2, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b3b2, b3b2
+	pkhbt	r6, r10, r10, lsl #8
+	pkhbt	r10, r10, r8, lsl #8
+	pkhtb	r8, r8, r8, asr #8
+	uxtb16	r6, r6, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r10, r10
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	usat	t1, #8, t1, asr #14
-	ldrcc	rgbMask, [t0, pRgb]!
-	usat	t2, #8, t2, asr #14
-	ldrcc	g1r1, [t0, #2]
+	usat	r2, #8, r2, asr #14
+	ldrcc	r10, [r1, r3]!
+	usat	r6, #8, r6, asr #14
+	ldrcc	r8, [r1, #2]
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	ldr	t2, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r6, [sp, #0x30]
 
-	subs	loopXY, loopXY, #0x00000004
+	subs	r4, r4, #0x00000004
 
-	EPILOGUE_EQ_INST
+	popeq	{r0-r3, r4-r11, r12, pc}
 
-	sub	t1, loopXY, #0x2c
+	sub	r2, r4, #0x2c
 
-	add	pRgb, pRgb, t2, lsl #1
+	add	r3, r3, r6, lsl #1
 
-	ldr	t1, [pConst, t1]
-	ldr	t2, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r2, [r5, r2]
+	ldr	r6, [sp, #0x08]
 
-	ldr	rgbMask, [t0, pRgb]!
+	ldr	r10, [r1, r3]!
 
-	and	t3, t1, #0xff
-	ldr	g1r1, [t0, #2]
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	ldr	r8, [r1, #2]
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	b	%b10
 
@@ -5172,179 +3632,107 @@ constTblCenter_Bgr8To420
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef t3
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTH
-#undef STACK_OFFSET_PDSTCBCR
-
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Bgr8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Bgr8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Bgr8ToYuv422(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x3)]
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #3
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #4 + 1
+	add	r3, r3, r1, lsl #4
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #16 * 3
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r1, r3
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x3)]
+	adr	r5, constTblCenter_Bgr8To422
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r4, #0x00000010
 
-	mov	arg_row, arg_row, lsl #3
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	PROLOGUE_INST
+	ldr	r1, [r3], #2
+	ldr	r10, [r3], #4
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 1
-	add	pRgb, pRgb, arg_col, lsl #4
-
-	add	t0, r12, #16 * 3
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Bgr8To422
-
-	mov	loopXY, #0x00000010
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldr	t0, [pRgb], #2
-	ldr	rgbMask, [pRgb], #4
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhbt	g0r0, t0, t0, lsl #8
-	pkhtb	g1r1, rgbMask, rgbMask, asr #8
-	pkhbt	b1b0, t0, rgbMask, lsl #8
-	uxtb16	g0r0, g0r0, ror #24
-	uxtb16	g1r1, g1r1, ror #24
-	uxtb16	b1b0, b1b0
+	pkhbt	r7, r1, r1, lsl #8
+	pkhtb	r8, r10, r10, asr #8
+	pkhbt	r9, r1, r10, lsl #8
+	uxtb16	r7, r7, ror #24
+	uxtb16	r8, r8, ror #24
+	uxtb16	r9, r9
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
+	ldmia	r5, {r2, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	ldrcc	t0, [pRgb], #2
-	ldrcc	rgbMask, [pRgb], #4
+	ldrcc	r1, [r3], #2
+	ldrcc	r10, [r3], #4
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r1, [sp, #0x20]
 
-	ldrsh	pDstCbCr, [t1, loopXY]
+	ldrsh	r6, [r2, r4]
 
-	subs	loopXY, loopXY, #0x00000002
+	subs	r4, r4, #0x00000002
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #2]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #2]
 
-	addne	pRgb, pRgb, #2 * 3
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r3, r3, #2 * 3
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 offsetTbl_Bgr8To422
 	dcw	0
@@ -5366,173 +3754,112 @@ constTblCenter_Bgr8To422
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Abgr8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Abgr8ToYuv444(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Abgr8ToYuv444(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	; r0 = pCtx, then Y output pointer     r1, r2 = col, row, then temps
+	; r3 = source pointer                  r4 = loop counter     r5 = constant table
+	; r6 = temp   r7 = g0r0   r8 = g1r1   r9 = b1b0   r10-r12, lr = constants/mask
+	; [sp, #0x20] = source stride
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
 
-#define t0         arg_col
-#define t1         arg_row
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #3
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #3 + 2
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #8 * 4
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r1, r3
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
+	adr	r5, constTblCenter_Abgr8To444
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r4, #0x00000010
 
-	mov	arg_row, arg_row, lsl #3
+	ldmia	r3!, {r1, r10}
 
-	PROLOGUE_INST
-
-	add	pRgb, pRgb, arg_col, lsl #3 + 2
-
-	add	t0, r12, #8 * 4
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Abgr8To444
-
-	mov	loopXY, #0x00000010
-
-	ldmia	pRgb!, {t0, rgbMask}
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhtb	g0r0, t0, t0, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, t0, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r1, r1, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r9, r1, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	smlad	t2,   g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r6, r7, r10, r11
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlad	t0,   g1r1, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	g1r1, g1r1, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r1, r8, r12, r11
+	smlad	r8, r8, r10, r11
 
-	smlabb	t2,   b1b0, g2crMul_r2crMul_b2cbMul, t2
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
+	smlabb	r6, r9, r12, r6
+	smlabt	r7, r9, lr, r7
 
-	smlatb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlatt	b1b0, b1b0, b2crMul_b2yMul, t0
+	smlatb	r8, r9, r12, r8
+	smlatt	r9, r9, lr, r1
 
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	ldmia	r5, {r2, r11, r12}
 
-	usat	t2,   #8, t2,   asr #12
-	usat	g0r0, #8, g0r0, asr #12
+	usat	r6, #8, r6, asr #12
+	usat	r7, #8, r7, asr #12
 
-	usat	g1r1, #8, g1r1, asr #12
-	usat	b1b0, #8, b1b0, asr #12
+	usat	r8, #8, r8, asr #12
+	usat	r9, #8, r9, asr #12
 
-	adds	loopXY, loopXY, #0x40000000
+	adds	r4, r4, #0x40000000
 
-	ldmiacc	pRgb!, {t0, rgbMask}
+	ldmiacc	r3!, {r1, r10}
 
-	strh	t2,   [t1, pDstY]!
-	strh	g0r0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	g1r1, [t1, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-	strh	b1b0, [t1, #STRUCT_OFFSET_CBBUF_TO_CRBUF + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r6, [r2, r0]!
+	strh	r7, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r8, [r2, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
+	strh	r9, [r2, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)) + 8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
-	sub	t1, loopXY, #0x1e
+	ldr	r1, [sp, #0x20]
+	sub	r2, r4, #0x1e
 
-	subs	loopXY, loopXY, #0x00000002
-	ldrnesh	t2, [pConst, t1]
+	subs	r4, r4, #0x00000002
+	ldrnesh	r6, [r5, r2]
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #4]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #4]
 
-	addne	pRgb, pRgb, #2 * 4
-	addne	pDstY, pDstY, t2
+	addne	r3, r3, #2 * 4
+	addne	r0, r0, r6
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 	dcw	(-64-2  ) * __cpp(sizeof(JpegMpEncoderYCbCrType))
 	dcw	(-64-3+2) * __cpp(sizeof(JpegMpEncoderYCbCrType))
@@ -5547,228 +3874,154 @@ NN_ASM void JpegMpEncoderAsm_Abgr8ToYuv444(register JpegMpEncoderContext* pCtx N
 	dcd	__cpp(s_Coef8Rgb2cbcrAdd)
 	dcd	__cpp((s_Coef8G2crMul << 16) | s_Coef8R2crMul_B2cbMul)
 constTblCenter_Abgr8To444
-	dcd	STRUCT_OFFSET_CBBUF - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
+	dcd	ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf) - (0x10 * __cpp(sizeof(JpegMpEncoderYCbCrType)))
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Abgr8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Abgr8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Abgr8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
 
-#define pRgb       r3
-#define pDst       arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define t2         r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #4
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
-#define b3b2             rgbMask
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #4 + 2
 
-#define g2cbMul_r2cbMul          t2
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #8 * 4
 
-#define t3   g0r0
+	adr	r5, constTblCenter_Abgr8To420
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
+	mla	r3, r2, r1, r3
 
-#define EPILOGUE_EQ_INST         popeq  {r0-r3, r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x30
-#define STACK_OFFSET_PDSTCBCR       0x00
+	add	r2, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STACK_OFFSET_PDSTY0         0x08
-#define STACK_OFFSET_PDSTY1         0x0c
+	mov	r4, #0x00000020
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	add	r8, r3, r1
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM8x4)]
+	add	r6, r2, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	ldmia	r8, {r8, r10}
 
-	mov	arg_row, arg_row, lsl #4
+	ldmia	r5, {r11, r12, lr}
 
-	PROLOGUE_INST
+	add	r0, r2, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2
-
-	add	t0, r12, #8 * 4
-
-	adr	pConst, constTblCenter_Abgr8To420
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	add	t1, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mov	loopXY, #0x00000020
-
-	add	g1r1, pRgb, t0
-
-	add	t2, t1, #1 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-
-	ldmia	g1r1, {g1r1, rgbMask}
-
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
-
-	add	pDst, t1, #STRUCT_OFFSET_CBBUF
-
-	push	{pDst, t0, t1, t2}
+	push	{r0, r1, r2, r6}
 
 10
-	str	pDst, [sp, #STACK_OFFSET_PDSTCBCR]
-	pld	[pRgb]
+	str	r0, [sp, #0x00]
+	pld	[r3]
 
-	pkhtb	g0r0, g1r1, g1r1, asr #24
-	pkhtb	t0, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, g1r1, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, t0
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r8, r8, asr #24
+	pkhtb	r1, r10, r10, asr #24
+	pkhbt	r9, r8, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r1
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	ldr	r0, [sp, #0x0c]
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	ldmia	pRgb!, {g1r1, rgbMask}
+	ldmia	r3!, {r8, r10}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY1]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x0c]
 
-	pkhtb	t2, g1r1, g1r1, asr #24
-	pkhtb	t1, rgbMask, rgbMask, asr #24
-	pkhbt	b3b2, g1r1, rgbMask, lsl #16
-	uxtb16	t2, t2
-	uxtb16	g1r1, t1
-	uxtb16	b3b2, b3b2, ror #8
+	pkhtb	r6, r8, r8, asr #24
+	pkhtb	r2, r10, r10, asr #24
+	pkhbt	r10, r8, r10, lsl #16
+	uxtb16	r6, r6
+	uxtb16	r8, r2
+	uxtb16	r10, r10, ror #8
 
-	smlad	t0, t2,   g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
-	smlabb	t0, b3b2, b2crMul_b2yMul, t0
-	smlatb	t1, b3b2, b2crMul_b2yMul, t1
+	smlad	r1, r6, r11, r12
+	smlad	r2, r8, r11, r12
+	smlabb	r1, r10, lr, r1
+	smlatb	r2, r10, lr, r2
 
-	add	g0r0, g0r0, t2
+	add	r7, r7, r6
 
-	ldr	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r0, [sp, #0x08]
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r6, r11, r12}
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	add	b1b0, b1b0, b3b2
+	add	r9, r9, r10
 
-	strh	t0, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	str	pDst, [sp, #STACK_OFFSET_PDSTY0]
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	str	r0, [sp, #0x08]
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	t1, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
-	smlad	t0, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
-	smlabt	t1, b1b0, b2crMul_b2yMul, t1
+	smlad	r2, r7, r12, r11
+	smlad	r1, r7, r6, r11
+	smlabt	r2, r9, lr, r2
 
-	smlabb	t2, b1b0, g2crMul_r2crMul_b2cbMul, t0
+	smlabb	r6, r9, r12, r1
 
-	ldrd	pDst, t0, [sp, #STACK_OFFSET_PDSTCBCR]
-	ldmia	pConst, {g2yMul_r2yMul, rgb2yAdd}
+	ldrd	r0, r1, [sp, #0x00]
+	ldmia	r5, {r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	addcc	g1r1, pRgb, t0
+	addcc	r8, r3, r1
 
-	usat	t1, #8, t1, asr #14
-	ldmiacc	g1r1, {g1r1, rgbMask}
-	usat	t2, #8, t2, asr #14
+	usat	r2, #8, r2, asr #14
+	ldmiacc	r8, {r8, r10}
+	usat	r6, #8, r6, asr #14
 
-	strh	t1, [pDst, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-	strh	t2, [pDst], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
+	strh	r6, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
 	bcc	%b10
 
-	ldr	t2, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r6, [sp, #0x30]
 
-	subs	loopXY, loopXY, #0x00000004
+	subs	r4, r4, #0x00000004
 
-	EPILOGUE_EQ_INST
+	popeq	{r0-r3, r4-r11, r12, pc}
 
-	sub	t1, loopXY, #0x2c
+	sub	r2, r4, #0x2c
 
-	add	pRgb, pRgb, t2, lsl #1
+	add	r3, r3, r6, lsl #1
 
-	ldr	t1, [pConst, t1]
-	add	g1r1, pRgb, t0
-	ldr	t2, [sp, #STACK_OFFSET_PDSTY0]
+	ldr	r2, [r5, r2]
+	add	r8, r3, r1
+	ldr	r6, [sp, #0x08]
 
-	ldmia	g1r1, {g1r1, rgbMask}
+	ldmia	r8, {r8, r10}
 
-	and	t3, t1, #0xff
-	add	t2, t2, t1, asr #16
-	sub	pDst, pDst, t3
-	sxtab	t3, t2, t1, ror #8
+	and	r7, r2, #0xff
+	add	r6, r6, r2, asr #16
+	sub	r0, r0, r7
+	sxtab	r7, r6, r2, ror #8
 
-	strd	t2, t3, [sp, #STACK_OFFSET_PDSTY0]
+	strd	r6, r7, [sp, #0x08]
 
 	b	%b10
 
@@ -5788,176 +4041,104 @@ constTblCenter_Abgr8To420
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDst
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef t2
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-#undef b3b2
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef t3
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_EQ_INST
-#undef STACK_OFFSET_WIDTH
-#undef STACK_OFFSET_PDSTCBCR
-
-#undef STACK_OFFSET_PDSTY0
-#undef STACK_OFFSET_PDSTY1
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-       void JpegMpEncoderAsm_Abgr8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+void JpegMpEncoderAsm_Abgr8ToYuv422(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
+
 NN_ASM void JpegMpEncoderAsm_Abgr8ToYuv422(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define arg_pCtx   r0
-#define arg_col    r1
-#define arg_row    r2
+	ldr	r12, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x4)]
 
-#define pRgb       r3
-#define pDstY      arg_pCtx
-#define loopXY     r4
-#define pConst     r5
+	ldr	r3, [r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
 
-#define t0         arg_col
-#define t1         arg_row
-#define pDstCbCr   r6
-#define g0r0       r7
-#define g1r1       r8
-#define b1b0       r9
+	mov	r2, r2, lsl #3
 
-#define rgbMask          r10
-#define g2yMul_r2yMul    r11
-#define rgb2yAdd         r12
+	push	{r4-r11, r12, lr}
 
-#define b2crMul_b2yMul   lr
+	add	r3, r3, r1, lsl #4 + 2
 
-#define g2cbMul_r2cbMul          rgbMask
-#define rgb2cbcrAdd              g2yMul_r2yMul
-#define g2crMul_r2crMul_b2cbMul  rgb2yAdd
+	add	r1, r12, #16 * 4
 
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_WIDTH          0x20
+	add	r0, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
 
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
+	mla	r3, r2, r1, r3
 
-	ldr	r12, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, asmWork.inputBufferWidthM16x4)]
+	adr	r5, constTblCenter_Abgr8To422
 
-	ldr	pRgb, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
+	mov	r4, #0x00000010
 
-	mov	arg_row, arg_row, lsl #3
+	add	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
-	PROLOGUE_INST
+	ldmia	r3!, {r1, r10}
 
-	add	pRgb, pRgb, arg_col, lsl #4 + 2
-
-	add	t0, r12, #16 * 4
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-
-	mla	pRgb, arg_row, t0, pRgb
-
-	adr	pConst, constTblCenter_Abgr8To422
-
-	mov	loopXY, #0x00000010
-
-	add	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
-
-	ldmia	pRgb!, {t0, rgbMask}
-
-	ldmib	pConst, {g2yMul_r2yMul, rgb2yAdd, b2crMul_b2yMul}
+	ldmib	r5, {r11, r12, lr}
 
 10
-	pkhtb	g0r0, t0, t0, asr #24
-	pkhtb	g1r1, rgbMask, rgbMask, asr #24
-	pkhbt	b1b0, t0, rgbMask, lsl #16
-	uxtb16	g0r0, g0r0
-	uxtb16	g1r1, g1r1
-	uxtb16	b1b0, b1b0, ror #8
+	pkhtb	r7, r1, r1, asr #24
+	pkhtb	r8, r10, r10, asr #24
+	pkhbt	r9, r1, r10, lsl #16
+	uxtb16	r7, r7
+	uxtb16	r8, r8
+	uxtb16	r9, r9, ror #8
 
-	smlad	t0, g0r0, g2yMul_r2yMul, rgb2yAdd
-	smlad	t1, g1r1, g2yMul_r2yMul, rgb2yAdd
+	smlad	r1, r7, r11, r12
+	smlad	r2, r8, r11, r12
 
-	ldmdb	pConst, {g2cbMul_r2cbMul, rgb2cbcrAdd, g2crMul_r2crMul_b2cbMul}
+	ldmdb	r5, {r10, r11, r12}
 
-	add	g0r0, g0r0, g1r1
+	add	r7, r7, r8
 
-	smlabb	t0, b1b0, b2crMul_b2yMul, t0
-	smlatb	t1, b1b0, b2crMul_b2yMul, t1
+	smlabb	r1, r9, lr, r1
+	smlatb	r2, r9, lr, r2
 
-	add	b1b0, b1b0, b1b0, lsr #16
+	add	r9, r9, r9, lsr #16
 
-	smlad	g1r1, g0r0, g2cbMul_r2cbMul, rgb2cbcrAdd
+	smlad	r8, r7, r10, r11
 
-	smlad	g0r0, g0r0, g2crMul_r2crMul_b2cbMul, rgb2cbcrAdd
+	smlad	r7, r7, r12, r11
 
-	usat	t0, #8, t0, asr #12
-	usat	t1, #8, t1, asr #12
+	usat	r1, #8, r1, asr #12
+	usat	r2, #8, r2, asr #12
 
-	strh	t0, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	strh	t1, [pDstY], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r1, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r2, [r0], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	smlabb	g1r1, b1b0, g2crMul_r2crMul_b2cbMul, g1r1
-	smlabt	g0r0, b1b0, b2crMul_b2yMul, g0r0
-	ldmia	pConst, {t1, g2yMul_r2yMul, rgb2yAdd}
+	smlabb	r8, r9, r12, r8
+	smlabt	r7, r9, lr, r7
+	ldmia	r5, {r2, r11, r12}
 
-	adds	loopXY, loopXY, #0x20000000
+	adds	r4, r4, #0x20000000
 
-	ldmiacc	pRgb!, {t0, rgbMask}
+	ldmiacc	r3!, {r1, r10}
 
-	usat	g0r0, #8, g0r0, asr #13
-	usat	g1r1, #8, g1r1, asr #13
+	usat	r7, #8, r7, asr #13
+	usat	r8, #8, r8, asr #13
 
-	strh	g0r0, [pDstCbCr, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
+	strh	r7, [r6, #(ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf))]
 
-	strh	g1r1, [pDstCbCr], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	strh	r8, [r6], #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))
 
-	pld	[pRgb, #0x20]
+	pld	[r3, #0x20]
 	bcc	%b10
 
-	ldr	t0, [sp, #STACK_OFFSET_WIDTH]
+	ldr	r1, [sp, #0x20]
 
-	ldrsh	pDstCbCr, [t1, loopXY]
+	ldrsh	r6, [r2, r4]
 
-	subs	loopXY, loopXY, #0x00000002
+	subs	r4, r4, #0x00000002
 
-	ldrne	t0, [pRgb, t0]!
-	ldrne	rgbMask, [pRgb, #4]
+	ldrne	r1, [r3, r1]!
+	ldrne	r10, [r3, #4]
 
-	addne	pRgb, pRgb, #2 * 4
-	addne	pDstY, pDstY, pDstCbCr
-	addne	pDstCbCr, pDstY, #STRUCT_OFFSET_CBBUF
+	addne	r3, r3, #2 * 4
+	addne	r0, r0, r6
+	addne	r6, r0, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
 
 	bne	%b10
 
-	EPILOGUE_INST
+	pop	{r4-r11, r12, pc}
 
 offsetTbl_Abgr8To422
 	dcw	0
@@ -5979,490 +4160,196 @@ constTblCenter_Abgr8To422
 	dcd	__cpp((s_Coef8G2yMul << 16)  | s_Coef8R2yMul)
 	dcd	__cpp(s_Coef8Rgb2yAdd)
 	dcd	__cpp((s_Coef8B2crMul << 16) | s_Coef8B2yMul)
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pRgb
-#undef pDstY
-#undef loopXY
-#undef pConst
-
-#undef t0
-#undef t1
-#undef pDstCbCr
-#undef g0r0
-#undef g1r1
-#undef b1b0
-
-#undef rgbMask
-#undef g2yMul_r2yMul
-#undef rgb2yAdd
-
-#undef b2crMul_b2yMul
-
-#undef g2cbMul_r2cbMul
-#undef rgb2cbcrAdd
-#undef g2crMul_r2crMul_b2cbMul
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_WIDTH
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
 }
 
-#if 0
+void JpegMpEncoderAsm_ForwardDct(register JpegMpEncoderYCbCrType *data, register const JpegMpEncoderQTableType *qtable, register s16 *output);
 
-       void JpegMpEncoderAsm_Xuyv8ToYuv420(register JpegMpEncoderContext* pCtx, register u32 col, register u32 row);
-NN_ASM void JpegMpEncoderAsm_Xuyv8ToYuv420(register JpegMpEncoderContext* pCtx NN_IS_UNUSED_VAR, register u32 col NN_IS_UNUSED_VAR, register u32 row NN_IS_UNUSED_VAR)
-{
-	PRESERVE8
-
-#define arg_pCtx          r0
-#define arg_col           r1
-#define arg_row           r2
-
-#define pDstY             arg_pCtx
-#define pDstOffsetTbl     arg_col
-#define t9                arg_row
-#define pXuyv             r3
-
-#define t0                r4
-#define t1                r5
-#define t2                r6
-#define t3                r7
-#define t4                r8
-#define t5                r9
-#define t6                r10
-#define t7                r11
-#define width_            r12
-#define t8                lr
-
-#define PROLOGUE_INST     push {r4-r11, r12, lr}
-#define EPILOGUE_INST     pop  {r4-r11, r12, pc}
-#define STACK_OFFSET_PXUYV          0x20
-
-#define STRUCT_OFFSET_CBBUF           ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,cbBuf)
-#define STRUCT_OFFSET_CBBUF_TO_CRBUF (ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderConvertToYuvFuncWork,crBuf)-STRUCT_OFFSET_CBBUF)
-
-	ldr	width_, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, inputBufferWidth)]
-	ldr	pXuyv, [arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, pSrc)]
-
-	mov	arg_row, arg_row, lsl #4 + 2
-
-	PROLOGUE_INST
-
-	add	pXuyv, pXuyv, arg_col, lsl #4 + 2
-
-	mla	pXuyv, arg_row, width_, pXuyv
-
-	add	pDstY, arg_pCtx, #ASM_STRUCTURE_MEMBER_OFFSET_OF(JpegMpEncoderContext, convWork)
-	adr	pDstOffsetTbl, offsetTblXuyv8To420
-
-	mov	width_, width_, lsl #2
-
-	mov	t9, #0x00000008
-
-10
-	add	t0, pXuyv, #2 * 4
-	str	t0, [sp, #STACK_OFFSET_PXUYV]
-20
-
-	ldrd	t0, t1, [pXuyv], width_
-	ldrd	t2, t3, [pXuyv], width_
-	ldrd	t4, t5, [pXuyv], width_
-	ldrd	t6, t7, [pXuyv], width_
-
-	uhadd8	t8, t0, t1
-	pkhtb	t0, t2, t0, asr #16
-	uhadd8	t2, t2, t3
-	pkhtb	t1, t3, t1, asr #16
-
-	uhadd8	t3, t4, t5
-	pkhtb	t4, t4, t6, asr #16
-	uhadd8	t6, t6, t7
-	pkhtb	t5, t5, t7, asr #16
-
-	ldrh	t7, [pDstOffsetTbl], #2
-
-	uhadd8	t2, t2, t8
-	uhadd8	t3, t3, t6
-
-	eor	t8, t7, #__cpp(0x06 * sizeof(JpegMpEncoderYCbCrType))
-
-	uxtb16	t0, t0
-	str	t0, [t7, pDstY]!
-	uxtb16	t1, t1
-	str	t1, [t7, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-
-	uxtb16	t4, t4
-	str	t4, [t8, pDstY]!
-	uxtb16	t5, t5
-	str	t5, [t8, #8 * __cpp(sizeof(JpegMpEncoderYCbCrType))]
-
-	ldrh	t7, [pDstOffsetTbl], #2
-
-	pkhbt	t0, t2, t3, lsl #16
-	pkhtb	t1, t3, t2, asr #16
-
-	tst	t7, #__cpp(0x02 * sizeof(JpegMpEncoderYCbCrType))
-	uxtb16eq t0, t0, ror #8
-	uxtb16ne t0, t0, ror #24
-	str	t0, [t7, pDstY]!
-
-	uxtb16eq t1, t1, ror #8
-	uxtb16ne t1, t1, ror #24
-	str	t1, [t7, #STRUCT_OFFSET_CBBUF_TO_CRBUF]
-
-	adds	t9, t9, #0x40000000
-	bcc	%b20
-
-	ldr	pXuyv, [sp, #STACK_OFFSET_PXUYV]
-	subs	t9, t9, #1
-	bne	%b10
-
-	EPILOGUE_INST
-
-offsetTblXuyv8To420
-	dcw	__cpp(0x00 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x00 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x04 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x06 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x80 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x04 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x84 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x02 * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x10 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x08 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x14 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x0e * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x90 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x0c * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x94 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x0a * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x20 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x10 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x24 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x16 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xa0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x14 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xa4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x12 * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x30 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x18 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x34 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x1e * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xb0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x1c * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xb4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x1a * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x40 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x20 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x44 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x26 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xc0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x24 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xc4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x22 * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x50 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x28 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x54 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x2e * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xd0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x2c * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xd4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x2a * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x60 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x30 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x64 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x36 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xe0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x34 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xe4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x32 * sizeof(JpegMpEncoderYCbCrType)))
-
-	dcw	__cpp(0x70 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x38 * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0x74 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x3e * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xf0 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x3c * sizeof(JpegMpEncoderYCbCrType)))
-	dcw	__cpp(0xf4 * sizeof(JpegMpEncoderYCbCrType)), STRUCT_OFFSET_CBBUF + __cpp((0x3a * sizeof(JpegMpEncoderYCbCrType)))
-
-#undef arg_pCtx
-#undef arg_col
-#undef arg_row
-
-#undef pDstY
-#undef pDstOffsetTbl
-#undef t9
-#undef pXuyv
-
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef width_
-#undef t8
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_OFFSET_PXUYV
-
-#undef STRUCT_OFFSET_CBBUF
-#undef STRUCT_OFFSET_CBBUF_TO_CRBUF
-}
-#endif
-
-       void JpegMpEncoderAsm_ForwardDct(register JpegMpEncoderYCbCrType *data, register const JpegMpEncoderQTableType *qtable, register s16 *output);
 NN_ASM void JpegMpEncoderAsm_ForwardDct(register JpegMpEncoderYCbCrType *data NN_IS_UNUSED_VAR, register const JpegMpEncoderQTableType *qtable NN_IS_UNUSED_VAR, register s16 *output NN_IS_UNUSED_VAR)
 {
 	PRESERVE8
 
-#define pSrc        r0
-#define arg_pQtable r1
-#define arg_pDst    r2
+	push	{r4-r11, r12, lr}
 
-#define pTmp        arg_pQtable
-#define pConst      arg_pDst
+	sub	sp, sp, #64 * 4
 
-#define pSrcEnd     r3
-#define pLoopTable  r4
+	add	r3, r0, #64 * __cpp(sizeof(JpegMpEncoderYCbCrType))
+	adr	r4, loopTable
 
-#define const_0xfffc_0000  r5
-#define t0          r6
-#define t1          r7
-#define t2          r8
-#define t3          r9
-#define a1a0        r10
-#define a6a7        t1
-#define a2a3        lr
-#define a5a4        t2
-#define c2c3        a2a3
-#define c1c0        a1a0
+	push	{r1, r2}
 
-#define const_FC4_0x0100   r11
-#define const_0x0100_0100  r12
+	adr	r2, constTblCenter1
+	add	r1, sp, #2 * 4
 
-#define result0     t3
-#define result1     c1c0
-#define result2     const_0x0100_0100
-#define result3     c2c3
-
-#define c6c4        a5a4
-#define c5c7        a6a7
-
-#define c7pc5       t0
-#define c7mc5       c5c7
-
-#define const_FSEC2_FSC24    result0
-#define const_mFSEC6_FSC64   result1
-#define const_FSEC6_mFSC64   result2
-#define const_mFSEC2_mFSC24  result3
-
-#define result4     const_FSEC2_FSC24
-#define result5     const_mFSEC6_FSC64
-#define result6     const_FSEC6_mFSC64
-#define result7     const_mFSEC2_mFSC24
-
-#define t4              r10
-#define t5              r11
-#define t6              r12
-#define t7              lr
-#define t8              r5
-
-#define const_FC4       r0
-#define const_mFC4      pTmp
-#define const_32768     r3
-
-#define const_FSC24     const_FC4
-#define const_mFSC64    const_mFC4
-#define const_FSEC2     pConst
-#define const_FSEC6     const_32768
-
-#define pQtable         const_FSC24
-#define pDst            const_mFSC64
-#define q1q0            const_FSEC2
-#define q3q2            const_FSEC6
-
-#define q5q4            q1q0
-#define q7q6            q3q2
-
-#define PROLOGUE_INST         push {r4-r11, r12, lr}
-#define EPILOGUE_INST         pop  {r4-r11, r12, pc}
-#define STACK_FRAME_TMP_ALLOC_SIZE  (64*4)
-
-#define STACK_OFFSET_TMP            (2*4)
-
-#define STACK_FRAME_TMP_FREE_SIZE   (STACK_OFFSET_TMP+STACK_FRAME_TMP_ALLOC_SIZE)
-
-#define STACK_OFFSET_ARG_PQTABLE    0
-#define STACK_OFFSET_ARG_PDST       4
-
-	PROLOGUE_INST
-
-	sub	sp, sp, #STACK_FRAME_TMP_ALLOC_SIZE
-
-	add	pSrcEnd, pSrc, #64 * __cpp(sizeof(JpegMpEncoderYCbCrType))
-	adr	pLoopTable, loopTable
-
-	push	{arg_pQtable, arg_pDst}
-
-	adr	pConst, constTblCenter1
-	add	pTmp, sp, #STACK_OFFSET_TMP
-
-	ldmdb	pConst, {const_0xfffc_0000, const_FC4_0x0100}
+	ldmdb	r2, {r5, r11}
 
 asm_forwarddct_1st_loop
 
-	ldmia	pSrc!, {t0, t1, t2, t3}
-	mov	const_0x0100_0100,                    #0x01000000
-	orr	const_0x0100_0100, const_0x0100_0100, #0x00000100
+	ldmia	r0!, {r6, r7, r8, r9}
+	mov	r12,      #0x01000000
+	orr	r12, r12, #0x00000100
 
-	sadd16	a1a0, t0, t1
-	ssub16	a6a7, t0, t1
-	sadd16	a2a3, t3, t2
-	ssub16	a5a4, t3, t2
+	sadd16	r10, r6, r7
+	ssub16	r7, r6, r7
+	sadd16	lr, r9, r8
+	ssub16	r8, r9, r8
 
-	ssub16	t0, a1a0, a2a3
+	ssub16	r6, r10, lr
 
-	sadd16	c1c0, a1a0, a2a3
+	sadd16	r10, r10, lr
 
-	add	c2c3, t0, t0, lsl #16
+	add	lr, r6, r6, lsl #16
 
-	smlad	result0, c1c0, const_0x0100_0100, const_0xfffc_0000
+	smlad	r9, r10, r12, r5
 
-	smusd	result1, c1c0, const_0x0100_0100
+	smusd	r10, r10, r12
 
-	smuad	result2, c2c3, const_FC4_0x0100
+	smuad	r12, lr, r11
 
-	smusd	result3, c2c3, const_FC4_0x0100
+	smusd	lr, lr, r11
 
-	sadd16	t0, a5a4, a6a7
+	sadd16	r6, r8, r7
 
-	add	c6c4, a6a7, a6a7, lsl #16
+	add	r8, r7, r7, lsl #16
 
-	stmia	pTmp!, {result0, result1, result2, result3}
+	stmia	r1!, {r9, r10, r12, lr}
 
-	pkhbt	c5c7, a6a7, t0
+	pkhbt	r7, r7, r6
 
-	add	t0, t0, t0, asr #16
+	add	r6, r6, r6, asr #16
 
-	ldmia	pConst, {const_FSEC2_FSC24, const_mFSEC6_FSC64, const_FSEC6_mFSC64, const_mFSEC2_mFSC24}
+	ldmia	r2, {r9, r10, r12, lr}
 
-	pkhbt	c6c4, t0, c6c4
+	pkhbt	r8, r6, r8
 
-	smuad	c7pc5, c5c7, const_FC4_0x0100
-	smusd	c7mc5, c5c7, const_FC4_0x0100
+	smuad	r6, r7, r11
+	smusd	r7, r7, r11
 
-	smlad	result4, c6c4, const_FSEC2_FSC24,   c7pc5
-	smlad	result5, c6c4, const_mFSEC6_FSC64,  c7mc5
-	smlad	result6, c6c4, const_FSEC6_mFSC64,  c7mc5
-	smlad	result7, c6c4, const_mFSEC2_mFSC24, c7pc5
+	smlad	r9,  r8, r9,  r6
+	smlad	r10, r8, r10, r7
+	smlad	r12, r8, r12, r7
+	smlad	lr,  r8, lr,  r6
 
-	ldrb	c6c4, [pLoopTable], #1
-	cmp	pSrc, pSrcEnd
-	stmia	pTmp, {result4, result5, result6, result7}
-	add	pTmp, sp, c6c4
+	ldrb	r8, [r4], #1
+	cmp	r0, r3
+	stmia	r1, {r9, r10, r12, lr}
+	add	r1, sp, r8
 
 	bcc	asm_forwarddct_1st_loop
 
 asm_forwarddct_2nd_loop
 
-	ldr	t0, [pTmp]
-	ldr	t1, [pTmp, #1*8*4]
-	ldr	t2, [pTmp, #2*8*4]
-	ldr	t3, [pTmp, #3*8*4]
-	ldr	t4, [pTmp, #4*8*4]
-	ldr	t5, [pTmp, #5*8*4]
-	ldr	t6, [pTmp, #6*8*4]
-	ldr	t7, [pTmp, #7*8*4]
+	ldr	r6,  [r1]
+	ldr	r7,  [r1, #1*8*4]
+	ldr	r8,  [r1, #2*8*4]
+	ldr	r9,  [r1, #3*8*4]
+	ldr	r10, [r1, #4*8*4]
+	ldr	r11, [r1, #5*8*4]
+	ldr	r12, [r1, #6*8*4]
+	ldr	lr,  [r1, #7*8*4]
 
-	adr	pConst, constTblCenter2
-	mov	const_32768, #32768
+	adr	r2, constTblCenter2
+	mov	r3, #32768
 
-	add	t8, t0, t1
-	sub	t0, t0, t1
-	add	t1, t2, t3
-	sub	t2, t2, t3
-	add	t3, t4, t5
-	sub	t4, t4, t5
-	add	t5, t6, t7
-	sub	t6, t6, t7
+	add	r5, r6, r7
+	sub	r6, r6, r7
+	add	r7, r8, r9
+	sub	r8, r8, r9
+	add	r9, r10, r11
+	sub	r10, r10, r11
+	add	r11, r12, lr
+	sub	r12, r12, lr
 
-	add	t7, t8, t5
-	sub	t5, t8, t5
-	sub	t8, t1, t3
-	add	t1, t1, t3
-	add	t3, t8, t5
+	add	lr, r5, r11
+	sub	r11, r5, r11
+	sub	r5, r7, r9
+	add	r7, r7, r9
+	add	r9, r5, r11
 
-	add	t8, t7, #128
-	add	t7, t8, t1
-	sub	t1, t8, t1
-	mov	t7, t7, asr #8
-	pkhbt	t7, t7, t1, lsl #16 - 8
+	add	r5, lr, #128
+	add	lr, r5, r7
+	sub	r7, r5, r7
+	mov	lr, lr, asr #8
+	pkhbt	lr, lr, r7, lsl #16 - 8
 
-	ldmdb	pConst, {const_FC4, const_mFC4}
+	ldmdb	r2, {r0, r1}
 
-	add	t6, t6, t0
-	add	t4, t4, t2
-	add	t2, t2, t0
-	add	t6, t6, t4
+	add	r12, r12, r6
+	add	r10, r10, r8
+	add	r8, r8, r6
+	add	r12, r12, r10
 
-	mla	t1, const_FC4,  t3, const_32768
-	mla	t3, const_mFC4, t3, const_32768
-	mla	t8, const_FC4,  t4, const_32768
-	mla	t4, const_mFC4, t4, const_32768
+	mla	r7, r0, r9, r3
+	mla	r9, r1, r9, r3
+	mla	r5, r0, r10, r3
+	mla	r10, r1, r10, r3
 
-	ldmia	pConst, {const_FSC24, const_mFSC64, const_FSEC2, const_FSEC6}
+	ldmia	r2, {r0, r1, r2, r3}
 
-	add	t1, t1, t5, lsl #8
-	add	t3, t3, t5, lsl #8
-	add	t5, t8, t0, lsl #8
-	add	t4, t4, t0, lsl #8
+	add	r7, r7, r11, lsl #8
+	add	r9, r9, r11, lsl #8
+	add	r11, r5, r6, lsl #8
+	add	r10, r10, r6, lsl #8
 
-	mul	t0, const_FSC24,  t6
-	mul	t6, const_mFSC64, t6
+	mul	r6, r0, r12
+	mul	r12, r1, r12
 
-	ldrd	pQtable, pDst, [sp, #STACK_OFFSET_ARG_PQTABLE]
+	ldrd	r0, r1, [sp, #0]
 
-	mla	t0, const_FSEC2,  t2, t0
-	mla	t2, const_FSEC6,  t2, t6
+	mla	r6, r2, r8, r6
+	mla	r8, r3, r8, r12
 
-	ldmia	pQtable!, {q1q0, q3q2}
-	mov	t8, #2048
+	ldmia	r0!, {r2, r3}
+	mov	r5, #2048
 
-	add	t6, t5, t0
-	sub	t0, t5, t0
-	add	t5, t4, t2
-	sub	t2, t4, t2
+	add	r12, r11, r6
+	sub	r6, r11, r6
+	add	r11, r10, r8
+	sub	r8, r10, r8
 
-	smlatb	t1, t1, q3q2, t8
+	smlatb	r7, r7, r3, r5
 
-	smlatt	t5, t5, q3q2, t8
+	smlatt	r11, r11, r3, r5
 
-	smlabb	t4, t7, q1q0, t8
+	smlabb	r10, lr, r2, r5
 
-	smlatt	t6, t6, q1q0, t8
+	smlatt	r12, r12, r2, r5
 
-	ldmia	pQtable!, {q5q4, q7q6}
-	mov	t1, t1, asr #12
-	mov	t4, t4, asr #12
-	pkhbt	t1, t1, t5, lsl #16 - 12
+	ldmia	r0!, {r2, r3}
+	mov	r7, r7, asr #12
+	mov	r10, r10, asr #12
+	pkhbt	r7, r7, r11, lsl #16 - 12
 
-	smlatb	t7, t7, q5q4, t8
+	smlatb	lr, lr, r2, r5
 
-	smlatt	t2, t2, q5q4, t8
+	smlatt	r8, r8, r2, r5
 
-	smlatb	t3, t3, q7q6, t8
+	smlatb	r9, r9, r3, r5
 
-	smlatt	t8, t0, q7q6, t8
+	smlatt	r5, r6, r3, r5
 
-	pkhbt	t0, t4, t6, lsl #16 - 12
+	pkhbt	r6, r10, r12, lsl #16 - 12
 
-	ldrb	t4, [pLoopTable], #1
+	ldrb	r10, [r4], #1
 
-	mov	t7, t7, asr #12
-	pkhbt	t2, t7, t2, lsl #16 - 12
-	mov	t3, t3, asr #12
-	pkhbt	t3, t3, t8, lsl #16 - 12
-	stmia	pDst!, {t0, t1, t2, t3}
+	mov	lr, lr, asr #12
+	pkhbt	r8, lr, r8, lsl #16 - 12
+	mov	r9, r9, asr #12
+	pkhbt	r9, r9, r5, lsl #16 - 12
+	stmia	r1!, {r6, r7, r8, r9}
 
-	cmp	t4, #0xff
+	cmp	r10, #0xff
 
-	strd	pQtable, pDst, [sp, #STACK_OFFSET_ARG_PQTABLE]
-	add	pTmp, sp, t4
+	strd	r0, r1, [sp, #0]
+	add	r1, sp, r10
 
 	bne	asm_forwarddct_2nd_loop
 
-	add	sp, sp, #STACK_FRAME_TMP_FREE_SIZE
-	EPILOGUE_INST
+	add	sp, sp, #(2*4) + (64*4)
+	pop	{r4-r11, r12, pc}
 
 loopTable
-	dcb	                              2*8*4+STACK_OFFSET_TMP, 4*8*4+STACK_OFFSET_TMP, 6*8*4+STACK_OFFSET_TMP, 7*8*4+STACK_OFFSET_TMP, 5*8*4+STACK_OFFSET_TMP, 3*8*4+STACK_OFFSET_TMP, 1*8*4+STACK_OFFSET_TMP
-	dcb	0*4+STACK_OFFSET_TMP, 4*4+STACK_OFFSET_TMP, 2*4+STACK_OFFSET_TMP, 6*4+STACK_OFFSET_TMP, 1*4+STACK_OFFSET_TMP, 5*4+STACK_OFFSET_TMP, 3*4+STACK_OFFSET_TMP, 7*4+STACK_OFFSET_TMP
+	dcb	                  2*8*4+2*4, 4*8*4+2*4, 6*8*4+2*4, 7*8*4+2*4, 5*8*4+2*4, 3*8*4+2*4, 1*8*4+2*4
+	dcb	0*4+2*4, 4*4+2*4, 2*4+2*4, 6*4+2*4, 1*4+2*4, 5*4+2*4, 3*4+2*4, 7*4+2*4
 	dcb	0xff
 
 	dcd	0xfffc0000
@@ -6480,83 +4367,6 @@ constTblCenter2
 	dcd	-237
 	dcd	139
 	dcd	334
-
-#undef pSrc
-#undef arg_pQtable
-#undef arg_pDst
-
-#undef pTmp
-#undef pConst
-
-#undef pSrcEnd
-#undef pLoopTable
-
-#undef const_0xfffc_0000
-#undef t0
-#undef t1
-#undef t2
-#undef t3
-#undef a1a0
-#undef a6a7
-#undef a2a3
-#undef a5a4
-#undef c2c3
-#undef c1c0
-
-#undef const_FC4_0x0100
-#undef const_0x0100_0100
-
-#undef result0
-#undef result1
-#undef result2
-#undef result3
-
-#undef c6c4
-#undef c5c7
-
-#undef c7pc5
-#undef c7mc5
-
-#undef const_FSEC2_FSC24
-#undef const_mFSEC6_FSC64
-#undef const_FSEC6_mFSC64
-#undef const_mFSEC2_mFSC24
-
-#undef result4
-#undef result5
-#undef result6
-#undef result7
-
-#undef t4
-#undef t5
-#undef t6
-#undef t7
-#undef t8
-
-#undef const_FC4
-#undef const_mFC4
-#undef const_32768
-
-#undef const_FSC24
-#undef const_mFSC64
-#undef const_FSEC2
-#undef const_FSEC6
-
-#undef pQtable
-#undef pDst
-#undef q1q0
-#undef q3q2
-
-#undef q5q4
-#undef q7q6
-
-#undef PROLOGUE_INST
-#undef EPILOGUE_INST
-#undef STACK_FRAME_TMP_ALLOC_SIZE
-#undef STACK_OFFSET_TMP
-#undef STACK_FRAME_TMP_FREE_SIZE
-#undef STACK_OFFSET_ARG_PQTABLE
-#undef STACK_OFFSET_ARG_PDST
 }
 
 #undef ASM_STRUCTURE_MEMBER_OFFSET_OF

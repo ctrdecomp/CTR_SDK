@@ -16,7 +16,7 @@
 #define NN_FILE_NAME            __MODULE__
 #define NN_FUNCTION             __PRETTY_FUNCTION__
 
-#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
+#if defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
 
 /* POINTER */
     #define NN_ANY_TO_UPTR(ptr)         ((uptr)((const void*)(ptr)))
@@ -132,8 +132,8 @@
     #define NN_IS_VALID_POINTER(ptr)    ( (NN_OS_ADDR_NULL_TRAP_END <= NN_ANY_TO_UPTR(ptr)) \
                                         && (NN_ANY_TO_UPTR(ptr) < NN_OS_ADDR_SPACE_END) )
 
-    #define NN_POINTER_ASSERT(p)
-    #define NN_ASSERT_WITH_RESULT(exp, result)
+    #define NN_POINTER_ASSERT_(p)
+    #define NN_ASSERT_WITH_RESULT_(exp, result)
 
     #define NN_TASSERTMSG_(exp, ...)
     #define NN_TASSERT_(exp)                     NN_TASSERTMSG_((exp), "%s", #exp)
@@ -179,7 +179,7 @@
     #define NN_ASSERT_RESULT_(exp)              NN_RESULT_ASSERT_(exp)
 
     #define NN_PANIC_(...)                      nndbgPanic()
-    #define NN_PANIC_WITH_RESULT(result, ...) \
+    #define NN_PANIC_WITH_RESULT_(result, ...) \
         ((void)nnResultPanicHandler(static_cast< ::nn::Result>(result), NN_FILE_NAME, __LINE__, __VA_ARGS__), NN_PANIC(__VA_ARGS__))
 
 #endif

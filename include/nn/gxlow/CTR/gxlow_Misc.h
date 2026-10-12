@@ -18,3 +18,4 @@ uptr GetPhysicalAddr(uptr virtualAddr);
 }
 
 #endif
+

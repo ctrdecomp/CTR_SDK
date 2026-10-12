@@ -48,3 +48,4 @@ void TouchPanelReader::Read(TouchPanelStatus* pBufs, s32* pReadLen, s32 bufLen)
 }
 }
 }
+

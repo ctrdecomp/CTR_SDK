@@ -258,3 +258,4 @@ void __srf_initSurface(GLsizei width, GLsizei height, GLenum format, GLenum type
 	
 	return;
 }
+

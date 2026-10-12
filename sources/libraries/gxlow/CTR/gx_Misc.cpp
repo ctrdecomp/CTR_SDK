@@ -55,3 +55,4 @@ void nngxUpdateBuffer(const void* pBuffer, size_t size)
 #ifdef __cplusplus
 } // extern "C"
 #endif
+

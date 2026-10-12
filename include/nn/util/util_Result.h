@@ -23,3 +23,4 @@
 #define NN_UTIL_RETURN_IF_FAILED_5(result, c1, c2, c3, c4, c5) NN_UTIL_RETURN_IF_FAILED_BASE(result,c1,c2,c3,c4,c5)
 
 #define NN_UTIL_PANIC_IF_FAILED(result) NN_PANIC_IF_FAILED(result)
+

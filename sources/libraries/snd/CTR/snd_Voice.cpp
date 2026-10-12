@@ -202,3 +202,4 @@ void Voice::EnableBiquadFilter(bool enable)
 }
 }
 }
+

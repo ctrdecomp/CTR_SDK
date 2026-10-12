@@ -30,9 +30,9 @@ public:
     }
 
     operator s64() const { return m_Tick; }
-    operator nn::fnd::TimeSpan() const 
-    { 
-        return nn::fnd::TimeSpan::FromNanoSeconds(nnmathMultiplyRate(this->m_Tick,math::MakeRate<1000 * 1000 * 1000, TICKS_PER_SECOND>::VALUE)); 
+    operator nn::fnd::TimeSpan() const
+    {
+        return nn::fnd::TimeSpan::FromNanoSeconds(nnmathMultiplyRate(this->m_Tick,math::MakeRate<1000 * 1000 * 1000, TICKS_PER_SECOND>::VALUE));
     }
     Tick& operator-=(Tick rhs){ m_Tick -= rhs.m_Tick; return *this; }
     Tick operator-(Tick rhs) const{ Tick ret(*this); return ret -= rhs; }
@@ -59,3 +59,4 @@ public:
 
 }
 }
+

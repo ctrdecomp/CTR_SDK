@@ -35,7 +35,7 @@ namespace detail{
 Handle& GetFileServerHandle(){ return fs::g_FileServerHandle; }
 
 namespace{
-    fnd::UnitHeapBase s_ArchiveHeap = *(fnd::UnitHeapBase*)0;
+    fnd::UnitHeapBase s_ArchiveHeap;
 
     const wchar_t* GetArchivePath(const wchar_t* path)
     {
@@ -529,6 +529,26 @@ Result UserFileSystem::TryOpenFile(void** pOut,const wchar_t* pathName,bit32 mod
         (mode & OPEN_MODE_READ) ? 'R' : '_',(mode & OPEN_MODE_WRITE) ? 'W' : '_',(mode & OPEN_MODE_CREATE) ? 'C' : '_',p);
 }
 
+Result UserFileSystem::TryOpenDirectory(void **pOut, const wchar_t *pathName)
+{
+    IArchive* archive = FindArchive(pathName);
+    if (!archive)
+    {
+        return nn::fs::ResultArchiveNotFound();
+    }
+    NN_FS_ANALYSIS_LOG_INIT_TICK();
+    IDirectory* p;
+    nn::Result result = archive->OpenDirectory(&p, GetArchivePath(pathName));
+    if (result.IsSuccess())
+    {
+        *pOut = p;
+    }
+    NN_FS_ANALYSIS_LOG_RETURN_WITHOUT_TICK(
+        result,
+        "API=OpenDirectory,Path=%ls,Handle=%08X",
+        pathName, p);
+}
+
 void UserFileSystem::CloseFile(void* p)
 {
     if (p)
@@ -854,3 +874,4 @@ Result MountSdmc(const char* archiveName)
 
 }
 }
+

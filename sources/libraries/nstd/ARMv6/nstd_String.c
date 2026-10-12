@@ -549,3 +549,4 @@ loc_292694 // nf
         STRBNE R3, [R0], #1;
         BX     LR;
 }
+

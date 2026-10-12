@@ -42,18 +42,22 @@ public:
     {
         return this->m_ExtraStickClamper.SetStickClamp(min,max);
     }
+
     void GetExtraStickClamp(s16* pMin, s16* pMax) const
     {
         return this->m_ExtraStickClamper.GetStickClamp(pMin,pMax);
     }
+
     void SetExtraStickClampMode(StickClampMode mode)
     {
         return this->m_ExtraStickClamper.SetStickClampMode(PadReader::ClamperClampMode((PadReader::StickClampMode)mode));
     }
+
     void SetNormalizeExtraStickScaleSettings(f32 scale, s16 threshold)
     {
         return this->m_ExtraStickClamper.SetNormalizeStickScaleSettings(scale,threshold);
     }
+    
     void GetNormalizeExtraStickScaleSettings(f32* scale, s16* threshold) const
     {
         return this->m_ExtraStickClamper.GetNormalizeStickScaleSettings(scale,threshold);
@@ -75,3 +79,4 @@ protected:
 }
 }
 }
+

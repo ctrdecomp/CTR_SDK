@@ -20,3 +20,4 @@
 #define NN_SND_VOICE_NUM                    (24)
 
 #define NN_SND_HW_I2S_CLOCK_32KHZ_F32       (NN_SND_HW_SYSTEM_CLOCK / (32 * 256))
+

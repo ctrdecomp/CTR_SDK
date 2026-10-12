@@ -5,6 +5,8 @@
 #include <nn/os/os_BlockingQueue.h>
 #include <nn/os/os_CriticalSection.h>
 #include <nn/os/os_Event.h>
+#include <nn/os/os_InterCoreBlockingQueue.h>
+#include <nn/os/os_InterCoreCriticalSection.h>
 #include <nn/os/os_Initialize.h>
 #include <nn/os/os_LightEvent.h>
 #include <nn/os/os_LightSemaphore.h>
@@ -36,3 +38,4 @@ using namespace nn::os::CTR::detail;
 using namespace nn::os::ARM;
 
 #endif
+

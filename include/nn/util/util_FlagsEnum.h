@@ -49,3 +49,4 @@ struct FlagsEnum4 : public FlagsEnum<bit32, V>
 
 }
 }
+

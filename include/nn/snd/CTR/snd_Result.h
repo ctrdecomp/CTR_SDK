@@ -18,3 +18,4 @@ NN_DEFINE_RESULT_CONST(ResultNoDspComponentLoaded, Result::LEVEL_STATUS, Result:
 }
 }
 }
+

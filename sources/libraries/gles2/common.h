@@ -1,13 +1,12 @@
 #pragma once
 
 #include <GLES2/gl2.h>
-#include <GLES2/gl2CTR.h>
 #include <GLES2/gl2extern.h>
+#include <GLES2/gl2CTR.h>
 #include <nn/gx/CTR/gx_CTR.h>
-#include <nn/gx/CTR/gx_CTRRaw.h>
+
 #include <nn/gxlow/CTR/gxlow_CTR.h>
 #include <nn/gx/CTR/gx_Vram.h>
-#include <nn/gxlow/CTR/gxlow_InterruptReceiver.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +14,7 @@
 #include <math.h>
 #include <assert.h>
 
-#define GL_ACCELERATE_TRIANGLES_DMP       0x6502
+#define GL_ACCELERATE_TRIANGLES_DMP 0x6502
 
 #define MAX_TEXTURE_UNITS				3
 #define MAX_TEXTURE_SIZE				1024
@@ -53,3 +52,4 @@ extern dmpgl_deallocator_t __dmpgl_deallocator;
 #define malloc_ext(arg0, arg1, arg2, arg3)	(__dmpgl_allocator) ? __dmpgl_allocator(arg0, arg1, arg2, arg3) : 0
 #define free(arg)		(__dmpgl_deallocator) ? __dmpgl_deallocator(NN_GX_MEM_FCRAM, NN_GX_MEM_SYSTEM, 0, arg) : (void)0
 #define free_ext(arg0, arg1, arg2, arg3)	(__dmpgl_deallocator) ? __dmpgl_deallocator(arg0, arg1, arg2, arg3) : (void)0
+

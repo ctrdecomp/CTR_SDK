@@ -28,3 +28,4 @@ Result FatalErr::Throw(FatalErrInfo& info)
 }
 }
 }
+

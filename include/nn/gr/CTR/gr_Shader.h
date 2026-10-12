@@ -69,7 +69,7 @@ public:
 
     bit32* MakeOutAttrCommand(bit32* command) const
     {
-        NN_ASSERT_((!this->IsEnableGeoShader()) || (mDrawMode == PICA_DATA_DRAW_GEOMETRY_PRIMITIVE));
+        NN_ASSERT_((!this->IsEnableGeoShader()) || (m_DrawMode == PICA_DATA_DRAW_GEOMETRY_PRIMITIVE));
 
         bit32 value_229 = 0x0100;
         if (m_DrawMode != PICA_DATA_DRAW_TRIANGLES)
@@ -129,15 +129,15 @@ protected:
     {
         bit32 signature;
         u16 version;
-        u8  isGeoShader;
-        u8  outputMaps;
+        u8 isGeoShader;
+        u8 outputMaps;
         uptr mainAddress;
         uptr endAddress;
         bit32 maskInputOutput;
-        u8  gsDataMode;
-        u8  gsVertexStartIndex;
-        u8  gsPatchSize;
-        u8  gsVertexNum;
+        u8 gsDataMode;
+        u8 gsVertexStartIndex;
+        u8 gsPatchSize;
+        u8 gsVertexNum;
         u32 setupOffset;
         u32 setupCount;
         u32 labelOffset;
@@ -173,3 +173,4 @@ protected:
 }
 }
 }
+

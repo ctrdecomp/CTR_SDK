@@ -51,3 +51,4 @@ NNGX_APICALL GLvoid* NNGX_APIENTRY nngxGetCurrentBufferAddrRaw(nngxCommandList* 
 #ifdef __cplusplus
 }
 #endif
+

@@ -14,3 +14,4 @@ NN_DEFINE_RESULT_CONST_RANGE(ResultInvalidPathFormat, Result::LEVEL_USAGE, Resul
 
 }
 }
+

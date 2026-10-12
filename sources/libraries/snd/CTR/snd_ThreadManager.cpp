@@ -139,16 +139,11 @@ Result ThreadManager::StartSoundThread(void (*callback)(uptr), uptr arg, uptr st
 
     if (nn::applet::CTR::IsSystemApplet() && coreNo == 1)
     {
-        prio = 0x5109d500;
-    }
-
-    if (coreNo == 1)
-    {
         prio += 0x5109d500;
     }
 
     this->m_CriticalSection.Initialize();
-    Result result = this->m_SoundThread.TryStart(SoundThreadFunc,NULL,stack,prio,coreNo);
+    Result result = this->m_SoundThread.TryStart(SoundThreadFunc, NULL, stack, prio, coreNo);
     if (result.IsSuccess())
     {
         m_NwSoundThreadCallback = NULL;
@@ -173,13 +168,13 @@ Result ThreadManager::StartSoundThread(void (*callback)(uptr), uptr arg, uptr st
 Result ThreadManager::StartSoundThread(const ThreadParameter* mainThreadParam,void (*mainThreadCallback)(uptr),uptr mainThreadArg,const ThreadParameter* userThreadParam,void (*userThreadCallback)(uptr),uptr userThreadArg,s32 coreNo)
 {
     Result result;
-    result = StartSoundThread(userThreadCallback,userThreadArg,mainThreadParam->stackBuffer,mainThreadParam->stackSize,mainThreadParam->priority,coreNo);
+    result = StartSoundThread(userThreadCallback, userThreadArg, mainThreadParam->stackBuffer, mainThreadParam->stackSize, mainThreadParam->priority, coreNo);
     NN_UTIL_RETURN_IF_FAILED(result);
     m_NwSoundThreadCallback = mainThreadCallback;
     m_ArgForNw = mainThreadArg;
     if (userThreadParam)
     {
-        result = StartUserSoundThread(userThreadParam->stackBuffer,userThreadParam->stackSize,userThreadParam->priority);
+        result = StartUserSoundThread(userThreadParam->stackBuffer, userThreadParam->stackSize, userThreadParam->priority);
         if (result.IsFailure())
         {
             this->FinalizeSoundThread();
@@ -277,3 +272,4 @@ os::Tick ThreadManager::GetSoundThreadTick()
 }
 }
 }
+

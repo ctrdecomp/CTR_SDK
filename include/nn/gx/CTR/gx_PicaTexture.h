@@ -405,3 +405,4 @@ enum PicaDataTextureWrap
      (color8.g) <<  8| \
      (color8.b) << 16| \
      (color8.a) << 24)
+

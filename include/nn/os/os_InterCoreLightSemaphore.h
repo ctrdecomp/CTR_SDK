@@ -8,4 +8,6 @@ namespace os {
 
 typedef LightSemaphore InterCoreLightSemaphore;
 
-}
+} // namespace os
+} // namespace nn
+

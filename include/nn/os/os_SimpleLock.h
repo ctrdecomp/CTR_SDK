@@ -29,3 +29,4 @@ public:
 }
 
 NN_UTIL_DETAIL_DEFINE_SCOPED_LOCK(nn::os::SimpleLock, Lock(), Unlock());
+

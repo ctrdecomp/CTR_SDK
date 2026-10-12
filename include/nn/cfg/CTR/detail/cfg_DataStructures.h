@@ -104,7 +104,7 @@ struct CameraCfgData
         struct CameraPositionCalData position;
         u32                          reserved[16];
         struct CameraQualityCalData  quality;
-} NN_PACK;
+};
 
 struct AnalogStickCfgData
 {
@@ -329,3 +329,4 @@ struct DebugParamCfgData
 } // namespace CTR
 } // namespace cfg
 } // namespace nn
+

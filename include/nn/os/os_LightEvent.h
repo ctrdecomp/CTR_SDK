@@ -10,7 +10,6 @@ class LightEvent : private util::ADLFireWall::NonCopyable<LightEvent>
 private:
     WaitableCounter m_Counter;
     SimpleLock m_Lock;
-
 public:
 
     static const s32 NOT_RESETED_MANUAL = -2;
@@ -30,7 +29,6 @@ public:
     };
 
     void Initialize(bool isManualReset);
-
     void Finalize(){ }
     void ClearSignal();
     void Wait();
@@ -42,3 +40,4 @@ public:
 
 }
 }
+

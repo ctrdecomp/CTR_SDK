@@ -41,3 +41,4 @@ inline bool WaitObject::WaitOne(nn::fnd::TimeSpan timeout)
 
 }
 }
+

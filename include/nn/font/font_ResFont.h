@@ -5,6 +5,7 @@
 
 namespace nn{
 namespace font{
+    
 class ResFont : public ResFontBase
 {
 public:
@@ -22,3 +23,4 @@ public:
 
 }
 }
+

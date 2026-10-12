@@ -11,3 +11,4 @@ NN_DEFINE_RESULT_CONST_LSM(ResultInvalidEnumValue,MakeInvalidArgumentResult, Res
 
 }
 }
+

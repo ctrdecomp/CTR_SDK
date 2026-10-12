@@ -66,7 +66,7 @@ namespace dbg{
 
 /* dbg::Break */
 
-Result Break(BreakReason reason)
+NN_NOINLINE Result Break(BreakReason reason)
 {
     CallBreakHandler(reason);
     return nn::svc::Break(reason, NULL, 0);
@@ -96,6 +96,8 @@ Result NotifyDllUnloadingToDebugger(const void* pDllInfo, size_t size)
 }
 }
 }
+
+using namespace nn::dbg;
 
 extern "C" {
 
@@ -176,3 +178,4 @@ Result nndbgBreak(nn::dbg::BreakReason reason)
 }
 
 }
+

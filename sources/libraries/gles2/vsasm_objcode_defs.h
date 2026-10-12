@@ -136,3 +136,4 @@ typedef struct OBJ_SWZ_T{
 	unsigned short			used_info;
 	unsigned short			reserve;
 } obj_swz_t;
+

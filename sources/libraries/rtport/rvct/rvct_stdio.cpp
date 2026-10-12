@@ -13,7 +13,6 @@
 #include <typeinfo>
 #include <cstring>
 
-
 typedef int FILEHANDLE;
 
 #pragma import(__use_no_semihosting)
@@ -66,3 +65,4 @@ namespace std
         return std::strcmp(this->name(), rhs.name()) < 0;
     }
 }
+

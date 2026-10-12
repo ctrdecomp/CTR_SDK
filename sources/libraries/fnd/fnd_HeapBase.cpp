@@ -24,3 +24,4 @@ void HeapBase::FillMemory32(uptr begin, uptr end, bit32 v)
 
 }
 }
+

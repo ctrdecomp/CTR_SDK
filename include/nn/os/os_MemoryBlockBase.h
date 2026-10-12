@@ -39,3 +39,4 @@ private:
 typedef union nnosMemoryBlockBase{
     
 } nnosMemoryBlockBase;
+

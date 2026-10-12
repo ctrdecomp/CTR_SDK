@@ -39,3 +39,4 @@ extern "C" {
     void nnosAddressSpaceManagerInitialize(nnosAddressSpaceManager* p, uptr begin, size_t size);
     void nnosAddressSpaceManagerSwitch(nnosAddressSpaceManager* p, nnosMemoryBlockBase* pTo, nnosMemoryBlockBase* pFrom);
 }
+

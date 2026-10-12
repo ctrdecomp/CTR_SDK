@@ -33,3 +33,4 @@ void CalculateSha1(void *pOut, const void *pData, size_t size);
 
 }
 }
+

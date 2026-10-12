@@ -39,7 +39,7 @@ inline Result EventBase::TryInitializeImpl(ResetType resetType)
 {
     Handle handle;
     NN_UTIL_RETURN_IF_FAILED(svc::CreateEvent(&handle, resetType));
-    this->SetHandle(handle);
+    SetHandle(handle);
     return ResultSuccess();
 }
 
@@ -72,35 +72,40 @@ public:
 
     Event()
     { 
-        this->ClearHandle();
+        ClearHandle();
     }
 
     ~Event()
     { 
-        this->Close(); 
+        Close(); 
     }
         
 
     void Initialize(bool manualReset) 
     { 
-        this->EventBase::Initialize(manualReset ? RESET_TYPE_STICKY: RESET_TYPE_ONESHOT); 
+        EventBase::Initialize(manualReset ? RESET_TYPE_STICKY: RESET_TYPE_ONESHOT); 
     }
+
     void Finalize() 
     { 
-        this->EventBase::Finalize(); 
+        EventBase::Finalize(); 
     }
+
     void Signal() 
     { 
-        this->EventBase::Signal(); 
+        EventBase::Signal(); 
     }
+
     void Wait() 
     { 
-        this->EventBase::WaitOne(); 
+        EventBase::WaitOne(); 
     }
+
     bool Wait(nn::fnd::TimeSpan timeout) 
     { 
-        return this->EventBase::WaitOne(timeout); 
+        return EventBase::WaitOne(timeout); 
     }
 };
 }
 }
+

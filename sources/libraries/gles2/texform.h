@@ -37,3 +37,4 @@ enum Z_FORMAT{
 	
 	ZF_MAX_BIT = (1u << 30)
 };
+

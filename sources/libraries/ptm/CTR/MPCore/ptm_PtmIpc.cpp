@@ -36,3 +36,4 @@ Result PtmIpc::GetStepHistory(u16 pStepCounts[], s32 numHours, fnd::DateTime sta
 }
 }
 }
+

@@ -18,10 +18,15 @@ namespace{
     bool s_IsEnableSelect;
 }
 
-PadReader::PadReader(Pad& pad): 
+bool IsSelectButtonEnabled()
+{
+    return s_IsEnableSelect;
+}
+
+PadReader::PadReader(Pad& pad):
     m_Pad(pad),
     m_IndexOfRead(-1),
-    m_IsReadLatestFirst(true),
+    m_IsReadLatestFirst(true), 
     m_TickOfRead(-1)
 {
 }
@@ -36,13 +41,12 @@ bool PadReader::ReadLatest(PadStatus* pBuf)
     if(ExtraPad::IsSampling())
         return false;
 
-    this->m_StickClamper.ClampValueOfClamp();
+    m_StickClamper.ClampValueOfClamp();
 
     reinterpret_cast<nn::hidlow::CTR::PadLifoRing*>(m_Pad.GetResource())->ReadData(pBuf, 1, &readLen, &tick, &index);
     if(0 < readLen)
     {
-        this->m_StickClamper.ClampCore(&pBuf->stick.x,&pBuf->stick.y,pBuf->stick.x,pBuf->stick.y);
-
+        m_StickClamper.ClampCore(&pBuf->stick.x, &pBuf->stick.y, pBuf->stick.x, pBuf->stick.y);
 
         if(m_IsReadLatestFirst != false)
         {
@@ -61,7 +65,7 @@ bool PadReader::ReadLatest(PadStatus* pBuf)
 
         m_LatestHold = pBuf->hold;
 
-        if(s_IsEnableSelect == false)
+        if(IsSelectButtonEnabled() == false)
         {
             hidlow::GatherStartAndSelect(pBuf);
         }
@@ -74,7 +78,7 @@ void PadReader::Read(PadStatus* pBufs, s32* pReadLen, s32 bufLen)
 {
     NN_TASSERT_(NULL != pBufs);
 
-    this->m_StickClamper.ClampValueOfClamp();
+    m_StickClamper.ClampValueOfClamp();
 
     reinterpret_cast<nn::hidlow::CTR::PadLifoRing*>(this->m_Pad.GetResource())->ReadData(pBufs, bufLen, pReadLen, &this->m_TickOfRead, &this->m_IndexOfRead);
 
@@ -99,36 +103,37 @@ void PadReader::Read(PadStatus* pBufs, s32* pReadLen, s32 bufLen)
         {
             this->HideKeyInfo(&pBufs[i]);
         }
-        
-        if(!s_IsEnableSelect)
+
+        if(!IsSelectButtonEnabled())
         {
             hidlow::GatherStartAndSelect(&pBufs[i]);
         }
 
-        this->m_StickClamper.ClampCore(&pBufs[i].stick.x, &pBufs[i].stick.y, pBufs[i].stick.x, pBufs[i].stick.y);
+        m_StickClamper.ClampCore(&pBufs[i].stick.x, &pBufs[i].stick.y, pBufs[i].stick.x, pBufs[i].stick.y);
     }
 }
 
 void PadReader::SetStickClamp(short min, short max)
 {
-    return this->m_StickClamper.SetStickClamp(min, max);
+    m_StickClamper.SetStickClamp(min, max);
 }
 
 f32 PadReader::NormalizeStick(short x)
 {
-    return this->m_StickClamper.NormalizeStick(x);
+    return m_StickClamper.NormalizeStick(x);
 }
 
 void PadReader::NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y)
 {
-    return this->m_StickClamper.NormalizeStickWithScale(normalized_x, normalized_y, x, y);
+    m_StickClamper.NormalizeStickWithScale(normalized_x, normalized_y, x, y);
 }
 
 void PadReader::SetNormalizeStickScaleSettings(f32 scale, s16 threshold)
 {
-    return this->m_StickClamper.SetNormalizeStickScaleSettings(scale,threshold);
+    m_StickClamper.SetNormalizeStickScaleSettings(scale,threshold);
 }
 
 }
 }
 }
+

@@ -7,3 +7,4 @@
         ScopedLock(typeName& reference) : mReference(reference) { mReference.lockCall; } \
         ~ScopedLock() { mReference.unlockCall; } \
     }
+

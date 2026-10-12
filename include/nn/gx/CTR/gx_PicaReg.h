@@ -798,3 +798,4 @@ enum PicaReg
     //
     PICA_REG_VS_PROG_SWIZZLE_DATA7        = 0x2dd
 };
+

@@ -173,3 +173,4 @@ typedef struct SYS_MANAGER_T{
 void __sys_markGasAcmMax(void);
 void __sys_setDMACommandRequest(void* dstaddr, void* srcaddr, unsigned size);
 void __sys_setB2BCommandRequest(void* srcaddr, void* dstaddr, int width, int height, int format);
+

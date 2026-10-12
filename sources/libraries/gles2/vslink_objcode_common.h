@@ -50,3 +50,4 @@ typedef struct EXE_HEADER_T{
 	unsigned int		string_offset;
 	unsigned int		string_size;
 } exe_header_t;
+

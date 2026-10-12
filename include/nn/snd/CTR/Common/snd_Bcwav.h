@@ -1,12 +1,13 @@
 #pragma once
 
-#include "nn/snd/CTR/Common/snd_Adpcm.h"
+#include <nn/snd/CTR/Common/snd_Adpcm.h>
 
 namespace nn {
 namespace snd {
 namespace CTR {
 
-class Bcwav {
+class Bcwav 
+{
 private:
     Bcwav() {}
     ~Bcwav() {}
@@ -125,17 +126,18 @@ public:
         CHANNEL_INDEX_R = 1
     } ChannelIndex;
 
-    static const WaveInfo&        GetWaveInfo(const void* bcwav);
-    static int                    GetChannelCount(const void* bcwav);
-    static const void*            GetWave(const void* bcwav, int channelNo);
-    static const DspAdpcmInfo*    GetDspAdpcmInfo(const void* bcwav, int channelNo);
+    static const WaveInfo& GetWaveInfo(const void* bcwav);
+    static int GetChannelCount(const void* bcwav);
+    static const void* GetWave(const void* bcwav, int channelNo);
+    static const DspAdpcmInfo* GetDspAdpcmInfo(const void* bcwav, int channelNo);
     static const ImaAdpcmContext* GetImaAdpcmContext(const void* bcwav, int channelNo);
     static const ImaAdpcmContext* GetImaAdpcmLoopContext(const void* bcwav, int channelNo);
-    static u32                    FrameToByte(u8 encoding, u32 frame);
-    static const void*            AddOffsetToPtr(const void* ptr, int offset);
-    static bool                   IsBcwav(const void* bcwav);
+    static u32 FrameToByte(u8 encoding, u32 frame);
+    static const void* AddOffsetToPtr(const void* ptr, int offset);
+    static bool IsBcwav(const void* bcwav);
 };
 
 } // namespace CTR
 } // namespace snd
 } // namespace nn
+

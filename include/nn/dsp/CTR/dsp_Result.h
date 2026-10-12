@@ -12,3 +12,4 @@ NN_DEFINE_RESULT_CONST(ResultAlreadyExists,Result::LEVEL_STATUS,Result::SUMMARY_
 }
 }
 }
+

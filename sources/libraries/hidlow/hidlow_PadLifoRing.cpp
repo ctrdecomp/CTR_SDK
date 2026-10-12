@@ -112,3 +112,4 @@ void PadLifoRing::ReadData(hid::CTR::PadStatus* pBuffers, s32 bufferNum,s32* pRe
 }
 }
 }
+

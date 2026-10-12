@@ -140,3 +140,4 @@ typedef enum GARNET_PDC_DATA_FORMAT_T{
 	
 	GARNET_PDC_DATA_FORMAT_MAX_BIT = (1u << 30)
 } garnet_pdc_data_format_t;
+

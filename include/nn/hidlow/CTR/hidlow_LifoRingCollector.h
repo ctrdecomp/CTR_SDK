@@ -6,7 +6,8 @@ namespace nn{
 namespace hidlow{
 namespace CTR{
 
-class LifoRingCollector{
+class LifoRingCollector
+{
 private:
     PadLifoRing m_PadLifoRing;
     TouchPanelLifoRing m_TouchPanelLifoRing;
@@ -23,3 +24,4 @@ public:
 }
 }
 }
+

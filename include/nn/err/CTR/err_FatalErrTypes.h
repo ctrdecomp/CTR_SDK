@@ -11,3 +11,4 @@ typedef enum nnerrFatalErrType
     NN_ERR_FATAL_TYPE_RESULT_FAILURE,
     NN_ERR_FATAL_TYPE_LOG_ONLY
 } nnerrFatalErrType;
+

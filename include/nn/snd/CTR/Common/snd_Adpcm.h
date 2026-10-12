@@ -1,16 +1,11 @@
 #pragma once
 
-#include "nn/dsp/CTR/Common/dsp_Types.h"
+#include <nn/dsp/CTR/Common/dsp_Types.h>
 
-#define NN_SND_ADPCM_DOL_PS_SIZE_IN_NIB    (2)
 #define NN_SND_ADPCM_DOL_DATA_NUM_IN_BLOCK (14)
 #define NN_SND_ADPCM_DOL_NIBL_NUM_IN_BLOCK (16)
 
-#ifdef NN_PROCESSOR_ARM11MPCORE
 #define NN_SND_ADPCM_DOL_BLOCK_SIZE (8)
-#else
-#define NN_SND_ADPCM_DOL_BLOCK_SIZE (4)
-#endif
 
 typedef struct
 {
@@ -58,3 +53,4 @@ struct AdpcmContext
 } // namespace CTR
 } // namespace snd
 } // namespace nn
+

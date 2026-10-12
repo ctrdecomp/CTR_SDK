@@ -13,3 +13,4 @@
 
 #define NN_REFER_MODULE(Variable)                       \
         NN_UTIL_REFER_SYMBOL(Variable)
+

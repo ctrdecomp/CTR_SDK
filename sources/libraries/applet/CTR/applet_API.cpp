@@ -864,4 +864,5 @@ Result CallUtility(u32 utilityId, u8* pInParam, size_t inParamSize, u8* pOutPara
 } // detail
 } // CTR
 } // applet
-} // nn
+} // 
+

@@ -7,7 +7,8 @@ namespace nn{
 namespace srv{
 namespace detail{
     
-class Service{
+class Service
+{
 public:
     static Handle s_Session;
 
@@ -22,3 +23,4 @@ public:
 }
 }
 }
+

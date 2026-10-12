@@ -17,7 +17,7 @@ namespace nn{
 namespace os{
 namespace{
     CTR::ThreadLocalRegion* s_pTlr = NULL;
-} // ""
+} // namespace
 namespace detail{
 
 const s32 SVC_USER_THREAD_PRIORITY_HIGHEST    = 0x20; // 32
@@ -67,6 +67,11 @@ void SaveThreadLocalRegionAddress()
     s_pTlr = CTR::GetThreadLocalRegion();
 }
 
+CTR::ThreadLocalRegion* GetMainThreadThreadLocalRegion()
+{
+    return s_pTlr;
+}
+
 void InitializeThreadEnvrionment()
 {
     os::ThreadLocalStorage::ClearAllSlots();
@@ -74,7 +79,7 @@ void InitializeThreadEnvrionment()
     _fp_init();
 }
 
-} // detail
+} // namespace detail
 
 /* nn::os::Thread */
 
@@ -97,9 +102,9 @@ Thread::Thread(const Thread::InitializeAsCurrentTag&)
 {
     Handle handle;
     NN_OS_ERROR_IF_FAILED(nn::svc::DuplicateHandle(&handle, PSEUDO_HANDLE_CURRENT_THREAD));
-    this->SetHandle(handle);
-    this->m_CanFinalize = false;
-    this->m_UsingAutoStack = false;
+    SetHandle(handle);
+    m_CanFinalize = false;
+    m_UsingAutoStack = false;
 }
 
 /* ThreadStart */
@@ -126,8 +131,8 @@ void Thread::FinalizeImpl()
     if (!m_CanFinalize)
     {
         NN_TASSERTMSG_(m_CanFinalize, "Thread should be Joined or Detached before being Finalized.");
-        this->WaitOne();
-        this->m_CanFinalize = true;
+        WaitOne();
+        m_CanFinalize = true;
     }
 }
 
@@ -161,7 +166,7 @@ Result Thread::PostStartUsingAutoStack(Result result, uptr stackBottom)
         return result;
     }
 
-    this->m_UsingAutoStack = true;
+    m_UsingAutoStack = true;
     return ResultSuccess();
 }
 
@@ -235,3 +240,4 @@ __asm void Thread::CallDestructorAndExit(void* pStackBottom)
 
 }
 }
+

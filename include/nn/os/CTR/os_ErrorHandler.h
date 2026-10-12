@@ -15,3 +15,4 @@ void SetInternalErrorHandlingMode(bool preferFatal);
 }
 }
 }
+

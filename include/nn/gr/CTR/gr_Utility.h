@@ -7,7 +7,6 @@
 #include <nn/gx.h>
 #include <nn/gx/CTR/gx_PicaAll.h>
 
-
 namespace nn{
 namespace gr{
 namespace CTR{
@@ -46,7 +45,7 @@ inline u8 FloatToUnsignedByte(f32 val)
 
 inline u32 Float32ToUnsignedFix24(f32 val)
 {
-    unsigned v_ = *(reinterpret_cast<unsigned*>(&val));
+    uint v_ = *(reinterpret_cast<uint*>(&val));
 
     if (val <= 0 || (v_ & 0x7f800000) == 0x7f800000)
     {
@@ -63,7 +62,7 @@ inline u32 Float32ToUnsignedFix24(f32 val)
         }
         else
         {
-            return (unsigned)(val);
+            return (uint)(val);
         }
     }
 }
@@ -80,6 +79,68 @@ inline u16 Float32ToFloat16(f32 val)
     }
 
     return (u16)((uval_ >> 31) << (10 + 5));
+}
+
+inline u32 Float32ToFloat31(f32 val)
+{
+    uint uval_, m_;
+    int e_;
+    float f_ = val;
+    static const int bias_ = 128 - (1 << (7 - 1));
+    uval_ = *( reinterpret_cast<uint*>( &f_ ) );
+    e_ = (uval_ & 0x7fffffff) ? (((uval_ >> 23) & 0xff) - bias_) : 0;
+    m_ = (uval_ & 0x7fffff) >> (23 - 23);
+    return e_ >= 0 ? m_ | (e_ << 23) | ((uval_ >> 31) << (23 + 7)) : ((uval_ >> 31) << (23 + 7));
+}
+
+inline u32 Float32ToFix13Fraction8(f32 val)
+{
+    uint v_ = *(reinterpret_cast<uint*>(&val));
+
+    if ((val == 0.0f) ||
+         ((v_ & 0x7f800000 ) == 0x7f800000))
+    {
+        return 0;
+    }
+
+    val += 0.5f * (1 << 5);
+    val *= 1 << (13 - 5);
+
+    if (val < 0)
+    {
+        val = 0;
+    }
+    else if (val >= (1 << 13))
+    {
+        val = (1 << 13) - 1;
+    }
+
+    return (val >= (1 << (13 - 1)))
+               ? (uint)(val - (1 << (13 - 1)))
+               : (uint)(val + (1 << (13 - 1)));
+}
+
+inline u32 Float32ToUnsignedFix16(f32 val)
+{
+    uint v_ = *(reinterpret_cast<uint*>(&val));
+
+    if (val <= 0 || (v_ & 0x7f800000) == 0x7f800000)
+    {
+        return 0;
+    }
+    else
+    {
+        val *= 1 << 16;
+
+        if (val >= (1 << 16))
+        {
+            return (1 << 16) - 1;
+        }
+        else
+        {
+            return static_cast<uint>(val);
+        }
+    }
 }
 
 inline u32 Float32ToFloat24(f32 val)
@@ -133,3 +194,4 @@ inline bit32* MakeUniformCommandGS(bit32* command, u8 location, const nn::math::
 }
 }
 }
+

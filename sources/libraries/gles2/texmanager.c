@@ -20,9 +20,6 @@
 static tex_manager_t*	__texman = 0;
 static GLuint __miniID;
 
-/******************************************
-* static function prototypes
-*******************************************/
 static GLboolean tx_allocTextureMemory(GLenum _transtype, tx_texture_t* _tex);
 static void tx_freeTextureMemory(GLenum _transtype, tx_texture_t* _tex);
 static tx_tex_container_t* tx_createTexContainer(GLuint _id);
@@ -2141,3 +2138,4 @@ static GLenum tx_validateCubeTexture(tx_cube_tex_container_t* _ctc){
 	
 	return GL_NO_ERROR;
 }
+

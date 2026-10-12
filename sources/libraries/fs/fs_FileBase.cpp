@@ -135,3 +135,4 @@ Result FileBase::TryFlush()
 }
 }
 }
+

@@ -10,21 +10,20 @@ namespace os{
 
 void LightEvent::Initialize(bool pIsManualReset)
 {
-    this->m_Lock.Initialize();
-    *this->m_Counter = pIsManualReset ? NOT_RESETED_MANUAL: NOT_RESETED_AUTO;
+    m_Lock.Initialize();
+    *m_Counter = pIsManualReset ? NOT_RESETED_MANUAL: NOT_RESETED_AUTO;
 }
 
 void LightEvent::ClearSignal()
 {
-    if(*this->m_Counter == RESETED_MANUAL)
+    if(*m_Counter == RESETED_MANUAL)
     {
-        SimpleLock::ScopedLock lock(this->m_Lock);
-
-        *this->m_Counter = NOT_RESETED_MANUAL;
+        SimpleLock::ScopedLock lock(m_Lock);
+        *m_Counter = NOT_RESETED_MANUAL;
     }
-    else if(*this->m_Counter == RESETED_AUTO)
+    else if(*m_Counter == RESETED_AUTO)
     {
-        *this->m_Counter = NOT_RESETED_AUTO;
+        *m_Counter = NOT_RESETED_AUTO;
     }
 }
 
@@ -32,51 +31,53 @@ void LightEvent::Wait()
 {
     for(;;)
     {
-        switch (*this->m_Counter)
+        switch (*m_Counter)
         {
         case NOT_RESETED_MANUAL:
-            this->m_Counter.WaitIfLessThan(0);
+            m_Counter.WaitIfLessThan(0);
             return;
         case RESETED_MANUAL:
             return;
         case NOT_RESETED_AUTO:
             break;
         case RESETED_AUTO:
-            if (this->m_Counter->CompareAndSwap (RESETED_AUTO, NOT_RESETED_AUTO) == RESETED_AUTO) 
+            if (m_Counter->CompareAndSwap (RESETED_AUTO, NOT_RESETED_AUTO) == RESETED_AUTO)
             {
                 return;
             }
             break;
         }
-        this->m_Counter.WaitIfLessThan (0);
+        m_Counter.WaitIfLessThan (0);
     }
 }
 
-void LightEvent::Signal(){
-    if(*this->m_Counter == NOT_RESETED_AUTO)
+void LightEvent::Signal()
+{
+    if(*m_Counter == NOT_RESETED_AUTO)
     {
-        *this->m_Counter = RESETED_AUTO;
-        this->m_Counter.Signal(1);
+        *m_Counter = RESETED_AUTO;
+        m_Counter.Signal(1);
     }
-    else if(*this->m_Counter == NOT_RESETED_MANUAL)
+    else if(*m_Counter == NOT_RESETED_MANUAL)
     {
         SimpleLock::ScopedLock lock(this->m_Lock);
-
-        *this->m_Counter = RESETED_MANUAL;
-        this->m_Counter.SignalAll();
+        *m_Counter = RESETED_MANUAL;
+        m_Counter.SignalAll();
     }
 }
 
-bool LightEvent::TryWait(){
-    if(*this->m_Counter == RESETED_MANUAL)
+bool LightEvent::TryWait()
+{
+    if(*m_Counter == RESETED_MANUAL)
     {
         return true;
     }
     else
     {
-        return this->m_Counter->CompareAndSwap(RESETED_AUTO, NOT_RESETED_AUTO) == RESETED_AUTO;
+        return m_Counter->CompareAndSwap(RESETED_AUTO, NOT_RESETED_AUTO) == RESETED_AUTO;
     }
 }
 
-} // os
-} // nn
+} // namespace os
+} // namespace nn
+

@@ -106,3 +106,4 @@ inline NNSiUIntPtr NNSiGetUIntPtr(const void* ptr)
 
 }
 }
+

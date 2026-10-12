@@ -2,6 +2,9 @@
 //
 // Project: Horizon
 
+#include <nn/gr/CTR/gr_Utility.h>
+#include <nn/math.h>
+
 namespace nn  {
 namespace gr  {
 namespace CTR {
@@ -50,3 +53,4 @@ asm void CopyMtx44WithHeader(f32* /* dst */, const nn::math::MTX44* /* src */, u
 }
 }
 }
+

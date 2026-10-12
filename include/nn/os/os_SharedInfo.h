@@ -1,6 +1,7 @@
 #pragma once
 
 #include <nn/os/os_Tick.h>
+#include <nn/util/util_FlagsEnum.h>
 
 namespace nn{
 namespace os{
@@ -60,3 +61,4 @@ inline WritableSharedInfo& GetWritableSharedInfo(){ return *(WritableSharedInfo*
 
 }
 }
+

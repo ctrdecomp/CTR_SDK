@@ -359,3 +359,4 @@ inline nn::Result Thread::TryStart(void (*f)(), Stack& stack, s32 priority, s32 
 
 }
 }
+

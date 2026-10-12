@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <nn/gr/CTR/gr_Utility.h>
 
 namespace nn{
@@ -32,14 +31,16 @@ public:
         s16 rev2;
 
     protected:
-        bool IsEnableMipMap() const{
-            if (minFilter == PICA_DATA_TEXTURE_MIN_FILTER_LINEAR){
-                    return false;
-                }
-
-                if (minFilter == PICA_DATA_TEXTURE_MIN_FILTER_NEAREST){
-                    return false;
-                }
+        bool IsEnableMipMap() const
+        {
+            if (minFilter == PICA_DATA_TEXTURE_MIN_FILTER_LINEAR)
+            {
+                return false;
+            }
+            if (minFilter == PICA_DATA_TEXTURE_MIN_FILTER_NEAREST)
+            {
+                return false;
+            }
 
             return true;
         }
@@ -63,7 +64,7 @@ public:
         explicit Unit0(const Texture& texture_);
 
     protected:
-        const Texture& mTexture;
+        const Texture& m_Texture;
     };
 
     class Unit1 : public UnitBase
@@ -76,7 +77,7 @@ public:
         explicit Unit1(const Texture& texture_);
                     
     protected:
-        const Texture& mTexture;
+        const Texture& m_Texture;
     };
 
     class Unit2 : public UnitBase
@@ -90,7 +91,7 @@ public:
         explicit Unit2(const Texture& texture_);
 
     protected:
-        const Texture& mTexture;
+        const Texture& m_Texture;
     };
 
     class Unit3 : protected UnitBase
@@ -104,7 +105,7 @@ public:
         explicit Unit3(const Texture& texture_);
 
     protected:
-        const Texture& mTexture;
+        const Texture& m_Texture;
     };
 
     Unit0 unit0;
@@ -115,11 +116,12 @@ public:
     Texture();
     bit32* MakeCommand(bit32* command, bool isAddDummyCommand = true) const;
     bit32* MakeFuncCommand(bit32* command, bool isAddDummyCommand = true) const;
-    static bit32* MakeDisableCommand( bit32* command, bool isAddDummyCommand = true );
+    static bit32* MakeDisableCommand(bit32* command, bool isAddDummyCommand = true);
 protected:
-    static bit32* MakeDummyCommand_( bit32* command );
+    static bit32* MakeDummyCommand_(bit32* command );
 };
 
 }
 }
 }
+

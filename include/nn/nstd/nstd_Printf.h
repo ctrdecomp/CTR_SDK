@@ -31,3 +31,4 @@ s32 nnnstdTSNWPrintf (wchar_t* dst, size_t len, const wchar_t* fmt, ...);
 s32 nnnstdTSWPrintf (wchar_t* dst, const wchar_t* fmt, ...);
 
 }
+

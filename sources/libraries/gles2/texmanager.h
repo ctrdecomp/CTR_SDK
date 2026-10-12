@@ -146,7 +146,7 @@ typedef struct TEX_MANAGER_T{
 } tex_manager_t;
 
 GLint __tx_initializeTexManager(tex_manager_t* texman);
-void __tx_finalizeTexManager();
+void __tx_finalizeTexManager(void);
 tx_tex_container_t* __tx_getTexture2D(GLuint _tex);
 tx_cube_tex_container_t* __tx_getTextureCube(GLuint _tex);
 tx_lut_container_t* __tx_getBoundTextureLut(GLuint _lut);
@@ -154,3 +154,4 @@ tx_lut_container_t* __tx_getBoundTextureLut(GLuint _lut);
 void __txv_initializeTextureValidator(bit_mask_t* _mask);
 void __txv_validateTextureValidator(bit_mask_t* _mask);
 void __txv_initializeTextureValidatorHWRegister(void);
+

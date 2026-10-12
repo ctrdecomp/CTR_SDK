@@ -357,8 +357,9 @@ typedef struct STT_STATE_T
 
 
 GLint __sta_initializeState(stt_state_t* glstate);
-void __sta_finalizeState();
+void __sta_finalizeState(void);
 
 extern stt_state_t* __gl_state;
 
 #define GET_CURRENT_STATE(state) stt_state_t* state = __gl_state;
+

@@ -45,14 +45,14 @@ static GLsizei __initialCommandSize;
 }
 
 static void sys_executeCommandRequest(cl_cmdreq_t* cmdreq);
-static void sys_P3DCallback();
-static void sys_PSC0Callback();
-static void sys_PSC1Callback();
-static void sys_PPFCallback();
-static void sys_DMACallback();
-static void sys_PDC0Callback();
-static void sys_PDC1Callback();
-static void sys_commonIntrHandler();
+static void sys_P3DCallback(void);
+static void sys_PSC0Callback(void);
+static void sys_PSC1Callback(void);
+static void sys_PPFCallback(void);
+static void sys_DMACallback(void);
+static void sys_PDC0Callback(void);
+static void sys_PDC1Callback(void);
+static void sys_commonIntrHandler(void);
 
 static void sys_issueSpeculativeCommandRequests();
 
@@ -576,7 +576,7 @@ void nngxCmdlistStorage(GLsizei bufsize, GLsizei requestcount){
 	if (cmdlist->command_buffer)
 		free_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, cmdlist->command_buffer);
 
-	(void*)newbuffer = malloc_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, bufsize + requestcount * sizeof(cl_cmdreq_t));
+	newbuffer = (unsigned char*)malloc_ext(NN_GX_MEM_FCRAM, NN_GX_MEM_COMMANDBUFFER, cmdlist->id, bufsize + requestcount * sizeof(cl_cmdreq_t));
 	BASE_GL_FAIL_IF(newbuffer == 0 && (bufsize != 0 || requestcount != 0), GL_ERROR_8006_DMP);
 	
 	sys_CmdlistStorageCore(cmdlist, bufsize, newbuffer, requestcount, (void*)_PICA_MEM_NATIVE(newbuffer + bufsize));
@@ -1607,6 +1607,120 @@ void nngxSwapBuffers(GLenum display){
 	return;
 }
 
+void nngxSetCmdlistCallback(void (*func)(GLint))
+{
+	sys_SetCmdlistCallbackCore(__sysman.bound_cmdlist, func);
+	
+	return;
+}
+
+void nngxAddB2LTransferCommand(const GLvoid* srcaddr, GLsizei srcwidth, GLsizei srcheight, GLenum srcformat,
+	GLvoid* dstaddr, GLsizei dstwidth, GLsizei dstheight, GLenum dstformat, GLenum aamode, GLboolean yflip, GLsizei blocksize)
+{
+	sys_AddB2LTransferCommandCore(__sysman.bound_cmdlist, srcaddr, srcwidth, srcheight, srcformat,
+		dstaddr, dstwidth, dstheight, dstformat, aamode, yflip, blocksize);
+	
+	return;
+}
+
+void sys_AddB2LTransferCommandCore(cl_list_t* cmdlist, const GLvoid* srcaddr, GLsizei srcwidth, GLsizei srcheight, GLenum srcformat,
+	GLvoid* dstaddr, GLsizei dstwidth, GLsizei dstheight, GLenum dstformat, GLenum aamode, GLboolean yflip, GLsizei blocksize)
+{
+	cl_cmdreq_t* cmdreq;
+	int xscale, yscale;
+	int spixelsize, dpixelsize;
+	unsigned aamode_value;
+	unsigned sformat_value, dformat_value;
+
+	BASE_GL_FAIL_IF(cmdlist == 0 || cmdlist->used_reqcount == cmdlist->max_reqcount, GL_ERROR_807C_DMP);
+	BASE_GL_FAIL_IF(((unsigned)srcaddr & 0xf) || ((unsigned)dstaddr & 0xf), GL_ERROR_807D_DMP);
+	BASE_GL_FAIL_IF((blocksize != 8) && (blocksize != 32), GL_ERROR_807E_DMP);
+	switch (aamode)
+	{
+		case NN_GX_ANTIALIASE_NOT_USED:	aamode_value = GARNET_PPF_AMODE_NOP; xscale = 1; yscale = 1; break;
+		case NN_GX_ANTIALIASE_2x1:		aamode_value = GARNET_PPF_AMODE_2x1; xscale = 2; yscale = 1; break;
+		case NN_GX_ANTIALIASE_2x2:		aamode_value = GARNET_PPF_AMODE_2x2; xscale = 2; yscale = 2; break;
+		default:
+			__err_setError(GL_ERROR_807F_DMP);
+			return;
+	}
+	switch (srcformat)
+	{
+		case GL_RGBA8_OES:	spixelsize = 4;	sformat_value = GARNET_PPF_FORMAT_R8G8B8A8;	break;
+		case GL_RGB8_OES:	spixelsize = 3;	sformat_value = GARNET_PPF_FORMAT_R8G8B8;	break;
+		case GL_RGBA4:		spixelsize = 2;	sformat_value = GARNET_PPF_FORMAT_R4G4B4A4;	break;
+		case GL_RGB5_A1:	spixelsize = 2;	sformat_value = GARNET_PPF_FORMAT_R5G5B5A1;	break;
+		case GL_RGB565:		spixelsize = 2;	sformat_value = GARNET_PPF_FORMAT_R5G6B5;	break;
+		default:
+			__err_setError(GL_ERROR_8080_DMP);
+			return;
+	}
+	switch (dstformat)
+	{
+		case GL_RGBA8_OES:	dpixelsize = 4;	dformat_value = GARNET_PPF_FORMAT_R8G8B8A8;	break;
+		case GL_RGB8_OES:	dpixelsize = 3;	dformat_value = GARNET_PPF_FORMAT_R8G8B8;	break;
+		case GL_RGBA4:		dpixelsize = 2;	dformat_value = GARNET_PPF_FORMAT_R4G4B4A4;	break;
+		case GL_RGB5_A1:	dpixelsize = 2;	dformat_value = GARNET_PPF_FORMAT_R5G5B5A1;	break;
+		case GL_RGB565:		dpixelsize = 2;	dformat_value = GARNET_PPF_FORMAT_R5G6B5;	break;
+		default:
+			__err_setError(GL_ERROR_8080_DMP);
+			return;
+	}
+	BASE_GL_FAIL_IF(spixelsize < dpixelsize, GL_ERROR_8081_DMP);
+	BASE_GL_FAIL_IF((srcwidth & (blocksize - 1)) || (dstwidth & (blocksize - 1)) ||
+				(srcheight & (blocksize - 1)) || (dstheight & (blocksize - 1)), GL_ERROR_8082_DMP);
+	BASE_GL_FAIL_IF(dpixelsize == 3 && ((srcwidth & (16 - 1)) || (dstwidth & (16 - 1))), GL_ERROR_8082_DMP);
+	BASE_GL_FAIL_IF((srcwidth < 0) || (srcheight < 0) || (dstwidth < 0) || (dstheight < 0), GL_ERROR_8082_DMP);
+	BASE_GL_FAIL_IF(srcwidth < (dstwidth * xscale) || srcheight < (dstheight * yscale), GL_ERROR_8083_DMP);
+	
+	if (srcwidth == 0 || srcheight == 0 || dstwidth == 0 || dstheight == 0)
+		return;
+	
+	/* stock dma command */
+	cmdreq = &cmdlist->command_request[cmdlist->used_reqcount];
+	
+	cmdreq->id = CL_CMDREQ_ID_PF;
+	cmdreq->param.pf.srcaddr = (unsigned)srcaddr;
+	cmdreq->param.pf.dstaddr = (unsigned)dstaddr;
+	cmdreq->param.pf.sformat = sformat_value;
+	cmdreq->param.pf.dformat = dformat_value;
+	cmdreq->param.pf.swidth = srcwidth;
+	cmdreq->param.pf.sheight = srcheight;
+	cmdreq->param.pf.dwidth = dstwidth * xscale;
+	cmdreq->param.pf.dheight = dstheight * yscale;
+	if (yflip && (cmdreq->param.pf.dwidth < cmdreq->param.pf.swidth || cmdreq->param.pf.dheight < cmdreq->param.pf.sheight))
+	{
+		if (xscale == 2)
+		{
+			int minlen = dpixelsize == 3 ? 16 : 8;
+			int diffwidth = cmdreq->param.pf.swidth - cmdreq->param.pf.dwidth;
+			
+			if (diffwidth & minlen)
+				diffwidth -= minlen;
+			
+			cmdreq->param.pf.dstaddr -= diffwidth * (dstheight - 1) * dpixelsize / 2;
+		}
+		else
+			cmdreq->param.pf.dstaddr -= (cmdreq->param.pf.swidth - cmdreq->param.pf.dwidth) * (cmdreq->param.pf.dheight - 1) * dpixelsize;
+	}
+	cmdreq->param.pf.yflip = yflip ? 1 : 0;
+	cmdreq->param.pf.amode = aamode_value;
+	cmdreq->param.pf.blk32 = (blocksize == 32) ? 1 : 0;
+	cmdreq->param.pf.l2b = 0;
+	cmdreq->param.pf.b2b = 0;
+
+	nngxlowLock();
+	cmdlist->used_reqcount++;
+	if (cmdlist == __sysman.run_cmdlist && __sysman.start_run && !__sysman.is_running)
+	{
+		__sysman.is_running = GL_TRUE;
+		sys_issueSpeculativeCommandRequests();
+	}
+	nngxlowUnlock();
+	
+	return;
+}
+
 void nngxGetDisplaybufferParameteri(GLenum pname, GLint* param){
 	db_list_t* dblist = __sysman.current_buffer[__sysman.active_display];
 	
@@ -1686,6 +1800,15 @@ void nngxStopCmdlistSave(GLuint* bufferoffset, GLsizei* buffersize, GLuint* requ
 	*requestid = __sysman.save_cmdreq_id;
 	*requestsize = __sysman.bound_cmdlist->used_reqcount - __sysman.save_cmdreq_id;
 	
+	return;
+}
+
+void nngxMoveCommandbufferPointer(GLint offset)
+{
+	BASE_GL_FAIL_IF(__cb_current_command_buffer == 0 || (unsigned)((unsigned char*)__cb_current_command_buffer + offset) > (unsigned)__cb_current_max_command_buffer, GL_ERROR_8061_DMP);
+
+	__cb_current_command_buffer = (unsigned*)((unsigned char*)__cb_current_command_buffer + offset);
+
 	return;
 }
 
@@ -2057,10 +2180,6 @@ void nngxAdd3DCommand(const GLvoid* bufferaddr, GLsizei buffersize, GLboolean co
 	return;
 }
 
-void nngxAddVramDmaCommandRaw(nngxCommandList* cmdlist, const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size){
-	sys_AddVramDmaCommandCore((cl_list_t*)cmdlist, srcaddr, dstaddr, size);
-}
-
 void sys_AddVramDmaCommandCore(cl_list_t* cmdlist, const GLvoid* srcaddr, GLvoid* dstaddr, GLsizei size){
 	cl_cmdreq_t* cmdreq;
 
@@ -2141,3 +2260,4 @@ static void sys_fixSubroutineCommand(cl_list_t* cmdlist, cl_cmdreq_t* cmdreq){
 	cmdlist->subr_addr = 0;
 	cmdlist->subr_bufsize = 0;
 }
+

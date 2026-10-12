@@ -3,7 +3,7 @@
 #include <nn/math/math_Triangular.h>
 #include <nn/math/math_Quaternion.h>
 #include <nn/math/math_Matrix33.h>
-#include <nn/math/math_Vec4.h>
+#include <nn/math/math_Vector4.h>
 
 #pragma push
 
@@ -39,12 +39,14 @@ public:
 
     union
     {
-        struct
-        {
-            f32 _00, _01, _02, _03;
-            f32 _10, _11, _12, _13;
-            f32 _20, _21, _22, _23;
-        };
+        #if defined(NN_MATH_USE_ANONYMOUS)
+            struct
+            {
+                f32 _00, _01, _02, _03;
+                f32 _10, _11, _12, _13;
+                f32 _20, _21, _22, _23;
+            };
+        #endif
         BaseData f;
         float m[3][4];
         f32 a[12];
@@ -174,7 +176,7 @@ inline MTX34* MTX34CopyC(MTX34* pOut, const MTX34* p)
     {
         *pOut = *p;
     }
-    
+
     return pOut;
 }
 
@@ -208,7 +210,7 @@ inline MTX34* MTX34MultC(MTX34* pOut, const MTX34* __restrict p1, const MTX34* _
     {
         MTX34Copy(pOut, &mTmp);
     }
-    
+
     return pOut;
 }
 
@@ -291,7 +293,7 @@ inline u32 MTX34InverseC(MTX34* pOut, const MTX34* p)
 
     f32 (*const inv)[4] = pOut->m;
     const f32 (*const src)[4] = p->m;
-    
+
     if (p == pOut)
     {
         m = mTmp.m;
@@ -347,7 +349,7 @@ inline u32 MTX34InvTransposeC(MTX34* pOut, const MTX34* __restrict p)
 
     f32 (*const invX)[4] = pOut->m;
     const f32 (*const src)[4] = p->m;
-    
+
     if (p == pOut)
     {
         m = mTmp.m;
@@ -400,18 +402,18 @@ inline MTX34* MTX34MultTranslateC(MTX34* pOut, const VEC3* pT, const MTX34* pM)
 
     const f32 (*const src)[4] = pM->m;
     f32 (*const dst)[4] = pOut->m;
-    
+
     if (src != dst)
     {
         dst[0][0] = src[0][0];    dst[0][1] = src[0][1];    dst[0][2] = src[0][2];
         dst[1][0] = src[1][0];    dst[1][1] = src[1][1];    dst[1][2] = src[1][2];
         dst[2][0] = src[2][0];    dst[2][1] = src[2][1];    dst[2][2] = src[2][2];
     }
-    
+
     dst[0][3] = src[0][3] + pT->x;
     dst[1][3] = src[1][3] + pT->y;
     dst[2][3] = src[2][3] + pT->z;
-    
+
     return pOut;
 }
 
@@ -424,7 +426,7 @@ inline MTX34* MTX34MultTranslateC(MTX34* pOut, const MTX34* pM, const VEC3* pT)
     }
 
     VEC3 tmp;
-    VEC3Transform(&tmp, pM, pT);
+    VEC3TransformC(&tmp, pM, pT);
 
     pOut->f._03 = tmp.x;
     pOut->f._13 = tmp.y;
@@ -753,3 +755,4 @@ inline MTX34* QUATToMTX34(MTX34* pOut, const QUAT* pQ)
 }
 
 #pragma pop
+

@@ -538,3 +538,4 @@ void __shv_getUpdatedState(GLbitfield* _statemask);
 void __shv_invalidateState(GLbitfield _statemask);
 void __shv_preDraw(void);
 void __shv_initializeShaderValidatorHWRegister(void);
+

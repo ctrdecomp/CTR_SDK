@@ -444,3 +444,4 @@ extern "C" int nnroAeabiAtexit_(void* object, void (*destroyer)(void*), void* ds
 
     return 0;
 }
+

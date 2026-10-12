@@ -31,3 +31,4 @@ NN_DEFINE_RESULT_CONST(ResultNotAllowed, Result::LEVEL_STATUS, Result::SUMMARY_I
 }
 }
 }
+

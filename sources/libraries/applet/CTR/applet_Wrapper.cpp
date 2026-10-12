@@ -1025,3 +1025,4 @@ Result CaptureScreen(AppletId id)
 }
 }
 }
+

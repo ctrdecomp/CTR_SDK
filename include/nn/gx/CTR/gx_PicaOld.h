@@ -43,3 +43,4 @@ enum
 #define PICA_CMD_DATA_VERTEX_ATTR_ARRAYS(attr0, attr1, attr2, attr3, attr4, attr5, attr6, attr7) \
    ((attr0)       | (attr1) <<  4 | (attr2) <<  8 | (attr3) << 12 | \
     (attr4) << 16 | (attr5) << 20 | (attr6) << 24 | (attr7) << 28)
+

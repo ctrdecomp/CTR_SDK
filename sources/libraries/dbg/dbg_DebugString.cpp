@@ -23,7 +23,7 @@ namespace dbg{
 namespace detail{
     void PutString(const char* text, s32 length)
     {
-        NN_REFER_MODULE(s_UsePutDebugString);
+        NN_REFER_MODULE(sUsePutDebugString);
         nn::svc::OutputDebugString(text, length);
     }
 
@@ -67,50 +67,60 @@ namespace detail{
 }
 
 extern "C"{
-    void nndbgDetailTPrintf(const char* fmt, ...)
-    {
-        va_list vlist;
+void nndbgDetailPrintf(const char* fmt, ...)
+{
+    va_list vlist;
 
-        va_start(vlist, fmt);
-        nn::dbg::detail::TVPrintf(fmt, vlist);
-        va_end(vlist);
-    }
-
-    __weak void nndbgDetailVPrintf(const char* fmt, va_list arg)
-    {
-        nn::dbg::detail::VPrintf(fmt, arg);
-    }
-
-    __weak void nndbgDetailTVPrintf(const char* fmt, va_list arg)
-    {
-        nn::dbg::detail::TVPrintf(fmt, arg);
-    }
-
-    __weak void nndbgDetailPutString(const char* text, s32 length)
-    {
-        nn::dbg::detail::PutString(text, length);
-    }
-
-    void nndbgPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
-    {
-        va_list vlist;
-
-        va_start(vlist, fmt);
-        nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
-        nn::dbg::detail::VPrintf(fmt, vlist);
-        nn::dbg::detail::TPrintf("\n");
-        va_end(vlist);
-    }
-    void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
-    {
-        va_list vlist;
-
-        va_start(vlist, fmt);
-        nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
-        nn::dbg::detail::TVPrintf(fmt, vlist);
-        nn::dbg::detail::TPrintf("\n");
-        va_end(vlist);
-    }
+    va_start(vlist, fmt);
+    nn::dbg::detail::Printf(fmt, vlist);
+    va_end(vlist);
 }
 
-//#endif
+void nndbgDetailTPrintf(const char* fmt, ...)
+{
+    va_list vlist;
+
+    va_start(vlist, fmt);
+    nn::dbg::detail::TVPrintf(fmt, vlist);
+    va_end(vlist);
+}
+
+__weak void nndbgDetailVPrintf(const char* fmt, va_list arg)
+{
+    nn::dbg::detail::VPrintf(fmt, arg);
+}
+
+__weak void nndbgDetailTVPrintf(const char* fmt, va_list arg)
+{
+    nn::dbg::detail::TVPrintf(fmt, arg);
+}
+
+__weak void nndbgDetailPutString(const char* text, s32 length)
+{
+    nn::dbg::detail::PutString(text, length);
+}
+
+void nndbgPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
+{
+    va_list vlist;
+
+    va_start(vlist, fmt);
+    nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
+    nn::dbg::detail::VPrintf(fmt, vlist);
+    nn::dbg::detail::TPrintf("\n");
+    va_end(vlist);
+}
+
+void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...)
+{
+    va_list vlist;
+
+    va_start(vlist, fmt);
+    nn::dbg::detail::TPrintf("%s:%d [WARN] ", filename, lineno);
+    nn::dbg::detail::TVPrintf(fmt, vlist);
+    nn::dbg::detail::TPrintf("\n");
+    va_end(vlist);
+}
+
+}
+

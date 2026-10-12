@@ -22,6 +22,10 @@ public:
     }
     CriticalSection(const nn::WithInitialize&) { this->Initialize(); }
 
+    ~CriticalSection()
+    {
+    }
+
     void Initialize();
     void Enter();
     void Leave();
@@ -30,20 +34,17 @@ public:
 
     Result TryInitialize()
     {
-        this->Initialize();
+        Initialize();
         return ResultSuccess();
     }
 
-    void Finalize(){ this->m_LockCount = -1;}
-    ~CriticalSection() 
-    { 
-    }
+    void Finalize(){ m_LockCount = -1;}
 
     class ScopedLock;
 
     void OnLocked()
     {
-        this->m_ThreadUniqueValue = GetThreadUniqueValue();
+        m_ThreadUniqueValue = GetThreadUniqueValue();
     }
 
     bool LockedByCurrentThread() const
@@ -73,3 +74,4 @@ NN_UTIL_DETAIL_DEFINE_SCOPED_LOCK(CriticalSection, Enter(), Leave());
 
 }
 }
+

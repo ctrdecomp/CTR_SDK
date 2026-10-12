@@ -33,7 +33,8 @@ namespace nn {
 namespace gx {
 namespace CTR {
 
-enum VramArea{
+enum VramArea
+{
     MEM_VRAMA = NN_GX_MEM_VRAMA,
     MEM_VRAMB = NN_GX_MEM_VRAMB
 };
@@ -57,3 +58,4 @@ inline size_t GetVramSize(VramArea area)
 }
 }
 #endif
+

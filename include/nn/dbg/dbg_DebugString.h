@@ -20,9 +20,9 @@ namespace detail{
 extern "C"{
     void nndbgDetailPrintf(const char* fmt, ...);
     void nndbgDetailTPrintf(const char* fmt, ...);
-    void nndbgDetailVPrintf(const char* fmt, va_list arg);
-    void nndbgDetailTVPrintf(const char* fmt, va_list arg);
-    void nndbgDetailPutString(const char* text, s32 length);
+    __weak void nndbgDetailVPrintf(const char* fmt, va_list arg);
+    __weak void nndbgDetailTVPrintf(const char* fmt, va_list arg);
+    __weak void nndbgDetailPutString(const char* text, s32 length);
 
     void nndbgPrintWarning_ (const char* filename, int lineno, const char* fmt, ...);
     void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...);
@@ -31,8 +31,8 @@ extern "C"{
 #if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
     #ifdef __cplusplus
             #define NN_LOG_(...)           (void)nn::dbg::detail::Printf(__VA_ARGS__)
-            #define NN_SLOG_(fmt, arg)     (void)nn::dbg::detail::Printf(__VA_ARGS__)
-            #define NN_TLOG_(text, length)  (void)nn::dbg::detail::TPrintf(__VA_ARGS__)
+            #define NN_SLOG_(...)          (void)nn::dbg::detail::Printf(__VA_ARGS__)
+            #define NN_TLOG_(...)          (void)nn::dbg::detail::TPrintf(__VA_ARGS__)
         #else
             #define NN_LOG_(...)           (void)nndbgDetailPrintf(__VA_ARGS__)
             #define NN_LOGV_(fmt, arg)     (void)nndbgDetailVPrintf((fmt), (arg))
@@ -45,3 +45,4 @@ extern "C"{
 #define NN_TLOG_(exp, ...)
 
 #endif
+

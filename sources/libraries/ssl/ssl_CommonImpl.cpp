@@ -2,7 +2,7 @@
 //
 // Project: Horizon
 
-#include <nn/ssl/ssl_CommonImpl.h>
+#include "ssl_CommonImpl.h"
 
 namespace nn{
 namespace ssl{
@@ -13,3 +13,4 @@ LibManager s_LibManager;
 }
 }
 }
+

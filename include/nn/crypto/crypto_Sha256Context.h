@@ -29,3 +29,4 @@ void CalculateSha256(void* pOut, const void* pData, size_t size);
 
 }
 }
+

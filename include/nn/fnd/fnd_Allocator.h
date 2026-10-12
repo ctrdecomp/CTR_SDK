@@ -147,3 +147,4 @@ template <typename Allocator, typename T, typename Tag>
 Allocator StdUnitAllocatorAdapter<Allocator, T, Tag>::sAllocator;
 
 }} // namespace nn::fnd
+

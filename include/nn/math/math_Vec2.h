@@ -54,3 +54,4 @@ static const VEC2& One()
 
 }
 }
+

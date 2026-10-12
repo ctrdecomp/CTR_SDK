@@ -37,3 +37,4 @@ inline void HidBase::SetResource(uptr ptr)
 }
 }
 }
+

@@ -90,7 +90,8 @@ struct MixParam
     }
 };
 
-struct WaveBuffer{
+struct WaveBuffer
+{
     enum Status
     {
         STATUS_FREE,
@@ -179,3 +180,4 @@ typedef enum nnsndChannelIndex
     NN_SND_CHANNEL_INDEX_REAR_RIGHT,
     NN_SND_CHANNEL_INDEX_NUM
 } nnsndChannelIndex;
+

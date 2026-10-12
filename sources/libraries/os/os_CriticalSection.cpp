@@ -11,18 +11,18 @@ namespace os{
 
 void CriticalSection::Initialize() 
 {
-    this->m_Lock.Initialize();
-    m_ThreadUniqueValue = this->GetInvalidThreadUniqueValue();
+    m_Lock.Initialize();
+    m_ThreadUniqueValue = GetInvalidThreadUniqueValue();
     m_LockCount = 0;
 }
 
 void CriticalSection::Enter() 
 {
     NN_TASSERT_(IsInitialized());
-    if(!this->LockedByCurrentThread())
+    if(!LockedByCurrentThread())
     {
         m_Lock.Lock();
-        this->OnLocked();
+        OnLocked();
     }
     m_LockCount++;
 }
@@ -42,9 +42,9 @@ void CriticalSection::Leave()
 bool CriticalSection::TryEnter() 
 {
     NN_TASSERT_(IsInitialized());
-    if(!this->LockedByCurrentThread())
+    if(!LockedByCurrentThread())
     {
-        if(!this->m_Lock.TryLock())
+        if(!m_Lock.TryLock())
         {
             return false;
         }
@@ -56,3 +56,4 @@ bool CriticalSection::TryEnter()
 
 }
 }
+

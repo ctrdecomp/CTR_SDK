@@ -70,3 +70,4 @@ Result IpcUser::GetTransferableId(bit32 uniqueId, bit64* transferableId)
 }
 }
 }
+

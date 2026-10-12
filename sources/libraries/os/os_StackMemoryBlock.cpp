@@ -59,7 +59,7 @@ using namespace nn::os;
 
 void nnosStackMemoryBlockAllocate(nnosStackMemoryBlock* p, size_t size)
 {
-    NN_TASSERT_(os::detail::IsMemoryBlockEnabled());
+    NN_TASSERT_(nn::os::detail::IsMemoryBlockEnabled());
     new (p) StackMemoryBlock(size);
 }
 
@@ -79,3 +79,4 @@ void nnosStackMemoryBlockInitialize(nnosStackMemoryBlock* p)
 {
     new (p) StackMemoryBlock();
 }
+

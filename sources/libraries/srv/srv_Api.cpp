@@ -15,6 +15,7 @@
 #include <nn/dbg/dbg_Break.h>
 
 #define NN_NOTIFICATION_PRIORITY 1359598848
+
 #ifdef NN_BUILD_DEVELOPMENT
     const size_t DISPATCHER_STACK_SIZE  = 1024;
 #else
@@ -34,7 +35,7 @@ public:
     {
         NN_POINTER_TASSERT_(pHandler);
         NN_TASSERT_(message != 0);
-        NN_TASSERT_(!pHandler->mAttachedMessage == 0);
+        NN_TASSERT_(!pHandler->m_AttachedMessage == 0);
 
         pHandler->m_AttachedMessage = message;
         this->m_Handlers.PushBack(pHandler);
@@ -46,8 +47,10 @@ public:
         NN_TASSERT_(message != 0);
 
         NotificationHandler *i;
-        for(i = this->m_Handlers.GetFront(); i != NULL; i = this->m_Handlers.GetNext(i)){
-            if(i->m_AttachedMessage == message){
+        for(i = this->m_Handlers.GetFront(); i != NULL; i = this->m_Handlers.GetNext(i))
+        {
+            if(i->m_AttachedMessage == message)
+            {
                 break;
             }
         }
@@ -122,7 +125,7 @@ namespace detail{
 Result Initialize() 
 {
     os::CriticalSection::ScopedLock lock(s_InitializeLock);
-    NN_MIN_TASSERT_(sInitializeCount, 0);
+    NN_MIN_TASSERT_(s_InitializeCount, 0);
     if (srv::s_InitializeCount > 0) 
     {
         s_InitializeCount++;
@@ -204,3 +207,4 @@ Result GetServiceHandle(nn::Handle* pOut, const char* pName, s32 nameLen, bit32 
 
 }
 }
+

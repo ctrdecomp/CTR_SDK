@@ -24,3 +24,4 @@ s32 ReadUncompLZ(UncompContextLZ *context, const void *data, u32 len);
 
 }
 }
+

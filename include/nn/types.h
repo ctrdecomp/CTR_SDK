@@ -3,8 +3,10 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h>
-#include <new>
-#include <limits>
+
+#ifndef __cplusplus
+  #include <stdbool.h>
+#endif
 
 #ifndef NULL
 #define NULL (void*)0
@@ -81,7 +83,20 @@ struct ProductInfo
 
 #define splits(S) __attribute__((section("i." #S))) S
 
+#define NN_ATTRIBUTE_ALIGN(n)   __attribute__ ((aligned(n)))
+#define NN_ATTRIBUTE_DEPRECATED __attribute__ ((deprecated))
+
 /* Defines */
 
 #define NN_INLINE inline
 #define NN_NOINLINE __attribute__((noinline))
+
+#if defined(NN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT)
+  #define NN_MATH_USE_ANONYMOUS
+#endif
+
+#ifdef NN_BUILD_DEBUG
+#define NN_FORCE_INLINE inline
+#else
+#define NN_FORCE_INLINE __forceinline
+#endif

@@ -10,3 +10,4 @@ char (*NumOfElementsT(T (&a)[Num]))[Num];
 
 }
 }
+

@@ -458,3 +458,4 @@ extern "C"
         return nn::ro::InitializeImpl(pRs, rsSize);
     }
 }
+

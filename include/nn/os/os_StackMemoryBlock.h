@@ -49,3 +49,4 @@ uptr nnosStackMemoryBlockGetStackBottom(nnosStackMemoryBlock* p);
 void nnosStackMemoryBlockInitialize(nnosStackMemoryBlock* p);
 
 }
+

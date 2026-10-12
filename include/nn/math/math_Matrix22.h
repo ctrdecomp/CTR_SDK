@@ -2,7 +2,7 @@
 
 #include <cstring>
 #include <nn/Assert.h>
-#include <nn/math/math_Vec2.h>
+#include <nn/math/math_Vector2.h>
 
 #pragma push
 #pragma Otime
@@ -17,7 +17,7 @@ inline MTX22* MTX22Identity(MTX22* pOut);
 inline bool   MTX22IsIdentity(const MTX22* p);
 inline MTX22* MTX22Copy(MTX22* pOut, const MTX22* p);
 inline MTX22* MTX22Zero(MTX22* pOut);
-inline MTX22* MTX23ToMTX22(MTX22* pOut, const MTX23* pM);
+// MTX22* MTX23ToMTX22(MTX22* pOut, const MTX23* pM);
 
 struct MTX22_
 {
@@ -29,11 +29,13 @@ struct MTX22_
 
     union
     {
-        struct
-        {
-            f32 _00, _01;
-            f32 _10, _11;
-        };
+        #if defined(NN_MATH_USE_ANONYMOUS)
+            struct
+            {
+                f32 _00, _01;
+                f32 _10, _11;
+            };
+        #endif
         BaseData f;
         f32 m[2][2];
         f32 a[4];
@@ -51,7 +53,7 @@ public:
     }
 
     explicit MTX22(const f32* p){ MTX22Copy(this, reinterpret_cast<const MTX22*>(p)); }
-    explicit MTX22(const MTX23& rhs){ MTX23ToMTX22(this, &rhs); }
+    //explicit MTX22(const MTX23& rhs){ MTX23ToMTX22(this, &rhs); }
     MTX22(f32 x00, f32 x01, f32 x10, f32 x11)
     {
         f._00 = x00; f._01 = x01;
@@ -73,7 +75,7 @@ public:
 
 inline bool   MTX22IsIdentity(const MTX22& m) { return MTX22IsIdentity(&m); }
 inline MTX22* MTX22Copy(MTX22* pOut, const MTX22& m) { return MTX22Copy(pOut, &m); }
-inline MTX22* MTX23ToMTX22(MTX22* pOut, const MTX23& m) { return MTX23ToMTX22(pOut, &m); }
+// inline MTX22* MTX23ToMTX22(MTX22* pOut, const MTX23& m) { return MTX23ToMTX22(pOut, &m); }
 
 }
 }
@@ -120,3 +122,6 @@ inline MTX22* MTX22Identity(MTX22* pOut)
 
 }
 }
+
+#pragma pop
+

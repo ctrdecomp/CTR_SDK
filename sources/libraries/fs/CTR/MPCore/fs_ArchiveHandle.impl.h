@@ -157,3 +157,4 @@ IArchive* UnregisterArchive(bool* pIsAlias, const ArchiveName& name)
 }
 }
 }
+

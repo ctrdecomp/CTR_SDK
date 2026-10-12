@@ -7,7 +7,6 @@
 #include <nn/hid/CTR/hid_Api.h>
 #include <nn/hid/CTR/hid_Pad.h>
 #include <nn/hid/CTR/hid_DeviceStatus.h>
-#include <nn/hidlow/hidlow_Utils.h>
 #include <nn/util/util_NonCopyable.h>
 
 namespace nn{
@@ -19,6 +18,7 @@ class PadReader : private nn::util::ADLFireWall::NonCopyable<PadReader>
 public:
     typedef AnalogStickClamper::ClampMode StickClampMode;
 
+
     PadReader(Pad& pad=GetPad( ));
     ~PadReader() {};
     void Read(PadStatus* pBufs, s32* pReadLen, s32 bufLen);
@@ -26,13 +26,19 @@ public:
 
     void SetStickClamp(short min, short max);
 
-    void GetStickClamp(s16* pMin, s16* pMax) const;
+    void GetStickClamp(s16* pMin, s16* pMax) const
+    {
+        m_StickClamper.GetStickClamp(pMin,pMax);
+    }
 
     StickClampMode GetStickClampMode() const
     {
-        return this->m_StickClamper.GetStickClampMode();
+        return m_StickClamper.GetStickClampMode();
     }
-    void SetStickClampMode(StickClampMode mode);
+    void SetStickClampMode(StickClampMode mode)
+    {
+        m_StickClamper.SetStickClampMode(ClamperClampMode(mode));
+    }
     
     f32 NormalizeStick(short x);
     void NormalizeStickWithScale(f32* normalized_x, f32* normalized_y, s16 x, s16 y);
@@ -65,3 +71,4 @@ public:
 }
 }
 }
+

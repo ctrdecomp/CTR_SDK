@@ -58,3 +58,4 @@ extern "C"
     void nnosMemoryBlockAllocate(nnosMemoryBlock* p, size_t size);
     uptr nnosMemoryBlockGetAddress(nnosMemoryBlock* p);
 }
+

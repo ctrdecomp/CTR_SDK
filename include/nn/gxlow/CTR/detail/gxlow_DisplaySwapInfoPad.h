@@ -88,34 +88,33 @@ public:
     {
     }
         
-    Result Push(const detail::DisplaySwapInfo* pInfo, s32 display);
+    Result Push(const detail::DisplaySwapInfo* pInfo, s32 display)
+    {
+        if (display < 0 || display >= NUM_DISPLAYS)
+        {
+            return ResultInvalidSelection();
+        }
+            
+        PadControlPacker cp;
+            
+        u8 updateIndex = 1 - m_pBody[display]->control.currentIndex;
+        m_pBody[display]->info[updateIndex] = *pInfo;
+            
+        nn::os::ARM::DataSynchronizationBarrier();
+
+        do
+        {
+            cp.packed32 = __ldrex(&m_pBody[display]->control);
+                
+            cp.pc.currentIndex = updateIndex;
+            cp.pc.update = true;
+        } while ( __strex(cp.packed32, &m_pBody[display]->control) != 0 );
+            
+        return ResultSuccess();
+    }
 };
 
-inline Result DisplaySwapInfoPadTx::Push(const detail::DisplaySwapInfo*  pInfo,s32 display)
-{
-    if (display < 0 || display >= NUM_DISPLAYS)
-    {
-        return ResultInvalidSelection();
-    }
-        
-    PadControlPacker cp;
-        
-    u8 updateIndex = 1 - m_pBody[display]->control.currentIndex;
-    m_pBody[display]->info[updateIndex] = *pInfo;
-        
-    nn::os::ARM::DataSynchronizationBarrier();
-
-    do
-    {
-        cp.packed32 = __ldrex(&m_pBody[display]->control);
-            
-        cp.pc.currentIndex = updateIndex;
-        cp.pc.update = true;
-    } while ( __strex(cp.packed32, &m_pBody[display]->control) != 0 );
-        
-    return ResultSuccess();
+}
+}
 }
 
-}
-}
-}

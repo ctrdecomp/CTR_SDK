@@ -1,5 +1,880 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BackendCodeEditorMiscSettings">
+    <option name="/Default/Housekeeping/FeatureSuggestion/FeatureSuggestionManager/DisabledSuggesters/=SwitchToGoToActionSuggester/@EntryIndexedValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/GlobalSettingsUpgraded/IsUpgraded/@EntryValue" value="true" type="bool" />
+    <option name="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue" value="CppCodeGeneration" type="string" />
+    <option name="/Default/RiderDebugger/RiderRestoreDecompile/RestoreDecompileSetting/@EntryValue" value="false" type="bool" />
+  </component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="CTR_SDK" targetName="libnn_erreula" />
+      <config projectName="CTR_SDK" targetName="libnn_pl" />
+      <config projectName="CTR_SDK" targetName="libnn_math" />
+      <config projectName="CTR_SDK" targetName="libnn_dsp" />
+      <config projectName="CTR_SDK" targetName="libnn_cec" />
+      <config projectName="CTR_SDK" targetName="libnn_srv" />
+      <config projectName="CTR_SDK" targetName="libnn_hid" />
+      <config projectName="CTR_SDK" targetName="libnn_ndm" />
+      <config projectName="CTR_SDK" targetName="libnn_ubl" />
+      <config projectName="CTR_SDK" targetName="libnn_os" />
+      <config projectName="CTR_SDK" targetName="libnn_fnd" />
+      <config projectName="CTR_SDK" targetName="libnn_ro" />
+      <config projectName="CTR_SDK" targetName="libnn_snd" />
+      <config projectName="CTR_SDK" targetName="libnn_dbm" />
+      <config projectName="CTR_SDK" targetName="libnn_ptm" />
+      <config projectName="CTR_SDK" targetName="libnn_hidlow" />
+      <config projectName="CTR_SDK" targetName="libnn_fslow" />
+      <config projectName="CTR_SDK" targetName="libnn_gxlow" />
+      <config projectName="CTR_SDK" targetName="libnn_gr" />
+      <config projectName="CTR_SDK" targetName="libnn_err" />
+      <config projectName="CTR_SDK" targetName="libnn_ir" />
+      <config projectName="CTR_SDK" targetName="libnn_jpeg" />
+      <config projectName="CTR_SDK" targetName="libnn_dev" />
+      <config projectName="CTR_SDK" targetName="libnn_gles2" />
+      <config projectName="CTR_SDK" targetName="libnn_mic" />
+      <config projectName="CTR_SDK" targetName="libnn_applet" />
+      <config projectName="CTR_SDK" targetName="libnn_fs" />
+      <config projectName="CTR_SDK" targetName="crt0" />
+      <config projectName="CTR_SDK" targetName="libnn_camera" />
+      <config projectName="CTR_SDK" targetName="libnn_cfg" />
+      <config projectName="CTR_SDK" targetName="libnn_rtport" />
+      <config projectName="CTR_SDK" targetName="libnn_svc" />
+      <config projectName="CTR_SDK" targetName="libnn_ssl" />
+      <config projectName="CTR_SDK" targetName="libnn_cx" />
+      <config projectName="CTR_SDK" targetName="libnn_dbg" />
+      <config projectName="CTR_SDK" targetName="libnn_font" />
+      <config projectName="CTR_SDK" targetName="libnn_nstd" />
+      <config projectName="CTR_SDK" targetName="libnn_util" />
+      <config projectName="CTR_SDK" targetName="libnn_crypto" />
+      <config projectName="CTR_SDK" targetName="libnn_ulcd" />
+      <config projectName="CTR_SDK" targetName="libnn_init" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="012d00d7-95d0-4fcb-82eb-2780d9491116" name="Changes" comment="- Add Impl for SDK 4.">
+      <changelist_data name="LoigiFan72" email="stephenakins855@gmail.com" date="1791778660000" automatic="true" />
+      <change afterPath="$PROJECT_DIR$/.idea/CTR_SDK.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/cec.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_ControlSys.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_MessageBox.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/cec/cec_Result.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/dbg/dbg_Logger.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/http/http_ClientCert.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/http/http_Common.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/http/http_Connection.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/http/http_ConnectionIpc.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/http/http_Types.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg/CTR/jpeg_MpDecoder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg/CTR/jpeg_MpDecoderS.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg/CTR/jpeg_MpEncoder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg/CTR/jpeg_MpEncoderS.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/jpeg/CTR/jpeg_MpTypes.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/math/math_Vector2.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/math/math_Vector3.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/math/math_Vector4.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/include/nn/ssl/ssl_Common.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_Api.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_Cec.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_CecAPI.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_CecSys.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_Control.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_ControlSys.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_Message.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_MessageBox.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/cec/cec_MessageId.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Scissor.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Texture.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Viewport.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/exif_MpDecoder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/exif_MpDecoder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/exif_MpEncoder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/exif_MpEncoder.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpDecoder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpDecoderAsmArmv6.inc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpDecoderInternal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpEncoder.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpEncoderAsmArmv6.inc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpEncoderInternal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/jpeg/jpeg_MpTypesInternal.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/math/ARMv6/math_Arithmatic.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/math/ARMv6/math_Matrix33.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/math/ARMv6/math_Matrix44.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/os/ARM/os_ExceptionHandler.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/os/os_InterCoreLightSemaphore.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sources/libraries/svc/ARM/svc_Stub.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/GLES2/gl2.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/GLES2/gl2.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/GLES2/gl2CTR.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/GLES2/gl2CTR.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/GLES2/gl2extern.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/GLES2/gl2extern.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/CTR.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/CTR.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/CTR/CTR_ProgramId.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/CTR/CTR_ProgramId.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/Handle.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/Handle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/WithInitialize.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/WithInitialize.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_ClientThread.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_ClientThread.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Connect.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Connect.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Gfx.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Gfx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Info.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Info.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_InitialParamaters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_InitialParamaters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Paramaters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Paramaters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_TimeoutChecker.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_TimeoutChecker.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Wrapper.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/applet/CTR/applet_Wrapper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Camera.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Camera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Paramaters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Paramaters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/camera/CTR/camera_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Cec.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Cec.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_CecAPI.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_CecAPI.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_CecSys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_CecSys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Control.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Control.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Message.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Message.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_MessageId.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_MessageId.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cec/CTR/cec_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ApiInit.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ApiInit.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ApiSys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ApiSys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_DebugParam.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_DebugParam.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_DetailApi.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_DetailApi.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcInit.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcInit.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcSys.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcSys.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcUser.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_IpcUser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_LanguageCode.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_LanguageCode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ParentalControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_ParentalControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_RegionCode.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_RegionCode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Sound.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_Sound.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_UserInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/cfg_UserInfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/detail/cfg_DataStructures.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/detail/cfg_DataStructures.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cfg/CTR/detail/cfg_Default.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cfg/CTR/detail/cfg_Default.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/codec/CTR/codec_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/codec/CTR/codec_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/crypto/crypto_HashContextBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/crypto/crypto_HashContextBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/crypto/crypto_Md5.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/crypto/crypto_Md5.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/crypto/crypto_Sha1.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/crypto/crypto_Sha1.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/crypto/crypto_Sha256Context.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/crypto/crypto_Sha256Context.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/crypto/crypto_ShaBlock512BitContext.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/crypto/crypto_ShaBlock512BitContext.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cx.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cx/cx_StreamingUncompression.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cx/cx_StreamingUncompression.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cx/cx_Uncompression.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cx/cx_Uncompression.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/cx/cx_Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/cx/cx_Utility.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbg.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbg/dbg_Break.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbg/dbg_Break.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbg/dbg_DebugString.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbg/dbg_DebugString.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbg/dbg_Enum.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbg/dbg_Enum.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbg/dbg_PrintResult.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbg/dbg_PrintResult.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_HierarchicalRomFIleTableTemplate.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_HierarchicalRomFIleTableTemplate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_HierarchicalRomFileTableTemplate.impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_HierarchicalRomFileTableTemplate.impl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_KeyValueRomStorageTemplate.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_KeyValueRomStorageTemplate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_Parameters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_Parameters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dbm/dbm_RomPathTool.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dbm/dbm_RomPathTool.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dev.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dev.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dev/CTR/dev_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dev/CTR/dev_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dev/CTR/dev_Dev.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dev/CTR/dev_Dev.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/drivers/gxlow/CTR/gxlow_InterruptTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/drivers/gxlow/CTR/gxlow_InterruptTable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dsp.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dsp.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dsp/CTR/Common/dsp_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dsp/CTR/Common/dsp_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dsp/CTR/MPCore/dsp_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dsp/CTR/MPCore/dsp_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dsp/CTR/MPCore/dsp_Ipc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dsp/CTR/MPCore/dsp_Ipc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/dsp/CTR/dsp_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/dsp/CTR/dsp_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/err.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/err.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/err/CTR/err_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/err/CTR/err_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/err/CTR/err_FatalErrTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/err/CTR/err_FatalErrTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/erreula.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/erreula.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/erreula/CTR/erreula_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/erreula/CTR/erreula_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/ARMv6/fnd_Interlocked.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/ARMv6/fnd_Interlocked.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailCommon.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailCommon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeap.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapCommon.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapCommon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapHead.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapHead.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapImpl.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailHeapImpl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailList.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/detail/fnd_DetailList.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_Allocator.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_Allocator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_DateTime.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_DateTime.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_ExpHeap.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_ExpHeap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_FrameHeap.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_FrameHeap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_HeapBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_HeapBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_InterlockedVariable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_InterlockedVariable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_LinkedList.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_LinkedList.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_Queue.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_Queue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_TimeSpan.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_TimeSpan.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fnd/fnd_UnitHeap.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fnd/fnd_UnitHeap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/detail/font_BinaryFileFormat.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/detail/font_BinaryFileFormat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_CharStrmReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_CharStrmReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_DrawerTypes.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_DrawerTypes.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_Font.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_Font.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_RectDrawerCommand.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_RectDrawerCommand.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_ResFont.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_ResFont.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_ResFontBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_ResFontBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_ResourceFormat.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_ResourceFormat.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/font/font_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/font/font_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_DirectoryBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_DirectoryBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_FileBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_FileBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_FileSystemBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_FileSystemBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_UserArchive.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_UserArchive.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_UserFileSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/MPCore/fs_UserFileSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/CTR/fs_PathNamesForSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/CTR/fs_PathNamesForSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_Directory.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_Directory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_DirectoryBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_DirectoryBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_FileBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_FileBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_FileInputStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_FileInputStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_FileOutputStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_FileOutputStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_FileStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_FileStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_FileSystemBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_FileSystemBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_IPositionable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_IPositionable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_IStream.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_IStream.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_IpcDirectory.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_IpcDirectory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_IpcFile.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_IpcFile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_IpcFileSystem.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_IpcFileSystem.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_Parameters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_Parameters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fs/fs_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fs/fs_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fslow/fslow_Path.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fslow/fslow_Path.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/fslow/fslow_QueryOptimalBucketCount.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/fslow/fslow_QueryOptimalBucketCount.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_BindSymbol.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_BindSymbol.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Combiner.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Combiner.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_FragmentLight.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_FragmentLight.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_FrameBuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_FrameBuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_RenderState.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_RenderState.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Scissor.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Scissor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Shader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Shader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Texture.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Texture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Utility.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Vertex.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Vertex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Viewport.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gr/CTR/gr_Viewport.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTR.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTR.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTRPrivate.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTRPrivate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTRRaw.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CTRRaw.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CommandAccess.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_CommandAccess.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_Lcd.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_Lcd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaAll.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaAll.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaCommon.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaCommon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaFragment.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaFragment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaMisc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaMisc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaOld.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaOld.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaReg.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaReg.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaShader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaShader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaTexture.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_PicaTexture.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gx/CTR/gx_Vram.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gx/CTR/gx_Vram.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_CmdReqQueue.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_CmdReqQueue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_DisplaySwapInfoPad.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_DisplaySwapInfoPad.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_InterruptRelayQueue.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/detail/gxlow_InterruptRelayQueue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_CTR.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_CTR.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_GpuIpc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_GpuIpc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_InterruptReceiver.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_InterruptReceiver.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Management.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Management.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Misc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Misc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Parameters.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Parameters.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_RegAccess.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_RegAccess.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_SystemUse.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/gxlow/CTR/gxlow_SystemUse.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hardware/hardware_RegAccess.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hardware/hardware_RegAccess.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Accelerometer.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Accelerometer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_AccelerometerReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_AccelerometerReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_AnalogStickClamper.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_AnalogStickClamper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DebugPad.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DebugPad.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DebugPadReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DebugPadReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DeviceStatus.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_DeviceStatus.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPad.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPad.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPadReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPadReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPadStatus.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_ExtraPadStatus.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Gyroscope.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Gyroscope.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_GyroscopeLowStatus.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_GyroscopeLowStatus.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_GyroscopeReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_GyroscopeReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_HidBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_HidBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_IpcClient.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_IpcClient.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Pad.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_Pad.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_PadReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_PadReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_TouchPanel.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_TouchPanel.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hid/CTR/hid_TouchPanelReader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hid/CTR/hid_TouchPanelReader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_AccelerometerLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_AccelerometerLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_AnalogStick.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_AnalogStick.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_DebugPadLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_DebugPadLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_DebugPadRawStatus.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_DebugPadRawStatus.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_ExtraPadLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_ExtraPadLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_GyroscopeLowLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_GyroscopeLowLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_LifoRingCollector.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_LifoRingCollector.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_PadLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_PadLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_TouchPanelLifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/CTR/hidlow_TouchPanelLifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/hidlow_LifoRing.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/hidlow_LifoRing.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hidlow/hidlow_Utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hidlow/hidlow_Utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hio.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hio.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/hio/hio_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/hio/hio_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/init.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/init.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/init/init_Alloc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/init/init_Allocator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/init/init_Default.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/init/init_Default.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/init/init_StartUp.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/init/init_StartUp.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ir/CTR/ir_CepdApi.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ir/CTR/ir_CepdApi.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/ARMv6/inline/math_Matrix34.ipp" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/ARMv6/inline/math_Matrix34.ipp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/ARMv6/inline/math_Types.ipp" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/ARMv6/inline/math_Types.ipp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/inline/math_Matrix34.ipp" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/inline/math_Matrix34.ipp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/inline/math_Types.ipp" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/inline/math_Types.ipp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/inline/math_Vector3.ipp" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/inline/math_Vector3.ipp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Arithmetic.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Arithmetic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Constant.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Constant.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Matrix22.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Matrix22.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Matrix23.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Matrix23.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Matrix33.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Matrix33.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Matrix34.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Matrix34.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Matrix44.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Matrix44.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Misc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Misc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Quaternion.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Quaternion.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Transform.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Transform.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Triangular.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Triangular.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Utility.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Utility.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Vec2.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Vec2.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Vec3.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Vec3.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/math/math_Vec4.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/math/math_Vec4.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/mic.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/mic.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/mic/CTR/mic_IpcClient.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/mic/CTR/mic_IpcClient.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/mic/CTR/mic_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/module.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/module.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm/CTR/ndm_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm/CTR/ndm_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm/ndm_Interface.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm/ndm_Interface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm/ndm_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm/ndm_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm/ndm_Setup.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm/ndm_Setup.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ndm/ndm_UserControl.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ndm/ndm_UserControl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/nn.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/nn.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/nstd.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/nstd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/nstd/ARMv6/nstd_String.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/nstd/ARMv6/nstd_String.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/nstd/nstd_Printf.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/nstd/nstd_Printf.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/ARM/os_ExceptionHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/ARM/os_ExceptionHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/ARM/os_MemoryBarrier.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/ARM/os_MemoryBarrier.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/ARM/os_SpinWait.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/ARM/os_SpinWait.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/CTR/MPCore/os_MemoryMap.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/CTR/MPCore/os_MemoryMap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/CTR/os_CppException.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/CTR/os_CppException.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/CTR/os_Environment.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/CTR/os_Environment.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/CTR/os_ErrorHandler.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/CTR/os_ErrorHandler.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/CTR/os_ThreadLocalRegion.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/CTR/os_ThreadLocalRegion.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/ipc/os_Message.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/ipc/os_Message.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/ipc/os_Session.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/ipc/os_Session.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Alarm.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Alarm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_AutoStackManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_AutoStackManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_BlockingQueue.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_BlockingQueue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_CriticalSection.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_CriticalSection.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_ErrorHandlerSelect.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_ErrorHandlerSelect.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Event.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Event.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_HandleManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_HandleManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_HandleObject.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_HandleObject.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Initialize.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Initialize.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_InterCoreBlockingQueue.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_InterCoreBlockingQueue.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_InterCoreCriticalSection.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_InterCoreCriticalSection.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_InterCoreLightSemaphore.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_InterCoreLightSemaphore.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_LightEvent.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_LightEvent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_LightSemaphore.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_LightSemaphore.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_LockPolicy.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_LockPolicy.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Memory.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Memory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_MemoryBlock.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_MemoryBlock.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_MemoryBlockBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_MemoryBlockBase.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Mutex.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Mutex.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Semaphore.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Semaphore.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_SharedInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_SharedInfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_SharedMemory.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_SharedMemory.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_SimpleLock.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_SimpleLock.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_StackMemoryBlock.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_StackMemoryBlock.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Synchronization.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Synchronization.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Task.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Task.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Thread.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Thread.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_ThreadLocalStorage.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_ThreadLocalStorage.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Tick.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Tick.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_TransferMemoryBlock.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_TransferMemoryBlock.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/os/os_WaitableCounter.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/os/os_WaitableCounter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/pl/CTR/pl_PedometerApi.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/pl/CTR/pl_PedometerApi.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ptm.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ptm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ptm/CTR/detail/ptm_PtmIpc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ptm/CTR/detail/ptm_PtmIpc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ptm/CTR/ptm_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ptm/CTR/ptm_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ptm/CTR/ptm_Rtc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ptm/CTR/ptm_Rtc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/pxi/CTR/pxi_Names.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/pxi/CTR/pxi_Names.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_ApiException.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_ApiException.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_DebugInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_DebugInfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_DynamicLoader.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_DynamicLoader.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Info.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Info.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Module.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Module.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_ObjectFile.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_ObjectFile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Offset.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Offset.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_RegistrationList.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_RegistrationList.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_SectionTable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_SectionTable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ro/ro_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ro/ro_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Adpcm.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Adpcm.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Bcwav.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Bcwav.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Const.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Const.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/Common/snd_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Class.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Class.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_DspFxDelay.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_DspFxDelay.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_DspFxReverb.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_DspFxReverb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_FxDelay.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_FxDelay.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_FxReverb.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_FxReverb.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_OperateMaster.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_OperateMaster.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_PrivateDefinition.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_PrivateDefinition.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Voice.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/MPCore/snd_Voice.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/snd/CTR/snd_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/snd/CTR/snd_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv/srv_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv/srv_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv/srv_Manager.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv/srv_Manager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv/srv_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv/srv_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv/srv_Service.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv/srv_Service.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/srv/srv_Types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/srv/srv_Types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ssl/ssl_CommonImpl.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ssl/ssl_CommonImpl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/svc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/svc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/svc/svc_Stub.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/svc/svc_Stub.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/types.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/types.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ubl/ubl_Api.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ubl/ubl_Api.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ulcd.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ulcd.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ulcd/CTR/ulcd_APIDetectable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ulcd/CTR/ulcd_APIDetectable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/ulcd/CTR/ulcd_StereoCamera.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/ulcd/CTR/ulcd_StereoCamera.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/detail/util_ScopedLockImpl.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/detail/util_ScopedLockImpl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_Color.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_Color.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_FlagsEnum.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_FlagsEnum.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_Int64.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_Int64.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_Misc.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_Misc.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_NonCopyable.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_NonCopyable.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_Result.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_Result.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_SizedEnum.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_SizedEnum.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/util/util_TypeTraits.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/util/util_TypeTraits.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/nn/version.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/nn/version.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_API.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_API.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_ApiPI.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_ApiPI.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_ClientThread.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_ClientThread.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Connect.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Connect.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Gfx.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Gfx.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Info.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Info.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_InitialParamaters.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_InitialParamaters.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Wrapper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/applet/CTR/applet_Wrapper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/camera/camera_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/camera/camera_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/camera/camera_Camera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/camera/camera_Camera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiInit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiInit.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiPrivate.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiPrivate.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiSys.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_ApiSys.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_DetailApi.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_DetailApi.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcInit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcInit.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcSys.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcSys.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcUser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/cfg_IpcUser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/detail/cfg_Crc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/detail/cfg_Crc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cfg/CTR/detail/cfg_Default.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cfg/CTR/detail/cfg_Default.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/crt0/MPCore/crt0.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/crt0/MPCore/crt0.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/crypto/Hash/ARM/crypto_Sha256ARM.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/crypto/Hash/ARM/crypto_Sha256ARM.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/crypto/Hash/crypto_Sha1.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/crypto/Hash/crypto_Sha1.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/crypto/Hash/crypto_ShaBlock512BitContext.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/crypto/Hash/crypto_ShaBlock512BitContext.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cx/cx_StreamingUncompression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cx/cx_StreamingUncompression.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/cx/cx_Uncompression.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/cx/cx_Uncompression.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dbg/dbg_Break.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dbg/dbg_Break.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dbg/dbg_DebugString.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dbg/dbg_DebugString.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dbg/dbg_PrintResult.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dbg/dbg_PrintResult.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dbm/dbm_RomPathTool.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dbm/dbm_RomPathTool.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dev/CTR/dev_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dev/CTR/dev_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dev/CTR/dev_Dev.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dev/CTR/dev_Dev.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dsp/CTR/dsp_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dsp/CTR/dsp_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/dsp/CTR/dsp_Ipc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/dsp/CTR/dsp_Ipc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/err/CTR/Client/err_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/err/CTR/Client/err_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/err/CTR/Client/err_FatalErrClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/err/CTR/Client/err_FatalErrClient.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/erreula/CTR/erreula_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/erreula/CTR/erreula_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailHeap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailHeap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailHeapCommon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailHeapCommon.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailList.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/detail/fnd_DetailList.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_DateTime.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_DateTime.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_ExpHeap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_ExpHeap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_FrameHeapBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_FrameHeapBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_HeapBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_HeapBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_PrintResultImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_PrintResultImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fnd/fnd_UnitHeap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fnd/fnd_UnitHeap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/font/detail/font_BinaryFileFormat.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/font/detail/font_BinaryFileFormat.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/font/font_ResFont.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/font/font_ResFont.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/font/font_ResFontBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/font/font_ResFontBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_AccessAnalysis.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_AccessAnalysis.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_AccessAnalysis.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_AccessAnalysis.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_ArchiveHandle.impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_ArchiveHandle.impl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_RomFsArchive.impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_RomFsArchive.impl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_UserFileSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/CTR/MPCore/fs_UserFileSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_FileBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_FileBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_FileSystemBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_FileSystemBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcDirectory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcDirectory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcFile.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcFile.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcFileSystem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_IpcFileSystem.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_PrintResultImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_PrintResultImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fs/fs_PrintResultPrivateImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fs/fs_PrintResultPrivateImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/fslow/fslow_QueryOptimalBucketCount.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/fslow/fslow_QueryOptimalBucketCount.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/arrayprocessor.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/arrayprocessor.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/bitmask.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/bitmask.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/commandbuffer.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/commandbuffer.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/commandbuffer.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/commandbuffer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/common.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/enable.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/enable.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/error.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/error.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/error.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/error.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/fbmanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/fbmanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/fbmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/fbmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/fragopstate.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/fragopstate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/garent.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/garent.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/georegmap.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/georegmap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/getvalue.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/getvalue.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/memmanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/memmanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/memmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/memmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/picaregmap.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/picaregmap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/progstatecache.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/progstatecache.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/rasdefs.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/rasdefs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/shadermanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/shadermanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/shadermanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/shadermanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/state.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/state.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/state.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/state.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/statevalidator.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/statevalidator.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/statevalidator.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/statevalidator.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/surface.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/surface.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/surface.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/surface.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/systemmanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/systemmanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/systemmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/systemmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/texform.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/texform.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/texmanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/texmanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/texmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/texmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/texstatecache.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/texstatecache.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/transformstate.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/transformstate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/util.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vbmanager.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vbmanager.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vbmanager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vbmanager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vertarraystate.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vertarraystate.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vertexstatecache.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vertexstatecache.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vsasm_objcode_defs.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vsasm_objcode_defs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gles2/vslink_objcode_common.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gles2/vslink_objcode_common.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_Combiner.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Combiner.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_FragmentLight.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_FragmentLight.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_FrameBuffer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_FrameBuffer.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_RenderState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_RenderState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_Shader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Shader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_Utility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Utility.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gr/gr_Vertex.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gr/gr_Vertex.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gx_Misc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gx_Misc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_C_Wrapper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_C_Wrapper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_CmdReqQueue.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_CmdReqQueue.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_GpuClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_GpuClient.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_InterruptReceiver.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_InterruptReceiver.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_Management.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_Management.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_Misc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_Misc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_RegAccess.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_RegAccess.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_SystemUse.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/gxlow/CTR/gxlow_SystemUse.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_AccelerometerReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_AccelerometerReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_AnalogStickClamper.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_AnalogStickClamper.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_DebugPadReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_DebugPadReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_ExtraPad.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_ExtraPad.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_ExtraPadReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_ExtraPadReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_GyroscopeReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_GyroscopeReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_IpcClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_IpcClient.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_PadReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_PadReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_TouchPanelReader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hid/CTR/hid_TouchPanelReader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_AccelerometerLifoRing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_AccelerometerLifoRing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_DebugPadLifoRing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_DebugPadLifoRing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_GyroscopeLowLifoRing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_GyroscopeLowLifoRing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_PadLifoRing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_PadLifoRing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_TouchPanelLifoRing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_TouchPanelLifoRing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_Utils.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/hidlow/hidlow_Utils.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/init/init_Alloc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/init/init_Allocator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/init/init_Default.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/init/init_Default.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/init/init_StartUp.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/init/init_StartUp.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ir/CTR/ir_CepdApi.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ir/CTR/ir_CepdApi.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/math/ARMv6/math_Matrix34.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/math/ARMv6/math_Matrix34.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/math/math_Arithmetic.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/math/math_Arithmetic.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/math/math_Triangular.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/math/math_Triangular.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/mic/CTR/mic_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/mic/CTR/mic_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/mic/CTR/mic_IpcClient.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/mic/CTR/mic_IpcClient.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ndm/CTR/ndm_Interface.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ndm/CTR/ndm_Interface.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ndm/ndm_Setup.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ndm/ndm_Setup.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ndm/ndm_UserControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ndm/ndm_UserControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/nstd/ARMv6/nstd_String.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/nstd/ARMv6/nstd_String.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/nstd/nstd_Printf.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/nstd/nstd_Printf.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/ARM/os_SpinWait.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/ARM/os_SpinWait.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/CTR/os_CppException.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/CTR/os_CppException.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/CTR/os_ErrorHandler.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/CTR/os_ErrorHandler.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_AddressSpaceManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_AddressSpaceManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_AddressSpaceManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_AddressSpaceManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_BlockingQueue.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_BlockingQueue.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_CriticalSection.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_CriticalSection.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Default.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Default.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Default.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Default.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Environment.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Environment.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Initialize.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Initialize.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_LightEvent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_LightEvent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_LightSemaphore.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_LightSemaphore.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Memory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Memory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_MemoryBlock.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_MemoryBlock.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_PrintResultImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_PrintResultImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_SharedMemory.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_SharedMemory.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_SimpleLock.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_SimpleLock.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_StackMemoryBlock.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_StackMemoryBlock.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_Thread.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_Thread.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_ThreadLocalStorage.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_ThreadLocalStorage.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_TransferMemoryBlock.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_TransferMemoryBlock.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/os/os_WaitableCounter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/os/os_WaitableCounter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/pl/pl_PedometerApi.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/pl/pl_PedometerApi.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_PtmIpc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_PtmIpc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_Rtc.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ptm/CTR/MPCore/ptm_Rtc.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_ApiException.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_ApiException.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_ApiRead.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_ApiRead.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_DebugInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_DebugInfo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_DynamicLoader.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_DynamicLoader.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_Exception.c" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_Exception.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_Module.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_Module.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ro/ro_RegistrationList.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ro/ro_RegistrationList.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/rocrt/rocrt_ObjectControl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/rocrt/rocrt_ObjectControl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/rtport/rvct/rvct_stdio.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/rtport/rvct/rvct_stdio.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_AdpcmDecoder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_AdpcmDecoder.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxDelay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxDelay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManagerImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxManagerImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxReverb.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_DspFxReverb.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_FxDelay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_FxDelay.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_FxReverb.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_FxReverb.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManagerImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_MasterManagerImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_OperateMaster.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_OperateMaster.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_ThreadManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_ThreadManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_ThreadManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_ThreadManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_Voice.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_Voice.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceImpl.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceImpl.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/snd/CTR/snd_VoiceManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/srv/srv_Api.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/srv/srv_Api.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/srv/srv_Manager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/srv/srv_Manager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/srv/srv_Service.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/srv/srv_Service.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ssl/ssl_CommonImpl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ssl/ssl_CommonImpl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/svc/svc_Stub.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ugc/ubl/ubl.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ugc/ubl/ubl.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ulcd/CTR/ulcd_APIDetectable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ulcd/CTR/ulcd_APIDetectable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/ulcd/CTR/ulcd_StereoCamera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/ulcd/CTR/ulcd_StereoCamera.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sources/libraries/util/detail/util_Symbol.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/sources/libraries/util/detail/util_Symbol.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="SDK_2_X_X" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;LoigiFan72&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ctrdecomp/CTR_SDK.git&quot;,
+    &quot;accountId&quot;: &quot;5db3856e-929d-4517-857a-6cc46d4bb676&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/addins/is/hio/ishio_HioManager.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/dbg/dbg_PrintResult.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gr/CTR/gr_FrameBuffer.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gr/CTR/gr_Texture.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gr/CTR/gr_Utility.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gr/CTR/gr_Vertex.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gx.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/gx/CTR/gx_PicaMisc.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/hid/CTR/hid_PadReader.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/math/math_Matrix22.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/math/math_Matrix23.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/math/math_Matrix33.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/math/math_Matrix44.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/os/CTR/os_ThreadLocalRegion.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/os/os_Thread.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/include/nn/types.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/dbg/dbg_DebugString.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/dbg/dbg_PrintResult.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/fs/CTR/MPCore/fs_UserFileSystem.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gles2/common.h" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gles2/systemmanager.c" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gr/gr_Combiner.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gr/gr_FrameBuffer.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gr/gr_RenderState.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gr/gr_Shader.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/gr/gr_Vertex.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/hid/CTR/hid_GyroscopeReader.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/init/init_StartUp.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/os/CTR/os_ErrorHandler.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK/sources/libraries/os/os_Thread.cpp" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="rAN8Nys4" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.004454382742093" />
+      <entry key="MS500" value="1.6336415992374853" />
+      <entry key="S2" value="4.2419286296783785" />
+      <entry key="S5" value="7.298435422751154" />
+      <entry key="S10" value="11.203106175815991" />
+      <entry key="S30" value="26.764289586445244" />
+      <entry key="S60" value="49.07496226660921" />
+      <entry key="M2" value="87.65350155978908" />
+      <entry key="M5" value="153.22520520334064" />
+      <entry key="M10" value="198.39647048125954" />
+      <entry key="M15" value="219.8963536533373" />
+      <entry key="M30" value="253.65598211426945" />
+      <entry key="H1" value="303.61248052567265" />
+      <entry key="H2" value="378.7349121526601" />
+      <entry key="H4" value="455.8171968563318" />
+      <entry key="D1" value="561.9503876220901" />
+      <entry key="W1" value="585.8231186769082" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="8.505000627265696E-246" />
+      <entry key="S30" value="2.0412276849679938E-82" />
+      <entry key="S60" value="1.4287153967701259E-41" />
+      <entry key="M2" value="3.779835589481423E-21" />
+      <entry key="M5" value="6.7873660696873575E-9" />
+      <entry key="M10" value="8.573457349589359E-5" />
+      <entry key="M15" value="0.0021426713538777163" />
+      <entry key="M30" value="0.06744572056976236" />
+      <entry key="H1" value="0.4950703905966644" />
+      <entry key="H2" value="1.5082210462889682" />
+      <entry key="H4" value="2.7181411093167274" />
+      <entry key="D1" value="4.51087467378051" />
+      <entry key="W1" value="4.9268443095287555" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9702688899138555" />
+      <entry key="MS500" value="1.6231303175970995" />
+      <entry key="S2" value="4.2353730492395565" />
+      <entry key="S5" value="7.290495108159961" />
+      <entry key="S10" value="11.18192094118548" />
+      <entry key="S30" value="26.733075229450485" />
+      <entry key="S60" value="49.049285326214" />
+      <entry key="M2" value="87.63298623256318" />
+      <entry key="M5" value="153.2112028308647" />
+      <entry key="M10" value="198.38719918281296" />
+      <entry key="M15" value="219.89144525100906" />
+      <entry key="M30" value="253.71903358229633" />
+      <entry key="H1" value="304.1034612367215" />
+      <entry key="H2" value="380.23852317993664" />
+      <entry key="H4" value="458.5313771460877" />
+      <entry key="D1" value="566.4601744186318" />
+      <entry key="W1" value="590.7497931059424" />
+    </decayedShown>
+  </component>
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2026" />
+    <option name="minorVersion" value="2.2" />
+    <option name="productBranch" value="Classic" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3JPt9qhhJwWi1DNoXSXHMPslfsQ" />
+  <component name="ProjectStatusUIService">{
+  &quot;uiKindId&quot;: &quot;Widget&quot;
+}</component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CMake Application.gles2.executor": "Run",
+    "CidrDebugProfileConversion": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.RadMigrateCodeStyle": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "cf.advertisement.text.overridden": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "SDK__4__X__X",
+    "last_opened_file_path": "C:/Users/BruhM/OneDrive/Project/decomp/CTR_SDK",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.com.intellij.clion.radler.core.settings.RadColorSettingsPage"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\BruhM\Desktop\Project\CTR_SDK\addins" />
+    </key>
+  </component>
   <component name="RunManager" selected="CMake Application.libnn_cec">
     <configuration name="libnn_cec" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="CTR_SDK" TARGET_NAME="libnn_cec" CONFIG_NAME="Debug">
       <method v="2">
@@ -21,5 +896,82 @@
       <item itemvalue="CMake Application.libnn_erreula" />
       <item itemvalue="CMake Application.libnn_jpeg" />
     </list>
+  </component>
+  <component name="SelectedDebugProfileService"><![CDATA[{
+  "profileIdByStamp": [],
+  "modificationCount": 19
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="012d00d7-95d0-4fcb-82eb-2780d9491116" name="Changes" comment="" />
+      <created>1789574403159</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1789574403159</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VCPKGProject">
+    <isAutomaticCheckingOnLaunch value="false" />
+    <isAutomaticFoundErrors value="true" />
+    <isAutomaticReloadCMake value="true" />
+    <isAutomaticBootstrapAfterUpdate value="false" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="SDK_2_X_X" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="-APPLET: Add Things.&#10;-DBG: Add Version Specififes.&#10;-ERR: Adjust Version things.&#10;-OS: Implement Version Specificies / remove os_EnvironmentPlatform.cpp" />
+    <MESSAGE value="gaygaygaygaygaygaygaygaygay39874893247893278392749037583950893590438438940894308894538345-043959403-594965465406754389675489675489674539067" />
+    <MESSAGE value="jkfbdjghfjksdhjkhdsvhdhvjkfdhjvfhdgvjfhdjvhjdkvhjdgjkjgkdyhjkghfdjkghfkjdhgkrthtriutyrediutioreuiorefuvuhv jcbmncbjkvcb uhjgyhugfuiohybughb u878977879788tee" />
+    <MESSAGE value="OS: Add os_Tick Operators&#10;SND: More API / Voice" />
+    <MESSAGE value="Version Specific Commit" />
+    <MESSAGE value="- Fix Things &amp; holdoff CEC / http not ready in time rushed commit" />
+    <MESSAGE value="- Repo: Add template/linker.ld&#10;- cec: IMPLEMENT&#10;- dsp: Minor Changes.&#10;- gr: Minor Changes.&#10;- math: Add Hermite inline for `Nw4c`&#10;- jpeg: IMPLEMENT&#10;- http: Add headers for `NEX`&#10;- init: Rename to `init_Allocator` instead of `init_Alloc`" />
+    <MESSAGE value="- Add Impl for SDK 4." />
+    <option name="LAST_COMMIT_MESSAGE" value="- Add Impl for SDK 4." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$USER_HOME$/Desktop/Project/CTR_SDK/sources/libraries/pl/pl_PedometerApi.cpp</url>
+          <line>4</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$USER_HOME$/Desktop/Project/CTR_SDK/sources/libraries/hid/CTR/hid_ExtraPadReader.cpp</url>
+          <line>11</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

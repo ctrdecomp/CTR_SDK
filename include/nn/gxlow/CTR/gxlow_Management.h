@@ -37,8 +37,11 @@ namespace detail{
 
     Gpu* GetGpuIpc();
 
-    inline bool IsDeviceMemory(uptr addr){ }
     inline bool IsContinuousMemory(uptr addr){ return addr >= 0x14000000 && addr < 0x1C000000 ;}
+    inline bool IsDeviceMemory(uptr addr)
+    {
+        return IsContinuousMemory(addr);
+    }
     inline bool IsVram(uptr addr){ return addr >= 0x1F000000 && addr <= 0x1F5FFFFF; }
 }
 }
@@ -46,3 +49,4 @@ namespace detail{
 }
 
 #endif
+

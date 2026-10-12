@@ -1,7 +1,7 @@
 #pragma once
 
-#include "nn/types.h"
-#include "nn/assert.h"
+#include <nn/types.h>
+#include <nn/assert.h>
 
 #ifdef  __cplusplus
 extern "C" {
@@ -23,7 +23,7 @@ extern "C" {
 #define NN_GX_DISPLAY1_HEIGHT   320
 #endif
 
-void nngxStartLcdDisplay( void );
+void nngxStartLcdDisplay();
 
 #ifdef  __cplusplus
 } // extern "C"
@@ -52,3 +52,4 @@ inline void StartLcdDisplay()
 }
 }
 #endif // __cplusplus
+

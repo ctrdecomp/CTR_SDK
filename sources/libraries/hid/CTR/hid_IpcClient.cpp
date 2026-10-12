@@ -133,3 +133,4 @@ Result Ipc::GetGyroscopeLowCalibrateParam(nn::hid::CTR::GyroscopeLowCalibratePar
 }
 }
 }
+

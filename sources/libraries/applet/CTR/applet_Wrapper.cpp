@@ -22,7 +22,8 @@
 namespace nn{
 namespace applet{
 namespace CTR{
-namespace{
+namespace
+{
     bool sleepEnable;
     AppletHomeButtonCallback homeButtonCallback;
     AppletRequestMemoryCallback requestMemoryCallback;
@@ -57,6 +58,7 @@ namespace{
     int closeAppletCallbackArg;
     int commandCallbackArg;
 }
+
     SysSleepAcceptedCallbackInfo* SysSleepAcceptedCallbackInfo::s_pHead = NULL;
     SysSleepAcceptedCallbackInfo* SysSleepAcceptedCallbackInfo::s_pTail = NULL;
 namespace{
@@ -671,20 +673,22 @@ void SysSleepAcceptedCallbackInfo::CallCallbacks()
     }
 }
 
-namespace detail{
+namespace detail {
 
 namespace{
     CaptureBufferInfo cInfo;
-}
+} // namespace
 
-bool IsAppletPreloaded(AppletId id){
+bool IsAppletPreloaded(AppletId id)
+{
     bool isUsed;
     bool isPreloaded;
     bool r = GetAppletInfo( id, NULL, NULL, &isUsed, &isPreloaded, NULL );
     return (r && isUsed && isPreloaded) ? true : false;
 }
 
-void WaitForAppletPreloaded(AppletId id){
+void WaitForAppletPreloaded(AppletId id)
+{
     bool e = IsEnableSleep();
     if (e)
     {
@@ -982,12 +986,6 @@ Result CaptureScreenForSystemApplet(AppletId id)
     return ResultSuccess();
 }
 
-Result SendCaptureBuffer(AppletId id, Handle memBlockHandle)
-{
-    Result result = nn::applet::CTR::detail::Send(id, COMMAND_RESPONSE, NULL, 0, memBlockHandle);
-    return result;
-}
-
 Result CaptureScreen(AppletId id)
 {
     AppletDisplayInfo info;
@@ -1019,6 +1017,12 @@ Result CaptureScreen(AppletId id)
 
     SendCaptureBufferInfo(reinterpret_cast<u8*>( &cInfo ), sizeof(cInfo));
     return ResultSuccess();
+}
+
+Result SendCaptureBuffer(AppletId id, Handle memBlockHandle)
+{
+    Result result = nn::applet::CTR::detail::Send(id, COMMAND_RESPONSE, NULL, 0, memBlockHandle);
+    return result;
 }
 
 }

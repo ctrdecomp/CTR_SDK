@@ -75,9 +75,19 @@
         (void) ((exp) || (nndbgBreakWithResultMessage_(NN_DBG_BREAK_REASON_PANIC, (nnResult)(result), NN_FILE_NAME, __LINE__, __VA_ARGS__), 0))
 
     #define NN_ASSERT_(exp)                     NN_ASSERTMSG_(exp, "%s")
-    #define NN_ASSERT_WITH_RESULT(exp, result)  NN_ASSERTMSG_WITH_RESULT_((exp), (result), "%s", #exp)
+    #define NN_ASSERT_WITH_RESULT_(exp, result)  NN_ASSERTMSG_WITH_RESULT_((exp), (result), "%s", #exp)
     #define NN_RESULT_ASSERT_(exp)              NN_ASSERTMSG_WITH_RESULT_((exp).IsSuccess(), (exp), "\"%s\" is Failure.", #exp)
     #define NN_NULL_ASSERT_(exp)                NN_ASSERTMSG_((exp) != NULL, "%s must not be NULL", #exp)
+    #define NN_ALIGN_ASSERT_(exp, align)        NN_ASSERTMSG_(((uptr)(exp)) % (align) == 0, "%s(=0x%08x) must be %d byte aligned.", #exp, (exp), align)
+    #define NN_MIN_ASSERT_(exp, min)            NN_ASSERTMSG_((exp) >= (min), "%s(=%d) must be >= %s(=%d).", #exp, (exp), #min, min)
+    #define NN_MAX_ASSERT_(exp, max)            NN_ASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, max)
+    #define NN_MINMAX_ASSERT_(exp, min, max)    NN_ASSERTMSG_((exp) >= (min) && (exp) <= (max), "%s(=%d) must be >= %s(=%d) and <= %s(=%d).", #exp, (exp), #min, min, #max, max)
+    #define NN_EQUAL_ASSERT_(exp, equ)          NN_ASSERTMSG_((exp) == (equ), "%s(=%d) must be == %s(=%d).", #exp, (exp), #equ, equ)
+    #define NN_NOT_EQUAL_ASSERT_(exp, equ)      NN_ASSERTMSG_((exp) != (equ), "%s(=%d) must be != %s(=%d).", #exp, (exp), #equ, equ)
+    #define NN_POINTER_ASSERT_(p)               NN_ASSERTMSG_(NN_IS_VALID_POINTER(p), "%s(=0x%08X) is invalid pointer", #p, (p))
+    #define NN_THIS_ASSERT_()                   NN_POINTER_ASSERT_(this)
+    #define NN_FLOAT_ASSERT_(exp)               NN_ASSERTMSG_((-FLT_MAX <= (exp) && (exp) <= FLT_MAX), "Floating Point Value Error\n"#exp" is infinite or nan.")
+    #define NN_ASSERT_RESULT_(exp)              NN_RESULT_ASSERT_(exp)
 
     #define NN_PANIC_(...)                      nndbgBreakWithMessage_(NN_DBG_BREAK_REASON_PANIC, NN_FILE_NAME, __LINE__, __VA_ARGS__)
     #define NN_POINTER_ASSERT(p)                NN_ASSERTMSG_(NN_IS_VALID_POINTER(p), "%s(=0x%08X) is invalid pointer", #p, (p))
@@ -92,7 +102,7 @@
             }                                               \
         } while (0)
 
-    #else
+#else
 
     #define NN_ANY_TO_UPTR(ptr)         ((uptr)((const void*)(ptr)))
     #define NN_IS_VALID_POINTER(ptr)    ( (NN_OS_ADDR_NULL_TRAP_END <= NN_ANY_TO_UPTR(ptr)) \
@@ -131,6 +141,16 @@
     #define NN_ASSERTMSG_WITH_RESULT_(exp, result, ...)
     #define NN_RESULT_ASSERT_(exp)              NN_ASSERTMSG_WITH_RESULT_((exp).IsSuccess(), (exp), "\"%s\" is Failure.", #exp)
     #define NN_NULL_ASSERT_(exp)                NN_ASSERTMSG_((exp) != NULL, "%s must not be NULL", #exp)
+    #define NN_ALIGN_ASSERT_(exp, align)        NN_ASSERTMSG_(((uptr)(exp)) % (align) == 0, "%s(=0x%08x) must be %d byte aligned.", #exp, (exp), align)
+    #define NN_MIN_ASSERT_(exp, min)            NN_ASSERTMSG_((exp) >= (min), "%s(=%d) must be >= %s(=%d).", #exp, (exp), #min, min)
+    #define NN_MAX_ASSERT_(exp, max)            NN_ASSERTMSG_((exp) <= (max), "%s(=%d) must be <= %s(=%d).", #exp, (exp), #max, max)
+    #define NN_MINMAX_ASSERT_(exp, min, max)    NN_ASSERTMSG_((exp) >= (min) && (exp) <= (max), "%s(=%d) must be >= %s(=%d) and <= %s(=%d).", #exp, (exp), #min, min, #max, max)
+    #define NN_EQUAL_ASSERT_(exp, equ)          NN_ASSERTMSG_((exp) == (equ), "%s(=%d) must be == %s(=%d).", #exp, (exp), #equ, equ)
+    #define NN_NOT_EQUAL_ASSERT_(exp, equ)      NN_ASSERTMSG_((exp) != (equ), "%s(=%d) must be != %s(=%d).", #exp, (exp), #equ, equ)
+    #define NN_POINTER_ASSERT_(p)               NN_ASSERTMSG_(NN_IS_VALID_POINTER(p), "%s(=0x%08X) is invalid pointer", #p, (p))
+    #define NN_THIS_ASSERT_()                   NN_POINTER_ASSERT_(this)
+    #define NN_FLOAT_ASSERT_(exp)               NN_ASSERTMSG_((-FLT_MAX <= (exp) && (exp) <= FLT_MAX), "Floating Point Value Error\n"#exp" is infinite or nan.")
+    #define NN_ASSERT_RESULT_(exp)              NN_RESULT_ASSERT_(exp)
 
     #define NN_PANIC_(...)                      nndbgPanic()
     #define NN_PANIC_WITH_RESULT(result, ...)    (((void)(result)), nndbgPanic())

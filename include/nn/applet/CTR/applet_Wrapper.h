@@ -35,9 +35,7 @@ namespace CTR {
     
     bool IsEnableSleep();
 
-    void SetCommandCallback(s32 callback, uptr arg);
-
-    Result CaptureScreen(AppletId id);
+    void SetCommandCallback(AppletCommandCallback callback, uptr arg);
 
 
 class SysSleepAcceptedCallbackInfo
@@ -98,8 +96,8 @@ public:
 };
 
 namespace detail{
-    // TODO
     Result CaptureScreenForSystemApplet(AppletId id);
+    Result CaptureScreen(AppletId id);
     Result WaitToCaptureScreen(AppletId id, Handle* pHandle);
     bool ReceiveCallbackForCommands(uptr ptr);
     void WaitForAppletPreloaded(AppletId id);

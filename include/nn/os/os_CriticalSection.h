@@ -29,7 +29,6 @@ public:
     void Initialize();
     void Enter();
     void Leave();
-    void Initialize();
     bool TryEnter();
 
     Result TryInitialize()

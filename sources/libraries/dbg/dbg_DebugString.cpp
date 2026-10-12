@@ -23,7 +23,7 @@ namespace dbg{
 namespace detail{
     void PutString(const char* text, s32 length)
     {
-        NN_REFER_MODULE(sUsePutDebugString);
+        NN_REFER_MODULE(s_UsePutDebugString);
         nn::svc::OutputDebugString(text, length);
     }
 
@@ -49,6 +49,15 @@ namespace detail{
 
         va_start(vlist, fmt);
         nn::dbg::detail::TVPrintf(fmt, vlist);
+        va_end(vlist);
+    }
+
+    void Printf(const char* fmt, ...)
+    {
+        va_list vlist;
+
+        va_start(vlist, fmt);
+        nn::dbg::detail::VPrintf(fmt, vlist);
         va_end(vlist);
     }
 

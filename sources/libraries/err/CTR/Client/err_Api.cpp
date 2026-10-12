@@ -5,6 +5,7 @@
 #include <nn/err/CTR/err_Api.h>
 #include <nn/dbg/dbg_Break.h>
 #include <nn/dbg/dbg_DebugString.h>
+#include <nn/os/os_Result.h>
 #include <nn/os/os_Thread.h>
 #include <nn/os/os_CriticalSection.h>
 #include <nn/os/os_LightEvent.h>
@@ -45,24 +46,42 @@ void FinalizeFatalErrSession()
     }
 }
 
-NN_NOINLINE void Throw(FatalErrInfo& info)
+void Throw(FatalErrInfo& info)
 {
-    os::CriticalSection::ScopedLock lock(s_Lock);
-    Result res = InitializeFatalErrSession();
-    if(res.IsSuccess())
+    for(;;)
     {
-        svc::GetProcessId(&info.processId, PSEUDO_HANDLE_CURRENT_PROCESS);
-        FatalErr fe(s_FatalErrSession);
-        fe.FatalErr::Throw(info);
-        FinalizeFatalErrSession();
+        nn::os::CriticalSection::ScopedLock lock(s_Lock);
+            
+        Result sessionResult = InitializeFatalErrSession();
+        if (sessionResult.IsSuccess())
+        {
+            svc::GetProcessId(&info.processId, PSEUDO_HANDLE_CURRENT_PROCESS);
+
+            FatalErr fe(s_FatalErrSession);
+            fe.Throw(info);
+                
+            FinalizeFatalErrSession();
+        }
+        else if (sessionResult == nn::os::ResultOverPortCapacity())
+        {
+            if (info.type == NN_ERR_FATAL_TYPE_CARD_EJECTION)
+            {
+                nn::os::Thread::Sleep(nn::fnd::TimeSpan::FromMilliSeconds(5));
+                continue;
+            }
+        }
+        else
+        {
+            NN_DBG_PRINT_TRESULT(sessionResult);
+        }
+            
+        break;
     }
-    else
+        
+
+    if (info.type != 2 && info.type != 5)
     {
-        NN_DBG_PRINT_RESULT(res);
-    }
-    if(info.type != NN_ERR_FATAL_TYPE_CARD_EJECTION)
-    {
-        os::LightEvent infiniteLock(true);
+        nn::os::LightEvent  infiniteLock(true);
         infiniteLock.Wait();
     }
 }
@@ -71,10 +90,13 @@ NN_NOINLINE void Throw(FatalErrInfo& info)
 
 void ThrowFatalErr(Result result, nnerrFatalErrType type, uint pc)
 {
+    NN_TLOG_("----\n");
+    NN_TLOG_("Fatal Error occured. (pc=0x%08x)\n", pc);
+    NN_DBG_PRINT_TRESULT(result);
     {
         FatalErrInfo& fei = s_FatalErrInfo;
         s_FatalErrInfo.revisionHi = 0;
-        s_FatalErrInfo.revisionLo = 0xa037;
+        s_FatalErrInfo.revisionLo = 0; // DEPENDS ON SDK VERSION
         s_FatalErrInfo.type = type;
         s_FatalErrInfo.result = result;
         s_FatalErrInfo.pc = pc;
@@ -82,23 +104,17 @@ void ThrowFatalErr(Result result, nnerrFatalErrType type, uint pc)
     }
 }
 
-void ThrowFatalErr(Result result, nnerrFatalErrType type)
-{
-    uint bits;
-    return ThrowFatalErr(result, type, bits);
-}
-
-void ThrowFatalErr(Result result)
+void ThrowFatalErr(Result result, uptr pc)
 {
     Result::Level lev = result.Result::GetLevel();
     if(lev == Result::LEVEL_INFO || lev == Result::LEVEL_STATUS)
         return;
-    ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON);
+    ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON, pc);
 }
 
-void ThrowFatalErrAll(Result result, nnerrFatalErrType type)
+void ThrowFatalErrAll(Result result, uptr pc)
 {
-    return ThrowFatalErr(result, type, __return_address());
+    return ThrowFatalErr(result, NN_ERR_FATAL_TYPE_SYSTEM_COMMON, pc);
 }
 
 }

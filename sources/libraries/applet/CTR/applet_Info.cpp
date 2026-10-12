@@ -127,7 +127,7 @@ void ClearShutdownCallbackFlag()
     s_IsToCallShutdownCallback = false;
 }
 
-bool IsToShutdownCallback()
+bool IsToCallShutdownCallback()
 {
     return s_IsToCallShutdownCallback;
 }

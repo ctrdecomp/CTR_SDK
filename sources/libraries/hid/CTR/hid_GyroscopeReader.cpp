@@ -226,6 +226,37 @@ GyroscopeReader::~GyroscopeReader()
     s_NumOfInstance--;
 }
 
+void GyroscopeReader::Read(GyroscopeStatus* pBufs, s32* pReadLen, s32 bufLen)
+{
+    if(m_GyroscopeLocalBufferSize == 0)
+    {
+        ReadLocal(pBufs, pReadLen, bufLen);
+    }
+    else
+    {
+        s32 currentReadLen = 0;
+        GyroscopeStatus currentLocalBuff[GYROSCOPE_LOCAL_BUFFER_SIZE];
+        ReadLocal(currentLocalBuff,&currentReadLen,GYROSCOPE_LOCAL_BUFFER_SIZE);
+
+        if(currentReadLen >= bufLen)
+        {
+            std::memcpy(pBufs,currentLocalBuff, sizeof(GyroscopeStatus)*bufLen);
+            *pReadLen = bufLen;
+        }
+        else
+        {
+            std::memcpy(pBufs,currentLocalBuff, sizeof(GyroscopeStatus)*currentReadLen);
+
+            m_GyroscopeLocalBufferSize = m_GyroscopeLocalBufferSize < bufLen - currentReadLen ? m_GyroscopeLocalBufferSize : bufLen - currentReadLen;
+
+            std::memcpy(pBufs+currentReadLen,m_GyroscopeStatusLocalBuffer,sizeof(GyroscopeStatus)*m_GyroscopeLocalBufferSize);
+
+            *pReadLen = currentReadLen + m_GyroscopeLocalBufferSize;
+        }
+        m_GyroscopeLocalBufferSize = 0;
+    }
+}
+
 bool GyroscopeReader::ReadLatest(GyroscopeStatus* pBuf)
 {
     if(m_GyroscopeLocalBufferSize == 0)
@@ -434,6 +465,12 @@ void GyroscopeReader::Reset()
     m_FreqRadian = (f32) (period * 6.283185307179586);
 
     this->InitializeCalibrationData();
+}
+
+void GyroscopeReader::DisableAxisRotation()
+{
+    m_EnableRotate = false;
+    m_DefaultAccelerometerReader.DisableAxisRotation();
 }
 
 void GyroscopeReader::EnableZeroDrift()

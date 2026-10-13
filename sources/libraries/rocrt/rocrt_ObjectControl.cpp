@@ -20,7 +20,7 @@ extern "C"
 namespace{
 
 #if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
-    NN_MAKE_MODULE(sDebugIndicator,  "NINTENDO", "DEBUG");
+    NN_MAKE_MODULE(s_DebugIndicator,  "NINTENDO", "DEBUG");
 #endif
     NN_MAKE_MODULE(s_SdkVersion,      "NINTENDO", NN_CURRENT_SDK_VERSION);
     NN_MAKE_MODULE(s_FirmwareVersion, "NINTENDO", NN_CURRENT_FIRMWARE_VERSION);

@@ -10,7 +10,7 @@ namespace err {
 namespace CTR {
 
 namespace {
-    const char PORT_NAME_ERR_F[] = "err:f";
+    const char FATAL_ERR_PORT_NAME[] = "err:f";
 } // namespace
 
     struct FatalErrInfo

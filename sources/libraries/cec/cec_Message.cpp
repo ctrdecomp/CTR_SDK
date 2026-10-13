@@ -17,7 +17,7 @@
 #include <nn/cec/CTR/cec_ControlSys.h>
 #include <nn/cec/cec_Result.h>
 
-#define NN_LOG_ERROR(format, args...) NN_LOG_ERROR_(format, ##args)
+#define NN_LOG_ERROR(args...) NN_LOG_ERROR_(format, ##args)
 
 #define NWM_BE2LE16(x)       ((static_cast<u16>(          \
                               (((x) & 0xFF00UL) >> 8UL) | \

@@ -27,7 +27,7 @@ Result InitializeFatalErrSession()
     Result res;
     if(!s_FatalErrSession.IsValid())
     {
-        res = svc::ConnectToPort(&s_FatalErrSession,PORT_NAME_ERR_F);
+        res = svc::ConnectToPort(&s_FatalErrSession, FATAL_ERR_PORT_NAME);
         if(!res.IsSuccess())
         {
             return res;

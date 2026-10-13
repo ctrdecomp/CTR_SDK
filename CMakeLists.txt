@@ -90,7 +90,6 @@ nn_library(libnn_applet  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/applet)
 nn_library(libnn_camera  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/camera)
 nn_library(libnn_cec     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cec)
 nn_library(libnn_cfg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cfg)
-nn_library(crt0          ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crt0)
 nn_library(libnn_crypto  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crypto)
 nn_library(libnn_cx      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cx)
 nn_library(libnn_dbg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dbg)
@@ -138,7 +137,6 @@ target_link_libraries(CTR_SDK INTERFACE
     libnn_camera
     libnn_cec
     libnn_cfg
-    crt0
     libnn_crypto
     libnn_cx
     libnn_dbg

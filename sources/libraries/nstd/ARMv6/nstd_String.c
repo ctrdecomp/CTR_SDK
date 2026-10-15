@@ -4,7 +4,7 @@
 
 #include <nn/nstd/ARMv6/nstd_String.h>
 
-asm void nnnstdMemMove (void* pOut, const void* pIn, size_t size)
+__asm void nnnstdMemMove (void* pOut, const void* pIn, size_t size)
 {
         SUBS    R3, R0, R1;
         CMPCS   R2, R3;
@@ -261,7 +261,7 @@ loc_2E899C //nf
 }
 
 // Copys Memory.
-asm void nnnstdMemCpy (void* pOut, const void* pIn, size_t size)
+__asm void nnnstdMemCpy (void* pOut, const void* pIn, size_t size)
 {
         CMP    R2, #8;
         BHI    loc_29241C;

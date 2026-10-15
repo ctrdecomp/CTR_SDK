@@ -11,7 +11,7 @@ void TPrintResult(Result result);
 }
 }
 
-#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
+#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) && !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
 #define NN_DBG_DECLARE_GET_RESULT_DESCRIPTION_STRING_IMPL_KEEPER(module) \
                 namespace nn { namespace module { namespace detail { \
                     void GetResultDescriptionStringImplKeeper(); \

@@ -4,6 +4,11 @@
 #include <stddef.h>
 #include <stdarg.h>
 
+#ifdef __cplusplus
+#include <new>
+#include <limits>
+#endif
+
 #ifndef __cplusplus
   #include <stdbool.h>
 #endif
@@ -100,3 +105,4 @@ struct ProductInfo
 #else
 #define NN_FORCE_INLINE __forceinline
 #endif
+

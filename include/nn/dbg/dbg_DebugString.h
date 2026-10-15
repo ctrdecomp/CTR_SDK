@@ -28,7 +28,7 @@ extern "C"{
     void nndbgTPrintWarning_(const char* filename, int lineno, const char* fmt, ...);
 }
 
-#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) || !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
+#if !defined(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK) && !defined(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
     #ifdef __cplusplus
             #define NN_LOG_(...)           (void)nn::dbg::detail::Printf(__VA_ARGS__)
             #define NN_SLOG_(...)          (void)nn::dbg::detail::Printf(__VA_ARGS__)

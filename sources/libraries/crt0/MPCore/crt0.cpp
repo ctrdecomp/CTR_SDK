@@ -13,7 +13,7 @@
 #include <rt_sys.h>
 
 namespace{
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
     NN_MAKE_MODULE(s_DebugIndicator,  "NINTENDO", "DEBUG");
 #endif
     NN_MAKE_MODULE(s_SdkVersion,      "NINTENDO", NN_CURRENT_SDK_VERSION);
@@ -47,7 +47,7 @@ asm void __ctr_start(){
 
 void nninitLocale()
 {
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
     NN_REFER_MODULE(s_DebugIndicator);
 #endif
     NN_REFER_MODULE(s_SdkVersion);

@@ -19,7 +19,7 @@ extern "C"
 
 namespace{
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
     NN_MAKE_MODULE(sDebugIndicator,  "NINTENDO", "DEBUG");
 #endif
     NN_MAKE_MODULE(s_SdkVersion,      "NINTENDO", NN_CURRENT_SDK_VERSION);
@@ -87,7 +87,7 @@ Result nnroControlObject_(void* param, ObjectControl c){
     }
     default:
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
         ReferSymbol(s_DebugIndicator);
 #endif
         ReferSymbol(s_SdkVersion);

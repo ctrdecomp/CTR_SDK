@@ -16,7 +16,7 @@ Note that some names (especially for inlined, templated functions) are just plai
 
 *    |____ **include/nn** - nn Headers used for the *CtrSDK*.
 
-*    |____ **profiler/sources** - 3DS CPU Profiler used in debug builds.
+*    |____ **profiler** - 3DS CPU Profiler used in debug builds.
 
 *    |____ **sources/libraries** - Module source code.
 
@@ -104,7 +104,7 @@ Building this project requires:
 CTR_SDK can be configured with several compile-time defines:
 
 * `NN_BUILD_DEBUG`: Enables assertions. (Note: Debug builds use ARM flags `-O0` `-Otime`)
-* `NN_BUILD_DEVELOPMENT`: Enables assertions but builds optimized. (Note: Development builds use ARM flags `-O3` `-Otime`)
+* `NN_BUILD_VERBOSE`: Enables assertions but builds optimized. (Note: Development builds use ARM flags `-O3` `-Otime`)
 * `NN_BUILD_RELEASE`: Disables assertions. (Note: Release builds use ARM flags `-O3` `-Otime`)
 * `NN_BUILD_ENABLE_HOSTIO`: Allows the use of the `hostio` library.
 * `NN_BUILD_ENABLE_RO`: Enables quirks with the `RO` service. Such as: no vfe and RTTI.

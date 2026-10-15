@@ -23,7 +23,7 @@ else()
 endif()
 
 
-set(_OPT_TYPE --preinclude=${CMAKE_SOURCE_DIR}/library/CTR_SDK/include/nn/types.h) # WHERE EVER THE CTR_SDK IS!!
+set(_OPT_TYPE --preinclude=${CMAKE_SOURCE_DIR}/library/CTR_SDK/include/nn/types.h)
 
 add_link_options(--cpu=MPCore --fpu=VFPv2 --vfemode=force --diag_suppress=L6314W,L6329W ${_OPT_DIAG})
 
@@ -32,14 +32,17 @@ add_compile_options($<$<COMPILE_LANGUAGE:C>:--c99> $<$<COMPILE_LANGUAGE:CXX>:--c
 add_compile_options(--arm --split_sections -c ${_OPT_DIAG} ${_OPT_TYPE} ${_OPT_LANG})
 add_compile_options(--cpu=MPCore --fpmode=fast --apcs=interwork -O3 -Otime --data_reorder)
 add_compile_options(--sys_include --signed_chars --dollar --no_vla --multibyte_chars)
-add_compile_options(--force_new_nothrow)
-add_compile_options(--no_exceptions --cpp --no_rtti --no_vfe --no_rtti_data)
+
+add_compile_options(    
+    $<$<COMPILE_LANGUAGE:CXX>:--no_exceptions>
+    $<$<COMPILE_LANGUAGE:CXX>:--force_new_nothrow>
+    $<$<COMPILE_LANGUAGE:C>:--no_vla>
+    $<$<COMPILE_LANGUAGE:C>:--c99>
+)
+# for RVCT whatever yours is #
+add_compile_options(-DNN_COMPILER_RVCT -DNN_PROCESSOR_ARM -DNN_PROCESSOR_ARM11MPCORE -DNN_PROCESSOR_ARM_V6 -DNN_PROCESSOR_ARM_VFP_V2 -DNN_HARDWARE_CTR -DNN_EFFORT_FAST -DNN_PLATFORM_CTR -DNN_HARDWARE_CTR_TS -DNN_SYSTEM_PROCESS -DNN_COMPILER_OPTION_ARM -DNN_DEBUGGER_KMC_PARTNER) 
 
 add_compile_definitions(NN_PLATFORM_CTR)
-add_compile_definitions(NW_PLATFORM_CTR)
-add_compile_definitions(SEAD_PLATFORM_CTR)
-
-if (NOT PROJECT_VERSION)
-  message("NO VERSION SPECIFIED, PLEASE DEFINE PROJECT_VERSION")
+if (NOT ONLY_MATCHING)
+    add_compile_definitions(NON_MATCHING)
 endif()
-add_compile_definitions(PROJECT_VERSION="${PROJECT_VERSION}")

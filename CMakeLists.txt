@@ -8,19 +8,19 @@ project(CTR_SDK C CXX ASM)
 
 if(NN_BUILD_DEBUG)
     add_compile_definitions(NN_BUILD_DEBUG)
-elseif(NN_BUILD_DEVELOPMENT)
-    add_compile_definitions(NN_BUILD_DEVELOPMENT)
+elseif(NN_BUILD_VERBOSE)
+    add_compile_definitions(NN_BUILD_VERBOSE)
 elseif(NN_BUILD_RELEASE)
     add_compile_definitions(NN_BUILD_RELEASE)
 endif()
 
 if(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
     add_compile_definitions(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
-elseif(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
-    add_compile_definitions(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
 endif()
 
-
+if(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
+    add_compile_definitions(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
+endif()
 
 function(nn_library TARGET_NAME MODULE_DIR)
     file(GLOB_RECURSE MODULE_SOURCES
@@ -56,10 +56,10 @@ function(nn_library TARGET_NAME MODULE_DIR)
         --multibyte-chars --signed_chars --cpu=MPCore
         --dollar --littleend --wchar --wchar16 --library_interface=rvct
         --apcs=//interwork --data-reorder --split_sections
-        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --remarks --vfe --no_allow_fpreg_for_nonfpdata
+        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --no_rtti --no_rtti_data --remarks --vfe --no_allow_fpreg_for_nonfpdata
         --diag_suppress=3017,940,997,177,541,1,1134,550,83,427,2525,117,284,174,111,1441,161,826,177,1549,513,1441,340,228,2530,1297,401,261,381,2516,2192,1596,193,113,1035,2523,2091,1663,1801,1621,2519,1676,63,286,74,271,2945,1301,1945,1847,2813,68,2523
         --cpp --arm -O3 -Otime --gnu
-        -DNN_BUILD_RELEASE -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
+        -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
         >
     )
 
@@ -67,10 +67,10 @@ function(nn_library TARGET_NAME MODULE_DIR)
         --multibyte-chars --signed_chars --cpu=MPCore
         --dollar --littleend --wchar --wchar16
         --apcs=//interwork --data-reorder --split_sections
-        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --rtti --rtti_data --remarks --no_vfe --no_allow_fpreg_for_nonfpdata
+        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --no_rtti --no_rtti_data --remarks --vfe --no_allow_fpreg_for_nonfpdata
         --diag_suppress=3017,940,997,177,541,1,1134,550,83,427,2525,117,284,174,111,1441,161,826,177,1549,513,1441,340,228,2530,1297,401,261,381,2516,2192,1596,193,113,1035,2523,2091,1663,1801,1621,2519,1676,63,286,74,271,2945,1301,1945,1847,2813,68,2523
         --c99 --arm -O3 -Otime
-        -DNN_BUILD_RELEASE -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
+        -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
         >
     )
 
@@ -81,15 +81,13 @@ function(nn_library TARGET_NAME MODULE_DIR)
         ${MODULE_DIR}/CTR/MPCore
     )
 
-    target_compile_definitions(${TARGET_NAME} PUBLIC
-        NON_MATCHING=
-    )
 endfunction()
 
 nn_library(libnn_applet  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/applet)
 nn_library(libnn_camera  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/camera)
 nn_library(libnn_cec     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cec)
 nn_library(libnn_cfg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cfg)
+nn_library(crt0          ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crt0)
 nn_library(libnn_crypto  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/crypto)
 nn_library(libnn_cx      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/cx)
 nn_library(libnn_dbg     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/dbg)
@@ -137,6 +135,7 @@ target_link_libraries(CTR_SDK INTERFACE
     libnn_camera
     libnn_cec
     libnn_cfg
+    crt0
     libnn_crypto
     libnn_cx
     libnn_dbg

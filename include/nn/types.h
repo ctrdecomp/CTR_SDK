@@ -4,6 +4,11 @@
 #include <stddef.h>
 #include <stdarg.h>
 
+#ifdef __cplusplus
+#include <new>
+#include <limits>
+#endif
+
 #ifndef __cplusplus
   #include <stdbool.h>
 #endif

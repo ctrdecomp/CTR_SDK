@@ -3,7 +3,7 @@
 #include <nn/assert.h>
 #include <nn/os/CTR/os_ErrorHandler.h>
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
     #define NN_OS_ERROR_IF_FAILED(result)           \
         do                                          \
         {                                           \

@@ -13,7 +13,7 @@ namespace nn{
 namespace fs{
 namespace analysis{
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
 
 bool s_AnalysisLog = false;
 nn::os::CriticalSection s_AnalysisLogLock = nn::os::CriticalSection(nn::WithInitialize());

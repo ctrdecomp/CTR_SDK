@@ -8,7 +8,7 @@ namespace nn{
 namespace fs{
 namespace analysis{
 
-#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) || defined(NN_BUILD_VERBOSE)
 
 bool IsAnalysisLogEnabled();
 void FsAnalysisLog(nn::Result result, nn::os::Tick tickStart, const char* fmt, ...);

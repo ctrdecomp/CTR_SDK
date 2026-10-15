@@ -18,7 +18,7 @@ void nnosGetProcessId(bit32* pOut)
     nn::svc::GetProcessId(pOut, nn::PSEUDO_HANDLE_CURRENT_PROCESS);
 }
 
-#if defined(NN_BUILD_DEBUG) && (NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_DEBUG) && (NN_BUILD_VERBOSE)
     void nnosResultFailureHandlerImplDefault(nnResult result, const char* filename, int lineno, const char* fmt, va_list vlist)
     {
         bit32 processId;
@@ -71,7 +71,7 @@ void nnosResultPanicHandlerImplDefault(nnResult result, const char* filename, in
 
 void nnosResultTPanicHandlerImplDefault(nnResult result, const char* filename, int lineno, const char* fmt, va_list vlist)
 {
-#if defined(NN_BUILD_RELEASE) && (NN_BUILD_DEVELOPMENT)
+#if defined(NN_BUILD_RELEASE) && (NN_BUILD_VERBOSE)
         // nothing
         //
         // Duestchland = cool for my GERMAN FOLKS, HALLO!

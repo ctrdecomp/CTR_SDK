@@ -30,8 +30,13 @@ public:
 
     void Initialize(FileSystemBaseImpl& impl);
 
-    Result TryCreateDirectory(const char* pathName);
     void CreateFile(const wchar_t* pathName, s64 size);
+    Result FileSystemBase::TryCreateFile(const wchar_t* pathName, s64 size);
+
+    void DeleteFile(const wchar_t* pathName);
+    Result TryDeleteFile(const wchar_t* pathName);
+
+    Result TryCreateDirectory(const char* pathName);
 };
 
 class WPathBuffer
@@ -92,13 +97,28 @@ inline void FileSystemBase::CreateFile(const wchar_t* pathName, s64 size)
     NN_ERR_THROW_FATAL_ALL(m_pImpl->TryCreateFile(pathName, size));
 }
 
+inline Result FileSystemBase::TryCreateFile(const wchar_t* pathName, s64 size)
+{
+    return m_pImpl->TryCreateFile(pathName, size);
+}
+
+inline void FileSystemBase::DeleteFile(const wchar_t* pathName)
+{
+    NN_ERR_THROW_FATAL_ALL(m_pImpl->TryDeleteFile(pathName));
+}
+
+inline Result FileSystemBase::TryDeleteFile(const wchar_t* pathName)
+{
+    return m_pImpl->TryDeleteFile(pathName);
+}
+
 inline Result FileSystemBase::TryCreateDirectory(const char* pathName)
 {
     WPathBuffer wpath(pathName);
     return m_pImpl->TryCreateDirectory(wpath.GetBuffer());
 }
 
-void RegisterGlobalFileSystemBase(detail::FileSystemBase& base);
+void RegisterGlobalFileSystemBase(FileSystemBase& base);
 FileSystemBase& GetGlobalFileSystemBase();
 extern detail::FileSystemBase* s_pGlobalFileSystemBase;
 
@@ -107,6 +127,11 @@ extern detail::FileSystemBase* s_pGlobalFileSystemBase;
 inline void CreateFile(const wchar_t* pathName, s64 size)
 {
     detail::GetGlobalFileSystemBase().CreateFile(pathName,size);
+}
+
+inline Result TryCreateFile(const wchar_t* pathName, s64 size)
+{
+    return detail::GetGlobalFileSystemBase().TryCreateFile(pathName, size);
 }
 
 inline Result TryCreateDirectory(const char* pathName)

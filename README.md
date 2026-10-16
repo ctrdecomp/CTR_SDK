@@ -106,13 +106,27 @@ CTR_SDK can be configured with several compile-time defines:
 * `NN_BUILD_DEBUG`: Enables assertions. (Note: Debug builds use ARM flags `-O0` `-Otime`)
 * `NN_BUILD_VERBOSE`: Enables assertions but builds optimized. (Note: Development builds use ARM flags `-O3` `-Otime`)
 * `NN_BUILD_RELEASE`: Disables assertions. (Note: Release builds use ARM flags `-O3` `-Otime`)
-* `NN_BUILD_ENABLE_HOSTIO`: Allows the use of the `hostio` library.
-* `NN_BUILD_ENABLE_RO`: Enables quirks with the `RO` service. Such as: no vfe and RTTI.
+* `NN_SWITCH_ENABLE_HOST_IO`: Allows the use of the `hostio` library.
 * `NN_PLATFORM_HAS_MMU`: If the device uses `nn::srv::Initialize` in its `nninitSystem` function enable this.
 * `NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK`: Disables Printing for SDK.
 * `NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK`: Disables Warning Printing for SDK.
+* `NN_SWITCH_ENABLE_RUNTIME_TYPEINFO`: Enables RTTI and disables VFE.
 * `NN_MATH_BUILD_FAST`: Uses `nn::math::C` functions compared to ASM.
-* `NN_MATH_BUILD_FAST_C`: Allows use of `nn::math::FAST_C` functions to the standard 
+* `NN_MATH_BUILD_FAST_C`: Allows use of `nn::math::C_FAST` functions to the standard
+
+### Build options
+
+* **RELEASE** - Release build of a game. Disables printing and warning and is meant to be the base option.
+
+* **VERBOSE** - Verbose / Development build. Optimized debug enabled build, enables printing / warning unlike release.
+
+* **DEBUG** - Debug build of a game. Unoptimized debug build of a game, inlines are preservsed and enables printing / warnings.
+
+### Additional building notes
+
+* The decomp specific project framework must support enabling these build options. The only options the user will need to tinker with is the `NN_BUILD_XXX` option.
+
+* The CTR_SDK supports relocatable objects in form of the [CTR Relocateable Object](https://www.3dbrew.org/wiki/CRO0) format. With this being said, it is left up to the user on making their building system support `NN_SWITCH_ENABLE_RUNTIME_TYPEINFO`
 
 ## Contributing
 

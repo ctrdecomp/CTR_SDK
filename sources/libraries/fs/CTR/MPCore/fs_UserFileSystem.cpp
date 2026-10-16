@@ -872,6 +872,43 @@ Result MountSdmc(const char* archiveName)
     NN_FS_ANALYSIS_LOG_RETURN(MountSpecialArchive(archiveName, 9),"API=MountSdmc,Path=%s", archiveName);
 }
 
+Result GetFileSystemSizeCore(s64* pTotal, s64* pFree, SystemMediaType systemMediaType)
+{
+    NN_TASSERT_(pTotal != NULL);
+    NN_TASSERT_(pFree != NULL);
+    *pTotal = *pFree = 0;
+
+    ArchiveResource archiveResource;
+    NN_UTIL_RETURN_IF_FAILED(GetFileServer().GetArchiveResource (&archiveResource, systemMediaType));
+
+    *pFree = static_cast<s64>(archiveResource.freeClusters) * static_cast<s64>(archiveResource.clusterSize);
+    *pTotal = static_cast<s64>(archiveResource.totalClusters) * static_cast<s64>(archiveResource.clusterSize);
+
+    return ResultSuccess ();
+}
+
+s32 GetContentRequiredMemorySize(MediaType, TitleId, ContentIdx, size_t maxFile, size_t maxDirectory)
+{
+    return RomFsArchive::GetFileDirectoryRequiredSize(maxFile, maxDirectory);
+}
+
+Result GetSaveDataFormatInfo(size_t* maxFiles, size_t* maxDirectories, bool* isDuplicateAll)
+{
+    Path path;
+    size_t dummy;
+    return GetFileServer().GetFormatInfo(&dummy, maxDirectories, maxFiles, isDuplicateAll, nn::fs::CTR::ARCHIVE_TYPE_THIS_SAVE_DATA, path.GetPathType(), path.GetDataBuffer(), path.GetDataSize());
+}
+
+Result GetSdmcSize(s64* pTotal, s64* pFree)
+{
+    return GetFileSystemSizeCore(pTotal, pFree, nn::fs::SYSTEM_MEDIA_TYPE_SDMC);
+}
+
+Result GetTwlPhotoSize(s64* pTotal, s64* pFree)
+{
+    return GetFileSystemSizeCore(pTotal, pFree, nn::fs::SYSTEM_MEDIA_TYPE_TWL_PHOTO);
+}
+
 }
 }
 

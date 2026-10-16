@@ -9,6 +9,7 @@ namespace fs{
 namespace detail { struct ArchiveHandleTag {}; }
     typedef nn::util::Int64<bit64, detail::ArchiveHandleTag> ArchiveHandle;
     typedef bit64 ExtSaveDataId;
+    typedef bit32 SharedExtSaveDataId;
     typedef bit32 ContentIdx;
     typedef s64 TitleId;
 
@@ -173,12 +174,18 @@ namespace detail { struct ArchiveHandleTag {}; }
 
     enum SystemMediaType
     {
-        CTR_NAND = 0,
-        TWL_NAND,
-        SDMC,
-        TWL_PHOTO,
+        SYSTEM_MEDIA_TYPE_CTR_NAND = 0,
+        SYSTEM_MEDIA_TYPE_TWL_NAND,
+        SYSTEM_MEDIA_TYPE_SDMC,
+        SYSTEM_MEDIA_TYPE_TWL_PHOTO,
     };
     
+    static const bit32 SHARED_EXT_SAVE_DATA_ID_UPPER_CODE   = 0x00048000;
+
+    inline ExtSaveDataId GetExtSaveDataIdFromSharedExtSaveDataId(SharedExtSaveDataId sharedExtSaveDataId)
+    {
+        return (static_cast<bit64>(nn::fs::SHARED_EXT_SAVE_DATA_ID_UPPER_CODE) << 32) | sharedExtSaveDataId;
+    }
 }
 }
 

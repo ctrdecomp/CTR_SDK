@@ -19,7 +19,7 @@ void FsAnalysisLog(nn::Result result, nn::os::Tick tickStart, const char* fmt, .
         nn::os::Tick tickLogStart;                                                            \
         tickLogStart = nn::os::Tick::GetSystemCurrent();                                      \
         nn::fs::analysis::FsAnalysisLog(nn::ResultSuccess(), tickLogStart, fmt, __VA_ARGS__); \
-    }                                                                                         \
+    }
 
 #define NN_FS_ANALYSIS_LOG_RETURN(result, fmt, ...)                                         \
     do                                                                                   \

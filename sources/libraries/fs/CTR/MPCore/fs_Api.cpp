@@ -27,6 +27,15 @@ namespace{
     nn::srv::LightEventNotificationHandler s_NotificationCardEjectedHandler;
     nn::srv::LightEventNotificationHandler s_NotificationSdmcInsertedHandler;
     nn::srv::LightEventNotificationHandler s_NotificationSdmcEjectedHandler;
+
+    class FatalNotificationHandler : public nn::srv::NotificationHandler
+    {
+    private:
+        virtual void HandleNotification(bit32)
+        {
+            NN_ERR_THROW_FATAL_ALL(nn::fs::ResultSdmcNotFound());
+        }
+    } s_FatalNotificationSdmcEjectedHandler;
 }
 
 namespace detail{
@@ -98,6 +107,12 @@ bool IsSdmcWritable()
     bool isWritable;
     NN_ERR_THROW_FATAL_ALL(nn::fs::detail::GetIpcFileSystem().IsSdmcWritable(&isWritable));
     return isWritable;
+}
+
+Result GetSharedExtSaveDataBlockSize(s64* totalBlock, s64* leftBlock, s32* blockSize, bit32 sharedExtSaveDataId)
+{
+    ExtSaveDataId extSaveDataId = nn::fs::GetExtSaveDataIdFromSharedExtSaveDataId(sharedExtSaveDataId);
+    return detail::GetIpcFileSystem().GetExtDataBlockSize(totalBlock, leftBlock, blockSize, nn::fs::ExtSaveDataSpecifier::Make(nn::fs::MEDIA_TYPE_NAND, extSaveDataId));
 }
 
 }

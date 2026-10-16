@@ -8,18 +8,22 @@ project(CTR_SDK C CXX ASM)
 
 if(NN_BUILD_DEBUG)
     add_compile_definitions(NN_BUILD_DEBUG)
+    add_compile_definitions(NN_SWITCH_ENABLE_HOST_IO)
+    add_compile_definitions(NN_MATH_BUILD_FAST)
 elseif(NN_BUILD_VERBOSE)
     add_compile_definitions(NN_BUILD_VERBOSE)
+    add_compile_definitions(NN_SWITCH_ENABLE_HOST_IO)
+    add_compile_definitions(NN_MATH_BUILD_FAST_C)
 elseif(NN_BUILD_RELEASE)
     add_compile_definitions(NN_BUILD_RELEASE)
+    add_compile_definitions(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
+    add_compile_definitions(NN_SWITCH_DISABLE_ASSERT_WARNING_FOR_SDK)
 endif()
 
-if(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
-    add_compile_definitions(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
-endif()
-
-if(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
-    add_compile_definitions(NN_SWITCH_DISABLE_DEBUG_PRINT_FOR_SDK)
+if(NN_SWITCH_ENABLE_RUNTIME_TYPEINFO)
+    set(RTTI_FLAGS "--rtti" "--rtti_data" "--remarks" "--no_vfe")
+else()
+    set(RTTI_FLAGS "--no_rtti" "--no_rtti_data" "--remarks" "--vfe")
 endif()
 
 function(nn_library TARGET_NAME MODULE_DIR)
@@ -47,16 +51,13 @@ function(nn_library TARGET_NAME MODULE_DIR)
         target_compile_options(${TARGET_NAME} PRIVATE -O0)
     endif()
 
-    # Test this.
-    if(NN_BUILD_ENABLE_RO)
-        target_compile_options(${TARGET_NAME} PRIVATE --no_vfe)
-    endif()
-
     target_compile_options(${TARGET_NAME} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:
         --multibyte-chars --signed_chars --cpu=MPCore
         --dollar --littleend --wchar --wchar16 --library_interface=rvct
         --apcs=//interwork --data-reorder --split_sections
-        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --no_rtti --no_rtti_data --remarks --vfe --no_allow_fpreg_for_nonfpdata
+        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions  
+        ${RTTI_FLAGS} 
+        --no_allow_fpreg_for_nonfpdata
         --diag_suppress=3017,940,997,177,541,1,1134,550,83,427,2525,117,284,174,111,1441,161,826,177,1549,513,1441,340,228,2530,1297,401,261,381,2516,2192,1596,193,113,1035,2523,2091,1663,1801,1621,2519,1676,63,286,74,271,2945,1301,1945,1847,2813,68,2523
         --cpp --arm -O3 -Otime --gnu
         -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
@@ -67,7 +68,9 @@ function(nn_library TARGET_NAME MODULE_DIR)
         --multibyte-chars --signed_chars --cpu=MPCore
         --dollar --littleend --wchar --wchar16
         --apcs=//interwork --data-reorder --split_sections
-        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions --no_rtti --no_rtti_data --remarks --vfe --no_allow_fpreg_for_nonfpdata
+        --debug_info=line_inlining_extensions --force_new_nothrow --fpmode=fast --no_exceptions  
+        ${RTTI_FLAGS} 
+        --no_allow_fpreg_for_nonfpdata
         --diag_suppress=3017,940,997,177,541,1,1134,550,83,427,2525,117,284,174,111,1441,161,826,177,1549,513,1441,340,228,2530,1297,401,261,381,2516,2192,1596,193,113,1035,2523,2091,1663,1801,1621,2519,1676,63,286,74,271,2945,1301,1945,1847,2813,68,2523
         --c99 --arm -O3 -Otime
         -DNN_SWITCH_ENABLE_MEMBER_NAME_SHORTCUT
@@ -107,7 +110,7 @@ nn_library(libnn_gr      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gr)
 nn_library(libnn_gxlow   ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/gxlow)
 nn_library(libnn_hid     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hid)
 nn_library(libnn_hidlow  ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hidlow)
-nn_library(libnn_hio     ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/IS/hio, ${CMAKE_CURRENT_SOURCE_DIR}/addins/KMC/HostIO/HostIO)
+#nn_library(libnn_hio     "${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/hio" "${CMAKE_CURRENT_SOURCE_DIR}/addins/IS/hio" "${CMAKE_CURRENT_SOURCE_DIR}/addins/KMC/HostIO/HostIO")
 #nn_library(libnn_http    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/http)
 nn_library(libnn_init    ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/init)
 nn_library(libnn_ir      ${CMAKE_CURRENT_SOURCE_DIR}/sources/libraries/ir)
@@ -141,18 +144,22 @@ target_link_libraries(CTR_SDK INTERFACE
     libnn_dbg
     libnn_dbm
     libnn_dev
+    #libnn_dlp
     libnn_dsp
     libnn_err
     libnn_erreula
     libnn_jpeg
     libnn_fnd
     libnn_font
+    #libnn_friends
     libnn_fs
     libnn_fslow
     libnn_gr
     libnn_gxlow
     libnn_hid
     libnn_hidlow
+    #libnn_hio
+    #libnn_http
     libnn_init
     libnn_ir
     libnn_math
@@ -165,6 +172,7 @@ target_link_libraries(CTR_SDK INTERFACE
     libnn_rtport
     libnn_snd
     libnn_srv
+    #libnn_ssl
     libnn_svc
     libnn_ubl
     libnn_ulcd

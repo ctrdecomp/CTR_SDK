@@ -6,23 +6,29 @@
 
 namespace nn{
 namespace fs{
-    Result MountSaveData(const char* pArchiveName = "data:");
+    Result MountSaveData(const char* archiveName = "data:");
 
-    Result FormatSaveData(size_t pMaxFiles, size_t pMaxDirectories, bool pIsDuplicated);
+    Result FormatSaveData(size_t paxFiles, size_t maxDirectories, bool isDuplicated);
     Result CommitSaveData(const char* archiveName = "data:");
 
-    Result MountRom(const char *pArchiveName,size_t pMaxFile,size_t pMaxDirectory,void *pWorkingMemory, size_t pWorkingMemorySize,bool pUseCache);
-    Result MountRom(size_t pMaxFile, size_t pMaxDirectory, void* pWorkingMemory, size_t pWorkingMemorySize, bool pUseCache);
+    Result MountRom(const char *archiveName, size_t maxFile, size_t maxDirectory, void *pWorkingMemory, size_t workingMemorySize, bool useCache);
+    Result MountRom(size_t maxFile, size_t maxDirectory, void* pWorkingMemory, size_t workingMemorySize, bool useCache);
     Result MountSharedExtSaveData(const char* archiveName, bit32 id);
     Result MountSpecialArchive(const char* archiveName, bit32 archiveKind);
     Result MountContent(const char* archiveName, MediaType mediaType, TitleId titleId, ContentIdx contentIndex, size_t maxFile, size_t maxDirectory, void* workingMemory, size_t workingMemorySize, bool useCache);
-    Result Unmount(const char* pArchiveName);
+    Result Unmount(const char* archiveName);
 
     Result MountSdmc(const char* archiveName = "sdmc:");
 
-    // Memory Size 
-    int GetRomRequiredMemorySize(size_t pMaxFile, size_t pMaxDirectory, bool pUseCache);
-    int GetRomRequiredMemorySizeImpl(size_t pMaxFile, size_t pMaxDirectory, bool pUseCache, ProgramDataPath* pContentPath);
+    // Archive Size
+    Result GetTwlPhotoSize(s64* pTotal, s64* pFree);
+    Result GetSdmcSize(s64* pTotal, s64* pFree);
+    Result GetSaveDataFormatInfo(size_t* maxFiles, size_t* maxDirectories, bool* isDuplicateAll);
+    s32 GetContentRequiredMemorySize(MediaType, TitleId, ContentIdx, size_t maxFile, size_t maxDirectory);
+
+    // Memory Size
+    s32 GetRomRequiredMemorySize(size_t maxFile, size_t maxDirectory, bool useCache);
+    s32 GetRomRequiredMemorySizeImpl(size_t maxFile, size_t maxDirectory, bool useCache, ProgramDataPath* pContentPath);
 
     void InitializeLatencyEmulation();
     void ForceDisableLatencyEmulation();

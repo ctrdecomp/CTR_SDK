@@ -6,10 +6,10 @@ namespace nn{
 namespace fs{
     struct ArchiveResource
     {
-        uint mSectorSize;
-        uint mClusterSize;
-        uint mTotalClusters;
-        uint mFreeClusters;
+        uint sectorSize;
+        uint clusterSize;
+        uint totalClusters;
+        uint freeClusters;
     };
 
     enum CardType

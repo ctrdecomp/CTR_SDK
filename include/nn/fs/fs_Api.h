@@ -18,6 +18,7 @@ void UnregisterSdmcEjectedEvent();
 bool IsSdmcInserted();
 bool IsSdmcWritable();
 Result GetPriortity(int out);
+Result GetSharedExtSaveDataBlockSize(s64* totalBlock, s64* leftBlock, s32* blockSize, bit32 sharedExtSaveDataId);
 
 }
 }

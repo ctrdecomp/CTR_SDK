@@ -5,6 +5,7 @@
 #include <nn/fs/fs_IpcFileSystem.h>
 #include <nn/err/CTR/err_Api.h>
 #include <nn/fs/fs_Api.h>
+#include <nn/fs/fs_Types.h>
 
 #include <nn/os/ipc/os_Message.h>
 #include <nn/svc.h>
@@ -471,7 +472,70 @@ Result FileSystem::GetFreeBytes(s64* freeBytes, bit64 archiveHandle)
     return ipcMsg.GetRaw<Result>(1);
 }
 
+Result FileSystem::GetFormatInfo(size_t* countTotalBlock, size_t* maxDirectories, size_t* maxFiles, bool* isDuplicateAll, bit32 archiveType, bit32 pathType, const bit8 path[], size_t pathLength)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x845, 3, 2, 0);
+    ipcMsg.SetRaw(1, archiveType);
+    ipcMsg.SetRaw(2, pathType);
+    ipcMsg.SetRaw(3, pathLength);
+    ipcMsg.SetPointerHeader(4, 0, sizeof(*path) * pathLength);
+    ipcMsg.SetPointer(5, path);
+
+
+    Result ipcResult = SendSyncRequest(m_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    *countTotalBlock = ipcMsg.GetRaw<size_t>(2);
+    *maxDirectories = ipcMsg.GetRaw<size_t>(3);
+    *maxFiles = ipcMsg.GetRaw<size_t>(4);
+    *isDuplicateAll = ipcMsg.GetRaw<bool>(5);
+
+    return ipcMsg.GetRaw<Result>(1);
 }
+
+Result FileSystem::GetArchiveResource(nn::fs::ArchiveResource* pOut, nn::fs::SystemMediaType mediaType)
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x849, 1, 0, 0);
+    ipcMsg.SetRaw(1, mediaType);
+
+
+    Result ipcResult = SendSyncRequest(m_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    *pOut = ipcMsg.GetRaw<nn::fs::ArchiveResource>(2);
+
+    return ipcMsg.GetRaw<Result>(1);
 }
+
+Result FileSystem::GetExtDataBlockSize(s64* totalBlock, s64* leftBlock, s32* blockSize, const nn::fs::ExtSaveDataSpecifier& specifier )
+{
+    MessageBuffer ipcMsg(GetMessageBuffer());
+    ipcMsg.SetHeader(0x854, 4, 0, 0);
+    ipcMsg.SetRaw(1, specifier);
+
+
+    Result ipcResult = SendSyncRequest(m_Session);
+    if(ipcResult.IsFailure())
+    {
+        return ipcResult;
+    }
+
+    *totalBlock = ipcMsg.GetRaw<s64>(2);
+    *leftBlock = ipcMsg.GetRaw<s64>(4);
+    *blockSize = ipcMsg.GetRaw<s32>(6);
+
+    return ipcMsg.GetRaw<Result>(1);
 }
+
+} // namespace ipc
+} // namespace fs
+} // namespace nn
 

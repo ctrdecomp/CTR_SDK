@@ -44,6 +44,9 @@ namespace ipc{
         Result InitializeWithSdkVersion(bit32 sdkVersion);
 
         Result GetFreeBytes(s64* freeBytes, bit64 archiveHandle);
+        Result GetArchiveResource(ArchiveResource* pOut, SystemMediaType mediaType);
+        Result GetFormatInfo(size_t* countTotalBlock, size_t* maxDirectories, size_t* maxFiles, bool* isDuplicateAll, bit32 archiveType, bit32 pathType, const bit8 path[], size_t pathLength);
+        Result GetExtDataBlockSize(s64* totalBlock, s64* leftBlock, s32* blockSize, const nn::fs::ExtSaveDataSpecifier& specifier);
     };
 }
 

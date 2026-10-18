@@ -896,7 +896,7 @@ Result GetSaveDataFormatInfo(size_t* maxFiles, size_t* maxDirectories, bool* isD
 {
     Path path;
     size_t dummy;
-    return GetFileServer().GetFormatInfo(&dummy, maxDirectories, maxFiles, isDuplicateAll, nn::fs::CTR::ARCHIVE_TYPE_THIS_SAVE_DATA, path.GetPathType(), path.GetDataBuffer(), path.GetDataSize());
+    return GetFileServer().GetFormatInfo(&dummy, maxDirectories, maxFiles, isDuplicateAll, 4, path.GetPathType(), path.GetDataBuffer(), path.GetDataSize());
 }
 
 Result GetSdmcSize(s64* pTotal, s64* pFree)

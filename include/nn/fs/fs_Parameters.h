@@ -186,6 +186,6 @@ namespace detail { struct ArchiveHandleTag {}; }
     {
         return (static_cast<bit64>(nn::fs::SHARED_EXT_SAVE_DATA_ID_UPPER_CODE) << 32) | sharedExtSaveDataId;
     }
-}
+} 
 }
 
